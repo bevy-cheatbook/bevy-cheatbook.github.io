@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Contributing - Unofficial Bevy Cheat Book</title>
+        <title>Generic Systems - Unofficial Bevy Cheat Book</title>
         
         
 
@@ -18,28 +18,28 @@
         <meta name="theme-color" content="#ffffff" />
 
         
-        <link rel="icon" href="favicon.svg">
+        <link rel="icon" href="../favicon.svg">
         
         
-        <link rel="shortcut icon" href="favicon.png">
+        <link rel="shortcut icon" href="../favicon.png">
         
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
         
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="stylesheet" href="../css/print.css" media="print">
         
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
         
-        <link rel="stylesheet" href="fonts/fonts.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
         
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
         
@@ -49,7 +49,7 @@
     <body>
         <!-- Provide site root to javascript -->
         <script type="text/javascript">
-            var path_to_root = "";
+            var path_to_root = "../";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
@@ -95,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="cheatsheet/_index.html"><strong aria-hidden="true">1.</strong> Bevy Cheatsheet</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cheatsheet/release.html"><strong aria-hidden="true">1.1.</strong> for bevy 0.4</a></li><li class="chapter-item expanded "><a href="cheatsheet/master.html"><strong aria-hidden="true">1.2.</strong> for bevy git</a></li></ol></li><li class="chapter-item expanded "><a href="basics/_index.html"><strong aria-hidden="true">2.</strong> Bevy Basics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="basics/release.html"><strong aria-hidden="true">2.1.</strong> for bevy 0.4</a></li><li class="chapter-item expanded "><a href="basics/master.html"><strong aria-hidden="true">2.2.</strong> for bevy git</a></li></ol></li><li class="chapter-item expanded "><a href="patterns/_index.html"><strong aria-hidden="true">3.</strong> Advanced Patterns</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="patterns/event-broadcast.html"><strong aria-hidden="true">3.1.</strong> Event Broadcast</a></li><li class="chapter-item expanded "><a href="patterns/generic-systems.html"><strong aria-hidden="true">3.2.</strong> Generic Systems</a></li></ol></li><li class="chapter-item expanded "><a href="cookbook/_index.html"><strong aria-hidden="true">4.</strong> Bevy Cookbook</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cookbook/input-handling.html"><strong aria-hidden="true">4.1.</strong> Input Handling</a></li><li class="chapter-item expanded "><a href="cookbook/quit.html"><strong aria-hidden="true">4.2.</strong> Quitting the App</a></li><li class="chapter-item expanded "><a href="cookbook/clear-color.html"><strong aria-hidden="true">4.3.</strong> Changing the Background Color</a></li><li class="chapter-item expanded "><a href="cookbook/print-framerate.html"><strong aria-hidden="true">4.4.</strong> Show Framerate in Console</a></li><li class="chapter-item expanded "><a href="cookbook/mouse-grab.html"><strong aria-hidden="true">4.5.</strong> Grabbing the Mouse</a></li><li class="chapter-item expanded "><a href="cookbook/cursor2world.html"><strong aria-hidden="true">4.6.</strong> Convert cursor to world coordinates</a></li><li class="chapter-item expanded "><a href="cookbook/custom-projection.html"><strong aria-hidden="true">4.7.</strong> Custom Camera Projection</a></li></ol></li><li class="chapter-item expanded "><a href="orphanage/_index.html"><strong aria-hidden="true">5.</strong> Orphanage</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="orphanage/pan-orbit-camera.html"><strong aria-hidden="true">5.1.</strong> Pan + Orbit Camera</a></li></ol></li><li class="chapter-item expanded "><a href="contributing.html" class="active">Contributing</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="../cheatsheet/_index.html"><strong aria-hidden="true">1.</strong> Bevy Cheatsheet</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cheatsheet/release.html"><strong aria-hidden="true">1.1.</strong> for bevy 0.4</a></li><li class="chapter-item expanded "><a href="../cheatsheet/master.html"><strong aria-hidden="true">1.2.</strong> for bevy git</a></li></ol></li><li class="chapter-item expanded "><a href="../basics/_index.html"><strong aria-hidden="true">2.</strong> Bevy Basics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../basics/release.html"><strong aria-hidden="true">2.1.</strong> for bevy 0.4</a></li><li class="chapter-item expanded "><a href="../basics/master.html"><strong aria-hidden="true">2.2.</strong> for bevy git</a></li></ol></li><li class="chapter-item expanded "><a href="../patterns/_index.html"><strong aria-hidden="true">3.</strong> Advanced Patterns</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../patterns/event-broadcast.html"><strong aria-hidden="true">3.1.</strong> Event Broadcast</a></li><li class="chapter-item expanded "><a href="../patterns/generic-systems.html" class="active"><strong aria-hidden="true">3.2.</strong> Generic Systems</a></li></ol></li><li class="chapter-item expanded "><a href="../cookbook/_index.html"><strong aria-hidden="true">4.</strong> Bevy Cookbook</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cookbook/input-handling.html"><strong aria-hidden="true">4.1.</strong> Input Handling</a></li><li class="chapter-item expanded "><a href="../cookbook/quit.html"><strong aria-hidden="true">4.2.</strong> Quitting the App</a></li><li class="chapter-item expanded "><a href="../cookbook/clear-color.html"><strong aria-hidden="true">4.3.</strong> Changing the Background Color</a></li><li class="chapter-item expanded "><a href="../cookbook/print-framerate.html"><strong aria-hidden="true">4.4.</strong> Show Framerate in Console</a></li><li class="chapter-item expanded "><a href="../cookbook/mouse-grab.html"><strong aria-hidden="true">4.5.</strong> Grabbing the Mouse</a></li><li class="chapter-item expanded "><a href="../cookbook/cursor2world.html"><strong aria-hidden="true">4.6.</strong> Convert cursor to world coordinates</a></li><li class="chapter-item expanded "><a href="../cookbook/custom-projection.html"><strong aria-hidden="true">4.7.</strong> Custom Camera Projection</a></li></ol></li><li class="chapter-item expanded "><a href="../orphanage/_index.html"><strong aria-hidden="true">5.</strong> Orphanage</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../orphanage/pan-orbit-camera.html"><strong aria-hidden="true">5.1.</strong> Pan + Orbit Camera</a></li></ol></li><li class="chapter-item expanded "><a href="../contributing.html">Contributing</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -131,7 +131,7 @@
 
                     <div class="right-buttons">
                         
-                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
                             <i id="print-button" class="fa fa-print"></i>
                         </a>
                         
@@ -163,57 +163,75 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#contributing" id="contributing">Contributing</a></h1>
-<p>Any help with maintaining or improving the book is welcome! Contribute via <a href="https://github.com/bevy-cheatbook/bevy-cheatbook">GitHub</a>!</p>
-<p>Feel free to submit PRs for anything you consider useful. I will review them with you, so we can edit as needed to bring them to the style and quality desired for this book.</p>
-<p>Be civil. If you need a code of conduct, have a look at Bevy's.</p>
-<h2><a class="header" href="#example-code" id="example-code">Example Code</a></h2>
-<p>All code that uses Bevy APIs should live under <code>src/code_bevy_release</code> or <code>src/code_bevy_master</code>, depending on the version of Bevy used.</p>
-<p>Cookbook recipes should be independent files under <code>examples</code>. Only embed the relevant parts into the book page, without unnecessary boilerplate. Link to the full example file at the top of the page.</p>
-<p>Cheatsheet code lives in <code>src/cheatsheet.rs</code>.</p>
-<p>Miscellaneous code in the book should live in <code>src/lib.rs</code>.</p>
-<p>Always use mdbook anchor syntax to embed code, never line numbers.
-<a href="https://rust-lang.github.io/mdBook/format/mdbook.html#including-portions-of-a-file">See here</a>.</p>
-<h2><a class="header" href="#style-guidelines" id="style-guidelines">Style Guidelines</a></h2>
-<p>Follow these guidelines to avoid the need for edits to your PRs and get them merged more easily:</p>
-<ul>
-<li>Reduce verbosity. Try to get the point across with simpler code and explanations.
-<ul>
-<li>&quot;Perfection is achieved not when there is nothing more to add, but when there is nothing more to remove.&quot;</li>
-</ul>
-</li>
-<li>Avoid repeating information found elsewhere in the book.</li>
-<li>Don't forget to point out gotchas, workarounds, and other relevant practical considerations.</li>
-<li>Make it easy to read:
-<ul>
-<li>Try to cover all important information without wordy explanations.</li>
-<li>Prefer simple English with short sentences.</li>
-</ul>
-</li>
-<li>Use the most common/standard terminology and keywords, to make things easy to find.
-<ul>
-<li>Don't come up with new/extra terminology of your own.</li>
-</ul>
-</li>
-<li>Avoid information overload
-<ul>
-<li>Cover advanced usage separately from the basics.</li>
-<li>Prefer showing related features in a single code snippet (when not confusing). Avoid repeated/similar snippets.</li>
-</ul>
-</li>
-<li>Avoid long lines of code, to keep it readable on small screens.</li>
-</ul>
+                        <h1><a class="header" href="#generic-systems" id="generic-systems">Generic Systems</a></h1>
+<p><a href="../code_bevy_release/src/generic-systems.rs">Click here to download the code from this page.</a></p>
+<hr />
+<p>Bevy systems are just plain rust functions, which means they can be generic.</p>
+<p>This is especially useful when combined with bevy states. You can do the same thing to different sets of entities depending on state.</p>
+<hr />
+<p>One use-case is for cleanup.</p>
+<pre><code class="language-rust no_run noplayground">/// Marker components to group entities for cleanup
+mod cleanup {
+    pub struct LevelUnload;
+    pub struct MenuExit;
+}
+
+fn cleanup_system&lt;T: Component&gt;(
+    commands: &amp;mut Commands,
+    q: Query&lt;Entity, With&lt;T&gt;&gt;,
+) {
+    for e in q.iter() {
+        commands.despawn_recursive(e);
+    }
+}
+</code></pre>
+<p>Menu entities can be tagged with <code>cleanup::MenuExit</code>, entities from the game map can be tagged with <code>cleanup::LevelUnload</code>.</p>
+<p>We can add the generic cleanup system to our state transitions, to take care of the respective entities:</p>
+<pre><code class="language-rust no_run noplayground">#[derive(Debug, Clone)]
+enum AppState {
+    MainMenu,
+    InGame,
+}
+
+/// Label for the main stage
+static MAIN: &amp;str = &quot;MainStage&quot;;
+
+fn main() {
+    App::build()
+        .add_plugins(DefaultPlugins)
+        // add the state stage
+        .add_resource(State::new(AppState::MainMenu))
+        .add_stage_before(
+            stage::UPDATE, MAIN,
+            StateStage::&lt;AppState&gt;::default()
+        )
+        // add the cleanup systems
+        .on_state_exit(
+            MAIN, AppState::MainMenu,
+            cleanup_system::&lt;cleanup::MenuExit&gt;.system()
+        )
+        .on_state_exit(
+            MAIN, AppState::InGame,
+            cleanup_system::&lt;cleanup::LevelUnload&gt;.system()
+        )
+        .run();
+}
+</code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="orphanage/pan-orbit-camera.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../patterns/event-broadcast.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
+                        
+                            <a rel="next" href="../cookbook/_index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
                         
 
                         <div style="clear: both"></div>
@@ -223,11 +241,15 @@
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a rel="prev" href="orphanage/pan-orbit-camera.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../patterns/event-broadcast.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
+                
+                    <a rel="next" href="../cookbook/_index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
                 
             </nav>
 
@@ -248,14 +270,14 @@
         
 
         
-        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
         
 
-        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
         
