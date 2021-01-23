@@ -97,7 +97,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="cheatsheet/_index.html"><strong aria-hidden="true">1.</strong> Bevy Cheatsheet</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cheatsheet/release.html"><strong aria-hidden="true">1.1.</strong> for bevy 0.4</a></li><li class="chapter-item expanded "><a href="cheatsheet/master.html"><strong aria-hidden="true">1.2.</strong> for bevy git</a></li></ol></li><li class="chapter-item expanded "><a href="basics/_index.html"><strong aria-hidden="true">2.</strong> Bevy Basics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="basics/release.html"><strong aria-hidden="true">2.1.</strong> for bevy 0.4</a></li><li class="chapter-item expanded "><a href="basics/master.html"><strong aria-hidden="true">2.2.</strong> for bevy git</a></li></ol></li><li class="chapter-item expanded "><a href="patterns/_index.html"><strong aria-hidden="true">3.</strong> Advanced Patterns</a></li><li class="chapter-item expanded "><a href="cookbook/_index.html"><strong aria-hidden="true">4.</strong> Bevy Cookbook</a></li><li class="chapter-item expanded affix "><a href="contributing.html">Contributing</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="cheatsheet/_index.html"><strong aria-hidden="true">1.</strong> Bevy Cheatsheet</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cheatsheet/release.html"><strong aria-hidden="true">1.1.</strong> for bevy 0.4</a></li><li class="chapter-item expanded "><a href="cheatsheet/master.html"><strong aria-hidden="true">1.2.</strong> for bevy git</a></li></ol></li><li class="chapter-item expanded "><a href="basics/_index.html"><strong aria-hidden="true">2.</strong> Bevy Basics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="basics/release.html"><strong aria-hidden="true">2.1.</strong> for bevy 0.4</a></li><li class="chapter-item expanded "><a href="basics/master.html"><strong aria-hidden="true">2.2.</strong> for bevy git</a></li></ol></li><li class="chapter-item expanded "><a href="patterns/_index.html"><strong aria-hidden="true">3.</strong> Advanced Patterns</a></li><li class="chapter-item expanded "><a href="cookbook/_index.html"><strong aria-hidden="true">4.</strong> Bevy Cookbook</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cookbook/input-handling.html"><strong aria-hidden="true">4.1.</strong> Input Handling</a></li><li class="chapter-item expanded "><a href="cookbook/quit.html"><strong aria-hidden="true">4.2.</strong> Quitting the App</a></li><li class="chapter-item expanded "><a href="cookbook/clear-color.html"><strong aria-hidden="true">4.3.</strong> Changing the Background Color</a></li><li class="chapter-item expanded "><a href="cookbook/print-framerate.html"><strong aria-hidden="true">4.4.</strong> Show Framerate in Console</a></li><li class="chapter-item expanded "><a href="cookbook/mouse-grab.html"><strong aria-hidden="true">4.5.</strong> Grabbing the Mouse</a></li><li class="chapter-item expanded "><a href="cookbook/cursor2world.html"><strong aria-hidden="true">4.6.</strong> Convert cursor to world coordinates</a></li><li class="chapter-item expanded "><a href="cookbook/custom-projection.html"><strong aria-hidden="true">4.7.</strong> Custom Camera Projection</a></li></ol></li><li class="chapter-item expanded "><a href="orphanage/_index.html"><strong aria-hidden="true">5.</strong> Orphanage</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="orphanage/pan-orbit-camera.html"><strong aria-hidden="true">5.1.</strong> Pan + Orbit Camera</a></li></ol></li><li class="chapter-item expanded "><a href="contributing.html">Contributing</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -175,6 +175,7 @@
 <li><a href="./basics.html">Bevy Basics</a>: brief one-page explanation of important concepts</li>
 <li>Advanced Patterns: good practices for using bevy effectively</li>
 <li>Bevy Cookbook: examples covering common game development problems</li>
+<li>Orphanage: archive of unmaintained bevy code found out in the wild</li>
 </ul>
 <p><em><strong>Welcome! Hope this book serves you well!</strong></em></p>
 <p>P.S: also check out the <a href="https://github.com/bevyengine/awesome-bevy">awesome-bevy</a> list,
@@ -244,6 +245,378 @@ for an even more concise listing of just the syntax + important usage notes.</p>
 <p>The recipes are written to only focus on the relevant information for the task at hand.</p>
 <p>Only the relevant parts of the code are shown. Full example files are available and linked on the page of each recipe.</p>
 <p>It is assumed that you are already familiar with Bevy programming. If not, check out <a href="cookbook/../basics/_index.html">Bevy Basics</a>.</p>
+<h1><a class="header" href="#input-handling" id="input-handling">Input Handling</a></h1>
+<p><a href="cookbook/../code_bevy_release/examples/input.rs">Click here for the full example code.</a></p>
+<hr />
+<p>Since bevy resources and events are global and accessible from any system, you
+don't need to centralize your input handling code in one place. You can consume
+any relevant inputs wherever you need them.</p>
+<p>If you simply need to check the current state of specific keyboard keys or mouse buttons:</p>
+<pre><code class="language-rust no_run noplayground">fn my_simple_system(keys: Res&lt;Input&lt;KeyCode&gt;&gt;, btns: Res&lt;Input&lt;MouseButton&gt;&gt;) {
+    // Keyboard input
+    if keys.pressed(KeyCode::Space) {
+        // space is being held down
+    }
+
+    // Mouse buttons
+    if btns.just_pressed(MouseButton::Left) {
+        // a left click just happened
+    }
+}
+</code></pre>
+<p>For more powerful input handling, to detect all activity, use input events:</p>
+<pre><code class="language-rust no_run noplayground">fn my_fancy_system(
+    ev_keys: Res&lt;Events&lt;KeyboardInput&gt;&gt;,
+    mut evr_keys: Local&lt;EventReader&lt;KeyboardInput&gt;&gt;,
+
+    ev_cursor: Res&lt;Events&lt;CursorMoved&gt;&gt;,
+    mut evr_cursor: Local&lt;EventReader&lt;CursorMoved&gt;&gt;,
+
+    ev_motion: Res&lt;Events&lt;MouseMotion&gt;&gt;,
+    mut evr_motion: Local&lt;EventReader&lt;MouseMotion&gt;&gt;,
+
+    ev_mousebtn: Res&lt;Events&lt;MouseButtonInput&gt;&gt;,
+    mut evr_mousebtn: Local&lt;EventReader&lt;MouseButtonInput&gt;&gt;,
+
+    ev_scroll: Res&lt;Events&lt;MouseWheel&gt;&gt;,
+    mut evr_scroll: Local&lt;EventReader&lt;MouseWheel&gt;&gt;,
+
+    ev_touch: Res&lt;Events&lt;TouchInput&gt;&gt;,
+    mut evr_touch: Local&lt;EventReader&lt;TouchInput&gt;&gt;,
+) {
+    // Keyboard input
+    for ev in evr_keys.iter(&amp;ev_keys) {
+        if ev.state.is_pressed() {
+            eprintln!(&quot;Just pressed key: {:?}&quot;, ev.key_code);
+        } else {
+            eprintln!(&quot;Just released key: {:?}&quot;, ev.key_code);
+        }
+    }
+
+    // Absolute cursor position (in window coordinates)
+    for ev in evr_cursor.iter(&amp;ev_cursor) {
+        eprintln!(&quot;Cursor at: {}&quot;, ev.position);
+    }
+
+    // Relative mouse motion
+    for ev in evr_motion.iter(&amp;ev_motion) {
+        eprintln!(&quot;Mouse moved {} pixels&quot;, ev.delta);
+    }
+
+    // Mouse buttons
+    for ev in evr_mousebtn.iter(&amp;ev_mousebtn) {
+        if ev.state.is_pressed() {
+            eprintln!(&quot;Just pressed mouse button: {:?}&quot;, ev.button);
+        } else {
+            eprintln!(&quot;Just released mouse button: {:?}&quot;, ev.button);
+        }
+    }
+
+    // scrolling (mouse wheel, touchpad, etc.)
+    for ev in evr_scroll.iter(&amp;ev_scroll) {
+        eprintln!(&quot;Scrolled vertically by {} and horizontally by {}.&quot;, ev.y, ev.x);
+    }
+
+    // touch input
+    for ev in evr_touch.iter(&amp;ev_touch) {
+        eprintln!(&quot;Touch {} in {:?} at {}.&quot;, ev.id, ev.phase, ev.position);
+    }
+}
+</code></pre>
+<h1><a class="header" href="#quitting-the-app" id="quitting-the-app">Quitting the App</a></h1>
+<p><a href="cookbook/../code_bevy_release/examples/quit.rs">Click here for the full example code.</a></p>
+<hr />
+<p>To cleanly shut down bevy, send an <code>AppExit</code> event from any system:</p>
+<pre><code class="language-rust no_run noplayground">use bevy::app::AppExit;
+
+fn exit_system(mut exit: ResMut&lt;Events&lt;AppExit&gt;&gt;) {
+    exit.send(AppExit);
+}
+</code></pre>
+<p>For prototyping, bevy provides a system you can add, to exit on pressing the Esc key:</p>
+<pre><code class="language-rust no_run noplayground">fn main() {
+    App::build()
+        .add_plugins(DefaultPlugins)
+        .add_system(bevy::input::system::exit_on_esc_system.system())
+        .run();
+}
+</code></pre>
+<h1><a class="header" href="#changing-the-background-color" id="changing-the-background-color">Changing the Background Color</a></h1>
+<p><a href="cookbook/../code_bevy_release/examples/clear-color.rs">Click here for the full example code.</a></p>
+<hr />
+<p>Use the <code>ClearColor</code> resource to choose the background color.</p>
+<p>It must be added before the default plugins.</p>
+<pre><code class="language-rust no_run noplayground">fn main() {
+    App::build()
+        .add_resource(ClearColor(Color::rgb(0.4, 0.4, 0.4)))
+        .add_plugins(DefaultPlugins)
+        .run();
+}
+</code></pre>
+<h1><a class="header" href="#show-framerate-in-console" id="show-framerate-in-console">Show Framerate in Console</a></h1>
+<p><a href="cookbook/../code_bevy_release/examples/print-framerate.rs">Click here for the full example code.</a></p>
+<hr />
+<p>You can use bevy's builtin diagnostics system to print framerate (FPS) to the console, for monitoring performance.</p>
+<p><em>Note (git master)</em>: <code>PrintDiagnosticsPlugin</code> was renamed to <code>LogDiagnosticsPlugin</code>.</p>
+<pre><code class="language-rust no_run noplayground">use bevy::diagnostic::{FrameTimeDiagnosticsPlugin, PrintDiagnosticsPlugin};
+
+fn main() {
+    App::build()
+        .add_plugins(DefaultPlugins)
+        .add_plugin(PrintDiagnosticsPlugin::default())
+        .add_plugin(FrameTimeDiagnosticsPlugin::default())
+        .add_system(PrintDiagnosticsPlugin::print_diagnostics_system.system())
+        .run();
+}
+</code></pre>
+<h1><a class="header" href="#grabbing-the-mouse" id="grabbing-the-mouse">Grabbing the Mouse</a></h1>
+<p><a href="cookbook/../code_bevy_release/examples/mouse-grab.rs">Click here for the full example code.</a></p>
+<hr />
+<p>You can lock/release the mouse cursor using bevy's <a href="https://github.com/bevyengine/bevy/blob/master/examples/window/window_settings.rs">window settings API</a>.</p>
+<p>Here is an example that locks and hides the cursor in the primary window on mouse click and releases it when pressing Esc:</p>
+<pre><code class="language-rust no_run noplayground">fn cursor_grab_system(
+    mut windows: ResMut&lt;Windows&gt;,
+    btn: Res&lt;Input&lt;MouseButton&gt;&gt;,
+    key: Res&lt;Input&lt;KeyCode&gt;&gt;,
+) {
+    let window = windows.get_primary_mut().unwrap();
+
+    if btn.just_pressed(MouseButton::Left) {
+        window.set_cursor_lock_mode(true);
+        window.set_cursor_visibility(false);
+    }
+
+    if key.just_pressed(KeyCode::Escape) {
+        window.set_cursor_lock_mode(false);
+        window.set_cursor_visibility(true);
+    }
+}
+</code></pre>
+<h1><a class="header" href="#convert-cursor-to-world-coordinates" id="convert-cursor-to-world-coordinates">Convert cursor to world coordinates</a></h1>
+<p><a href="cookbook/../code_bevy_release/examples/cursor2world.rs">Click here for the full example code.</a></p>
+<hr />
+<p>Bevy does not yet provide built-in functions to help with finding out what the cursor is pointing at.</p>
+<h2><a class="header" href="#3d-games" id="3d-games">3D games</a></h2>
+<p>There is a good (unofficial) plugin: <a href="https://github.com/aevyrie/bevy_mod_picking"><code>bevy_mod_picking</code></a>.</p>
+<h2><a class="header" href="#2d-games" id="2d-games">2D games</a></h2>
+<p>For a game using the default bevy 2d orthographic camera:</p>
+<pre><code class="language-rust no_run noplayground">/// Used to help identify our main camera
+struct MainCamera;
+
+fn setup(commands: &amp;mut Commands) {
+    let camera = Camera2dBundle::default();
+
+    commands.spawn(camera)
+        .with(MainCamera);
+}
+
+fn my_cursor_system(
+    // events to get cursor position
+    ev_cursor: Res&lt;Events&lt;CursorMoved&gt;&gt;,
+    mut evr_cursor: Local&lt;EventReader&lt;CursorMoved&gt;&gt;,
+    // need to get window dimensions
+    wnds: Res&lt;Windows&gt;,
+    // query to get camera transform
+    q_camera: Query&lt;&amp;Transform, With&lt;MainCamera&gt;&gt;
+) {
+    // assuming there is exactly one main camera entity, so this is OK
+    let camera_transform = q_camera.iter().next().unwrap();
+
+    for ev in evr_cursor.iter(&amp;ev_cursor) {
+        // get the size of the window that the event is for
+        let wnd = wnds.get(ev.id).unwrap();
+        let size = Vec2::new(wnd.width() as f32, wnd.height() as f32);
+
+        // the default orthographic projection is in pixels from the center;
+        // just undo the translation
+        let p = ev.position - size / 2.0;
+
+        // apply the camera transform
+        let pos_wld = camera_transform.compute_matrix() * p.extend(0.0).extend(1.0);
+        eprintln!(&quot;World coords: {}/{}&quot;, pos_wld.x, pos_wld.y);
+    }
+}
+</code></pre>
+<h1><a class="header" href="#custom-camera-projection" id="custom-camera-projection">Custom Camera Projection</a></h1>
+<p><a href="cookbook/../code_bevy_release/examples/custom-projection.rs">Click here for the full example code.</a></p>
+<hr />
+<p>Camera with a custom projection (not using one of bevy's standard perspective or orthographic projections).</p>
+<p>Here we implement a simple orthographic projection that maps <code>-1.0</code> to <code>1.0</code> to the vertical axis of the window,
+and respects the window's aspect ratio for the horizontal axis:</p>
+<pre><code class="language-rust no_run noplayground">use bevy::render::camera::{Camera, CameraProjection, DepthCalculation, VisibleEntities};
+
+struct SimpleOrthoProjection {
+    far: f32,
+    aspect: f32,
+}
+
+impl CameraProjection for SimpleOrthoProjection {
+    fn get_projection_matrix(&amp;self) -&gt; Mat4 {
+        Mat4::orthographic_rh(
+            -self.aspect, self.aspect, -1.0, 1.0, 0.0, self.far
+        )
+    }
+
+    // what to do on window resize
+    fn update(&amp;mut self, width: f32, height: f32) {
+        self.aspect = width / height;
+    }
+
+    fn depth_calculation(&amp;self) -&gt; DepthCalculation {
+        // for orthographic
+        DepthCalculation::ZDifference
+
+        // otherwise
+        //DepthCalculation::Distance
+    }
+}
+
+impl Default for SimpleOrthoProjection {
+    fn default() -&gt; Self {
+        Self { far: 1000.0, aspect: 1.0 }
+    }
+}
+
+fn setup(commands: &amp;mut Commands) {
+    // same components as bevy's Camera2dBundle,
+    // but with our custom projection
+
+    let projection = SimpleOrthoProjection::default();
+
+    // Need to set the camera name to one of the bevy-internal magic constants,
+    // depending on which camera we are implementing (2D, 3D, or UI).
+    // Bevy uses this name to find the camera and configure the rendering.
+    // Since this example is a 2d camera:
+
+    let cam_name = bevy::render::render_graph::base::camera::CAMERA_2D;
+
+    let mut camera = Camera::default();
+    camera.name = Some(cam_name.to_string());
+
+    commands.spawn((
+        // position the camera like bevy would do by default for 2D:
+        Transform::from_translation(Vec3::new(0.0, 0.0, projection.far - 0.1)),
+        GlobalTransform::default(),
+        VisibleEntities::default(),
+        camera,
+        projection,
+    ));
+}
+
+fn main() {
+    // need to add a bevy-internal camera system to update
+    // the projection on window resizing
+
+    use bevy::render::camera::camera_system;
+
+    App::build()
+        .add_plugins(DefaultPlugins)
+        .add_startup_system(setup.system())
+        .add_system_to_stage(
+            bevy::app::stage::POST_UPDATE,
+            camera_system::&lt;SimpleOrthoProjection&gt;.system(),
+        )
+        .run();
+}
+</code></pre>
+<h1><a class="header" href="#orphanage" id="orphanage">Orphanage</a></h1>
+<p>Collection of bevy code found out in the wild, which is not part of any project
+and has no maintainer.</p>
+<p>This code is not maintained. It probably does not compile on the latest bevy.</p>
+<p>It is kept here for archival and visibility.</p>
+<p>If you want to adopt and maintain any of this code, make a crate with it and
+make a PR to replace the outdated code here with a link to your new crate.</p>
+<h1><a class="header" href="#pan--orbit-camera" id="pan--orbit-camera">Pan + Orbit Camera</a></h1>
+<p>Provide an intuitive camera that pans with left click or scrollwheel, and orbits with right click.</p>
+<pre><code class="language-rust no_run noplayground">/// Tags an entity as capable of panning and orbiting.
+struct PanOrbitCamera {
+    /// The &quot;focus point&quot; to orbit around. It is automatically updated when panning the camera
+    pub focus: Vec3,
+}
+
+impl Default for PanOrbitCamera {
+    fn default() -&gt; Self {
+        PanOrbitCamera {
+            focus: Vec3::zero(),
+        }
+    }
+}
+
+/// Hold readers for events
+#[derive(Default)]
+struct InputState {
+    pub reader_motion: EventReader&lt;MouseMotion&gt;,
+    pub reader_scroll: EventReader&lt;MouseWheel&gt;,
+}
+
+/// Pan the camera with LHold or scrollwheel, orbit with rclick.
+fn pan_orbit_camera(
+    time: Res&lt;Time&gt;,
+    windows: Res&lt;Windows&gt;,
+    mut state: ResMut&lt;InputState&gt;,
+    ev_motion: Res&lt;Events&lt;MouseMotion&gt;&gt;,
+    mousebtn: Res&lt;Input&lt;MouseButton&gt;&gt;,
+    ev_scroll: Res&lt;Events&lt;MouseWheel&gt;&gt;,
+    mut query: Query&lt;(&amp;mut PanOrbitCamera, &amp;mut Transform)&gt;,
+) {
+    let mut translation = Vec2::zero();
+    let mut rotation_move = Vec2::default();
+    let mut scroll = 0.0;
+    let dt = time.delta_seconds;
+
+    if mousebtn.pressed(MouseButton::Right) {
+        for ev in state.reader_motion.iter(&amp;ev_motion) {
+            rotation_move += ev.delta;
+        }
+    } else if mousebtn.pressed(MouseButton::Left) {
+        // Pan only if we're not rotating at the moment
+        for ev in state.reader_motion.iter(&amp;ev_motion) {
+            translation += ev.delta;
+        }
+    }
+
+    for ev in state.reader_scroll.iter(&amp;ev_scroll) {
+        scroll += ev.y;
+    }
+
+    // Either pan+scroll or arcball. We don't do both at once.
+    for (mut camera, mut trans) in query.iter_mut() {
+        if rotation_move.length_squared() &gt; 0.0 {
+            let window = windows.get_primary().unwrap();
+            let window_w = window.width() as f32;
+            let window_h = window.height() as f32;
+
+            // Link virtual sphere rotation relative to window to make it feel nicer
+            let delta_x = rotation_move.x() / window_w * std::f32::consts::PI * 2.0;
+            let delta_y = rotation_move.y() / window_h * std::f32::consts::PI;
+
+            let delta_yaw = Quat::from_rotation_y(delta_x);
+            let delta_pitch = Quat::from_rotation_x(delta_y);
+
+            trans.translation =
+                delta_yaw * delta_pitch * (trans.translation - camera.focus) + camera.focus;
+
+            let look = Mat4::face_toward(trans.translation, camera.focus, Vec3::new(0.0, 1.0, 0.0));
+            trans.rotation = look.to_scale_rotation_translation().1;
+        } else {
+            // The plane is x/y while z is &quot;up&quot;. Multiplying by dt allows for a constant pan rate
+            let mut translation = Vec3::new(-translation.x() * dt, translation.y() * dt, 0.0);
+            camera.focus += translation;
+            *translation.z_mut() = -scroll;
+            trans.translation += translation;
+        }
+    }
+}
+
+// Spawn a camera like this:
+
+fn spawn_camera(mut commands: Commands) {
+    commands.spawn((PanOrbitCamera::default(),))
+        .with_bundle(Camera3dComponents {
+            ..Default::default()
+        });
+}
+</code></pre>
 <h1><a class="header" href="#contributing" id="contributing">Contributing</a></h1>
 <p>Any help with maintaining or improving the book is welcome! Contribute via <a href="https://github.com/bevy-cheatbook/bevy-cheatbook">GitHub</a>!</p>
 <p>Feel free to submit PRs for anything you consider useful. I will review them with you, so we can edit as needed to bring them to the style and quality desired for this book.</p>

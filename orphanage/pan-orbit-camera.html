@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Bevy Basics - Unofficial Bevy Cheat Book</title>
+        <title>Pan + Orbit Camera - Unofficial Bevy Cheat Book</title>
         
         
 
@@ -95,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="../cheatsheet/_index.html"><strong aria-hidden="true">1.</strong> Bevy Cheatsheet</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cheatsheet/release.html"><strong aria-hidden="true">1.1.</strong> for bevy 0.4</a></li><li class="chapter-item expanded "><a href="../cheatsheet/master.html"><strong aria-hidden="true">1.2.</strong> for bevy git</a></li></ol></li><li class="chapter-item expanded "><a href="../basics/_index.html" class="active"><strong aria-hidden="true">2.</strong> Bevy Basics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../basics/release.html"><strong aria-hidden="true">2.1.</strong> for bevy 0.4</a></li><li class="chapter-item expanded "><a href="../basics/master.html"><strong aria-hidden="true">2.2.</strong> for bevy git</a></li></ol></li><li class="chapter-item expanded "><a href="../patterns/_index.html"><strong aria-hidden="true">3.</strong> Advanced Patterns</a></li><li class="chapter-item expanded "><a href="../cookbook/_index.html"><strong aria-hidden="true">4.</strong> Bevy Cookbook</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cookbook/input-handling.html"><strong aria-hidden="true">4.1.</strong> Input Handling</a></li><li class="chapter-item expanded "><a href="../cookbook/quit.html"><strong aria-hidden="true">4.2.</strong> Quitting the App</a></li><li class="chapter-item expanded "><a href="../cookbook/clear-color.html"><strong aria-hidden="true">4.3.</strong> Changing the Background Color</a></li><li class="chapter-item expanded "><a href="../cookbook/print-framerate.html"><strong aria-hidden="true">4.4.</strong> Show Framerate in Console</a></li><li class="chapter-item expanded "><a href="../cookbook/mouse-grab.html"><strong aria-hidden="true">4.5.</strong> Grabbing the Mouse</a></li><li class="chapter-item expanded "><a href="../cookbook/cursor2world.html"><strong aria-hidden="true">4.6.</strong> Convert cursor to world coordinates</a></li><li class="chapter-item expanded "><a href="../cookbook/custom-projection.html"><strong aria-hidden="true">4.7.</strong> Custom Camera Projection</a></li></ol></li><li class="chapter-item expanded "><a href="../orphanage/_index.html"><strong aria-hidden="true">5.</strong> Orphanage</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../orphanage/pan-orbit-camera.html"><strong aria-hidden="true">5.1.</strong> Pan + Orbit Camera</a></li></ol></li><li class="chapter-item expanded "><a href="../contributing.html">Contributing</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="../cheatsheet/_index.html"><strong aria-hidden="true">1.</strong> Bevy Cheatsheet</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cheatsheet/release.html"><strong aria-hidden="true">1.1.</strong> for bevy 0.4</a></li><li class="chapter-item expanded "><a href="../cheatsheet/master.html"><strong aria-hidden="true">1.2.</strong> for bevy git</a></li></ol></li><li class="chapter-item expanded "><a href="../basics/_index.html"><strong aria-hidden="true">2.</strong> Bevy Basics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../basics/release.html"><strong aria-hidden="true">2.1.</strong> for bevy 0.4</a></li><li class="chapter-item expanded "><a href="../basics/master.html"><strong aria-hidden="true">2.2.</strong> for bevy git</a></li></ol></li><li class="chapter-item expanded "><a href="../patterns/_index.html"><strong aria-hidden="true">3.</strong> Advanced Patterns</a></li><li class="chapter-item expanded "><a href="../cookbook/_index.html"><strong aria-hidden="true">4.</strong> Bevy Cookbook</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cookbook/input-handling.html"><strong aria-hidden="true">4.1.</strong> Input Handling</a></li><li class="chapter-item expanded "><a href="../cookbook/quit.html"><strong aria-hidden="true">4.2.</strong> Quitting the App</a></li><li class="chapter-item expanded "><a href="../cookbook/clear-color.html"><strong aria-hidden="true">4.3.</strong> Changing the Background Color</a></li><li class="chapter-item expanded "><a href="../cookbook/print-framerate.html"><strong aria-hidden="true">4.4.</strong> Show Framerate in Console</a></li><li class="chapter-item expanded "><a href="../cookbook/mouse-grab.html"><strong aria-hidden="true">4.5.</strong> Grabbing the Mouse</a></li><li class="chapter-item expanded "><a href="../cookbook/cursor2world.html"><strong aria-hidden="true">4.6.</strong> Convert cursor to world coordinates</a></li><li class="chapter-item expanded "><a href="../cookbook/custom-projection.html"><strong aria-hidden="true">4.7.</strong> Custom Camera Projection</a></li></ol></li><li class="chapter-item expanded "><a href="../orphanage/_index.html"><strong aria-hidden="true">5.</strong> Orphanage</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../orphanage/pan-orbit-camera.html" class="active"><strong aria-hidden="true">5.1.</strong> Pan + Orbit Camera</a></li></ol></li><li class="chapter-item expanded "><a href="../contributing.html">Contributing</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -163,29 +163,110 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#bevy-basics" id="bevy-basics">Bevy Basics</a></h1>
-<p>One-page overview of common bevy features.</p>
-<p>Includes brief explanations and is structured in a logical order for learning.</p>
-<p>Intended for people new to bevy.</p>
-<p>If you are already familiar with the concepts, check out
-<a href="../cheatsheet/_index.html">Bevy Cheatsheet</a>
-for an even more concise listing of just the syntax + important usage notes.</p>
-<h2><a class="header" href="#versions" id="versions">Versions</a></h2>
-<p><a href="release.html">Click here for Bevy 0.4</a>.</p>
-<p><a href="master.html">Click here for Bevy git</a>.</p>
+                        <h1><a class="header" href="#pan--orbit-camera" id="pan--orbit-camera">Pan + Orbit Camera</a></h1>
+<p>Provide an intuitive camera that pans with left click or scrollwheel, and orbits with right click.</p>
+<pre><code class="language-rust no_run noplayground">/// Tags an entity as capable of panning and orbiting.
+struct PanOrbitCamera {
+    /// The &quot;focus point&quot; to orbit around. It is automatically updated when panning the camera
+    pub focus: Vec3,
+}
+
+impl Default for PanOrbitCamera {
+    fn default() -&gt; Self {
+        PanOrbitCamera {
+            focus: Vec3::zero(),
+        }
+    }
+}
+
+/// Hold readers for events
+#[derive(Default)]
+struct InputState {
+    pub reader_motion: EventReader&lt;MouseMotion&gt;,
+    pub reader_scroll: EventReader&lt;MouseWheel&gt;,
+}
+
+/// Pan the camera with LHold or scrollwheel, orbit with rclick.
+fn pan_orbit_camera(
+    time: Res&lt;Time&gt;,
+    windows: Res&lt;Windows&gt;,
+    mut state: ResMut&lt;InputState&gt;,
+    ev_motion: Res&lt;Events&lt;MouseMotion&gt;&gt;,
+    mousebtn: Res&lt;Input&lt;MouseButton&gt;&gt;,
+    ev_scroll: Res&lt;Events&lt;MouseWheel&gt;&gt;,
+    mut query: Query&lt;(&amp;mut PanOrbitCamera, &amp;mut Transform)&gt;,
+) {
+    let mut translation = Vec2::zero();
+    let mut rotation_move = Vec2::default();
+    let mut scroll = 0.0;
+    let dt = time.delta_seconds;
+
+    if mousebtn.pressed(MouseButton::Right) {
+        for ev in state.reader_motion.iter(&amp;ev_motion) {
+            rotation_move += ev.delta;
+        }
+    } else if mousebtn.pressed(MouseButton::Left) {
+        // Pan only if we're not rotating at the moment
+        for ev in state.reader_motion.iter(&amp;ev_motion) {
+            translation += ev.delta;
+        }
+    }
+
+    for ev in state.reader_scroll.iter(&amp;ev_scroll) {
+        scroll += ev.y;
+    }
+
+    // Either pan+scroll or arcball. We don't do both at once.
+    for (mut camera, mut trans) in query.iter_mut() {
+        if rotation_move.length_squared() &gt; 0.0 {
+            let window = windows.get_primary().unwrap();
+            let window_w = window.width() as f32;
+            let window_h = window.height() as f32;
+
+            // Link virtual sphere rotation relative to window to make it feel nicer
+            let delta_x = rotation_move.x() / window_w * std::f32::consts::PI * 2.0;
+            let delta_y = rotation_move.y() / window_h * std::f32::consts::PI;
+
+            let delta_yaw = Quat::from_rotation_y(delta_x);
+            let delta_pitch = Quat::from_rotation_x(delta_y);
+
+            trans.translation =
+                delta_yaw * delta_pitch * (trans.translation - camera.focus) + camera.focus;
+
+            let look = Mat4::face_toward(trans.translation, camera.focus, Vec3::new(0.0, 1.0, 0.0));
+            trans.rotation = look.to_scale_rotation_translation().1;
+        } else {
+            // The plane is x/y while z is &quot;up&quot;. Multiplying by dt allows for a constant pan rate
+            let mut translation = Vec3::new(-translation.x() * dt, translation.y() * dt, 0.0);
+            camera.focus += translation;
+            *translation.z_mut() = -scroll;
+            trans.translation += translation;
+        }
+    }
+}
+
+// Spawn a camera like this:
+
+fn spawn_camera(mut commands: Commands) {
+    commands.spawn((PanOrbitCamera::default(),))
+        .with_bundle(Camera3dComponents {
+            ..Default::default()
+        });
+}
+</code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="../cheatsheet/master.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../orphanage/_index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
                         
-                            <a rel="next" href="../basics/release.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../contributing.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -197,13 +278,13 @@ for an even more concise listing of just the syntax + important usage notes.</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a rel="prev" href="../cheatsheet/master.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../orphanage/_index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
                 
-                    <a rel="next" href="../basics/release.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../contributing.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 
