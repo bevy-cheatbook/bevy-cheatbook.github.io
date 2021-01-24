@@ -167,21 +167,7 @@
 <p>Bevy has a flexible system for loading and managing your game assets
 asynchronously (in the background, without causing lag spikes in your game).</p>
 <p>The data of your loaded assets is stored in an <code>Assets&lt;T&gt;</code> resource.</p>
-<p>To access a specific asset, you need a <code>Handle&lt;T&gt;</code> for it. Handles are just lightweight IDs for a specific asset.</p>
-<pre><code class="language-rust no_run noplayground">struct SpriteSheets {
-    map_tiles: Handle&lt;TextureAtlas&gt;,
-}
-
-fn check_sprites(
-    handles: Res&lt;SpriteSheets&gt;,
-    assets: Res&lt;Assets&lt;TextureAtlas&gt;&gt;,
-) {
-    // Could be `None` if the asset isn't loaded yet
-    if let Some(asset) = assets.get(&amp;handles.map_tiles) {
-        // do something with the texture atlas
-    }
-}
-</code></pre>
+<p>To access the asset data, you need a <code>Handle&lt;T&gt;</code>. Handles are just lightweight IDs for a specific asset.</p>
 <p>To load assets from files, use the <code>AssetServer</code> resource.</p>
 <pre><code class="language-rust no_run noplayground">struct UiFont(Handle&lt;Font&gt;);
 
@@ -196,9 +182,57 @@ fn load_ui_font(
     commands.insert_resource(UiFont(handle));
 }
 </code></pre>
+<p>This queues the asset loading to happen in the background. The asset will not be
+available immediately.</p>
+<p>Do this in a system that runs once, either at <a href="./app-builder.html">startup</a>
+or when <a href="./states.html">entering your game state</a>.</p>
 <p>You can also create assets using code and add them to <code>Assets&lt;T&gt;</code> manually.</p>
 <p>This is useful if you want to create them using code (such as for procedural
 generation), or if you have gotten the data in some other way.</p>
+<p>To access your assets from systems, use the <code>Handle&lt;T&gt;</code> and <code>Assets&lt;T&gt;</code> resource:</p>
+<pre><code class="language-rust no_run noplayground">struct SpriteSheets {
+    map_tiles: Handle&lt;TextureAtlas&gt;,
+}
+
+fn use_sprites(
+    handles: Res&lt;SpriteSheets&gt;,
+    assets: Res&lt;Assets&lt;TextureAtlas&gt;&gt;,
+) {
+    // Could be `None` if the asset isn't loaded yet
+    if let Some(asset) = assets.get(&amp;handles.map_tiles) {
+        // do something with the texture atlas
+    }
+}
+</code></pre>
+<h2><a class="header" href="#assetevent" id="assetevent">AssetEvent</a></h2>
+<p>If you need to perform specific actions when the asset has finished loading, is
+modified, or removed, you can react to <code>AssetEvent</code>s.</p>
+<pre><code class="language-rust no_run noplayground">struct MapTexture {
+    handle: Handle&lt;Texture&gt;,
+}
+
+fn fixup_textures(
+    ev_asset: Res&lt;Events&lt;AssetEvent&lt;Texture&gt;&gt;&gt;,
+    mut evr_asset: Local&lt;EventReader&lt;AssetEvent&lt;Texture&gt;&gt;&gt;,
+    mut assets: ResMut&lt;Assets&lt;Texture&gt;&gt;,
+    map_tex: Res&lt;MapTexture&gt;,
+) {
+    for ev in evr_asset.iter(&amp;ev_asset) {
+        if let AssetEvent::Created { handle } = ev {
+            // a texture was just loaded!
+
+            let texture = assets.get_mut(handle).unwrap();
+            // ^ unwrap is OK, because we know it is loaded now
+
+            if *handle == map_tex.handle {
+                // it is our special map texture!
+            } else {
+                // it is some other texture
+            }
+        }
+    }
+}
+</code></pre>
 <h2><a class="header" href="#handles" id="handles">Handles</a></h2>
 <p>Handles have built-in reference counting (similar to <code>Rc</code>/<code>Arc</code> in Rust).</p>
 <p>Therefore, you need to <code>.clone()</code> them to create multiple handles to the same
