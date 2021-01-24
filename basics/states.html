@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Custom Camera Projection - Unofficial Bevy Cheat Book</title>
+        <title>States - Unofficial Bevy Cheat Book</title>
         
         
 
@@ -95,7 +95,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="../cheatsheet/_index.html"><strong aria-hidden="true">1.</strong> Bevy Cheatsheet</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cheatsheet/release.html"><strong aria-hidden="true">1.1.</strong> for bevy 0.4</a></li><li class="chapter-item expanded "><a href="../cheatsheet/master.html"><strong aria-hidden="true">1.2.</strong> for bevy git</a></li></ol></li><li class="chapter-item expanded "><a href="../basics/_index.html"><strong aria-hidden="true">2.</strong> Bevy Basics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../basics/ec.html"><strong aria-hidden="true">2.1.</strong> Entities and Components</a></li><li class="chapter-item expanded "><a href="../basics/res.html"><strong aria-hidden="true">2.2.</strong> Resources</a></li><li class="chapter-item expanded "><a href="../basics/systems.html"><strong aria-hidden="true">2.3.</strong> Systems</a></li><li class="chapter-item expanded "><a href="../basics/queries.html"><strong aria-hidden="true">2.4.</strong> Queries</a></li><li class="chapter-item expanded "><a href="../basics/commands.html"><strong aria-hidden="true">2.5.</strong> Commands</a></li><li class="chapter-item expanded "><a href="../basics/local.html"><strong aria-hidden="true">2.6.</strong> Local Resources</a></li><li class="chapter-item expanded "><a href="../basics/events.html"><strong aria-hidden="true">2.7.</strong> Events</a></li><li class="chapter-item expanded "><a href="../basics/app-builder.html"><strong aria-hidden="true">2.8.</strong> App Builder (main function)</a></li><li class="chapter-item expanded "><a href="../basics/stages.html"><strong aria-hidden="true">2.9.</strong> Stages</a></li><li class="chapter-item expanded "><a href="../basics/states.html"><strong aria-hidden="true">2.10.</strong> States</a></li><li class="chapter-item expanded "><a href="../basics/plugins.html"><strong aria-hidden="true">2.11.</strong> Plugins</a></li><li class="chapter-item expanded "><a href="../basics/assets.html"><strong aria-hidden="true">2.12.</strong> Assets</a></li><li class="chapter-item expanded "><a href="../basics/parent-child.html"><strong aria-hidden="true">2.13.</strong> Hierarchical Entities</a></li></ol></li><li class="chapter-item expanded "><a href="../patterns/_index.html"><strong aria-hidden="true">3.</strong> Advanced Patterns</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../patterns/event-broadcast.html"><strong aria-hidden="true">3.1.</strong> Event Broadcast</a></li><li class="chapter-item expanded "><a href="../patterns/generic-systems.html"><strong aria-hidden="true">3.2.</strong> Generic Systems</a></li></ol></li><li class="chapter-item expanded "><a href="../cookbook/_index.html"><strong aria-hidden="true">4.</strong> Bevy Cookbook</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cookbook/input-handling.html"><strong aria-hidden="true">4.1.</strong> Input Handling</a></li><li class="chapter-item expanded "><a href="../cookbook/quit.html"><strong aria-hidden="true">4.2.</strong> Quitting the App</a></li><li class="chapter-item expanded "><a href="../cookbook/clear-color.html"><strong aria-hidden="true">4.3.</strong> Changing the Background Color</a></li><li class="chapter-item expanded "><a href="../cookbook/print-framerate.html"><strong aria-hidden="true">4.4.</strong> Show Framerate in Console</a></li><li class="chapter-item expanded "><a href="../cookbook/mouse-grab.html"><strong aria-hidden="true">4.5.</strong> Grabbing the Mouse</a></li><li class="chapter-item expanded "><a href="../cookbook/cursor2world.html"><strong aria-hidden="true">4.6.</strong> Convert cursor to world coordinates</a></li><li class="chapter-item expanded "><a href="../cookbook/custom-projection.html" class="active"><strong aria-hidden="true">4.7.</strong> Custom Camera Projection</a></li></ol></li><li class="chapter-item expanded "><a href="../orphanage/_index.html"><strong aria-hidden="true">5.</strong> Orphanage</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../orphanage/pan-orbit-camera.html"><strong aria-hidden="true">5.1.</strong> Pan + Orbit Camera</a></li></ol></li><li class="chapter-item expanded "><a href="../contributing.html">Contributing</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="../cheatsheet/_index.html"><strong aria-hidden="true">1.</strong> Bevy Cheatsheet</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cheatsheet/release.html"><strong aria-hidden="true">1.1.</strong> for bevy 0.4</a></li><li class="chapter-item expanded "><a href="../cheatsheet/master.html"><strong aria-hidden="true">1.2.</strong> for bevy git</a></li></ol></li><li class="chapter-item expanded "><a href="../basics/_index.html"><strong aria-hidden="true">2.</strong> Bevy Basics</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../basics/ec.html"><strong aria-hidden="true">2.1.</strong> Entities and Components</a></li><li class="chapter-item expanded "><a href="../basics/res.html"><strong aria-hidden="true">2.2.</strong> Resources</a></li><li class="chapter-item expanded "><a href="../basics/systems.html"><strong aria-hidden="true">2.3.</strong> Systems</a></li><li class="chapter-item expanded "><a href="../basics/queries.html"><strong aria-hidden="true">2.4.</strong> Queries</a></li><li class="chapter-item expanded "><a href="../basics/commands.html"><strong aria-hidden="true">2.5.</strong> Commands</a></li><li class="chapter-item expanded "><a href="../basics/local.html"><strong aria-hidden="true">2.6.</strong> Local Resources</a></li><li class="chapter-item expanded "><a href="../basics/events.html"><strong aria-hidden="true">2.7.</strong> Events</a></li><li class="chapter-item expanded "><a href="../basics/app-builder.html"><strong aria-hidden="true">2.8.</strong> App Builder (main function)</a></li><li class="chapter-item expanded "><a href="../basics/stages.html"><strong aria-hidden="true">2.9.</strong> Stages</a></li><li class="chapter-item expanded "><a href="../basics/states.html" class="active"><strong aria-hidden="true">2.10.</strong> States</a></li><li class="chapter-item expanded "><a href="../basics/plugins.html"><strong aria-hidden="true">2.11.</strong> Plugins</a></li><li class="chapter-item expanded "><a href="../basics/assets.html"><strong aria-hidden="true">2.12.</strong> Assets</a></li><li class="chapter-item expanded "><a href="../basics/parent-child.html"><strong aria-hidden="true">2.13.</strong> Hierarchical Entities</a></li></ol></li><li class="chapter-item expanded "><a href="../patterns/_index.html"><strong aria-hidden="true">3.</strong> Advanced Patterns</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../patterns/event-broadcast.html"><strong aria-hidden="true">3.1.</strong> Event Broadcast</a></li><li class="chapter-item expanded "><a href="../patterns/generic-systems.html"><strong aria-hidden="true">3.2.</strong> Generic Systems</a></li></ol></li><li class="chapter-item expanded "><a href="../cookbook/_index.html"><strong aria-hidden="true">4.</strong> Bevy Cookbook</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cookbook/input-handling.html"><strong aria-hidden="true">4.1.</strong> Input Handling</a></li><li class="chapter-item expanded "><a href="../cookbook/quit.html"><strong aria-hidden="true">4.2.</strong> Quitting the App</a></li><li class="chapter-item expanded "><a href="../cookbook/clear-color.html"><strong aria-hidden="true">4.3.</strong> Changing the Background Color</a></li><li class="chapter-item expanded "><a href="../cookbook/print-framerate.html"><strong aria-hidden="true">4.4.</strong> Show Framerate in Console</a></li><li class="chapter-item expanded "><a href="../cookbook/mouse-grab.html"><strong aria-hidden="true">4.5.</strong> Grabbing the Mouse</a></li><li class="chapter-item expanded "><a href="../cookbook/cursor2world.html"><strong aria-hidden="true">4.6.</strong> Convert cursor to world coordinates</a></li><li class="chapter-item expanded "><a href="../cookbook/custom-projection.html"><strong aria-hidden="true">4.7.</strong> Custom Camera Projection</a></li></ol></li><li class="chapter-item expanded "><a href="../orphanage/_index.html"><strong aria-hidden="true">5.</strong> Orphanage</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../orphanage/pan-orbit-camera.html"><strong aria-hidden="true">5.1.</strong> Pan + Orbit Camera</a></li></ol></li><li class="chapter-item expanded "><a href="../contributing.html">Contributing</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -163,85 +163,53 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#custom-camera-projection" id="custom-camera-projection">Custom Camera Projection</a></h1>
-<p><a href="../code_bevy_release/examples/custom-projection.rs">Click here for the full example code.</a></p>
-<hr />
-<p>Camera with a custom projection (not using one of bevy's standard perspective or orthographic projections).</p>
-<p>Here we implement a simple orthographic projection that maps <code>-1.0</code> to <code>1.0</code> to the vertical axis of the window,
-and respects the window's aspect ratio for the horizontal axis:</p>
-<pre><code class="language-rust no_run noplayground">use bevy::render::camera::{Camera, CameraProjection, DepthCalculation, VisibleEntities};
-
-struct SimpleOrthoProjection {
-    far: f32,
-    aspect: f32,
-}
-
-impl CameraProjection for SimpleOrthoProjection {
-    fn get_projection_matrix(&amp;self) -&gt; Mat4 {
-        Mat4::orthographic_rh(
-            -self.aspect, self.aspect, -1.0, 1.0, 0.0, self.far
-        )
-    }
-
-    // what to do on window resize
-    fn update(&amp;mut self, width: f32, height: f32) {
-        self.aspect = width / height;
-    }
-
-    fn depth_calculation(&amp;self) -&gt; DepthCalculation {
-        // for orthographic
-        DepthCalculation::ZDifference
-
-        // otherwise
-        //DepthCalculation::Distance
-    }
-}
-
-impl Default for SimpleOrthoProjection {
-    fn default() -&gt; Self {
-        Self { far: 1000.0, aspect: 1.0 }
-    }
-}
-
-fn setup(commands: &amp;mut Commands) {
-    // same components as bevy's Camera2dBundle,
-    // but with our custom projection
-
-    let projection = SimpleOrthoProjection::default();
-
-    // Need to set the camera name to one of the bevy-internal magic constants,
-    // depending on which camera we are implementing (2D, 3D, or UI).
-    // Bevy uses this name to find the camera and configure the rendering.
-    // Since this example is a 2d camera:
-
-    let cam_name = bevy::render::render_graph::base::camera::CAMERA_2D;
-
-    let mut camera = Camera::default();
-    camera.name = Some(cam_name.to_string());
-
-    commands.spawn((
-        // position the camera like bevy would do by default for 2D:
-        Transform::from_translation(Vec3::new(0.0, 0.0, projection.far - 0.1)),
-        GlobalTransform::default(),
-        VisibleEntities::default(),
-        camera,
-        projection,
-    ));
+                        <h1><a class="header" href="#states" id="states">States</a></h1>
+<p>States allow you to structure the runtime &quot;flow&quot; of your app.</p>
+<p>You can have different systems running, depending on the state.</p>
+<p>You can add systems that only run when transitioning between states.</p>
+<p>States are built using stages.</p>
+<pre><code class="language-rust no_run noplayground">#[derive(Debug, Clone)]
+enum AppState {
+    MainMenu,
+    InGame,
+    Credits,
 }
 
 fn main() {
-    // need to add a bevy-internal camera system to update
-    // the projection on window resizing
-
-    use bevy::render::camera::camera_system;
+    // label for our state stage
+    static STATE: &amp;str = &quot;state&quot;;
 
     App::build()
         .add_plugins(DefaultPlugins)
-        .add_startup_system(setup.system())
-        .add_system_to_stage(
-            bevy::app::stage::POST_UPDATE,
-            camera_system::&lt;SimpleOrthoProjection&gt;.system(),
+
+        // add the app state resource; start in menu
+        .add_resource(State::new(AppState::MainMenu))
+
+        // add stage for the state-specific systems
+        // make it run before the main updates
+        .add_stage_before(
+            stage::UPDATE, STATE,
+            StateStage::&lt;AppState&gt;::default()
         )
+
+        // state-independent systems go in `UPDATE`, as normal
+        .add_system(maintain_all_uis.system())
+
+        // add systems to specific states and transitions
+
+        .on_state_enter(STATE, AppState::MainMenu, spawn_main_menu.system())
+        .on_state_update(STATE, AppState::MainMenu, menu_buttons.system())
+        .on_state_exit(STATE, AppState::MainMenu, close_menu.system())
+
+        .on_state_update(STATE, AppState::Credits, roll_credits.system())
+        .on_state_exit(STATE, AppState::Credits, quit_app.system())
+
+        .on_state_enter(STATE, AppState::InGame, load_map.system())
+        .on_state_update(STATE, AppState::InGame, player_move.system())
+        .on_state_update(STATE, AppState::InGame, player_take_damage.system())
+        .on_state_update(STATE, AppState::InGame, enemy_ai.system())
+        .on_state_exit(STATE, AppState::InGame, unload_level.system())
+
         .run();
 }
 </code></pre>
@@ -251,13 +219,13 @@ fn main() {
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="../cookbook/cursor2world.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../basics/stages.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
                         
-                            <a rel="next" href="../orphanage/_index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../basics/plugins.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -269,13 +237,13 @@ fn main() {
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a rel="prev" href="../cookbook/cursor2world.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../basics/stages.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
                 
-                    <a rel="next" href="../orphanage/_index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../basics/plugins.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 
