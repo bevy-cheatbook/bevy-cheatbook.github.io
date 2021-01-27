@@ -176,7 +176,7 @@
 }
 </code></pre>
 <p>Types must be unique -- an entity can only have one of each type.</p>
-<p>Use newtype structs to make unique components out of simpler types:</p>
+<p>Use wrapper (newtype) structs to make unique components out of simpler types:</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Debug)]
 struct PlayerXp(u32);
 

@@ -187,16 +187,14 @@
     // get the entity id of the last spawned entity
     let entity = commands.current_entity().unwrap();
     // ^ unwrap is OK, `None` only returned if you haven't spawned first
-}
 
-fn close_menu(
-    commands: &amp;mut Commands,
-    query: Query&lt;Entity, With&lt;MainMenuUI&gt;&gt;,
-) {
-    for entity in query.iter() {
-        // despawn the entity and its children
-        commands.despawn_recursive(entity);
-    }
+    // spawn another entity
+    // NOTE: tuples of arbitrary components are valid bundles
+    commands.spawn((
+        ComponentA::default(),
+        ComponentB::default(),
+        ComponentC::default(),
+    ));
 }
 
 fn make_all_players_hostile(

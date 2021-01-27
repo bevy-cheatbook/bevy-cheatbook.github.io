@@ -164,14 +164,89 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#pan--orbit-camera" id="pan--orbit-camera">Pan + Orbit Camera</a></h1>
-<p><a href="../code_bevy_release/examples/clear-color.rs">Click here for the full example code.</a></p>
+<p><a href="../code_bevy_release/examples/pan-orbit-camera.rs">Click here for the full example code.</a></p>
 <hr />
 <p>This code is a community contribution. Thank you, @skairunner !</p>
 <hr />
 <p>Camera that pans with left click or scrollwheel, and orbits with right click.</p>
 <p>Note: The behavior is somewhat broken.
 If you can improve it, please <a href="https://github.com/bevy-cheatbook/bevy-cheatbook">submit a PR on Github</a>!</p>
-<pre><code class="language-rust no_run noplayground">{{#include ../code_bevy_release/examples/pan-orbit-camera.rs:example}}
+<pre><code class="language-rust no_run noplayground">/// Component for panning and orbiting
+#[derive(Default)]
+struct PanOrbitCamera {
+    /// The &quot;focus point&quot; to orbit around. It is automatically updated when panning the camera
+    pub focus: Vec3,
+}
+
+/// Pan the camera with LHold or scrollwheel, orbit with rclick.
+fn pan_orbit_camera(
+    time: Res&lt;Time&gt;,
+    windows: Res&lt;Windows&gt;,
+    mousebtn: Res&lt;Input&lt;MouseButton&gt;&gt;,
+    ev_motion: Res&lt;Events&lt;MouseMotion&gt;&gt;,
+    ev_scroll: Res&lt;Events&lt;MouseWheel&gt;&gt;,
+    mut reader_motion: Local&lt;EventReader&lt;MouseMotion&gt;&gt;,
+    mut reader_scroll: Local&lt;EventReader&lt;MouseWheel&gt;&gt;,
+    mut query: Query&lt;(&amp;mut PanOrbitCamera, &amp;mut Transform)&gt;,
+) {
+    let mut translation = Vec2::zero();
+    let mut rotation_move = Vec2::default();
+    let mut scroll = 0.0;
+    let dt = time.delta_seconds();
+
+    if mousebtn.pressed(MouseButton::Right) {
+        for ev in reader_motion.iter(&amp;ev_motion) {
+            rotation_move += ev.delta;
+        }
+    } else if mousebtn.pressed(MouseButton::Left) {
+        // Pan only if we're not rotating at the moment
+        for ev in reader_motion.iter(&amp;ev_motion) {
+            translation += ev.delta;
+        }
+    }
+
+    for ev in reader_scroll.iter(&amp;ev_scroll) {
+        scroll += ev.y;
+    }
+
+    // Either pan+scroll or arcball. We don't do both at once.
+    for (mut camera, mut trans) in query.iter_mut() {
+        if rotation_move.length_squared() &gt; 0.0 {
+            let window = windows.get_primary().unwrap();
+            let window_w = window.width() as f32;
+            let window_h = window.height() as f32;
+
+            // Link virtual sphere rotation relative to window to make it feel nicer
+            let delta_x = rotation_move.x / window_w * std::f32::consts::PI * 2.0;
+            let delta_y = rotation_move.y / window_h * std::f32::consts::PI;
+
+            let delta_yaw = Quat::from_rotation_y(delta_x);
+            let delta_pitch = Quat::from_rotation_x(delta_y);
+
+            trans.translation =
+                delta_yaw * delta_pitch * (trans.translation - camera.focus) + camera.focus;
+
+            let look = Mat4::face_toward(
+                trans.translation,
+                camera.focus,
+                Vec3::new(0.0, 1.0, 0.0)
+            );
+            trans.rotation = look.to_scale_rotation_translation().1;
+        } else {
+            // The plane is x/y while z is &quot;up&quot;. Multiplying by dt gives constant rate
+            let mut translation = Vec3::new(-translation.x * dt, translation.y * dt, 0.0);
+            camera.focus += translation;
+            translation.z = -scroll;
+            trans.translation += translation;
+        }
+    }
+}
+
+/// Spawn a camera like this.
+fn spawn_camera(commands: &amp;mut Commands) {
+    commands.spawn(Camera3dBundle::default())
+        .with(PanOrbitCamera::default());
+}
 </code></pre>
 
                     </main>

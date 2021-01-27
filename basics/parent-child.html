@@ -179,6 +179,17 @@ commands.spawn(MyBundle::default())
 </code></pre>
 <p>Bevy has an internal mechanism to ensure the <code>Parent</code> component of the child entity
 and the <code>Children</code> component of the parent entity are kept in sync.</p>
+<p>You can despawn an entire hierarchy with a single command:</p>
+<pre><code class="language-rust no_run noplayground">fn close_menu(
+    commands: &amp;mut Commands,
+    query: Query&lt;Entity, With&lt;MainMenuUI&gt;&gt;,
+) {
+    for entity in query.iter() {
+        // despawn the entity and its children
+        commands.despawn_recursive(entity);
+    }
+}
+</code></pre>
 <h2><a class="header" href="#relative-transforms" id="relative-transforms">Relative Transforms</a></h2>
 <p>To use transforms with hierarchical entities, both the parent and the child must have a <code>GlobalTransform</code> and a <code>Transform</code>.</p>
 <p>The <code>GlobalTransform</code> is managed by bevy internally; do not mutate it yourself.</p>

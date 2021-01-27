@@ -183,7 +183,7 @@ for additional resources to help you on your bevy journey!</p>
 <h2><a class="header" href="#maintenance" id="maintenance">Maintenance</a></h2>
 <p>This version of the book is for Bevy release 0.4.</p>
 <p>The cheatsheet also has a version for bevy git. An attempt is made to keep it reasonably up-to-date.</p>
-<p>The book is maintained on a best-effort basis. Help with maintaining and improving the book is welcome!</p>
+<h2><a class="header" href="#contributions-welcome" id="contributions-welcome">Contributions Welcome!</a></h2>
 <p>Development of the book happens on <a href="https://github.com/bevy-cheatbook/bevy-cheatbook">GitHub</a>.</p>
 <p>See the <a href="./contributing.html">Contributing</a> section for advice!</p>
 <h1><a class="header" href="#bevy-cheatsheet" id="bevy-cheatsheet">Bevy Cheatsheet</a></h1>
@@ -204,8 +204,334 @@ for brief explanations of each feature.</p>
 <a href="cheatsheet/../cheatsheet/_index.html">Bevy Basics</a>
 for brief explanations of each feature.</p>
 <hr />
-<h2><a class="header" href="#work-in-progress-coming-soon" id="work-in-progress-coming-soon">WORK IN PROGRESS; COMING SOON!</a></h2>
-<h1><a class="header" href="#bevy-cheatsheet-for-bevy-git" id="bevy-cheatsheet-for-bevy-git">Bevy Cheatsheet (for bevy git)</a></h1>
+<p>Click on &quot;[explain]&quot; links to go to the relevant <a href="cheatsheet/../basics/_index.html">Bevy Basics</a> page!</p>
+<hr />
+<h2><a class="header" href="#systems" id="systems">Systems</a></h2>
+<p>[<a href="cheatsheet/../basics/systems.html">explain</a>]</p>
+<h2><a class="header" href="#entities-and-components" id="entities-and-components">Entities and Components</a></h2>
+<p>[<a href="cheatsheet/../basics/ec.html">explain</a>]</p>
+<p>Any Rust type (<code>struct</code> or <code>enum</code>) can be used as a component.</p>
+<p>Type must be unique; only one instance per type per entity can exist. Use newtypes.</p>
+<p>See <a href="cheatsheet/release.html#commands"><code>Commands</code></a> for how to add components to entities and spawn entities.</p>
+<p>Component bundles:</p>
+<pre><code class="language-rust no_run noplayground">#[derive(Bundle)]
+struct AbBundle {
+    a: ComponentA,
+    b: ComponentB,
+}
+</code></pre>
+<h2><a class="header" href="#resources" id="resources">Resources</a></h2>
+<p>[<a href="cheatsheet/../basics/res.html">explain</a>]</p>
+<p>Any Rust type (<code>struct</code> or <code>enum</code>) can be used as a resource.</p>
+<p>Type must be unique; only one instance per type can exist. Use newtypes.</p>
+<p>Access from system:</p>
+<pre><code class="language-rust no_run noplayground">fn my_system(a: Res&lt;MyResourceA&gt;, mut b: ResMut&lt;MyResourceB&gt;) {
+    // do something with `a` and `b`
+}
+</code></pre>
+<p>Add when <a href="cheatsheet/release.html#app-builder-main-function">building the app</a>:</p>
+<pre><code class="language-rust no_run noplayground">    fn main() {
+        App::build()
+            // specific resource value
+            .add_resource(MyResource::new())
+            // auto-init using `Default` or `FromResources`
+            .init_resource::&lt;MyAutoResource&gt;()
+            .run();
+    }
+</code></pre>
+<p>Add (or replace existing) using <a href="cheatsheet/release.html#commands"><code>Commands</code></a>:</p>
+<pre><code class="language-rust no_run noplayground">    commands.insert_resource(MyData::default());
+</code></pre>
+<p>For complex resource initialization, implement <code>FromResources</code>:</p>
+<pre><code class="language-rust no_run noplayground">impl FromResources for MyFancyResource {
+    fn from_resources(resources: &amp;Resources) -&gt; Self {
+        // you have full access to any other resources you need here,
+        // you can even mutate them:
+        let mut x = resources.get_mut::&lt;MyOtherResource&gt;().unwrap();
+        x.do_mut_stuff();
+
+        MyFancyResource { /* stuff */ }
+    }
+}
+</code></pre>
+<h2><a class="header" href="#queries" id="queries">Queries</a></h2>
+<p>[<a href="cheatsheet/../basics/queries.html">explain</a>]</p>
+<pre><code class="language-rust no_run noplayground">fn my_system(mut query: Query&lt;(Entity, &amp;ComponentA, &amp;mut ComponentB)&gt;) {
+    // operate on all matching entities
+    for (entity, a, mut b) in query.iter_mut() {
+        // do something with `a` and `b`; `entity` is the Entity id
+    }
+}
+</code></pre>
+<p>To operate on a specific entity:</p>
+<pre><code class="language-rust no_run noplayground">    if let Ok((a, mut b)) = query.get_mut(entity) {
+        // do something with `a` and `b`
+    } else {
+        // entity does not match the query
+    }
+</code></pre>
+<p>Add query filters:</p>
+<pre><code class="language-rust no_run noplayground">fn with_filter(query: Query&lt;&amp;MyData, (Without&lt;ComponentA&gt;, Or&lt;(With&lt;Foo&gt;, With&lt;Bar&gt;)&gt;)&gt;) {
+    // only get `data` for entities that match the filter criteria
+    for data in query.iter() {
+        // use data
+    }
+}
+</code></pre>
+<p>Change detection filters:</p>
+<ul>
+<li><code>Added&lt;T&gt;</code>: detect adding new components to existing entities</li>
+<li><code>Mutated&lt;T&gt;</code>: detect mutation of existing components</li>
+<li><code>Changed&lt;T&gt;</code>: detect any change (added or mutated)</li>
+</ul>
+<pre><code class="language-rust no_run noplayground">fn with_change_detection(query: Query&lt;&amp;MyData, Changed&lt;MyData&gt;&gt;) {
+    // only get `data` if it changed
+    for data in query.iter() {
+        // use data
+    }
+}
+</code></pre>
+<p>Query sets (to resolve component access conflicts):</p>
+<pre><code class="language-rust no_run noplayground">fn conflicting_queries(
+    mut set: QuerySet&lt;(
+        // these queries cannot be used at the same time, due to mutability conflict
+        Query&lt;&amp;mut MyData, With&lt;ComponentA&gt;&gt;,
+        Query&lt;&amp;mut MyData, With&lt;ComponentB&gt;&gt;,
+    )&gt;,
+) {
+    for data in set.q0_mut().iter_mut() {
+        // access `data` of entities that match the first query
+    }
+    for data in set.q1_mut().iter_mut() {
+        // access `data` of entities that match the second query
+    }
+}
+</code></pre>
+<h2><a class="header" href="#commands" id="commands">Commands</a></h2>
+<p>[<a href="cheatsheet/../basics/commands.html">explain</a>]</p>
+<pre><code class="language-rust no_run noplayground">fn manage_entities_components_resources(commands: &amp;mut Commands) {
+    // build and spawn an entity
+    let entity = commands.spawn(MyBundle::default())
+        .with(ExtraComponent)
+        .with_bundle(ExtraBundle::default())
+        // get the entity id
+        .current_entity().unwrap();
+
+    // despawn a single entity
+    commands.despawn(entity);
+
+    // replaces any existing resource of this type
+    commands.insert_resource(MyData::default());
+
+    // add components to existing entity
+    commands.insert_one(entity, MyComponent);
+    commands.insert(entity, MyBundle::default());
+
+    // remove
+    commands.remove_one::&lt;MyComponent&gt;(entity);
+    commands.remove::&lt;MyBundle&gt;(entity);
+}
+</code></pre>
+<p>These actions are applied at the end of the stage.</p>
+<h2><a class="header" href="#local-per-system-resources" id="local-per-system-resources">Local (per-system) Resources</a></h2>
+<p>[<a href="cheatsheet/../basics/local.html">explain</a>]</p>
+<pre><code class="language-rust no_run noplayground">fn with_local(local: Local&lt;MyData&gt;) {
+    // `local` is an instance of `MyData` uniquely for this system
+}
+</code></pre>
+<p>The type must implement <code>Default</code> or <code>FromResources</code>. It is automatically initialized.</p>
+<h2><a class="header" href="#events" id="events">Events</a></h2>
+<p>[<a href="cheatsheet/../basics/events.html">explain</a>]</p>
+<pre><code class="language-rust no_run noplayground">struct MyEvent;
+
+fn sender(mut events: ResMut&lt;Events&lt;MyEvent&gt;&gt;) {
+    events.send(MyEvent);
+}
+
+fn receiver(
+    events: Res&lt;Events&lt;MyEvent&gt;&gt;,
+    mut reader: Local&lt;EventReader&lt;MyEvent&gt;&gt;,
+) {
+    for event in reader.iter(&amp;events) {
+        // handle event
+    }
+}
+
+fn main() {
+    App::build()
+        .add_plugins(MinimalPlugins)
+        .add_event::&lt;MyEvent&gt;()
+        // ...
+        .run();
+}
+</code></pre>
+<p>Events don't persist. If you don't handle them every frame, they will be lost.</p>
+<h2><a class="header" href="#entity-hierarchies-parentchild" id="entity-hierarchies-parentchild">Entity Hierarchies (Parent/Child)</a></h2>
+<p>[<a href="cheatsheet/../basics/parent-child.html">explain</a>]</p>
+<pre><code class="language-rust no_run noplayground">fn spawn_nested(commands: &amp;mut Commands) {
+    let parent = commands.spawn(MyParentBundle::default())
+        .with_children(|parent| {
+            parent.spawn(MyChildBundle::default());
+        }).current_entity().unwrap();
+
+    // despawn a parent and all its children
+    commands.despawn_recursive(parent);
+}
+</code></pre>
+<p>Reparent an existing entity:</p>
+<pre><code class="language-rust no_run noplayground">    commands.insert_one(child, Parent(parent));
+</code></pre>
+<p>If you are using <code>Transform</code>s, ensure both the parent and the child also have a <code>GlobalTransform</code>.</p>
+<p>Child <code>Transform</code> is relative to the parent. <code>GlobalTransform</code> is internally managed by bevy.</p>
+<h2><a class="header" href="#system-chaining" id="system-chaining">System Chaining</a></h2>
+<p>[<a href="cheatsheet/../basics/system-chaining.html">explain</a>]</p>
+<pre><code class="language-rust no_run noplayground">fn output_system(/* system params */) -&gt; MyData {
+    MyData::default()
+}
+
+fn input_system(In(data): In&lt;MyData&gt;) {
+    // use `data`
+}
+
+fn main() {
+    App::build()
+        .add_system(output_system.system().chain(input_system.system()))
+        .run();
+}
+</code></pre>
+<h2><a class="header" href="#app-builder-main-function" id="app-builder-main-function">App Builder (main function)</a></h2>
+<p>[<a href="cheatsheet/../basics/app-builder.html">explain</a>, <a href="cheatsheet/../basics/stages.html">stages</a>, <a href="cheatsheet/../basics/plugins.html">plugins</a>]</p>
+<p>App builder:</p>
+<pre><code class="language-rust no_run noplayground">fn main() {
+    // labels for custom stages:
+    static DEBUG: &amp;str = &quot;debug&quot;;
+    static MY_START: &amp;str = &quot;my_start&quot;;
+
+    App::build()
+        // bevy
+        .add_plugins(DefaultPlugins)
+        // custom plugin
+        .add_plugin(MyPlugin::default())
+        // specific resource value
+        .add_resource(MyResource::new())
+        // auto-init using `Default` or `FromResources`
+        .init_resource::&lt;MyAutoResource&gt;()
+        // add a custom event type:
+        .add_event::&lt;MyEvent&gt;()
+        // run once at startup:
+        .add_startup_system(setup.system())
+        // run each frame (in `UPDATE` stage):
+        .add_system(game_update.system())
+        // add custom stage:
+        .add_stage_before(stage::UPDATE, MY_START, SystemStage::parallel())
+        // serial stage (parallel system execution disabled)
+        .add_stage_after(stage::UPDATE, DEBUG, SystemStage::serial())
+        // run system in specific stage:
+        .add_system_to_stage(DEBUG, debug_system.system())
+        // enter the bevy runtime
+        .run();
+
+}
+</code></pre>
+<p>Custom plugin:</p>
+<pre><code class="language-rust no_run noplayground">struct MyPlugin;
+
+impl Plugin for MyPlugin {
+    fn build(&amp;self, app: &amp;mut AppBuilder) {
+        // use `app` builder
+    }
+}
+</code></pre>
+<h2><a class="header" href="#states" id="states">States</a></h2>
+<p>[<a href="cheatsheet/../basics/states.html">explain</a>]</p>
+<p>App builder with States:</p>
+<pre><code class="language-rust no_run noplayground">#[derive(Debug, Clone, PartialEq, Eq)]
+enum MyState {
+    MainMenu,
+    InGame,
+}
+
+fn main() {
+    // label for the state stage
+    static STATE: &amp;str = &quot;state&quot;;
+
+    App::build()
+        // add the app state resource with initial state
+        .add_resource(State::new(MyState::MainMenu))
+        // add the state stage
+        .add_stage_before(
+            stage::UPDATE, STATE,
+            StateStage::&lt;MyState&gt;::default()
+        )
+        // this one goes in `UPDATE` as normal
+        .add_system(state_independent.system())
+        // add systems to states
+        .on_state_enter(STATE, MyState::MainMenu, setup_menu.system())
+        .on_state_update(STATE, MyState::MainMenu, handle_buttons.system())
+        .on_state_exit(STATE, MyState::MainMenu, close_menu.system())
+        .run();
+}
+</code></pre>
+<p>Change or check States:</p>
+<pre><code class="language-rust no_run noplayground">fn manage_state(mut state: ResMut&lt;State&lt;MyState&gt;&gt;) {
+    if *state.current() == MyState::MainMenu {
+        state.set_next(MyState::InGame).unwrap();
+        // ^ error if another state change is pending
+        // or if already in the target state
+    }
+}
+</code></pre>
+<h2><a class="header" href="#assets" id="assets">Assets</a></h2>
+<p>[<a href="cheatsheet/../basics/assets.html">explain</a>]</p>
+<p>Load asset:</p>
+<pre><code class="language-rust no_run noplayground">fn asset_setup(server: Res&lt;AssetServer&gt;) {
+    // load path as an asset of specified type
+    let handle: Handle&lt;MyAssetType&gt; = server.load(&quot;path/to/asset.file&quot;);
+    // autodetect type based on file extension
+    let untyped = server.load_untyped(&quot;path/to/file.png&quot;);
+    // load a whole folder
+    let handles = server.load_folder(&quot;path/to/folder&quot;);
+}
+</code></pre>
+<p>Access assets from systems:</p>
+<pre><code class="language-rust no_run noplayground">// store the handle somewhere (in a component or resource)
+struct MyAsset(Handle&lt;MyAssetType&gt;);
+
+fn asset_use(assets: Res&lt;Assets&lt;MyAssetType&gt;&gt;, my: Res&lt;MyAsset&gt;) {
+    // the asset might not have finished loading yet
+    if let Some(data) = assets.get(&amp;my.0) {
+        // it's ready
+    } else {
+        // it's not ready
+    }
+}
+</code></pre>
+<p>Create assets from code:</p>
+<pre><code class="language-rust no_run noplayground">fn generate_asset(mut assets: ResMut&lt;Assets&lt;MyAssetType&gt;&gt;) {
+    assets.add(MyAssetType::new());
+}
+</code></pre>
+<p>Asset events:</p>
+<pre><code class="language-rust no_run noplayground">fn asset_events(
+    events: Res&lt;Events&lt;AssetEvent&lt;MyAssetType&gt;&gt;&gt;,
+    mut reader: Local&lt;EventReader&lt;AssetEvent&lt;MyAssetType&gt;&gt;&gt;
+) {
+    for event in reader.iter(&amp;events) {
+        match event {
+            AssetEvent::Created { handle } =&gt; {
+                // asset just finished loading
+            }
+            AssetEvent::Modified { handle } =&gt; {
+                // asset was changed
+            }
+            AssetEvent::Removed { handle } =&gt; {
+                // asset was unloaded
+            }
+        }
+    }
+}
+</code></pre>
+<h1><a class="header" href="#bevy-cheatsheet-for-bevy-04-1" id="bevy-cheatsheet-for-bevy-04-1">Bevy Cheatsheet (for bevy 0.4)</a></h1>
 <p>One-page overview of common bevy syntax and features.</p>
 <p>Concise listing of the syntax + important usage notes, no explanations.</p>
 <p>Intended for people who are familiar with the core concepts.</p>
@@ -213,7 +539,333 @@ for brief explanations of each feature.</p>
 <a href="cheatsheet/../cheatsheet/_index.html">Bevy Basics</a>
 for brief explanations of each feature.</p>
 <hr />
-<h2><a class="header" href="#work-in-progress-coming-soon-1" id="work-in-progress-coming-soon-1">WORK IN PROGRESS; COMING SOON!</a></h2>
+<p>Click on &quot;[explain]&quot; links to go to the relevant <a href="cheatsheet/../basics/_index.html">Bevy Basics</a> page!</p>
+<hr />
+<h2><a class="header" href="#systems-1" id="systems-1">Systems</a></h2>
+<p>[<a href="cheatsheet/../basics/systems.html">explain</a>]</p>
+<h2><a class="header" href="#entities-and-components-1" id="entities-and-components-1">Entities and Components</a></h2>
+<p>[<a href="cheatsheet/../basics/ec.html">explain</a>]</p>
+<p>Any Rust type (<code>struct</code> or <code>enum</code>) can be used as a component.</p>
+<p>Type must be unique; only one instance per type per entity can exist. Use newtypes.</p>
+<p>See <a href="cheatsheet/master.html#commands"><code>Commands</code></a> for how to add components to entities and spawn entities.</p>
+<p>Component bundles:</p>
+<pre><code class="language-rust no_run noplayground">#[derive(Bundle)]
+struct AbBundle {
+    a: ComponentA,
+    b: ComponentB,
+}
+</code></pre>
+<h2><a class="header" href="#resources-1" id="resources-1">Resources</a></h2>
+<p>[<a href="cheatsheet/../basics/res.html">explain</a>]</p>
+<p>Any Rust type (<code>struct</code> or <code>enum</code>) can be used as a resource.</p>
+<p>Type must be unique; only one instance per type can exist. Use newtypes.</p>
+<p>Access from system:</p>
+<pre><code class="language-rust no_run noplayground">fn my_system(a: Res&lt;MyResourceA&gt;, mut b: ResMut&lt;MyResourceB&gt;) {
+    // do something with `a` and `b`
+}
+</code></pre>
+<p>Add when <a href="cheatsheet/master.html#app-builder-main-function">building the app</a>:</p>
+<pre><code class="language-rust no_run noplayground">    fn main() {
+        App::build()
+            // specific resource value
+            .add_resource(MyResource::new())
+            // auto-init using `Default` or `FromResources`
+            .init_resource::&lt;MyAutoResource&gt;()
+            .run();
+    }
+</code></pre>
+<p>Add (or replace existing) using <a href="cheatsheet/master.html#commands"><code>Commands</code></a>:</p>
+<pre><code class="language-rust no_run noplayground">    commands.insert_resource(MyData::default());
+</code></pre>
+<p>For complex resource initialization, implement <code>FromResources</code>:</p>
+<pre><code class="language-rust no_run noplayground">impl FromResources for MyFancyResource {
+    fn from_resources(resources: &amp;Resources) -&gt; Self {
+        // you have full access to any other resources you need here,
+        // you can even mutate them:
+        let mut x = resources.get_mut::&lt;MyOtherResource&gt;().unwrap();
+        x.do_mut_stuff();
+
+        MyFancyResource { /* stuff */ }
+    }
+}
+</code></pre>
+<h2><a class="header" href="#queries-1" id="queries-1">Queries</a></h2>
+<p>[<a href="cheatsheet/../basics/queries.html">explain</a>]</p>
+<pre><code class="language-rust no_run noplayground">fn my_system(mut query: Query&lt;(Entity, &amp;ComponentA, &amp;mut ComponentB)&gt;) {
+    // operate on all matching entities
+    for (entity, a, mut b) in query.iter_mut() {
+        // do something with `a` and `b`; `entity` is the Entity id
+    }
+}
+</code></pre>
+<p>To operate on a specific entity:</p>
+<pre><code class="language-rust no_run noplayground">    if let Ok((a, mut b)) = query.get_mut(entity) {
+        // do something with `a` and `b`
+    } else {
+        // entity does not match the query
+    }
+</code></pre>
+<p>Add query filters:</p>
+<pre><code class="language-rust no_run noplayground">fn with_filter(query: Query&lt;&amp;MyData, (Without&lt;ComponentA&gt;, Or&lt;(With&lt;Foo&gt;, With&lt;Bar&gt;)&gt;)&gt;) {
+    // only get `data` for entities that match the filter criteria
+    for data in query.iter() {
+        // use data
+    }
+}
+</code></pre>
+<p>Change detection filters:</p>
+<ul>
+<li><code>Added&lt;T&gt;</code>: detect adding new components to existing entities</li>
+<li><code>Mutated&lt;T&gt;</code>: detect mutation of existing components</li>
+<li><code>Changed&lt;T&gt;</code>: detect any change (added or mutated)</li>
+</ul>
+<pre><code class="language-rust no_run noplayground">fn with_change_detection(query: Query&lt;&amp;MyData, Changed&lt;MyData&gt;&gt;) {
+    // only get `data` if it changed
+    for data in query.iter() {
+        // use data
+    }
+}
+</code></pre>
+<p>Query sets (to resolve component access conflicts):</p>
+<pre><code class="language-rust no_run noplayground">fn conflicting_queries(
+    mut set: QuerySet&lt;(
+        // these queries cannot be used at the same time, due to mutability conflict
+        Query&lt;&amp;mut MyData, With&lt;ComponentA&gt;&gt;,
+        Query&lt;&amp;mut MyData, With&lt;ComponentB&gt;&gt;,
+    )&gt;,
+) {
+    for data in set.q0_mut().iter_mut() {
+        // access `data` of entities that match the first query
+    }
+    for data in set.q1_mut().iter_mut() {
+        // access `data` of entities that match the second query
+    }
+}
+</code></pre>
+<h2><a class="header" href="#commands-1" id="commands-1">Commands</a></h2>
+<p>[<a href="cheatsheet/../basics/commands.html">explain</a>]</p>
+<pre><code class="language-rust no_run noplayground">fn manage_entities_components_resources(commands: &amp;mut Commands) {
+    // build and spawn an entity
+    let entity = commands.spawn(MyBundle::default())
+        .with(ExtraComponent)
+        .with_bundle(ExtraBundle::default())
+        // get the entity id
+        .current_entity().unwrap();
+
+    // despawn a single entity
+    commands.despawn(entity);
+
+    // replaces any existing resource of this type
+    commands.insert_resource(MyData::default());
+
+    // add components to existing entity
+    commands.insert_one(entity, MyComponent);
+    commands.insert(entity, MyBundle::default());
+
+    // remove
+    commands.remove_one::&lt;MyComponent&gt;(entity);
+    commands.remove::&lt;MyBundle&gt;(entity);
+}
+</code></pre>
+<p>These actions are applied at the end of the stage.</p>
+<h2><a class="header" href="#local-per-system-resources-1" id="local-per-system-resources-1">Local (per-system) Resources</a></h2>
+<p>[<a href="cheatsheet/../basics/local.html">explain</a>]</p>
+<pre><code class="language-rust no_run noplayground">fn with_local(local: Local&lt;MyData&gt;) {
+    // `local` is an instance of `MyData` uniquely for this system
+}
+</code></pre>
+<p>The type must implement <code>Default</code> or <code>FromResources</code>. It is automatically initialized.</p>
+<h2><a class="header" href="#events-1" id="events-1">Events</a></h2>
+<p>[<a href="cheatsheet/../basics/events.html">explain</a>]</p>
+<pre><code class="language-rust no_run noplayground">struct MyEvent;
+
+fn sender(mut events: ResMut&lt;Events&lt;MyEvent&gt;&gt;) {
+    events.send(MyEvent);
+}
+
+fn receiver(
+    events: Res&lt;Events&lt;MyEvent&gt;&gt;,
+    mut reader: Local&lt;EventReader&lt;MyEvent&gt;&gt;,
+) {
+    for event in reader.iter(&amp;events) {
+        // handle event
+    }
+}
+
+fn main() {
+    App::build()
+        .add_plugins(MinimalPlugins)
+        .add_event::&lt;MyEvent&gt;()
+        // ...
+        .run();
+}
+</code></pre>
+<p>Events don't persist. If you don't handle them every frame, they will be lost.</p>
+<h2><a class="header" href="#entity-hierarchies-parentchild-1" id="entity-hierarchies-parentchild-1">Entity Hierarchies (Parent/Child)</a></h2>
+<p>[<a href="cheatsheet/../basics/parent-child.html">explain</a>]</p>
+<pre><code class="language-rust no_run noplayground">fn spawn_nested(commands: &amp;mut Commands) {
+    let parent = commands.spawn(MyParentBundle::default())
+        .with_children(|parent| {
+            parent.spawn(MyChildBundle::default());
+        }).current_entity().unwrap();
+
+    // despawn a parent and all its children
+    commands.despawn_recursive(parent);
+}
+</code></pre>
+<p>Reparent an existing entity:</p>
+<pre><code class="language-rust no_run noplayground">    commands.insert_one(child, Parent(parent));
+</code></pre>
+<p>If you are using <code>Transform</code>s, ensure both the parent and the child also have a <code>GlobalTransform</code>.</p>
+<p>Child <code>Transform</code> is relative to the parent. <code>GlobalTransform</code> is internally managed by bevy.</p>
+<h2><a class="header" href="#system-chaining-1" id="system-chaining-1">System Chaining</a></h2>
+<p>[<a href="cheatsheet/../basics/system-chaining.html">explain</a>]</p>
+<pre><code class="language-rust no_run noplayground">fn output_system(/* system params */) -&gt; MyData {
+    MyData::default()
+}
+
+fn input_system(In(data): In&lt;MyData&gt;) {
+    // use `data`
+}
+
+fn main() {
+    App::build()
+        .add_system(output_system.system().chain(input_system.system()))
+        .run();
+}
+</code></pre>
+<h2><a class="header" href="#app-builder-main-function-1" id="app-builder-main-function-1">App Builder (main function)</a></h2>
+<p>[<a href="cheatsheet/../basics/app-builder.html">explain</a>, <a href="cheatsheet/../basics/stages.html">stages</a>, <a href="cheatsheet/../basics/plugins.html">plugins</a>]</p>
+<p>App builder:</p>
+<pre><code class="language-rust no_run noplayground">fn main() {
+    // labels for custom stages:
+    static DEBUG: &amp;str = &quot;debug&quot;;
+    static MY_START: &amp;str = &quot;my_start&quot;;
+
+    App::build()
+        // bevy
+        .add_plugins(DefaultPlugins)
+        // custom plugin
+        .add_plugin(MyPlugin::default())
+        // specific resource value
+        .add_resource(MyResource::new())
+        // auto-init using `Default` or `FromResources`
+        .init_resource::&lt;MyAutoResource&gt;()
+        // add a custom event type:
+        .add_event::&lt;MyEvent&gt;()
+        // run once at startup:
+        .add_startup_system(setup.system())
+        // run each frame (in `UPDATE` stage):
+        .add_system(game_update.system())
+        // add custom stage:
+        .add_stage_before(stage::UPDATE, MY_START, SystemStage::parallel())
+        // serial stage (parallel system execution disabled)
+        .add_stage_after(stage::UPDATE, DEBUG, SystemStage::serial())
+        // run system in specific stage:
+        .add_system_to_stage(DEBUG, debug_system.system())
+        // enter the bevy runtime
+        .run();
+
+}
+</code></pre>
+<p>Custom plugin:</p>
+<pre><code class="language-rust no_run noplayground">struct MyPlugin;
+
+impl Plugin for MyPlugin {
+    fn build(&amp;self, app: &amp;mut AppBuilder) {
+        // use `app` builder
+    }
+}
+</code></pre>
+<h2><a class="header" href="#states-1" id="states-1">States</a></h2>
+<p>[<a href="cheatsheet/../basics/states.html">explain</a>]</p>
+<p>App builder with States:</p>
+<pre><code class="language-rust no_run noplayground">#[derive(Debug, Clone, PartialEq, Eq)]
+enum MyState {
+    MainMenu,
+    InGame,
+}
+
+fn main() {
+    // label for the state stage
+    static STATE: &amp;str = &quot;state&quot;;
+
+    App::build()
+        // add the app state resource with initial state
+        .add_resource(State::new(MyState::MainMenu))
+        // add the state stage
+        .add_stage_before(
+            stage::UPDATE, STATE,
+            StateStage::&lt;MyState&gt;::default()
+        )
+        // this one goes in `UPDATE` as normal
+        .add_system(state_independent.system())
+        // add systems to states
+        .on_state_enter(STATE, MyState::MainMenu, setup_menu.system())
+        .on_state_update(STATE, MyState::MainMenu, handle_buttons.system())
+        .on_state_exit(STATE, MyState::MainMenu, close_menu.system())
+        .run();
+}
+</code></pre>
+<p>Change or check States:</p>
+<pre><code class="language-rust no_run noplayground">fn manage_state(mut state: ResMut&lt;State&lt;MyState&gt;&gt;) {
+    if *state.current() == MyState::MainMenu {
+        state.set_next(MyState::InGame).unwrap();
+        // ^ error if another state change is pending
+        // or if already in the target state
+    }
+}
+</code></pre>
+<h2><a class="header" href="#assets-1" id="assets-1">Assets</a></h2>
+<p>[<a href="cheatsheet/../basics/assets.html">explain</a>]</p>
+<p>Load asset:</p>
+<pre><code class="language-rust no_run noplayground">fn asset_setup(server: Res&lt;AssetServer&gt;) {
+    // load path as an asset of specified type
+    let handle: Handle&lt;MyAssetType&gt; = server.load(&quot;path/to/asset.file&quot;);
+    // autodetect type based on file extension
+    let untyped = server.load_untyped(&quot;path/to/file.png&quot;);
+    // load a whole folder
+    let handles = server.load_folder(&quot;path/to/folder&quot;);
+}
+</code></pre>
+<p>Access assets from systems:</p>
+<pre><code class="language-rust no_run noplayground">// store the handle somewhere (in a component or resource)
+struct MyAsset(Handle&lt;MyAssetType&gt;);
+
+fn asset_use(assets: Res&lt;Assets&lt;MyAssetType&gt;&gt;, my: Res&lt;MyAsset&gt;) {
+    // the asset might not have finished loading yet
+    if let Some(data) = assets.get(&amp;my.0) {
+        // it's ready
+    } else {
+        // it's not ready
+    }
+}
+</code></pre>
+<p>Create assets from code:</p>
+<pre><code class="language-rust no_run noplayground">fn generate_asset(mut assets: ResMut&lt;Assets&lt;MyAssetType&gt;&gt;) {
+    assets.add(MyAssetType::new());
+}
+</code></pre>
+<p>Asset events:</p>
+<pre><code class="language-rust no_run noplayground">fn asset_events(
+    events: Res&lt;Events&lt;AssetEvent&lt;MyAssetType&gt;&gt;&gt;,
+    mut reader: Local&lt;EventReader&lt;AssetEvent&lt;MyAssetType&gt;&gt;&gt;
+) {
+    for event in reader.iter(&amp;events) {
+        match event {
+            AssetEvent::Created { handle } =&gt; {
+                // asset just finished loading
+            }
+            AssetEvent::Modified { handle } =&gt; {
+                // asset was changed
+            }
+            AssetEvent::Removed { handle } =&gt; {
+                // asset was unloaded
+            }
+        }
+    }
+}
+</code></pre>
 <h1><a class="header" href="#bevy-basics" id="bevy-basics">Bevy Basics</a></h1>
 <p>Overview of the basics of programming in Bevy.</p>
 <p>Includes brief explanations of each core concept, with example code to show how
@@ -235,7 +887,7 @@ for a condensed listing of just the syntax + important usage notes.</p>
 }
 </code></pre>
 <p>Types must be unique -- an entity can only have one of each type.</p>
-<p>Use newtype structs to make unique components out of simpler types:</p>
+<p>Use wrapper (newtype) structs to make unique components out of simpler types:</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Debug)]
 struct PlayerXp(u32);
 
@@ -260,7 +912,7 @@ struct PlayerBundle {
     _p: Player,
 }
 </code></pre>
-<h1><a class="header" href="#resources" id="resources">Resources</a></h1>
+<h1><a class="header" href="#resources-2" id="resources-2">Resources</a></h1>
 <p>Akin to &quot;global variables&quot; or &quot;singletons&quot;, used to hold data independent of entities.</p>
 <p>Any Rust type (<code>struct</code> or <code>enum</code>) can be used as a resource.</p>
 <p>Types must be unique; there can only be one resource of a given type.</p>
@@ -304,7 +956,7 @@ impl FromResources for MyFancyResource {
 <pre><code class="language-rust no_run noplayground">commands.insert_resource(GoalsReached { main_goal: false, bonus: false });
 </code></pre>
 <p>If a resource of this type already exists, it will be overwritten.</p>
-<h1><a class="header" href="#systems" id="systems">Systems</a></h1>
+<h1><a class="header" href="#systems-2" id="systems-2">Systems</a></h1>
 <p>Systems are functions you write, which are run by Bevy.</p>
 <p>This is where you implement all your game logic.</p>
 <p>These functions can only take special parameter types, to specify what game data you want to access.</p>
@@ -315,7 +967,15 @@ impl FromResources for MyFancyResource {
     eprintln!(&quot;Starting on level {:?}&quot;, *start);
 }
 </code></pre>
-<h1><a class="header" href="#queries" id="queries">Queries</a></h1>
+<p>System parameters can be grouped into tuples. This is useful for organization,
+or to overcome the limits on the maximum number of parameters (if you get a
+compiler error after adding more parameters to your system):</p>
+<pre><code class="language-rust no_run noplayground">fn complex_system(
+    (a, mut b): (Res&lt;ResourceA&gt;, ResMut&lt;ResourceB&gt;),
+    mut c: ResMut&lt;ResourceC&gt;,
+) {}
+</code></pre>
+<h1><a class="header" href="#queries-2" id="queries-2">Queries</a></h1>
 <p>Queries let you access components of entities.</p>
 <pre><code class="language-rust no_run noplayground">fn check_zero_health(
     // access entities that have `Health` and `Transform` components
@@ -425,7 +1085,7 @@ fn debug_new_hostiles(
 }
 </code></pre>
 <p>This ensures that only one of the conflicting queries can be used at the same time.</p>
-<h1><a class="header" href="#commands" id="commands">Commands</a></h1>
+<h1><a class="header" href="#commands-2" id="commands-2">Commands</a></h1>
 <p>Use <code>Commands</code> to spawn/despawn entities, add/remove components on existing entities, insert resources.</p>
 <p>These actions only take effect at the end of the stage, not immediately.</p>
 <p>(if you are not using stages, that means your systems will see them the next frame, not the current)</p>
@@ -449,16 +1109,14 @@ fn debug_new_hostiles(
     // get the entity id of the last spawned entity
     let entity = commands.current_entity().unwrap();
     // ^ unwrap is OK, `None` only returned if you haven't spawned first
-}
 
-fn close_menu(
-    commands: &amp;mut Commands,
-    query: Query&lt;Entity, With&lt;MainMenuUI&gt;&gt;,
-) {
-    for entity in query.iter() {
-        // despawn the entity and its children
-        commands.despawn_recursive(entity);
-    }
+    // spawn another entity
+    // NOTE: tuples of arbitrary components are valid bundles
+    commands.spawn((
+        ComponentA::default(),
+        ComponentB::default(),
+        ComponentC::default(),
+    ));
 }
 
 fn make_all_players_hostile(
@@ -480,7 +1138,7 @@ fn make_all_players_hostile(
 </code></pre>
 <p>The type must implement <code>Default</code> or <code>FromResources</code>. It is automatically initialized.</p>
 <p>If the same type is used in multiple systems, they each get their own instance.</p>
-<h1><a class="header" href="#events" id="events">Events</a></h1>
+<h1><a class="header" href="#events-2" id="events-2">Events</a></h1>
 <p>Send data between systems, to let your systems communicate with each other!</p>
 <p>Accessed using an <code>Events&lt;T&gt;</code> resource.</p>
 <p>Events don't persist. If receivers don't handle them every frame, they will be lost.</p>
@@ -509,7 +1167,7 @@ fn debug_levelups(
 </code></pre>
 <p>Events are very flexible data flow tool. As events can be sent from any system
 and received by multiple systems, they are <em>extremely</em> versatile. Use them.</p>
-<h1><a class="header" href="#app-builder-main-function" id="app-builder-main-function">App Builder (main function)</a></h1>
+<h1><a class="header" href="#app-builder-main-function-2" id="app-builder-main-function-2">App Builder (main function)</a></h1>
 <p>To enter the bevy runtime, build an <code>App</code>, composed of all the plugins, event types, resources, and systems, that you want to use.</p>
 <p>Everything must be registered in the <code>App</code>, or it will not work.</p>
 <p>You also need to add bevy's builtin functionality: either <code>DefaultPlugins</code> if
@@ -563,7 +1221,7 @@ fn main() {
         .run();
 }
 </code></pre>
-<h1><a class="header" href="#assets" id="assets">Assets</a></h1>
+<h1><a class="header" href="#assets-2" id="assets-2">Assets</a></h1>
 <p>Bevy has a flexible system for loading and managing your game assets
 asynchronously (in the background, without causing lag spikes in your game).</p>
 <p>The data of your loaded assets is stored in an <code>Assets&lt;T&gt;</code> resource.</p>
@@ -673,6 +1331,17 @@ commands.spawn(MyBundle::default())
 </code></pre>
 <p>Bevy has an internal mechanism to ensure the <code>Parent</code> component of the child entity
 and the <code>Children</code> component of the parent entity are kept in sync.</p>
+<p>You can despawn an entire hierarchy with a single command:</p>
+<pre><code class="language-rust no_run noplayground">fn close_menu(
+    commands: &amp;mut Commands,
+    query: Query&lt;Entity, With&lt;MainMenuUI&gt;&gt;,
+) {
+    for entity in query.iter() {
+        // despawn the entity and its children
+        commands.despawn_recursive(entity);
+    }
+}
+</code></pre>
 <h2><a class="header" href="#relative-transforms" id="relative-transforms">Relative Transforms</a></h2>
 <p>To use transforms with hierarchical entities, both the parent and the child must have a <code>GlobalTransform</code> and a <code>Transform</code>.</p>
 <p>The <code>GlobalTransform</code> is managed by bevy internally; do not mutate it yourself.</p>
@@ -716,7 +1385,7 @@ after your game logic completes).</p>
         .run();
 }
 </code></pre>
-<h1><a class="header" href="#states" id="states">States</a></h1>
+<h1><a class="header" href="#states-2" id="states-2">States</a></h1>
 <p>States allow you to structure the runtime &quot;flow&quot; of your app.</p>
 <p>You can have different systems running, depending on the state.</p>
 <p>You can add systems that only run when transitioning between states.</p>
@@ -1136,14 +1805,89 @@ fn main() {
 }
 </code></pre>
 <h1><a class="header" href="#pan--orbit-camera" id="pan--orbit-camera">Pan + Orbit Camera</a></h1>
-<p><a href="cookbook/../code_bevy_release/examples/clear-color.rs">Click here for the full example code.</a></p>
+<p><a href="cookbook/../code_bevy_release/examples/pan-orbit-camera.rs">Click here for the full example code.</a></p>
 <hr />
 <p>This code is a community contribution. Thank you, @skairunner !</p>
 <hr />
 <p>Camera that pans with left click or scrollwheel, and orbits with right click.</p>
 <p>Note: The behavior is somewhat broken.
 If you can improve it, please <a href="https://github.com/bevy-cheatbook/bevy-cheatbook">submit a PR on Github</a>!</p>
-<pre><code class="language-rust no_run noplayground">{{#include ../code_bevy_release/examples/pan-orbit-camera.rs:example}}
+<pre><code class="language-rust no_run noplayground">/// Component for panning and orbiting
+#[derive(Default)]
+struct PanOrbitCamera {
+    /// The &quot;focus point&quot; to orbit around. It is automatically updated when panning the camera
+    pub focus: Vec3,
+}
+
+/// Pan the camera with LHold or scrollwheel, orbit with rclick.
+fn pan_orbit_camera(
+    time: Res&lt;Time&gt;,
+    windows: Res&lt;Windows&gt;,
+    mousebtn: Res&lt;Input&lt;MouseButton&gt;&gt;,
+    ev_motion: Res&lt;Events&lt;MouseMotion&gt;&gt;,
+    ev_scroll: Res&lt;Events&lt;MouseWheel&gt;&gt;,
+    mut reader_motion: Local&lt;EventReader&lt;MouseMotion&gt;&gt;,
+    mut reader_scroll: Local&lt;EventReader&lt;MouseWheel&gt;&gt;,
+    mut query: Query&lt;(&amp;mut PanOrbitCamera, &amp;mut Transform)&gt;,
+) {
+    let mut translation = Vec2::zero();
+    let mut rotation_move = Vec2::default();
+    let mut scroll = 0.0;
+    let dt = time.delta_seconds();
+
+    if mousebtn.pressed(MouseButton::Right) {
+        for ev in reader_motion.iter(&amp;ev_motion) {
+            rotation_move += ev.delta;
+        }
+    } else if mousebtn.pressed(MouseButton::Left) {
+        // Pan only if we're not rotating at the moment
+        for ev in reader_motion.iter(&amp;ev_motion) {
+            translation += ev.delta;
+        }
+    }
+
+    for ev in reader_scroll.iter(&amp;ev_scroll) {
+        scroll += ev.y;
+    }
+
+    // Either pan+scroll or arcball. We don't do both at once.
+    for (mut camera, mut trans) in query.iter_mut() {
+        if rotation_move.length_squared() &gt; 0.0 {
+            let window = windows.get_primary().unwrap();
+            let window_w = window.width() as f32;
+            let window_h = window.height() as f32;
+
+            // Link virtual sphere rotation relative to window to make it feel nicer
+            let delta_x = rotation_move.x / window_w * std::f32::consts::PI * 2.0;
+            let delta_y = rotation_move.y / window_h * std::f32::consts::PI;
+
+            let delta_yaw = Quat::from_rotation_y(delta_x);
+            let delta_pitch = Quat::from_rotation_x(delta_y);
+
+            trans.translation =
+                delta_yaw * delta_pitch * (trans.translation - camera.focus) + camera.focus;
+
+            let look = Mat4::face_toward(
+                trans.translation,
+                camera.focus,
+                Vec3::new(0.0, 1.0, 0.0)
+            );
+            trans.rotation = look.to_scale_rotation_translation().1;
+        } else {
+            // The plane is x/y while z is &quot;up&quot;. Multiplying by dt gives constant rate
+            let mut translation = Vec3::new(-translation.x * dt, translation.y * dt, 0.0);
+            camera.focus += translation;
+            translation.z = -scroll;
+            trans.translation += translation;
+        }
+    }
+}
+
+/// Spawn a camera like this.
+fn spawn_camera(commands: &amp;mut Commands) {
+    commands.spawn(Camera3dBundle::default())
+        .with(PanOrbitCamera::default());
+}
 </code></pre>
 <h1><a class="header" href="#contributing" id="contributing">Contributing</a></h1>
 <p>Any help with maintaining or improving the book is welcome! Contribute via <a href="https://github.com/bevy-cheatbook/bevy-cheatbook">GitHub</a>!</p>
@@ -1154,7 +1898,7 @@ If you can improve it, please <a href="https://github.com/bevy-cheatbook/bevy-ch
 <p>All code that uses Bevy APIs should live under <code>src/code_bevy_release</code> or <code>src/code_bevy_master</code>, depending on the version of Bevy used.</p>
 <p>Cookbook recipes should be independent files under <code>examples</code>. Only embed the relevant parts into the book page, without unnecessary boilerplate. Link to the full example file at the top of the page.</p>
 <p>Cheatsheet code lives in <code>src/cheatsheet.rs</code>.</p>
-<p>Miscellaneous code in the book should live in <code>src/lib.rs</code>.</p>
+<p>Miscellaneous code should live in <code>src/lib.rs</code>.</p>
 <p>Always use mdbook anchor syntax to embed code, never line numbers.
 <a href="https://rust-lang.github.io/mdBook/format/mdbook.html#including-portions-of-a-file">See here</a>.</p>
 <h2><a class="header" href="#style-guidelines" id="style-guidelines">Style Guidelines</a></h2>

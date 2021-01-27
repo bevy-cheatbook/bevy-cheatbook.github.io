@@ -174,6 +174,14 @@
     eprintln!(&quot;Starting on level {:?}&quot;, *start);
 }
 </code></pre>
+<p>System parameters can be grouped into tuples. This is useful for organization,
+or to overcome the limits on the maximum number of parameters (if you get a
+compiler error after adding more parameters to your system):</p>
+<pre><code class="language-rust no_run noplayground">fn complex_system(
+    (a, mut b): (Res&lt;ResourceA&gt;, ResMut&lt;ResourceB&gt;),
+    mut c: ResMut&lt;ResourceC&gt;,
+) {}
+</code></pre>
 
                     </main>
 
