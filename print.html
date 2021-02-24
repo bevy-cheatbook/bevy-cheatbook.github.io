@@ -1414,10 +1414,9 @@ with the input/output). You have to connect them in a chain:</p>
             .run();
     }
 </code></pre>
-<p>Chains are a niche tool; only use them if you really want to construct large
+<p>Chains are a specialized tool; only use them if you really want to construct large
 systems out of modular parts. Avoid using them as a general-purpose data passing
-mechanism. For most use cases, you probably want to use <a href="basics/./events.html">Events</a>
-instead.</p>
+mechanism. For most use cases, you probably want to use <a href="basics/./events.html">Events</a> instead.</p>
 <h2 id="performance-warning"><a class="header" href="#performance-warning">Performance Warning</a></h2>
 <p>Beware that Bevy treats the whole chain as if it was a single big system, with
 all the combined resources and queries. This implies that parallelism could be
