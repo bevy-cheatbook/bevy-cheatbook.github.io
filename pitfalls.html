@@ -163,8 +163,8 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#common-pitfalls" id="common-pitfalls">Common Pitfalls</a></h1>
-<h2><a class="header" href="#slow-performance-in-debug-builds" id="slow-performance-in-debug-builds">Slow performance in debug builds</a></h2>
+                        <h1 id="common-pitfalls"><a class="header" href="#common-pitfalls">Common Pitfalls</a></h1>
+<h2 id="slow-performance-in-debug-builds"><a class="header" href="#slow-performance-in-debug-builds">Slow performance in debug builds</a></h2>
 <p>Rust without compiler optimizations is <em>very slow</em>. With Bevy in particular, the default debug build settings will lead to <em>awful</em> runtime performance. Assets are slow to load and FPS is low.</p>
 <p>Common symptoms:</p>
 <ul>
@@ -184,7 +184,7 @@ opt-level = 1
 [profile.dev.package.&quot;*&quot;]
 opt-level = 3
 </code></pre>
-<h2><a class="header" href="#support-for-loading-different-file-formats" id="support-for-loading-different-file-formats">Support for loading different file formats</a></h2>
+<h2 id="support-for-loading-different-file-formats"><a class="header" href="#support-for-loading-different-file-formats">Support for loading different file formats</a></h2>
 <p>By default, only a few asset file formats are enabled:</p>
 <ul>
 <li>Images: PNG and HDR</li>
@@ -199,13 +199,13 @@ opt-level = 3
 version = &quot;0.4&quot;
 features = [&quot;jpeg&quot;, &quot;tga&quot;, &quot;bmp&quot;, &quot;dds&quot;, &quot;flac&quot;, &quot;ogg&quot;, &quot;wav&quot;]
 </code></pre>
-<h2><a class="header" href="#wayland-support" id="wayland-support">Wayland support</a></h2>
+<h2 id="wayland-support"><a class="header" href="#wayland-support">Wayland support</a></h2>
 <p>For Linux builds, enable Wayland support (in addition to X11), with cargo feature:</p>
 <pre><code class="language-toml">[dependencies.bevy]
 version = &quot;0.4&quot;
 features = [&quot;wayland&quot;]
 </code></pre>
-<h2><a class="header" href="#android-support" id="android-support">Android support</a></h2>
+<h2 id="android-support"><a class="header" href="#android-support">Android support</a></h2>
 <p>MSAA does not work. If you get crashes or a black screen, ensure MSAA is <em>not</em> enabled.</p>
 <p>Running in the background isn't handled properly. Switching out of the app may cause a crash.</p>
 <p>Track the status of Android support <a href="https://github.com/bevyengine/bevy/issues/86">here</a>.</p>

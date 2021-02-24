@@ -163,7 +163,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#resources" id="resources">Resources</a></h1>
+                        <h1 id="resources"><a class="header" href="#resources">Resources</a></h1>
 <p>Akin to &quot;global variables&quot; or &quot;singletons&quot;, used to hold data independent of entities.</p>
 <p>Any Rust type (<code>struct</code> or <code>enum</code>) can be used as a resource.</p>
 <p>Types must be unique; there can only be one resource of a given type.</p>
@@ -173,7 +173,7 @@
 }
 </code></pre>
 <p>Resources can be accessed from systems, using <code>Res</code>/<code>ResMut</code>.</p>
-<h2><a class="header" href="#resource-initialization" id="resource-initialization">Resource Initialization</a></h2>
+<h2 id="resource-initialization"><a class="header" href="#resource-initialization">Resource Initialization</a></h2>
 <p>Implement <code>Default</code> for simple resources:</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Debug, Default)]
 struct StartingLevel(usize);

@@ -163,7 +163,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#hierarchical-parentchild-entities" id="hierarchical-parentchild-entities">Hierarchical (Parent/Child) Entities</a></h1>
+                        <h1 id="hierarchical-parentchild-entities"><a class="header" href="#hierarchical-parentchild-entities">Hierarchical (Parent/Child) Entities</a></h1>
 <p>Technically, the Entities/Components themselves cannot form a hierarchy (it is a
 flat data structure). However, logical hierarchies are a common pattern in games.</p>
 <p>Bevy supports creating such a logical link between entities, to form a virtual
@@ -198,7 +198,7 @@ commands.spawn(MyBundle::default())
     }
 }
 </code></pre>
-<h2><a class="header" href="#relative-transforms" id="relative-transforms">Relative Transforms</a></h2>
+<h2 id="relative-transforms"><a class="header" href="#relative-transforms">Relative Transforms</a></h2>
 <p>To use transforms with hierarchical entities, both the parent and the child must have a <code>GlobalTransform</code> and a <code>Transform</code>.</p>
 <p>The <code>GlobalTransform</code> is managed by bevy internally; do not mutate it yourself.</p>
 <p>The <code>Transform</code> is what you can manipulate directly. On the child, it will behave relative to the parent.</p>

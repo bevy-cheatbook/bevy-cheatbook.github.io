@@ -163,7 +163,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#queries" id="queries">Queries</a></h1>
+                        <h1 id="queries"><a class="header" href="#queries">Queries</a></h1>
 <p>Queries let you access components of entities.</p>
 <pre><code class="language-rust no_run noplayground">fn check_zero_health(
     // access entities that have `Health` and `Transform` components
@@ -196,7 +196,7 @@ fn query_entities(q: Query&lt;(Entity, /* ... */)&gt;) {
     }
 }
 </code></pre>
-<h2><a class="header" href="#query-filters" id="query-filters">Query Filters</a></h2>
+<h2 id="query-filters"><a class="header" href="#query-filters">Query Filters</a></h2>
 <p>Add query filters to narrow down the entities you get from the query.</p>
 <p>Multiple filters can be combined:</p>
 <ul>
@@ -218,7 +218,7 @@ fn query_entities(q: Query&lt;(Entity, /* ... */)&gt;) {
     }
 }
 </code></pre>
-<h2><a class="header" href="#query-sets" id="query-sets">Query Sets</a></h2>
+<h2 id="query-sets"><a class="header" href="#query-sets">Query Sets</a></h2>
 <p>For safety reasons, a system cannot have multiple queries with mutability conflicts on the same components.</p>
 <p>The solution is to wrap them in a <code>QuerySet</code>:</p>
 <pre><code class="language-rust no_run noplayground">fn reset_health(

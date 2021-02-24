@@ -163,7 +163,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#assets" id="assets">Assets</a></h1>
+                        <h1 id="assets"><a class="header" href="#assets">Assets</a></h1>
 <p>Bevy has a flexible system for loading and managing your game assets
 asynchronously (in the background, without causing lag spikes in your game).</p>
 <p>The data of your loaded assets is stored in an <code>Assets&lt;T&gt;</code> resource.</p>
@@ -204,7 +204,7 @@ fn use_sprites(
     }
 }
 </code></pre>
-<h2><a class="header" href="#assetevent" id="assetevent">AssetEvent</a></h2>
+<h2 id="assetevent"><a class="header" href="#assetevent">AssetEvent</a></h2>
 <p>If you need to perform specific actions when the asset has finished loading, is
 modified, or removed, you can react to <code>AssetEvent</code>s.</p>
 <pre><code class="language-rust no_run noplayground">struct MapTexture {
@@ -233,7 +233,7 @@ fn fixup_textures(
     }
 }
 </code></pre>
-<h2><a class="header" href="#handles" id="handles">Handles</a></h2>
+<h2 id="handles"><a class="header" href="#handles">Handles</a></h2>
 <p>Handles have built-in reference counting (similar to <code>Rc</code>/<code>Arc</code> in Rust).</p>
 <p>Therefore, you need to <code>.clone()</code> them to create multiple handles to the same
 asset. The clone is a cheap operation, but it is explicit, to ensure that you

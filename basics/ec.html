@@ -163,10 +163,10 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#entities" id="entities">Entities</a></h1>
+                        <h1 id="entities"><a class="header" href="#entities">Entities</a></h1>
 <p>Conceptually, an &quot;object&quot; in the game.</p>
 <p>Technically, entities are just simple unique integer IDs, that you can use to access component data.</p>
-<h1><a class="header" href="#components" id="components">Components</a></h1>
+<h1 id="components"><a class="header" href="#components">Components</a></h1>
 <p>Components are data that you can attach to entities.</p>
 <p>Any Rust type (<code>struct</code> or <code>enum</code>) can be used as a component.</p>
 <pre><code class="language-rust no_run noplayground">struct Health {
@@ -191,7 +191,7 @@ struct Player;
 struct Enemy;
 </code></pre>
 <p>Components can be accessed from systems, using <a href="./queries.html">queries</a>. </p>
-<h1><a class="header" href="#component-bundles" id="component-bundles">Component Bundles</a></h1>
+<h1 id="component-bundles"><a class="header" href="#component-bundles">Component Bundles</a></h1>
 <p>Bundles are like &quot;templates&quot;, to make it easy to spawn entities with a common set of components.</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Bundle)]
 struct PlayerBundle {

@@ -165,7 +165,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#unofficial-bevy-cheat-book" id="unofficial-bevy-cheat-book">Unofficial Bevy Cheat Book</a></h1>
+                        <h1 id="unofficial-bevy-cheat-book"><a class="header" href="#unofficial-bevy-cheat-book">Unofficial Bevy Cheat Book</a></h1>
 <p>Concise reference to programming in the <a href="https://github.com/bevyengine/bevy">Bevy game engine</a>.</p>
 <p>Covers useful syntax, features, programming patterns, and solutions (&quot;recipes&quot;) for common game development tasks.</p>
 <p>Designed to be easy to read, straight to the point, using simple language to focus on the important information.</p>
@@ -181,23 +181,23 @@
 <p><em><strong>Welcome! Hope this book serves you well!</strong></em></p>
 <p>P.S: also check out the <a href="https://github.com/bevyengine/awesome-bevy">awesome-bevy</a> list,
 for additional resources to help you on your bevy journey!</p>
-<h2><a class="header" href="#maintenance" id="maintenance">Maintenance</a></h2>
+<h2 id="maintenance"><a class="header" href="#maintenance">Maintenance</a></h2>
 <p>This version of the book is for Bevy release 0.4.</p>
 <p>The cheatsheet also has a version for bevy git. An attempt is made to keep it reasonably up-to-date.</p>
-<h2><a class="header" href="#contributions-welcome" id="contributions-welcome">Contributions Welcome!</a></h2>
+<h2 id="contributions-welcome"><a class="header" href="#contributions-welcome">Contributions Welcome!</a></h2>
 <p>Development of the book happens on <a href="https://github.com/bevy-cheatbook/bevy-cheatbook">GitHub</a>.</p>
 <p>See the <a href="./contributing.html">Contributing</a> section for advice!</p>
-<h1><a class="header" href="#bevy-cheatsheet" id="bevy-cheatsheet">Bevy Cheatsheet</a></h1>
+<h1 id="bevy-cheatsheet"><a class="header" href="#bevy-cheatsheet">Bevy Cheatsheet</a></h1>
 <p>One-page overview of common bevy syntax and features.</p>
 <p>Concise listing of the syntax + important usage notes, no explanations.</p>
 <p>Intended for people who are familiar with the core concepts.</p>
 <p>If you are new to bevy or need a refresher, see
 <a href="cheatsheet/../cheatsheet/_index.html">Bevy Basics</a>
 for brief explanations of each feature.</p>
-<h2><a class="header" href="#versions" id="versions">Versions</a></h2>
+<h2 id="versions"><a class="header" href="#versions">Versions</a></h2>
 <p><a href="cheatsheet/release.html">Click here for Bevy 0.4</a>.</p>
 <p><a href="cheatsheet/master.html">Click here for Bevy git</a>.</p>
-<h1><a class="header" href="#bevy-cheatsheet-for-bevy-04" id="bevy-cheatsheet-for-bevy-04">Bevy Cheatsheet (for bevy 0.4)</a></h1>
+<h1 id="bevy-cheatsheet-for-bevy-04"><a class="header" href="#bevy-cheatsheet-for-bevy-04">Bevy Cheatsheet (for bevy 0.4)</a></h1>
 <p>One-page overview of common bevy syntax and features.</p>
 <p>Concise listing of the syntax + important usage notes, no explanations.</p>
 <p>Intended for people who are familiar with the core concepts.</p>
@@ -207,9 +207,9 @@ for brief explanations of each feature.</p>
 <hr />
 <p>Click on &quot;[explain]&quot; links to go to the relevant <a href="cheatsheet/../basics/_index.html">Bevy Basics</a> page!</p>
 <hr />
-<h2><a class="header" href="#systems" id="systems">Systems</a></h2>
+<h2 id="systems"><a class="header" href="#systems">Systems</a></h2>
 <p>[<a href="cheatsheet/../basics/systems.html">explain</a>]</p>
-<h2><a class="header" href="#entities-and-components" id="entities-and-components">Entities and Components</a></h2>
+<h2 id="entities-and-components"><a class="header" href="#entities-and-components">Entities and Components</a></h2>
 <p>[<a href="cheatsheet/../basics/ec.html">explain</a>]</p>
 <p>Any Rust type (<code>struct</code> or <code>enum</code>) can be used as a component.</p>
 <p>Type must be unique; only one instance per type per entity can exist. Use newtypes.</p>
@@ -221,7 +221,7 @@ struct AbBundle {
     b: ComponentB,
 }
 </code></pre>
-<h2><a class="header" href="#resources" id="resources">Resources</a></h2>
+<h2 id="resources"><a class="header" href="#resources">Resources</a></h2>
 <p>[<a href="cheatsheet/../basics/res.html">explain</a>]</p>
 <p>Any Rust type (<code>struct</code> or <code>enum</code>) can be used as a resource.</p>
 <p>Type must be unique; only one instance per type can exist. Use newtypes.</p>
@@ -255,7 +255,7 @@ struct AbBundle {
     }
 }
 </code></pre>
-<h2><a class="header" href="#queries" id="queries">Queries</a></h2>
+<h2 id="queries"><a class="header" href="#queries">Queries</a></h2>
 <p>[<a href="cheatsheet/../basics/queries.html">explain</a>]</p>
 <pre><code class="language-rust no_run noplayground">fn my_system(mut query: Query&lt;(Entity, &amp;ComponentA, &amp;mut ComponentB)&gt;) {
     // operate on all matching entities
@@ -295,7 +295,7 @@ struct AbBundle {
     }
 }
 </code></pre>
-<h2><a class="header" href="#change-detection" id="change-detection">Change Detection</a></h2>
+<h2 id="change-detection"><a class="header" href="#change-detection">Change Detection</a></h2>
 <p>[<a href="cheatsheet/../basics/change-detection.html">explain</a>]</p>
 <p>Query filters:</p>
 <ul>
@@ -311,7 +311,7 @@ struct AbBundle {
 }
 </code></pre>
 <p><strong>WARNING!</strong> The detecting system must run after the changing system, <em>during the same frame</em>.</p>
-<h2><a class="header" href="#commands" id="commands">Commands</a></h2>
+<h2 id="commands"><a class="header" href="#commands">Commands</a></h2>
 <p>[<a href="cheatsheet/../basics/commands.html">explain</a>]</p>
 <pre><code class="language-rust no_run noplayground">fn manage_entities_components_resources(commands: &amp;mut Commands) {
     // build and spawn an entity
@@ -337,14 +337,14 @@ struct AbBundle {
 }
 </code></pre>
 <p>These actions are applied at the end of the stage.</p>
-<h2><a class="header" href="#local-per-system-resources" id="local-per-system-resources">Local (per-system) Resources</a></h2>
+<h2 id="local-per-system-resources"><a class="header" href="#local-per-system-resources">Local (per-system) Resources</a></h2>
 <p>[<a href="cheatsheet/../basics/local.html">explain</a>]</p>
 <pre><code class="language-rust no_run noplayground">fn with_local(local: Local&lt;MyData&gt;) {
     // `local` is an instance of `MyData` uniquely for this system
 }
 </code></pre>
 <p>The type must implement <code>Default</code> or <code>FromResources</code>. It is automatically initialized.</p>
-<h2><a class="header" href="#events" id="events">Events</a></h2>
+<h2 id="events"><a class="header" href="#events">Events</a></h2>
 <p>[<a href="cheatsheet/../basics/events.html">explain</a>]</p>
 <pre><code class="language-rust no_run noplayground">struct MyEvent;
 
@@ -370,7 +370,7 @@ fn main() {
 }
 </code></pre>
 <p>Events don't persist. If you don't handle them every frame, they will be lost.</p>
-<h2><a class="header" href="#entity-hierarchies-parentchild" id="entity-hierarchies-parentchild">Entity Hierarchies (Parent/Child)</a></h2>
+<h2 id="entity-hierarchies-parentchild"><a class="header" href="#entity-hierarchies-parentchild">Entity Hierarchies (Parent/Child)</a></h2>
 <p>[<a href="cheatsheet/../basics/parent-child.html">explain</a>]</p>
 <pre><code class="language-rust no_run noplayground">fn spawn_nested(commands: &amp;mut Commands) {
     let parent = commands.spawn(MyParentBundle::default())
@@ -387,7 +387,7 @@ fn main() {
 </code></pre>
 <p>If you are using <code>Transform</code>s, ensure both the parent and the child also have a <code>GlobalTransform</code>.</p>
 <p>Child <code>Transform</code> is relative to the parent. <code>GlobalTransform</code> is internally managed by bevy.</p>
-<h2><a class="header" href="#system-chaining" id="system-chaining">System Chaining</a></h2>
+<h2 id="system-chaining"><a class="header" href="#system-chaining">System Chaining</a></h2>
 <p>[<a href="cheatsheet/../basics/system-chaining.html">explain</a>]</p>
 <pre><code class="language-rust no_run noplayground">fn output_system(/* system params */) -&gt; MyData {
     MyData::default()
@@ -403,7 +403,7 @@ fn main() {
         .run();
 }
 </code></pre>
-<h2><a class="header" href="#app-builder-main-function" id="app-builder-main-function">App Builder (main function)</a></h2>
+<h2 id="app-builder-main-function"><a class="header" href="#app-builder-main-function">App Builder (main function)</a></h2>
 <p>[<a href="cheatsheet/../basics/app-builder.html">explain</a>, <a href="cheatsheet/../basics/stages.html">stages</a>, <a href="cheatsheet/../basics/plugins.html">plugins</a>]</p>
 <p>App builder:</p>
 <pre><code class="language-rust no_run noplayground">fn main() {
@@ -446,7 +446,7 @@ impl Plugin for MyPlugin {
     }
 }
 </code></pre>
-<h2><a class="header" href="#states" id="states">States</a></h2>
+<h2 id="states"><a class="header" href="#states">States</a></h2>
 <p>[<a href="cheatsheet/../basics/states.html">explain</a>]</p>
 <p>App builder with States:</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Debug, Clone, PartialEq, Eq)]
@@ -485,7 +485,7 @@ fn main() {
     }
 }
 </code></pre>
-<h2><a class="header" href="#assets" id="assets">Assets</a></h2>
+<h2 id="assets"><a class="header" href="#assets">Assets</a></h2>
 <p>[<a href="cheatsheet/../basics/assets.html">explain</a>]</p>
 <p>Load asset:</p>
 <pre><code class="language-rust no_run noplayground">fn asset_setup(server: Res&lt;AssetServer&gt;) {
@@ -535,7 +535,7 @@ fn asset_use(assets: Res&lt;Assets&lt;MyAssetType&gt;&gt;, my: Res&lt;MyAsset&gt
     }
 }
 </code></pre>
-<h1><a class="header" href="#bevy-cheatsheet-for-bevy-git" id="bevy-cheatsheet-for-bevy-git">Bevy Cheatsheet (for bevy git)</a></h1>
+<h1 id="bevy-cheatsheet-for-bevy-git"><a class="header" href="#bevy-cheatsheet-for-bevy-git">Bevy Cheatsheet (for bevy git)</a></h1>
 <p>One-page overview of common bevy syntax and features.</p>
 <p>Concise listing of the syntax + important usage notes, no explanations.</p>
 <p>Intended for people who are familiar with the core concepts.</p>
@@ -545,9 +545,9 @@ for brief explanations of each feature.</p>
 <hr />
 <p>Click on &quot;[explain]&quot; links to go to the relevant <a href="cheatsheet/../basics/_index.html">Bevy Basics</a> page!</p>
 <hr />
-<h2><a class="header" href="#systems-1" id="systems-1">Systems</a></h2>
+<h2 id="systems-1"><a class="header" href="#systems-1">Systems</a></h2>
 <p>[<a href="cheatsheet/../basics/systems.html">explain</a>]</p>
-<h2><a class="header" href="#entities-and-components-1" id="entities-and-components-1">Entities and Components</a></h2>
+<h2 id="entities-and-components-1"><a class="header" href="#entities-and-components-1">Entities and Components</a></h2>
 <p>[<a href="cheatsheet/../basics/ec.html">explain</a>]</p>
 <p>Any Rust type (<code>struct</code> or <code>enum</code>) can be used as a component.</p>
 <p>Type must be unique; only one instance per type per entity can exist. Use newtypes.</p>
@@ -559,7 +559,7 @@ struct AbBundle {
     b: ComponentB,
 }
 </code></pre>
-<h2><a class="header" href="#resources-1" id="resources-1">Resources</a></h2>
+<h2 id="resources-1"><a class="header" href="#resources-1">Resources</a></h2>
 <p>[<a href="cheatsheet/../basics/res.html">explain</a>]</p>
 <p>Any Rust type (<code>struct</code> or <code>enum</code>) can be used as a resource.</p>
 <p>Type must be unique; only one instance per type can exist. Use newtypes.</p>
@@ -593,7 +593,7 @@ struct AbBundle {
     }
 }
 </code></pre>
-<h2><a class="header" href="#queries-1" id="queries-1">Queries</a></h2>
+<h2 id="queries-1"><a class="header" href="#queries-1">Queries</a></h2>
 <p>[<a href="cheatsheet/../basics/queries.html">explain</a>]</p>
 <pre><code class="language-rust no_run noplayground">fn my_system(mut query: Query&lt;(Entity, &amp;ComponentA, &amp;mut ComponentB)&gt;) {
     // operate on all matching entities
@@ -633,7 +633,7 @@ struct AbBundle {
     }
 }
 </code></pre>
-<h2><a class="header" href="#change-detection-1" id="change-detection-1">Change Detection</a></h2>
+<h2 id="change-detection-1"><a class="header" href="#change-detection-1">Change Detection</a></h2>
 <p>[<a href="cheatsheet/../basics/change-detection.html">explain</a>]</p>
 <p>Query filters:</p>
 <ul>
@@ -649,7 +649,7 @@ struct AbBundle {
 }
 </code></pre>
 <p><strong>WARNING!</strong> The detecting system must run after the changing system, <em>during the same frame</em>.</p>
-<h2><a class="header" href="#commands-1" id="commands-1">Commands</a></h2>
+<h2 id="commands-1"><a class="header" href="#commands-1">Commands</a></h2>
 <p>[<a href="cheatsheet/../basics/commands.html">explain</a>]</p>
 <pre><code class="language-rust no_run noplayground">fn manage_entities_components_resources(commands: &amp;mut Commands) {
     // build and spawn an entity
@@ -675,14 +675,14 @@ struct AbBundle {
 }
 </code></pre>
 <p>These actions are applied at the end of the stage.</p>
-<h2><a class="header" href="#local-per-system-resources-1" id="local-per-system-resources-1">Local (per-system) Resources</a></h2>
+<h2 id="local-per-system-resources-1"><a class="header" href="#local-per-system-resources-1">Local (per-system) Resources</a></h2>
 <p>[<a href="cheatsheet/../basics/local.html">explain</a>]</p>
 <pre><code class="language-rust no_run noplayground">fn with_local(local: Local&lt;MyData&gt;) {
     // `local` is an instance of `MyData` uniquely for this system
 }
 </code></pre>
 <p>The type must implement <code>Default</code> or <code>FromResources</code>. It is automatically initialized.</p>
-<h2><a class="header" href="#events-1" id="events-1">Events</a></h2>
+<h2 id="events-1"><a class="header" href="#events-1">Events</a></h2>
 <p>[<a href="cheatsheet/../basics/events.html">explain</a>]</p>
 <pre><code class="language-rust no_run noplayground">struct MyEvent;
 
@@ -705,7 +705,7 @@ fn main() {
 }
 </code></pre>
 <p>Events don't persist. If you don't handle them every frame, they will be lost.</p>
-<h2><a class="header" href="#entity-hierarchies-parentchild-1" id="entity-hierarchies-parentchild-1">Entity Hierarchies (Parent/Child)</a></h2>
+<h2 id="entity-hierarchies-parentchild-1"><a class="header" href="#entity-hierarchies-parentchild-1">Entity Hierarchies (Parent/Child)</a></h2>
 <p>[<a href="cheatsheet/../basics/parent-child.html">explain</a>]</p>
 <pre><code class="language-rust no_run noplayground">fn spawn_nested(commands: &amp;mut Commands) {
     let parent = commands.spawn(MyParentBundle::default())
@@ -722,7 +722,7 @@ fn main() {
 </code></pre>
 <p>If you are using <code>Transform</code>s, ensure both the parent and the child also have a <code>GlobalTransform</code>.</p>
 <p>Child <code>Transform</code> is relative to the parent. <code>GlobalTransform</code> is internally managed by bevy.</p>
-<h2><a class="header" href="#system-chaining-1" id="system-chaining-1">System Chaining</a></h2>
+<h2 id="system-chaining-1"><a class="header" href="#system-chaining-1">System Chaining</a></h2>
 <p>[<a href="cheatsheet/../basics/system-chaining.html">explain</a>]</p>
 <pre><code class="language-rust no_run noplayground">fn output_system(/* system params */) -&gt; MyData {
     MyData::default()
@@ -738,7 +738,7 @@ fn main() {
         .run();
 }
 </code></pre>
-<h2><a class="header" href="#app-builder-main-function-1" id="app-builder-main-function-1">App Builder (main function)</a></h2>
+<h2 id="app-builder-main-function-1"><a class="header" href="#app-builder-main-function-1">App Builder (main function)</a></h2>
 <p>[<a href="cheatsheet/../basics/app-builder.html">explain</a>, <a href="cheatsheet/../basics/stages.html">stages</a>, <a href="cheatsheet/../basics/plugins.html">plugins</a>]</p>
 <p>App builder:</p>
 <pre><code class="language-rust no_run noplayground">fn main() {
@@ -781,7 +781,7 @@ impl Plugin for MyPlugin {
     }
 }
 </code></pre>
-<h2><a class="header" href="#states-1" id="states-1">States</a></h2>
+<h2 id="states-1"><a class="header" href="#states-1">States</a></h2>
 <p>[<a href="cheatsheet/../basics/states.html">explain</a>]</p>
 <p>App builder with States:</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Debug, Clone, PartialEq, Eq)]
@@ -820,7 +820,7 @@ fn main() {
     }
 }
 </code></pre>
-<h2><a class="header" href="#assets-1" id="assets-1">Assets</a></h2>
+<h2 id="assets-1"><a class="header" href="#assets-1">Assets</a></h2>
 <p>[<a href="cheatsheet/../basics/assets.html">explain</a>]</p>
 <p>Load asset:</p>
 <pre><code class="language-rust no_run noplayground">fn asset_setup(server: Res&lt;AssetServer&gt;) {
@@ -867,8 +867,8 @@ fn asset_use(assets: Res&lt;Assets&lt;MyAssetType&gt;&gt;, my: Res&lt;MyAsset&gt
     }
 }
 </code></pre>
-<h1><a class="header" href="#common-pitfalls" id="common-pitfalls">Common Pitfalls</a></h1>
-<h2><a class="header" href="#slow-performance-in-debug-builds" id="slow-performance-in-debug-builds">Slow performance in debug builds</a></h2>
+<h1 id="common-pitfalls"><a class="header" href="#common-pitfalls">Common Pitfalls</a></h1>
+<h2 id="slow-performance-in-debug-builds"><a class="header" href="#slow-performance-in-debug-builds">Slow performance in debug builds</a></h2>
 <p>Rust without compiler optimizations is <em>very slow</em>. With Bevy in particular, the default debug build settings will lead to <em>awful</em> runtime performance. Assets are slow to load and FPS is low.</p>
 <p>Common symptoms:</p>
 <ul>
@@ -888,7 +888,7 @@ opt-level = 1
 [profile.dev.package.&quot;*&quot;]
 opt-level = 3
 </code></pre>
-<h2><a class="header" href="#support-for-loading-different-file-formats" id="support-for-loading-different-file-formats">Support for loading different file formats</a></h2>
+<h2 id="support-for-loading-different-file-formats"><a class="header" href="#support-for-loading-different-file-formats">Support for loading different file formats</a></h2>
 <p>By default, only a few asset file formats are enabled:</p>
 <ul>
 <li>Images: PNG and HDR</li>
@@ -903,17 +903,17 @@ opt-level = 3
 version = &quot;0.4&quot;
 features = [&quot;jpeg&quot;, &quot;tga&quot;, &quot;bmp&quot;, &quot;dds&quot;, &quot;flac&quot;, &quot;ogg&quot;, &quot;wav&quot;]
 </code></pre>
-<h2><a class="header" href="#wayland-support" id="wayland-support">Wayland support</a></h2>
+<h2 id="wayland-support"><a class="header" href="#wayland-support">Wayland support</a></h2>
 <p>For Linux builds, enable Wayland support (in addition to X11), with cargo feature:</p>
 <pre><code class="language-toml">[dependencies.bevy]
 version = &quot;0.4&quot;
 features = [&quot;wayland&quot;]
 </code></pre>
-<h2><a class="header" href="#android-support" id="android-support">Android support</a></h2>
+<h2 id="android-support"><a class="header" href="#android-support">Android support</a></h2>
 <p>MSAA does not work. If you get crashes or a black screen, ensure MSAA is <em>not</em> enabled.</p>
 <p>Running in the background isn't handled properly. Switching out of the app may cause a crash.</p>
 <p>Track the status of Android support <a href="https://github.com/bevyengine/bevy/issues/86">here</a>.</p>
-<h1><a class="header" href="#bevy-basics" id="bevy-basics">Bevy Basics</a></h1>
+<h1 id="bevy-basics"><a class="header" href="#bevy-basics">Bevy Basics</a></h1>
 <p>Overview of the basics of programming in Bevy.</p>
 <p>Includes brief explanations of each core concept, with example code to show how
 it might be used in a game.</p>
@@ -921,10 +921,10 @@ it might be used in a game.</p>
 <p>If you are already familiar with the concepts, check out
 <a href="basics/../cheatsheet/_index.html">Bevy Cheatsheet</a>
 for a condensed listing of just the syntax + important usage notes.</p>
-<h1><a class="header" href="#entities" id="entities">Entities</a></h1>
+<h1 id="entities"><a class="header" href="#entities">Entities</a></h1>
 <p>Conceptually, an &quot;object&quot; in the game.</p>
 <p>Technically, entities are just simple unique integer IDs, that you can use to access component data.</p>
-<h1><a class="header" href="#components" id="components">Components</a></h1>
+<h1 id="components"><a class="header" href="#components">Components</a></h1>
 <p>Components are data that you can attach to entities.</p>
 <p>Any Rust type (<code>struct</code> or <code>enum</code>) can be used as a component.</p>
 <pre><code class="language-rust no_run noplayground">struct Health {
@@ -949,7 +949,7 @@ struct Player;
 struct Enemy;
 </code></pre>
 <p>Components can be accessed from systems, using <a href="basics/./queries.html">queries</a>. </p>
-<h1><a class="header" href="#component-bundles" id="component-bundles">Component Bundles</a></h1>
+<h1 id="component-bundles"><a class="header" href="#component-bundles">Component Bundles</a></h1>
 <p>Bundles are like &quot;templates&quot;, to make it easy to spawn entities with a common set of components.</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Bundle)]
 struct PlayerBundle {
@@ -959,7 +959,7 @@ struct PlayerBundle {
     _p: Player,
 }
 </code></pre>
-<h1><a class="header" href="#resources-2" id="resources-2">Resources</a></h1>
+<h1 id="resources-2"><a class="header" href="#resources-2">Resources</a></h1>
 <p>Akin to &quot;global variables&quot; or &quot;singletons&quot;, used to hold data independent of entities.</p>
 <p>Any Rust type (<code>struct</code> or <code>enum</code>) can be used as a resource.</p>
 <p>Types must be unique; there can only be one resource of a given type.</p>
@@ -969,7 +969,7 @@ struct PlayerBundle {
 }
 </code></pre>
 <p>Resources can be accessed from systems, using <code>Res</code>/<code>ResMut</code>.</p>
-<h2><a class="header" href="#resource-initialization" id="resource-initialization">Resource Initialization</a></h2>
+<h2 id="resource-initialization"><a class="header" href="#resource-initialization">Resource Initialization</a></h2>
 <p>Implement <code>Default</code> for simple resources:</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Debug, Default)]
 struct StartingLevel(usize);
@@ -1003,7 +1003,7 @@ impl FromResources for MyFancyResource {
 <pre><code class="language-rust no_run noplayground">commands.insert_resource(GoalsReached { main_goal: false, bonus: false });
 </code></pre>
 <p>If a resource of this type already exists, it will be overwritten.</p>
-<h1><a class="header" href="#systems-2" id="systems-2">Systems</a></h1>
+<h1 id="systems-2"><a class="header" href="#systems-2">Systems</a></h1>
 <p>Systems are functions you write, which are run by Bevy.</p>
 <p>This is where you implement all your game logic.</p>
 <p>These functions can only take special parameter types, to specify what game data you want to access.</p>
@@ -1022,7 +1022,7 @@ compiler error after adding more parameters to your system):</p>
     mut c: ResMut&lt;ResourceC&gt;,
 ) {}
 </code></pre>
-<h1><a class="header" href="#queries-2" id="queries-2">Queries</a></h1>
+<h1 id="queries-2"><a class="header" href="#queries-2">Queries</a></h1>
 <p>Queries let you access components of entities.</p>
 <pre><code class="language-rust no_run noplayground">fn check_zero_health(
     // access entities that have `Health` and `Transform` components
@@ -1055,7 +1055,7 @@ fn query_entities(q: Query&lt;(Entity, /* ... */)&gt;) {
     }
 }
 </code></pre>
-<h2><a class="header" href="#query-filters" id="query-filters">Query Filters</a></h2>
+<h2 id="query-filters"><a class="header" href="#query-filters">Query Filters</a></h2>
 <p>Add query filters to narrow down the entities you get from the query.</p>
 <p>Multiple filters can be combined:</p>
 <ul>
@@ -1077,7 +1077,7 @@ fn query_entities(q: Query&lt;(Entity, /* ... */)&gt;) {
     }
 }
 </code></pre>
-<h2><a class="header" href="#query-sets" id="query-sets">Query Sets</a></h2>
+<h2 id="query-sets"><a class="header" href="#query-sets">Query Sets</a></h2>
 <p>For safety reasons, a system cannot have multiple queries with mutability conflicts on the same components.</p>
 <p>The solution is to wrap them in a <code>QuerySet</code>:</p>
 <pre><code class="language-rust no_run noplayground">fn reset_health(
@@ -1097,7 +1097,7 @@ fn query_entities(q: Query&lt;(Entity, /* ... */)&gt;) {
 }
 </code></pre>
 <p>This ensures that only one of the conflicting queries can be used at the same time.</p>
-<h1><a class="header" href="#commands-2" id="commands-2">Commands</a></h1>
+<h1 id="commands-2"><a class="header" href="#commands-2">Commands</a></h1>
 <p>Use <code>Commands</code> to spawn/despawn entities, add/remove components on existing entities, insert resources.</p>
 <p>These actions only take effect at the end of the stage, not immediately.</p>
 <p>(if you are not using stages, that means your systems will see them the next frame, not the current)</p>
@@ -1144,13 +1144,13 @@ fn make_all_players_hostile(
     }
 }
 </code></pre>
-<h1><a class="header" href="#local-resources" id="local-resources">Local Resources</a></h1>
+<h1 id="local-resources"><a class="header" href="#local-resources">Local Resources</a></h1>
 <p>You can have per-system data, using <code>Local&lt;T&gt;</code>.</p>
 <pre><code class="language-rust no_run noplayground">fn my_system(mut local: Local&lt;MyState&gt;) {}
 </code></pre>
 <p>The type must implement <code>Default</code> or <code>FromResources</code>. It is automatically initialized.</p>
 <p>If the same type is used in multiple systems, they each get their own instance.</p>
-<h1><a class="header" href="#events-2" id="events-2">Events</a></h1>
+<h1 id="events-2"><a class="header" href="#events-2">Events</a></h1>
 <p>Send data between systems, to let your systems communicate with each other!</p>
 <p>Accessed using an <code>Events&lt;T&gt;</code> resource.</p>
 <p>Events don't persist. If receivers don't handle them every frame, they will be lost.</p>
@@ -1179,7 +1179,7 @@ fn debug_levelups(
 </code></pre>
 <p>Events are very flexible data flow tool. As events can be sent from any system
 and received by multiple systems, they are <em>extremely</em> versatile. Use them.</p>
-<h1><a class="header" href="#app-builder-main-function-2" id="app-builder-main-function-2">App Builder (main function)</a></h1>
+<h1 id="app-builder-main-function-2"><a class="header" href="#app-builder-main-function-2">App Builder (main function)</a></h1>
 <p>To enter the bevy runtime, build an <code>App</code>, composed of all the plugins, event types, resources, and systems, that you want to use.</p>
 <p>Everything must be registered in the <code>App</code>, or it will not work.</p>
 <p>You also need to add bevy's builtin functionality: either <code>DefaultPlugins</code> if
@@ -1211,7 +1211,7 @@ headless server.</p>
         .run();
 }
 </code></pre>
-<h1><a class="header" href="#assets-2" id="assets-2">Assets</a></h1>
+<h1 id="assets-2"><a class="header" href="#assets-2">Assets</a></h1>
 <p>Bevy has a flexible system for loading and managing your game assets
 asynchronously (in the background, without causing lag spikes in your game).</p>
 <p>The data of your loaded assets is stored in an <code>Assets&lt;T&gt;</code> resource.</p>
@@ -1252,7 +1252,7 @@ fn use_sprites(
     }
 }
 </code></pre>
-<h2><a class="header" href="#assetevent" id="assetevent">AssetEvent</a></h2>
+<h2 id="assetevent"><a class="header" href="#assetevent">AssetEvent</a></h2>
 <p>If you need to perform specific actions when the asset has finished loading, is
 modified, or removed, you can react to <code>AssetEvent</code>s.</p>
 <pre><code class="language-rust no_run noplayground">struct MapTexture {
@@ -1281,7 +1281,7 @@ fn fixup_textures(
     }
 }
 </code></pre>
-<h2><a class="header" href="#handles" id="handles">Handles</a></h2>
+<h2 id="handles"><a class="header" href="#handles">Handles</a></h2>
 <p>Handles have built-in reference counting (similar to <code>Rc</code>/<code>Arc</code> in Rust).</p>
 <p>Therefore, you need to <code>.clone()</code> them to create multiple handles to the same
 asset. The clone is a cheap operation, but it is explicit, to ensure that you
@@ -1305,7 +1305,7 @@ fn load_extra_assets(
 }
 </code></pre>
 <p>It will try to detect the format of each asset based on the file extension.</p>
-<h1><a class="header" href="#change-detection-2" id="change-detection-2">Change Detection</a></h1>
+<h1 id="change-detection-2"><a class="header" href="#change-detection-2">Change Detection</a></h1>
 <p>You can optimize your systems by only operating on entities when specific components change.</p>
 <p>Use query filters:</p>
 <ul>
@@ -1339,7 +1339,7 @@ fn debug_new_hostiles(
     }
 }
 </code></pre>
-<h2><a class="header" href="#warning" id="warning">WARNING!</a></h2>
+<h2 id="warning"><a class="header" href="#warning">WARNING!</a></h2>
 <p>Change information only persists until the end of the current frame!</p>
 <p>If your detecting system runs before the changing system, it will <em>not</em> detect
 the changes!</p>
@@ -1347,7 +1347,7 @@ the changes!</p>
 <a href="basics/./commands.html"><code>Commands</code></a>, which are only applied at the end of each
 <a href="basics/./stages.html">stage</a>. The detecting system needs to be in a <em>later stage</em> that
 runs during the same frame!</p>
-<h1><a class="header" href="#hierarchical-parentchild-entities" id="hierarchical-parentchild-entities">Hierarchical (Parent/Child) Entities</a></h1>
+<h1 id="hierarchical-parentchild-entities"><a class="header" href="#hierarchical-parentchild-entities">Hierarchical (Parent/Child) Entities</a></h1>
 <p>Technically, the Entities/Components themselves cannot form a hierarchy (it is a
 flat data structure). However, logical hierarchies are a common pattern in games.</p>
 <p>Bevy supports creating such a logical link between entities, to form a virtual
@@ -1382,13 +1382,13 @@ commands.spawn(MyBundle::default())
     }
 }
 </code></pre>
-<h2><a class="header" href="#relative-transforms" id="relative-transforms">Relative Transforms</a></h2>
+<h2 id="relative-transforms"><a class="header" href="#relative-transforms">Relative Transforms</a></h2>
 <p>To use transforms with hierarchical entities, both the parent and the child must have a <code>GlobalTransform</code> and a <code>Transform</code>.</p>
 <p>The <code>GlobalTransform</code> is managed by bevy internally; do not mutate it yourself.</p>
 <p>The <code>Transform</code> is what you can manipulate directly. On the child, it will behave relative to the parent.</p>
 <p>All component bundles that come with bevy provide this correctly, but if you are
 not using such a bundle, you need to make sure to add both of these components to both entities.</p>
-<h1><a class="header" href="#system-chaining-2" id="system-chaining-2">System Chaining</a></h1>
+<h1 id="system-chaining-2"><a class="header" href="#system-chaining-2">System Chaining</a></h1>
 <p>Systems can take an input and produce an output.</p>
 <p>One useful application of this is error handling:</p>
 <pre><code class="language-rust no_run noplayground">fn net_receive(mut netcode: ResMut&lt;MyNetProto&gt;) -&gt; std::io::Result&lt;()&gt; {
@@ -1415,7 +1415,7 @@ with the input/output). You have to connect them in a chain:</p>
 </code></pre>
 <p>In general, this pattern is useful for any scenario where you have one system
 that requires data produced from another system.</p>
-<h1><a class="header" href="#stages" id="stages">Stages</a></h1>
+<h1 id="stages"><a class="header" href="#stages">Stages</a></h1>
 <p>Bevy runs multiple systems in parallel, as much as possible, using multiple CPU
 cores to give you good performance.</p>
 <p>You can use stages to introduce synchronization points: ensure all systems of
@@ -1452,7 +1452,7 @@ after your game logic completes).</p>
         .run();
 }
 </code></pre>
-<h1><a class="header" href="#states-2" id="states-2">States</a></h1>
+<h1 id="states-2"><a class="header" href="#states-2">States</a></h1>
 <p>States allow you to structure the runtime &quot;flow&quot; of your app.</p>
 <p>You can have different systems running, depending on the state.</p>
 <p>You can add systems that only run when transitioning between states.</p>
@@ -1536,7 +1536,7 @@ fn main() {
 <p>Note: you can do arbitrarily many state transitions in a single frame. Bevy will
 handle all of them and execute all the relevant systems before moving on to the
 next stage in the app schedule.</p>
-<h1><a class="header" href="#plugins" id="plugins">Plugins</a></h1>
+<h1 id="plugins"><a class="header" href="#plugins">Plugins</a></h1>
 <p>As your project grows, it can be useful to make it more modular. You can split it into plugins.</p>
 <p>Plugins are simply collections of things to be added to the App Builder.</p>
 <pre><code class="language-rust no_run noplayground">struct MyPlugin;
@@ -1558,9 +1558,9 @@ fn main() {
         .run();
 }
 </code></pre>
-<h1><a class="header" href="#bevy-advanced-patterns" id="bevy-advanced-patterns">Bevy Advanced Patterns</a></h1>
+<h1 id="bevy-advanced-patterns"><a class="header" href="#bevy-advanced-patterns">Bevy Advanced Patterns</a></h1>
 <p>This section of the book contains advice about general practices that help you use bevy effectively.</p>
-<h1><a class="header" href="#generic-systems" id="generic-systems">Generic Systems</a></h1>
+<h1 id="generic-systems"><a class="header" href="#generic-systems">Generic Systems</a></h1>
 <p><a href="patterns/../code_bevy_release/src/generic-systems.rs">Click here to download the code from this page.</a></p>
 <hr />
 <p>Bevy systems are just plain rust functions, which means they can be generic.</p>
@@ -1614,12 +1614,12 @@ fn main() {
         .run();
 }
 </code></pre>
-<h1><a class="header" href="#bevy-cookbook" id="bevy-cookbook">Bevy Cookbook</a></h1>
+<h1 id="bevy-cookbook"><a class="header" href="#bevy-cookbook">Bevy Cookbook</a></h1>
 <p>List of recipes for common problems and tasks in game development.</p>
 <p>The recipes are written to only focus on the relevant information for the task at hand.</p>
 <p>Only the relevant parts of the code are shown. Full example files are available and linked on the page of each recipe.</p>
 <p>It is assumed that you are already familiar with Bevy programming. If not, check out <a href="cookbook/../basics/_index.html">Bevy Basics</a>.</p>
-<h1><a class="header" href="#input-handling" id="input-handling">Input Handling</a></h1>
+<h1 id="input-handling"><a class="header" href="#input-handling">Input Handling</a></h1>
 <p><a href="cookbook/../code_bevy_release/examples/input.rs">Click here for the full example code.</a></p>
 <hr />
 <p>Since bevy resources and events are global and accessible from any system, you
@@ -1697,7 +1697,7 @@ any relevant inputs wherever you need them.</p>
     }
 }
 </code></pre>
-<h1><a class="header" href="#quitting-the-app" id="quitting-the-app">Quitting the App</a></h1>
+<h1 id="quitting-the-app"><a class="header" href="#quitting-the-app">Quitting the App</a></h1>
 <p><a href="cookbook/../code_bevy_release/examples/quit.rs">Click here for the full example code.</a></p>
 <hr />
 <p>To cleanly shut down bevy, send an <code>AppExit</code> event from any system:</p>
@@ -1715,7 +1715,7 @@ fn exit_system(mut exit: ResMut&lt;Events&lt;AppExit&gt;&gt;) {
         .run();
 }
 </code></pre>
-<h1><a class="header" href="#changing-the-background-color" id="changing-the-background-color">Changing the Background Color</a></h1>
+<h1 id="changing-the-background-color"><a class="header" href="#changing-the-background-color">Changing the Background Color</a></h1>
 <p><a href="cookbook/../code_bevy_release/examples/clear-color.rs">Click here for the full example code.</a></p>
 <hr />
 <p>Use the <code>ClearColor</code> resource to choose the background color.</p>
@@ -1727,7 +1727,7 @@ fn exit_system(mut exit: ResMut&lt;Events&lt;AppExit&gt;&gt;) {
         .run();
 }
 </code></pre>
-<h1><a class="header" href="#show-framerate-in-console" id="show-framerate-in-console">Show Framerate in Console</a></h1>
+<h1 id="show-framerate-in-console"><a class="header" href="#show-framerate-in-console">Show Framerate in Console</a></h1>
 <p><a href="cookbook/../code_bevy_release/examples/print-framerate.rs">Click here for the full example code.</a></p>
 <hr />
 <p>You can use bevy's builtin diagnostics system to print framerate (FPS) to the console, for monitoring performance.</p>
@@ -1743,7 +1743,7 @@ fn main() {
         .run();
 }
 </code></pre>
-<h1><a class="header" href="#grabbing-the-mouse" id="grabbing-the-mouse">Grabbing the Mouse</a></h1>
+<h1 id="grabbing-the-mouse"><a class="header" href="#grabbing-the-mouse">Grabbing the Mouse</a></h1>
 <p><a href="cookbook/../code_bevy_release/examples/mouse-grab.rs">Click here for the full example code.</a></p>
 <hr />
 <p>You can lock/release the mouse cursor using bevy's <a href="https://github.com/bevyengine/bevy/blob/master/examples/window/window_settings.rs">window settings API</a>.</p>
@@ -1766,13 +1766,13 @@ fn main() {
     }
 }
 </code></pre>
-<h1><a class="header" href="#convert-cursor-to-world-coordinates" id="convert-cursor-to-world-coordinates">Convert cursor to world coordinates</a></h1>
+<h1 id="convert-cursor-to-world-coordinates"><a class="header" href="#convert-cursor-to-world-coordinates">Convert cursor to world coordinates</a></h1>
 <p><a href="cookbook/../code_bevy_release/examples/cursor2world.rs">Click here for the full example code.</a></p>
 <hr />
 <p>Bevy does not yet provide built-in functions to help with finding out what the cursor is pointing at.</p>
-<h2><a class="header" href="#3d-games" id="3d-games">3D games</a></h2>
+<h2 id="3d-games"><a class="header" href="#3d-games">3D games</a></h2>
 <p>There is a good (unofficial) plugin: <a href="https://github.com/aevyrie/bevy_mod_picking"><code>bevy_mod_picking</code></a>.</p>
-<h2><a class="header" href="#2d-games" id="2d-games">2D games</a></h2>
+<h2 id="2d-games"><a class="header" href="#2d-games">2D games</a></h2>
 <p>For a game using the default bevy 2d orthographic camera:</p>
 <pre><code class="language-rust no_run noplayground">/// Used to help identify our main camera
 struct MainCamera;
@@ -1811,7 +1811,7 @@ fn my_cursor_system(
     }
 }
 </code></pre>
-<h1><a class="header" href="#custom-camera-projection" id="custom-camera-projection">Custom Camera Projection</a></h1>
+<h1 id="custom-camera-projection"><a class="header" href="#custom-camera-projection">Custom Camera Projection</a></h1>
 <p><a href="cookbook/../code_bevy_release/examples/custom-projection.rs">Click here for the full example code.</a></p>
 <hr />
 <p>Camera with a custom projection (not using one of bevy's standard perspective or orthographic projections).</p>
@@ -1893,7 +1893,7 @@ fn main() {
         .run();
 }
 </code></pre>
-<h1><a class="header" href="#pan--orbit-camera" id="pan--orbit-camera">Pan + Orbit Camera</a></h1>
+<h1 id="pan--orbit-camera"><a class="header" href="#pan--orbit-camera">Pan + Orbit Camera</a></h1>
 <p><a href="cookbook/../code_bevy_release/examples/pan-orbit-camera.rs">Click here for the full example code.</a></p>
 <hr />
 <p>This code is a community contribution.</p>
@@ -2026,25 +2026,41 @@ fn spawn_camera(commands: &amp;mut Commands) {
         });
 }
 </code></pre>
-<h1><a class="header" href="#contributing" id="contributing">Contributing</a></h1>
+<h1 id="contributing"><a class="header" href="#contributing">Contributing</a></h1>
 <p>Any help with maintaining or improving the book is welcome! Contribute via <a href="https://github.com/bevy-cheatbook/bevy-cheatbook">GitHub</a>!</p>
 <p>Feel free to submit PRs for anything you consider useful. I will review them with you, so we can edit as needed to bring them to the style and quality desired for this book.</p>
+<p>You should aim to adhere to the guidelines on this page, but don't worry too much about it; I'll happily work with you to improve your contributions.</p>
+<p>If you prefer to only write code, that's fine. I can write the text to go with the code for you.</p>
 <p>Even if you just have an idea, but don't want to write the content yourself, suggest it in an issue!</p>
 <p>Be civil. If you need a code of conduct, have a look at Bevy's.</p>
-<h2><a class="header" href="#bevy-version" id="bevy-version">Bevy version</a></h2>
+<h2 id="help-wanted"><a class="header" href="#help-wanted">Help Wanted</a></h2>
+<p>Specific things that I would really appreciate help with:</p>
+<ul>
+<li>Adding new syntax to the <a href="./cheatsheet/master.html">cheatsheet for the latest Bevy Git</a>.</li>
+<li>More content for <a href="./patterns/_index.html">Advanced Patterns</a>, more <a href="./cookbook/_index.html">Cookbook</a> examples.
+<ul>
+<li>Especially if you frequent the Bevy Discord (or other communities) and know what kinds of things people come across.</li>
+</ul>
+</li>
+</ul>
+<h2 id="credits"><a class="header" href="#credits">Credits</a></h2>
+<p>When I merge your contributions to the book, I will mention you by your github username with a link to your PR.</p>
+<p>Let me know if you don't want to be credited, or if you prefer to be credited in some other way.</p>
+<h2 id="bevy-version"><a class="header" href="#bevy-version">Bevy version</a></h2>
 <p>The book is targeted at the latest bevy release (0.4).</p>
-<p>However, content that covers newer additions in bevy git, is also welcome!</p>
-<p>It needs to be clearly marked.</p>
+<p>Content that covers new additions in bevy git, is also welcome! It needs to be clearly marked.</p>
 <p>Anything that exists in both the release version and the git version, should be written for the release version.</p>
-<h2><a class="header" href="#example-code" id="example-code">Example Code</a></h2>
+<h2 id="example-code"><a class="header" href="#example-code">Example Code</a></h2>
 <p>All code that uses Bevy APIs should live under <code>src/code_bevy_release</code> or <code>src/code_bevy_master</code>, depending on the version of Bevy used.</p>
 <p>Cookbook recipes should be independent files under <code>examples</code>. Only embed the relevant parts into the book page, without unnecessary boilerplate. Link to the full example file at the top of the page.</p>
 <p>Cheatsheet code lives in <code>src/cheatsheet.rs</code>.</p>
 <p>Miscellaneous code should live in <code>src/lib.rs</code>.</p>
 <p>Always use mdbook anchor syntax to embed code, never line numbers.
 <a href="https://rust-lang.github.io/mdBook/format/mdbook.html#including-portions-of-a-file">See here</a>.</p>
-<h2><a class="header" href="#style-guidelines" id="style-guidelines">Style Guidelines</a></h2>
-<p>Follow these guidelines to avoid the need for edits to your PRs and get them merged more easily:</p>
+<h2 id="style-guidelines"><a class="header" href="#style-guidelines">Style Guidelines</a></h2>
+<p>Code snippets in the Cheatsheet should be as concise as possible. Feel free to use meaningless placeholder names; don't try to make them &quot;realistic&quot;.</p>
+<p>Code in other sections, however, should aim to &quot;look realistic&quot;, as to illustrate what the feature might actually be used for.</p>
+<p>If you are writing text for the book, follow these guidelines to avoid the need for edits to your PRs and get them merged more easily:</p>
 <ul>
 <li>Reduce verbosity. Try to get the point across with simpler code and explanations.
 <ul>

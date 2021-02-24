@@ -163,7 +163,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#bevy-cheatsheet-for-bevy-04" id="bevy-cheatsheet-for-bevy-04">Bevy Cheatsheet (for bevy 0.4)</a></h1>
+                        <h1 id="bevy-cheatsheet-for-bevy-04"><a class="header" href="#bevy-cheatsheet-for-bevy-04">Bevy Cheatsheet (for bevy 0.4)</a></h1>
 <p>One-page overview of common bevy syntax and features.</p>
 <p>Concise listing of the syntax + important usage notes, no explanations.</p>
 <p>Intended for people who are familiar with the core concepts.</p>
@@ -173,9 +173,9 @@ for brief explanations of each feature.</p>
 <hr />
 <p>Click on &quot;[explain]&quot; links to go to the relevant <a href="../basics/_index.html">Bevy Basics</a> page!</p>
 <hr />
-<h2><a class="header" href="#systems" id="systems">Systems</a></h2>
+<h2 id="systems"><a class="header" href="#systems">Systems</a></h2>
 <p>[<a href="../basics/systems.html">explain</a>]</p>
-<h2><a class="header" href="#entities-and-components" id="entities-and-components">Entities and Components</a></h2>
+<h2 id="entities-and-components"><a class="header" href="#entities-and-components">Entities and Components</a></h2>
 <p>[<a href="../basics/ec.html">explain</a>]</p>
 <p>Any Rust type (<code>struct</code> or <code>enum</code>) can be used as a component.</p>
 <p>Type must be unique; only one instance per type per entity can exist. Use newtypes.</p>
@@ -187,7 +187,7 @@ struct AbBundle {
     b: ComponentB,
 }
 </code></pre>
-<h2><a class="header" href="#resources" id="resources">Resources</a></h2>
+<h2 id="resources"><a class="header" href="#resources">Resources</a></h2>
 <p>[<a href="../basics/res.html">explain</a>]</p>
 <p>Any Rust type (<code>struct</code> or <code>enum</code>) can be used as a resource.</p>
 <p>Type must be unique; only one instance per type can exist. Use newtypes.</p>
@@ -221,7 +221,7 @@ struct AbBundle {
     }
 }
 </code></pre>
-<h2><a class="header" href="#queries" id="queries">Queries</a></h2>
+<h2 id="queries"><a class="header" href="#queries">Queries</a></h2>
 <p>[<a href="../basics/queries.html">explain</a>]</p>
 <pre><code class="language-rust no_run noplayground">fn my_system(mut query: Query&lt;(Entity, &amp;ComponentA, &amp;mut ComponentB)&gt;) {
     // operate on all matching entities
@@ -261,7 +261,7 @@ struct AbBundle {
     }
 }
 </code></pre>
-<h2><a class="header" href="#change-detection" id="change-detection">Change Detection</a></h2>
+<h2 id="change-detection"><a class="header" href="#change-detection">Change Detection</a></h2>
 <p>[<a href="../basics/change-detection.html">explain</a>]</p>
 <p>Query filters:</p>
 <ul>
@@ -277,7 +277,7 @@ struct AbBundle {
 }
 </code></pre>
 <p><strong>WARNING!</strong> The detecting system must run after the changing system, <em>during the same frame</em>.</p>
-<h2><a class="header" href="#commands" id="commands">Commands</a></h2>
+<h2 id="commands"><a class="header" href="#commands">Commands</a></h2>
 <p>[<a href="../basics/commands.html">explain</a>]</p>
 <pre><code class="language-rust no_run noplayground">fn manage_entities_components_resources(commands: &amp;mut Commands) {
     // build and spawn an entity
@@ -303,14 +303,14 @@ struct AbBundle {
 }
 </code></pre>
 <p>These actions are applied at the end of the stage.</p>
-<h2><a class="header" href="#local-per-system-resources" id="local-per-system-resources">Local (per-system) Resources</a></h2>
+<h2 id="local-per-system-resources"><a class="header" href="#local-per-system-resources">Local (per-system) Resources</a></h2>
 <p>[<a href="../basics/local.html">explain</a>]</p>
 <pre><code class="language-rust no_run noplayground">fn with_local(local: Local&lt;MyData&gt;) {
     // `local` is an instance of `MyData` uniquely for this system
 }
 </code></pre>
 <p>The type must implement <code>Default</code> or <code>FromResources</code>. It is automatically initialized.</p>
-<h2><a class="header" href="#events" id="events">Events</a></h2>
+<h2 id="events"><a class="header" href="#events">Events</a></h2>
 <p>[<a href="../basics/events.html">explain</a>]</p>
 <pre><code class="language-rust no_run noplayground">struct MyEvent;
 
@@ -336,7 +336,7 @@ fn main() {
 }
 </code></pre>
 <p>Events don't persist. If you don't handle them every frame, they will be lost.</p>
-<h2><a class="header" href="#entity-hierarchies-parentchild" id="entity-hierarchies-parentchild">Entity Hierarchies (Parent/Child)</a></h2>
+<h2 id="entity-hierarchies-parentchild"><a class="header" href="#entity-hierarchies-parentchild">Entity Hierarchies (Parent/Child)</a></h2>
 <p>[<a href="../basics/parent-child.html">explain</a>]</p>
 <pre><code class="language-rust no_run noplayground">fn spawn_nested(commands: &amp;mut Commands) {
     let parent = commands.spawn(MyParentBundle::default())
@@ -353,7 +353,7 @@ fn main() {
 </code></pre>
 <p>If you are using <code>Transform</code>s, ensure both the parent and the child also have a <code>GlobalTransform</code>.</p>
 <p>Child <code>Transform</code> is relative to the parent. <code>GlobalTransform</code> is internally managed by bevy.</p>
-<h2><a class="header" href="#system-chaining" id="system-chaining">System Chaining</a></h2>
+<h2 id="system-chaining"><a class="header" href="#system-chaining">System Chaining</a></h2>
 <p>[<a href="../basics/system-chaining.html">explain</a>]</p>
 <pre><code class="language-rust no_run noplayground">fn output_system(/* system params */) -&gt; MyData {
     MyData::default()
@@ -369,7 +369,7 @@ fn main() {
         .run();
 }
 </code></pre>
-<h2><a class="header" href="#app-builder-main-function" id="app-builder-main-function">App Builder (main function)</a></h2>
+<h2 id="app-builder-main-function"><a class="header" href="#app-builder-main-function">App Builder (main function)</a></h2>
 <p>[<a href="../basics/app-builder.html">explain</a>, <a href="../basics/stages.html">stages</a>, <a href="../basics/plugins.html">plugins</a>]</p>
 <p>App builder:</p>
 <pre><code class="language-rust no_run noplayground">fn main() {
@@ -412,7 +412,7 @@ impl Plugin for MyPlugin {
     }
 }
 </code></pre>
-<h2><a class="header" href="#states" id="states">States</a></h2>
+<h2 id="states"><a class="header" href="#states">States</a></h2>
 <p>[<a href="../basics/states.html">explain</a>]</p>
 <p>App builder with States:</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Debug, Clone, PartialEq, Eq)]
@@ -451,7 +451,7 @@ fn main() {
     }
 }
 </code></pre>
-<h2><a class="header" href="#assets" id="assets">Assets</a></h2>
+<h2 id="assets"><a class="header" href="#assets">Assets</a></h2>
 <p>[<a href="../basics/assets.html">explain</a>]</p>
 <p>Load asset:</p>
 <pre><code class="language-rust no_run noplayground">fn asset_setup(server: Res&lt;AssetServer&gt;) {
