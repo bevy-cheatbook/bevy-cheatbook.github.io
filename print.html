@@ -1389,7 +1389,7 @@ commands.spawn(MyBundle::default())
 <p>All component bundles that come with bevy provide this correctly, but if you are
 not using such a bundle, you need to make sure to add both of these components to both entities.</p>
 <h1 id="system-chaining-2"><a class="header" href="#system-chaining-2">System Chaining</a></h1>
-<p>Systems can take an input and produce an output, and connected together as a chain.</p>
+<p>Systems can take an input and produce an output, and be connected together to run as a single larger system (chain).</p>
 <p>Think of this as &quot;glue&quot;, for constructing larger systems out of multiple parts.</p>
 <p>One useful application of this is error handling (allowing the use of <code>?</code>):</p>
 <pre><code class="language-rust no_run noplayground">fn net_receive(mut netcode: ResMut&lt;MyNetProto&gt;) -&gt; std::io::Result&lt;()&gt; {
