@@ -239,10 +239,15 @@ struct AbBundle {
 </code></pre>
 <h2 id="queries"><a class="header" href="#queries">Queries</a></h2>
 <p>[<a href="../basics/queries.html">explain</a>]</p>
-<pre><code class="language-rust no_run noplayground">fn my_system(mut query: Query&lt;(Entity, &amp;ComponentA, &amp;mut ComponentB)&gt;) {
+<pre><code class="language-rust no_run noplayground">fn my_system(
+    mut query: Query&lt;(Entity, &amp;ComponentA, &amp;mut ComponentB, Option&lt;&amp;mut ComponentC&gt;)&gt;
+) {
     // operate on all matching entities
-    for (entity, a, mut b) in query.iter_mut() {
+    for (entity, a, mut b, c) in query.iter_mut() {
         // do something with `a` and `b`; `entity` is the Entity id
+        if let Some(mut c) = c {
+            // do something with `c` if it exists
+        }
     }
 }
 </code></pre>

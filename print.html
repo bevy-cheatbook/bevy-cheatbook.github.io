@@ -271,10 +271,15 @@ struct AbBundle {
 </code></pre>
 <h2 id="queries"><a class="header" href="#queries">Queries</a></h2>
 <p>[<a href="cheatsheet/../basics/queries.html">explain</a>]</p>
-<pre><code class="language-rust no_run noplayground">fn my_system(mut query: Query&lt;(Entity, &amp;ComponentA, &amp;mut ComponentB)&gt;) {
+<pre><code class="language-rust no_run noplayground">fn my_system(
+    mut query: Query&lt;(Entity, &amp;ComponentA, &amp;mut ComponentB, Option&lt;&amp;mut ComponentC&gt;)&gt;
+) {
     // operate on all matching entities
-    for (entity, a, mut b) in query.iter_mut() {
+    for (entity, a, mut b, c) in query.iter_mut() {
         // do something with `a` and `b`; `entity` is the Entity id
+        if let Some(mut c) = c {
+            // do something with `c` if it exists
+        }
     }
 }
 </code></pre>
@@ -625,10 +630,15 @@ struct AbBundle {
 </code></pre>
 <h2 id="queries-1"><a class="header" href="#queries-1">Queries</a></h2>
 <p>[<a href="cheatsheet/../basics/queries.html">explain</a>]</p>
-<pre><code class="language-rust no_run noplayground">fn my_system(mut query: Query&lt;(Entity, &amp;ComponentA, &amp;mut ComponentB)&gt;) {
+<pre><code class="language-rust no_run noplayground">fn my_system(
+    mut query: Query&lt;(Entity, &amp;ComponentA, &amp;mut ComponentB, Option&lt;&amp;mut ComponentC&gt;)&gt;
+) {
     // operate on all matching entities
-    for (entity, a, mut b) in query.iter_mut() {
+    for (entity, a, mut b, c) in query.iter_mut() {
         // do something with `a` and `b`; `entity` is the Entity id
+        if let Some(mut c) = c {
+            // do something with `c` if it exists
+        }
     }
 }
 </code></pre>
@@ -1009,15 +1019,21 @@ impl FromResources for MyFancyResource {
 <pre><code class="language-rust no_run noplayground">fn check_zero_health(
     // access entities that have `Health` and `Transform` components
     // get read-only access to `Health` and mutable access to `Transform`
-    mut query: Query&lt;(&amp;Health, &amp;mut Transform)&gt;,
+    // optional component: get access to `Player` if it exists
+    mut query: Query&lt;(&amp;Health, &amp;mut Transform, Option&lt;&amp;Player&gt;)&gt;,
 ) {
     // get all matching entities
-    for (health, mut transform) in query.iter_mut() {
+    for (health, mut transform, player) in query.iter_mut() {
         eprintln!(&quot;Entity at {} has {} HP.&quot;, transform.translation, health.hp);
 
         // center if hp is zero
         if health.hp &lt;= 0.0 {
             transform.translation = Vec3::zero();
+        }
+
+        if let Some(player) = player {
+            // the current entity is the player!
+            // do something special!
         }
     }
 }

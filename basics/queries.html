@@ -168,15 +168,21 @@
 <pre><code class="language-rust no_run noplayground">fn check_zero_health(
     // access entities that have `Health` and `Transform` components
     // get read-only access to `Health` and mutable access to `Transform`
-    mut query: Query&lt;(&amp;Health, &amp;mut Transform)&gt;,
+    // optional component: get access to `Player` if it exists
+    mut query: Query&lt;(&amp;Health, &amp;mut Transform, Option&lt;&amp;Player&gt;)&gt;,
 ) {
     // get all matching entities
-    for (health, mut transform) in query.iter_mut() {
+    for (health, mut transform, player) in query.iter_mut() {
         eprintln!(&quot;Entity at {} has {} HP.&quot;, transform.translation, health.hp);
 
         // center if hp is zero
         if health.hp &lt;= 0.0 {
             transform.translation = Vec3::zero();
+        }
+
+        if let Some(player) = player {
+            // the current entity is the player!
+            // do something special!
         }
     }
 }
