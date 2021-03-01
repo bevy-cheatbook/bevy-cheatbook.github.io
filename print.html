@@ -1616,19 +1616,25 @@ systems to your Bevy app.</p>
 </code></pre>
 <p>This is caused by your function having incompatible parameters. Bevy can only
 accept special types as system parameters.</p>
-<p>You might also get an error that looks like this:</p>
+<p>You might also errors that look like this:</p>
 <pre><code>the trait bound `Component: WorldQuery` is not satisfied
 the trait `WorldQuery` is not implemented for `Component`
 </code></pre>
-<p>This is caused by a malformed query, such as if you write <code>Query&lt;Component&gt;</code> instead of <code>Query&lt;&amp;Component&gt;</code> or <code>Query&lt;&amp;mut Component&gt;</code>.</p>
+<pre><code>the trait bound `Component: QueryFilter` is not satisfied
+the trait `QueryFilter` is not implemented for `Component`
+</code></pre>
+<pre><code>this struct takes at most 2 type arguments but 3 type arguments were supplied
+</code></pre>
+<p>These errors are caused by a malformed query.</p>
 <h2 id="common-beginner-mistakes"><a class="header" href="#common-beginner-mistakes">Common beginner mistakes</a></h2>
-<ol>
+<ul>
 <li>Using <code>Commands</code> instead of <code>&amp;mut Commands</code>.</li>
 <li>Using <code>Query&lt;MyStuff&gt;</code> instead of <code>Query&lt;&amp;MyStuff&gt;</code> or <code>Query&lt;&amp;mut MyStuff&gt;</code>.</li>
+<li>Using <code>Query&lt;&amp;ComponentA, &amp;ComponentB&gt;</code> instead of <code>Query&lt;(&amp;ComponentA, &amp;ComponentB)&gt;</code> (forgetting the tuple)</li>
 <li>Using your resource types directly without <code>Res</code> or <code>ResMut</code>.</li>
 <li>Using your component types directly without putting them in a <code>Query</code>.</li>
 <li>Using other arbitrary types in your function.</li>
-</ol>
+</ul>
 <p>Note that <code>Query&lt;Entity&gt;</code> is correct, because the Entity ID is special; it is not a component.</p>
 <h2 id="supported-types-bevy-04"><a class="header" href="#supported-types-bevy-04">Supported types (bevy 0.4)</a></h2>
 <p>It can be difficult to figure out what types are supported from the <a href="https://docs.rs/bevy/0.4.0/bevy/ecs/trait.FetchSystemParam.html">API
