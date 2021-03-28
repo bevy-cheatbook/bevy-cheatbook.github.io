@@ -185,16 +185,18 @@ for additional resources to help you on your bevy journey!</p>
 <p>This version of the book is for Bevy release 0.4.</p>
 <p>The cheatsheet also has a version for bevy git. An attempt is made to keep it reasonably up-to-date.</p>
 <h2 id="license"><a class="header" href="#license">License</a></h2>
-<p>All code in the book is under
-<a href="http://creativecommons.org/publicdomain/zero/1.0/">CC0</a> (public domain).
-To the extent possible under law, the relevant Authors have waived all copyright
-and related or neighboring rights to Bevy Cheatbook Example Code.</p>
-<p>The text of the book is under
-<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>.
-Copyright © 2021 Jasen Borisov.</p>
-<h2 id="contributions-welcome"><a class="header" href="#contributions-welcome">Contributions Welcome!</a></h2>
-<p>Development of the book happens on <a href="https://github.com/bevy-cheatbook/bevy-cheatbook">GitHub</a>.</p>
-<p>See the <a href="./contributing.html">Contributing</a> section for advice!</p>
+<p>Copyright © 2021 Jasen Borisov.</p>
+<p>All code in the book is provided under the <a href="https://github.com/bevy-cheatbook/mit-0">MIT-0 License</a>.</p>
+<p>The text of the book is provided under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a>.</p>
+<p>Exception: If used for the purpose of contribution to the Official Bevy Project
+and/or its Official Documentation, the entire content of the book may be used
+under the <a href="https://github.com/bevy-cheatbook/mit-0">MIT-0 License</a>.</p>
+<h2 id="contributions"><a class="header" href="#contributions">Contributions</a></h2>
+<p>Development of the book is hosted on <a href="https://github.com/bevy-cheatbook/bevy-cheatbook">GitHub</a>.</p>
+<p>Please file GitHub Issues for any wrong/confusing/misleading information, as
+well as suggestions for new content you'd like to be added to the book.</p>
+<p>Contributions are accepted, with some limitations.</p>
+<p>See the <a href="./contributing.html">Contributing</a> section for all the details.</p>
 <h1 id="bevy-cheatsheet"><a class="header" href="#bevy-cheatsheet">Bevy Cheatsheet</a></h1>
 <p>One-page overview of common bevy syntax and features.</p>
 <p>Concise listing of the syntax + important usage notes, no explanations.</p>
@@ -2223,47 +2225,71 @@ fn spawn_camera(commands: &amp;mut Commands) {
 }
 </code></pre>
 <h1 id="contributing"><a class="header" href="#contributing">Contributing</a></h1>
+<p>Be civil. If you need a code of conduct, have a look at Bevy's.</p>
 <p>If you have any suggestions for the book, such as ideas for new content, or if
 you notice anything that is incorrect or misleading, please file issues in <a href="https://github.com/bevy-cheatbook/bevy-cheatbook">the
 GitHub repository</a>!</p>
-<p>Code contributions are welcome! Feel free to directly make PRs for new examples,
-or changes to existing code. Code only. I will take care of the book text / page
-that your code will be displayed on.</p>
-<p>By contributing, you agree to waive all copyright, to the extent possible under
-law, and provide your work under the CC0 public domain license.</p>
+<h2 id="contributing-code"><a class="header" href="#contributing-code">Contributing Code</a></h2>
+<p>If you simply want to contribute code examples to the book, feel free to make a
+PR. I can take care of writing the book text / page that your code will be
+displayed on.</p>
+<h3 id="cookbook-examples"><a class="header" href="#cookbook-examples">Cookbook Examples</a></h3>
+<p>The code for cookbook examples should be provided as a full, runnable, example
+file, under <code>src/code/examples</code>. The book page will only show the relevant parts
+of the code, without unnecessary boilerplate.</p>
+<p>Always use <a href="https://rust-lang.github.io/mdBook/format/mdbook.html#including-portions-of-a-file">mdbook anchor syntax</a>,
+not line numbers, to denote the parts of the code to be shown on the page.</p>
+<h3 id="credits"><a class="header" href="#credits">Credits</a></h3>
 <p>If you contribute a cookbook example, I will credit you in the book by your
 github username with a link to the PR. Please let me know if you prefer not to
 be credited, or if you would like to be credited in another way (but no
 commercial self-promotion allowed).</p>
-<p>Direct contributions to the book text are <em>not</em> accepted. I want to author it
-all myself, so that the book can follow a coherent editorial style, and so that
-there are no complications with copyrights and licensing.</p>
-<p>Be civil. If you need a code of conduct, have a look at Bevy's.</p>
-<h2 id="help-wanted"><a class="header" href="#help-wanted">Help Wanted</a></h2>
-<p>Specific things that I would really appreciate help with:</p>
+<h2 id="contributing-book-text"><a class="header" href="#contributing-book-text">Contributing Book Text</a></h2>
+<p>I do not directly merge book text written by other people. This is because I
+want the book to follow a consistent editorial style.</p>
+<p>If you would like to write new content for the book, feel free to make a PR with
+the content to be included, but note that it will likely not be preserved
+exactly as you wrote it.</p>
+<p>I will likely merge it into a temporary branch and then edit or rewrite it as I
+see fit, for publishing into the book.</p>
+<h2 id="licensing"><a class="header" href="#licensing">Licensing</a></h2>
+<p>To avoid complications with copyright and licensing, you agree to provide any
+contributions you make to the project under the <a href="https://github.com/bevy-cheatbook/mit-0">MIT-0 No Attribution
+License</a>.</p>
+<p>Note that this allows your work to be relicensed without preserving your copyright.</p>
+<p>As described previously, the actual published content in the book will be my own
+derivative work based on your contributions. I will license it consistently with
+the rest of the book; see: <a href="./introduction.html#license">License</a>.</p>
+<h2 id="style-guidelines"><a class="header" href="#style-guidelines">Style Guidelines</a></h2>
+<p>Aim for simplicity and minimalism. Do not include things irrelevant to getting the point across.</p>
+<p>&quot;Perfection is achieved not when there is nothing more to add, but when there is nothing more to remove.&quot;</p>
+<p>Don't forget to point out potential gotchas and other relevant practical considerations.</p>
+<p>Try to use the most common/standard terminology and keywords, to make things
+easy to find. Don't come up with new/extra terminology of your own.</p>
+<p>Avoid repeating information found elsewhere in the book, prefer linking to it instead.</p>
+<h3 id="code-style"><a class="header" href="#code-style">Code Style</a></h3>
+<p>Code snippets in the Cheatsheet should be as concise as possible. Feel free to
+use meaningless placeholder names; don't try to make them &quot;realistic&quot;.</p>
+<p>Code in other sections, however, should aim to &quot;look realistic&quot;, as to
+illustrate what the feature might actually be used for.</p>
+<p>Avoid long lines of code, to keep it readable on small screens.</p>
+<p>Use reasonable formatting that does not deviate much from the common conventions
+used by the Rust language community. I don't enforce it strictly; there is no
+need to use <code>rustfmt</code>. If deviating from those standards allows for the code to
+be presented better in the context of the book, then doing so is preferable.</p>
+<h3 id="text-style"><a class="header" href="#text-style">Text Style</a></h3>
+<p>Make it easy to read.</p>
 <ul>
-<li>Adding new syntax to the <a href="./cheatsheet/master.html">cheatsheet for the latest Bevy Git</a>.</li>
-<li>More <a href="./cookbook/_index.html">Cookbook</a> examples.</li>
-<li>More content for <a href="./patterns/_index.html">Advanced Patterns</a> and <a href="./pitfalls/_index.html">Common Pitfalls</a>.
+<li>Be brief. Try to cover all important information without verbose explanations.</li>
+<li>Prefer simple English with short sentences.</li>
+<li>Avoid information overload:
 <ul>
-<li>Especially if you frequent the Bevy Discord (or other communities) and know what kinds of things people come across.</li>
+<li>Split things into short paragraphs.</li>
+<li>Avoid introducing many (even if related) topics at the same time.</li>
+<li>Cover advanced usage separately from the basics.</li>
 </ul>
 </li>
 </ul>
-<h2 id="bevy-version"><a class="header" href="#bevy-version">Bevy version</a></h2>
-<p>The book is targeted at the latest bevy release (0.4).</p>
-<p>Content that covers new additions in bevy git, is also welcome! It needs to be clearly marked.</p>
-<p>Anything that exists in both the release version and the git version, should be written for the release version.</p>
-<h2 id="example-code"><a class="header" href="#example-code">Example Code</a></h2>
-<p>All code that uses should live under <code>src/code_bevy_release</code> or <code>src/code_bevy_master</code>, depending on the version of Bevy used.</p>
-<p>Cookbook recipes should be independent files under <code>examples</code>.</p>
-<p>Cheatsheet code lives in <code>src/cheatsheet.rs</code>.</p>
-<h2 id="style-guidelines"><a class="header" href="#style-guidelines">Style Guidelines</a></h2>
-<p>Code snippets in the Cheatsheet should be as concise as possible. Feel free to use meaningless placeholder names; don't try to make them &quot;realistic&quot;.</p>
-<p>Code in other sections, however, should aim to &quot;look realistic&quot;, as to illustrate what the feature might actually be used for.</p>
-<p>Aim for simplicity and minimalism. Do not include things irrelevant to getting the point across. &quot;Perfection is achieved not when there is nothing more to add, but when there is nothing more to remove.&quot;</p>
-<p>Try to use the most common/standard terminology and keywords, to make things easy to find. Don't come up with new/extra terminology of your own.</p>
-<p>Avoid long lines of code, to keep it readable on small screens.</p>
 
                     </main>
 
