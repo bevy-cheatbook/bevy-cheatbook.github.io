@@ -197,7 +197,8 @@ mechanism. For most use cases, you probably want to use <a href="./events.html">
 all the combined resources and queries. This implies that parallelism could be
 limited, affecting performance.</p>
 <p>Avoid adding a system that requires mutable access to anything, as part of
-multiple chains. It would block all affected chains from running in parallel.</p>
+multiple chains. It would block all affected chains (and other systems accessing
+the same data) from running in parallel.</p>
 
                     </main>
 

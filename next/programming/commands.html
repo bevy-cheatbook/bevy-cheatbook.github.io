@@ -165,8 +165,6 @@
                     <main>
                         <h1 id="commands"><a class="header" href="#commands">Commands</a></h1>
 <p>Use <code>Commands</code> to spawn/despawn entities, add/remove components on existing entities, manage resources.</p>
-<p>These actions only take effect at the end of the stage, not immediately.</p>
-<p>(if you are not using stages, that means your systems will see them <a href="../pitfalls/frame-delay.html">on the next frame update</a>)</p>
 <p>Manage Entities and Components:</p>
 <pre><code class="language-rust no_run noplayground">fn spawn_player(
     mut commands: Commands,
@@ -222,6 +220,8 @@ fn make_all_players_hostile(
 <pre><code class="language-rust no_run noplayground">commands.insert_resource(GoalsReached { main_goal: false, bonus: false });
 commands.remove_resource::&lt;MyResource&gt;();
 </code></pre>
+<p>These actions do not take effect immediately; they are queued to be performed later when it is safe to do so. See: <a href="./stages.html">stages</a>.</p>
+<p>(if you are not using stages, that means your systems will see them <a href="../pitfalls/frame-delay.html">on the next frame update</a>)</p>
 
                     </main>
 

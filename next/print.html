@@ -822,8 +822,6 @@ fn query_entities(q: Query&lt;(Entity, /* ... */)&gt;) {
 <p>This ensures that only one of the conflicting queries can be used at the same time.</p>
 <h1 id="commands-1"><a class="header" href="#commands-1">Commands</a></h1>
 <p>Use <code>Commands</code> to spawn/despawn entities, add/remove components on existing entities, manage resources.</p>
-<p>These actions only take effect at the end of the stage, not immediately.</p>
-<p>(if you are not using stages, that means your systems will see them <a href="programming/../pitfalls/frame-delay.html">on the next frame update</a>)</p>
 <p>Manage Entities and Components:</p>
 <pre><code class="language-rust no_run noplayground">fn spawn_player(
     mut commands: Commands,
@@ -879,6 +877,8 @@ fn make_all_players_hostile(
 <pre><code class="language-rust no_run noplayground">commands.insert_resource(GoalsReached { main_goal: false, bonus: false });
 commands.remove_resource::&lt;MyResource&gt;();
 </code></pre>
+<p>These actions do not take effect immediately; they are queued to be performed later when it is safe to do so. See: <a href="programming/./stages.html">stages</a>.</p>
+<p>(if you are not using stages, that means your systems will see them <a href="programming/../pitfalls/frame-delay.html">on the next frame update</a>)</p>
 <h1 id="events-1"><a class="header" href="#events-1">Events</a></h1>
 <p>Send data between systems! Let your systems communicate with each other!</p>
 <p>To send events, use an <code>EventWriter&lt;T&gt;</code>. To receive events, use an <code>EventReader&lt;T&gt;</code>.</p>
@@ -915,7 +915,7 @@ miss some.</p>
 memory use from unhandled events.</p>
 <p>Also beware of <a href="programming/../pitfalls/frame-delay.html">frame delay / 1-frame-lag</a>. This can
 occur if Bevy runs the receiving system before the sending system. The receiving
-system will get the events the next time it runs, typically on the next frame update.</p>
+system will only get a chance to receive the events on the next frame update.</p>
 <p>If you need to ensure that events are handled immediately / during the same frame,
 you can use <a href="programming/./system-order.html">explicit system ordering</a>.</p>
 <h1 id="app-builder-main-function-1"><a class="header" href="#app-builder-main-function-1">App Builder (main function)</a></h1>
@@ -1102,7 +1102,8 @@ mechanism. For most use cases, you probably want to use <a href="programming/./e
 all the combined resources and queries. This implies that parallelism could be
 limited, affecting performance.</p>
 <p>Avoid adding a system that requires mutable access to anything, as part of
-multiple chains. It would block all affected chains from running in parallel.</p>
+multiple chains. It would block all affected chains (and other systems accessing
+the same data) from running in parallel.</p>
 <h1 id="states-1"><a class="header" href="#states-1">States</a></h1>
 <p>States allow you to structure the runtime &quot;flow&quot; of your app.</p>
 <p>You can have different systems running, depending on the state.</p>
@@ -1179,21 +1180,26 @@ fn main() {
 <p>If you intend to publish plugins as crates for public use, you should read
 <a href="https://github.com/bevyengine/bevy/blob/main/docs/plugins_guidelines.md">the official guidelines for plugin authors</a>.</p>
 <h1 id="stages"><a class="header" href="#stages">Stages</a></h1>
-<p>Bevy runs multiple systems in parallel, as much as possible, using multiple CPU
-cores to give you good performance.</p>
-<p>You can use stages to introduce synchronization points: ensure all systems of
-the previous stage have completed before any systems of the next stage begin.</p>
-<p><code>Commands</code> are applied at the end of each stage.</p>
-<p>Bevy provides at least these built-in stages: <code>First</code>, <code>PreUpdate</code>, <code>Update</code>, <code>PostUpdate</code>, <code>Last</code>.</p>
-<p>By default, when you add systems, they are added to <code>Update</code>.</p>
+<p>All systems to be run by Bevy are contained in stages. Every frame update, Bevy
+executes each stage, in order. Within each stage, Bevy's scheduling algorithm
+can run many systems in parallel, using multiple CPU cores for good performance.</p>
+<p>The boundaries between stages are effectively hard synchronization points.
+They ensure that all systems of the previous stage have completed before any
+systems of the next stage begin, and that there is a moment in time when no
+systems are in-progress.</p>
+<p>This makes it possible/safe to apply <a href="programming/./commands.html"><code>Commands</code></a>. Any operations
+performed by systems using <code>Commands</code> are applied at the end of each stage.</p>
+<p>Internally, Bevy has at least these built-in stages: <code>First</code>, <code>PreUpdate</code>, <code>Update</code>, <code>PostUpdate</code>, <code>Last</code>.</p>
+<p>(<a href="programming/./labels.html">labeled</a> with <code>enum CoreStage</code>)</p>
+<p>By default, when you add your systems, they are added to <code>CoreStage::Update</code>.</p>
 <p>Bevy's internal systems are in the other stages, to ensure they are ordered
-correctly relative to your game logic (for example, rendering needs to happen
-after your game logic completes).</p>
+correctly relative to your game logic.</p>
 <p>If you want to add your own systems to any of Bevy's internal stages, you need
 to beware of potential unexpected interactions with Bevy's own internal systems.
 Remember: Bevy's internals are implemented using ordinary systems and ECS, just
 like your own stuff!</p>
-<p>You can add your own additional stages. For example, if we want our debug systems to run after our game logic:</p>
+<p>You can add your own additional stages. For example, if we want our debug
+systems to run after our game logic:</p>
 <pre><code class="language-rust no_run noplayground">fn main() {
     // label for our debug stage
     static DEBUG: &amp;str = &quot;debug&quot;;
@@ -1217,6 +1223,17 @@ like your own stuff!</p>
         .run();
 }
 </code></pre>
+<p>If you need to manage when your systems run, relative to one another, it is
+generally preferable to avoid using stages, and to use <a href="programming/./system-order.html">explicit system
+ordering</a> instead. Stages limit parallel execution and the
+performance of your game.</p>
+<p>However, stages can make it easier to organize things, when you really want to
+be sure that all previous systems have completed. Stages are also the only way
+to apply <code>Commands</code>.</p>
+<p>If you have systems that need to rely on the actions that other systems have
+performed by using <code>Commands</code>, and need to do so during the same frame, placing
+those systems into separate stages is the only way to accomplish that.</p>
+<p><a href="programming/../pitfalls/frame-lag.html#commands">More information on avoiding frame delays / 1-frame-lag, when using <code>Commands</code>.</a></p>
 <h1 id="labels"><a class="header" href="#labels">Labels</a></h1>
 <p>You need labels to name various things in your app, such as <a href="programming/./stages.html">stages</a>,
 <a href="programming/./system-order.html">systems</a>, <a href="programming/TODO">run criteria</a>, and <a href="programming/TODO">ambiguity sets</a>.</p>
