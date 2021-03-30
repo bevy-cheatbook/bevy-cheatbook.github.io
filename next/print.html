@@ -241,9 +241,11 @@ for brief explanations of each feature.</p>
 <li><a href="cheatsheet.html#labels">Labels</a></li>
 <li><a href="cheatsheet.html#local-resources">Local Resources</a></li>
 <li><a href="cheatsheet.html#parentchild-hierarchy">Parent/Child Hierarchy</a></li>
+<li><a href="cheatsheet.html#plugins">Plugins</a></li>
 <li><a href="cheatsheet.html#queries">Queries</a></li>
 <li><a href="cheatsheet.html#query-sets">Query Sets</a></li>
 <li><a href="cheatsheet.html#resources">Resources</a></li>
+<li><a href="cheatsheet.html#app-builder">Stages</a></li>
 <li><a href="cheatsheet.html#states">States</a></li>
 <li><a href="cheatsheet.html#systems">Systems</a></li>
 <li><a href="cheatsheet.html#system-chaining">System Chaining</a></li>
@@ -359,6 +361,7 @@ struct AbBundle {
 <p>These actions are applied at the end of the stage.</p>
 <h2 id="queries"><a class="header" href="#queries">Queries</a></h2>
 <p><a href="cheatsheet.html#table-of-contents">(back to top)</a> [<a href="./programming/queries.html">explain</a>]</p>
+<p>Iterate all matching entities:</p>
 <pre><code class="language-rust no_run noplayground">fn my_system(
     mut query: Query&lt;(Entity, &amp;ComponentA, &amp;mut ComponentB, Option&lt;&amp;mut ComponentC&gt;)&gt;
 ) {
@@ -371,8 +374,9 @@ struct AbBundle {
     }
 }
 </code></pre>
-<p>When expecting the query to match only one entity (returns <code>Result</code>):</p>
-<pre><code class="language-rust no_run noplayground">
+<p>Or, if expecting the query to match only one entity (returns <code>Result</code>):</p>
+<pre><code class="language-rust no_run noplayground">    let (a, mut b) = q.single_mut()
+        .expect(&quot;There should only be one entity with A and B!&quot;);
 </code></pre>
 <p>To operate on a specific entity:</p>
 <pre><code class="language-rust no_run noplayground">    if let Ok((a, mut b)) = query.get_mut(entity) {
@@ -471,9 +475,18 @@ to use <a href="cheatsheet.html#system-order">explicit system ordering</a>.</p>
         Input,
     }
 </code></pre>
+<h2 id="plugins"><a class="header" href="#plugins">Plugins</a></h2>
+<p><a href="cheatsheet.html#table-of-contents">(back to top)</a> [<a href="./programming/plugins.html">explain</a>]</p>
+<pre><code class="language-rust no_run noplayground">struct MyPlugin;
+
+impl Plugin for MyPlugin {
+    fn build(&amp;self, app: &amp;mut AppBuilder) {
+        // use `app` builder
+    }
+}
+</code></pre>
 <h2 id="app-builder"><a class="header" href="#app-builder">App Builder</a></h2>
-<p><a href="cheatsheet.html#table-of-contents">(back to top)</a> [<a href="./programming/app-builder.html">explain</a>, <a href="./programming/stages.html">stages</a>, <a href="./programming/plugins.html">plugins</a>]</p>
-<p>App builder:</p>
+<p><a href="cheatsheet.html#table-of-contents">(back to top)</a> [<a href="./programming/app-builder.html">explain</a>, <a href="./programming/stages.html">stages</a>]</p>
 <pre><code class="language-rust no_run noplayground">fn main() {
     // labels for custom stages:
     static DEBUG: &amp;str = &quot;debug&quot;;
@@ -503,15 +516,6 @@ to use <a href="cheatsheet.html#system-order">explicit system ordering</a>.</p>
         // enter the bevy runtime
         .run();
 
-}
-</code></pre>
-<p>Custom plugin:</p>
-<pre><code class="language-rust no_run noplayground">struct MyPlugin;
-
-impl Plugin for MyPlugin {
-    fn build(&amp;self, app: &amp;mut AppBuilder) {
-        // use `app` builder
-    }
 }
 </code></pre>
 <h2 id="system-order"><a class="header" href="#system-order">System Order</a></h2>
@@ -825,7 +829,8 @@ impl FromWorld for MyFancyResource {
 }
 </code></pre>
 <p>Or using <a href="programming/./commands.html"><code>Commands</code></a> from inside a system:</p>
-<pre><code class="language-rust no_run noplayground">
+<pre><code class="language-rust no_run noplayground">commands.insert_resource(GoalsReached { main_goal: false, bonus: false });
+commands.remove_resource::&lt;MyResource&gt;();
 </code></pre>
 <p>If you insert a resource of a type that already exists, it will be overwritten.</p>
 <h2 id="usage-advice"><a class="header" href="#usage-advice">Usage Advice</a></h2>
@@ -1090,7 +1095,7 @@ likely need at least some of these features as your project grows in complexity.
 <p>The type must implement <code>Default</code> or <code>FromWorld</code>. It is automatically initialized.</p>
 <p>These are similar to Resources, but each system will have its own instance.</p>
 <p>A system can also have multiple <code>Local</code>s of the same type.</p>
-<h1 id="plugins"><a class="header" href="#plugins">Plugins</a></h1>
+<h1 id="plugins-1"><a class="header" href="#plugins-1">Plugins</a></h1>
 <p>As your project grows, it can be useful to make it more modular. You can split it into plugins.</p>
 <p>Plugins are simply collections of things to be added to the App Builder.</p>
 <pre><code class="language-rust no_run noplayground">struct MyPlugin;

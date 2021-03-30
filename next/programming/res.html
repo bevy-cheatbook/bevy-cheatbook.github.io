@@ -205,7 +205,8 @@ impl FromWorld for MyFancyResource {
 }
 </code></pre>
 <p>Or using <a href="./commands.html"><code>Commands</code></a> from inside a system:</p>
-<pre><code class="language-rust no_run noplayground">
+<pre><code class="language-rust no_run noplayground">commands.insert_resource(GoalsReached { main_goal: false, bonus: false });
+commands.remove_resource::&lt;MyResource&gt;();
 </code></pre>
 <p>If you insert a resource of a type that already exists, it will be overwritten.</p>
 <h2 id="usage-advice"><a class="header" href="#usage-advice">Usage Advice</a></h2>

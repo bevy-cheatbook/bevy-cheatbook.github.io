@@ -184,9 +184,11 @@ for brief explanations of each feature.</p>
 <li><a href="#labels">Labels</a></li>
 <li><a href="#local-resources">Local Resources</a></li>
 <li><a href="#parentchild-hierarchy">Parent/Child Hierarchy</a></li>
+<li><a href="#plugins">Plugins</a></li>
 <li><a href="#queries">Queries</a></li>
 <li><a href="#query-sets">Query Sets</a></li>
 <li><a href="#resources">Resources</a></li>
+<li><a href="#app-builder">Stages</a></li>
 <li><a href="#states">States</a></li>
 <li><a href="#systems">Systems</a></li>
 <li><a href="#system-chaining">System Chaining</a></li>
@@ -302,6 +304,7 @@ struct AbBundle {
 <p>These actions are applied at the end of the stage.</p>
 <h2 id="queries"><a class="header" href="#queries">Queries</a></h2>
 <p><a href="#table-of-contents">(back to top)</a> [<a href="./programming/queries.html">explain</a>]</p>
+<p>Iterate all matching entities:</p>
 <pre><code class="language-rust no_run noplayground">fn my_system(
     mut query: Query&lt;(Entity, &amp;ComponentA, &amp;mut ComponentB, Option&lt;&amp;mut ComponentC&gt;)&gt;
 ) {
@@ -314,8 +317,9 @@ struct AbBundle {
     }
 }
 </code></pre>
-<p>When expecting the query to match only one entity (returns <code>Result</code>):</p>
-<pre><code class="language-rust no_run noplayground">
+<p>Or, if expecting the query to match only one entity (returns <code>Result</code>):</p>
+<pre><code class="language-rust no_run noplayground">    let (a, mut b) = q.single_mut()
+        .expect(&quot;There should only be one entity with A and B!&quot;);
 </code></pre>
 <p>To operate on a specific entity:</p>
 <pre><code class="language-rust no_run noplayground">    if let Ok((a, mut b)) = query.get_mut(entity) {
@@ -414,9 +418,18 @@ to use <a href="#system-order">explicit system ordering</a>.</p>
         Input,
     }
 </code></pre>
+<h2 id="plugins"><a class="header" href="#plugins">Plugins</a></h2>
+<p><a href="#table-of-contents">(back to top)</a> [<a href="./programming/plugins.html">explain</a>]</p>
+<pre><code class="language-rust no_run noplayground">struct MyPlugin;
+
+impl Plugin for MyPlugin {
+    fn build(&amp;self, app: &amp;mut AppBuilder) {
+        // use `app` builder
+    }
+}
+</code></pre>
 <h2 id="app-builder"><a class="header" href="#app-builder">App Builder</a></h2>
-<p><a href="#table-of-contents">(back to top)</a> [<a href="./programming/app-builder.html">explain</a>, <a href="./programming/stages.html">stages</a>, <a href="./programming/plugins.html">plugins</a>]</p>
-<p>App builder:</p>
+<p><a href="#table-of-contents">(back to top)</a> [<a href="./programming/app-builder.html">explain</a>, <a href="./programming/stages.html">stages</a>]</p>
 <pre><code class="language-rust no_run noplayground">fn main() {
     // labels for custom stages:
     static DEBUG: &amp;str = &quot;debug&quot;;
@@ -446,15 +459,6 @@ to use <a href="#system-order">explicit system ordering</a>.</p>
         // enter the bevy runtime
         .run();
 
-}
-</code></pre>
-<p>Custom plugin:</p>
-<pre><code class="language-rust no_run noplayground">struct MyPlugin;
-
-impl Plugin for MyPlugin {
-    fn build(&amp;self, app: &amp;mut AppBuilder) {
-        // use `app` builder
-    }
 }
 </code></pre>
 <h2 id="system-order"><a class="header" href="#system-order">System Order</a></h2>
