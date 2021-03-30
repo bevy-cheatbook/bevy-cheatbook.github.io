@@ -173,7 +173,29 @@ for brief explanations of each feature.</p>
 <hr />
 <p>Click on &quot;[explain]&quot; links to go to the relevant <a href="./programming/_index.html">Bevy Programming</a> page!</p>
 <hr />
+<h2 id="table-of-contents"><a class="header" href="#table-of-contents">Table of Contents</a></h2>
+<ul>
+<li><a href="#systems">Systems</a></li>
+<li><a href="#entities-and-components">Entities and Components</a></li>
+<li><a href="#resources">Resources</a></li>
+<li><a href="#commands">Commands</a></li>
+<li><a href="#queries">Queries</a></li>
+<li><a href="#change-detection">Change Detection</a></li>
+<li><a href="#query-sets">Query Sets</a></li>
+<li><a href="#events">Events</a></li>
+<li><a href="#local-resources">Local Resources</a></li>
+<li><a href="#labels">Labels</a></li>
+<li><a href="#app-builder">App Builder</a></li>
+<li><a href="#system-order">System Order</a></li>
+<li><a href="#states">States</a></li>
+<li><a href="#transforms">Transforms</a></li>
+<li><a href="#parentchild-hierarchy">Parent/Child Hierarchy</a></li>
+<li><a href="#system-chaining">System Chaining</a></li>
+<li><a href="#assets">Assets</a></li>
+</ul>
+<hr />
 <h2 id="systems"><a class="header" href="#systems">Systems</a></h2>
+<p><a href="#table-of-contents">(back to top)</a></p>
 <p>[<a href="./programming/systems.html">explain</a>]</p>
 <p>Regular Rust functions, but can only accept parameters that implement [trait <code>SystemParam</code>](TODO DOCS.RS).</p>
 <p>The standard system parameter types provided by Bevy:</p>
@@ -199,6 +221,7 @@ for brief explanations of each feature.</p>
 <p>Your function can have a maximum of 11 total parameters. If you need more, group
 them into tuples to work around the limit.</p>
 <h2 id="entities-and-components"><a class="header" href="#entities-and-components">Entities and Components</a></h2>
+<p><a href="#table-of-contents">(back to top)</a></p>
 <p>[<a href="./programming/ec.html">explain</a>]</p>
 <p>Any Rust type (<code>struct</code> or <code>enum</code>) can be used as a component.</p>
 <p>Type must be unique; only one instance per type per entity can exist. Use newtypes.</p>
@@ -211,6 +234,7 @@ struct AbBundle {
 }
 </code></pre>
 <h2 id="resources"><a class="header" href="#resources">Resources</a></h2>
+<p><a href="#table-of-contents">(back to top)</a></p>
 <p>[<a href="./programming/res.html">explain</a>]</p>
 <p>Any Rust type (<code>struct</code> or <code>enum</code>) can be used as a resource.</p>
 <p>Type must be unique; only one instance per type can exist. Use newtypes.</p>
@@ -245,70 +269,8 @@ struct AbBundle {
     }
 }
 </code></pre>
-<h2 id="queries"><a class="header" href="#queries">Queries</a></h2>
-<p>[<a href="./programming/queries.html">explain</a>]</p>
-<pre><code class="language-rust no_run noplayground">fn my_system(
-    mut query: Query&lt;(Entity, &amp;ComponentA, &amp;mut ComponentB, Option&lt;&amp;mut ComponentC&gt;)&gt;
-) {
-    // operate on all matching entities
-    for (entity, a, mut b, c) in query.iter_mut() {
-        // do something with `a` and `b`; `entity` is the Entity id
-        if let Some(mut c) = c {
-            // do something with `c` if it exists
-        }
-    }
-}
-</code></pre>
-<p>To operate on a specific entity:</p>
-<pre><code class="language-rust no_run noplayground">    if let Ok((a, mut b)) = query.get_mut(entity) {
-        // do something with `a` and `b`
-    } else {
-        // entity does not match the query
-    }
-</code></pre>
-<p>Add query filters:</p>
-<pre><code class="language-rust no_run noplayground">fn with_filter(query: Query&lt;&amp;MyData, (Without&lt;ComponentA&gt;, Or&lt;(With&lt;Foo&gt;, With&lt;Bar&gt;)&gt;)&gt;) {
-    // only get `data` for entities that match the filter criteria
-    for data in query.iter() {
-        // use data
-    }
-}
-</code></pre>
-<p>Query sets (to resolve component access conflicts):</p>
-<pre><code class="language-rust no_run noplayground">fn conflicting_queries(
-    mut set: QuerySet&lt;(
-        // these queries cannot be used at the same time, due to mutability conflict
-        Query&lt;&amp;mut MyData, With&lt;ComponentA&gt;&gt;,
-        Query&lt;&amp;mut MyData, With&lt;ComponentB&gt;&gt;,
-    )&gt;,
-) {
-    for data in set.q0_mut().iter_mut() {
-        // access `data` of entities that match the first query
-    }
-    for data in set.q1_mut().iter_mut() {
-        // access `data` of entities that match the second query
-    }
-}
-</code></pre>
-<h2 id="change-detection"><a class="header" href="#change-detection">Change Detection</a></h2>
-<p>[<a href="./programming/change-detection.html">explain</a>]</p>
-<p>Query filters:</p>
-<ul>
-<li><code>Added&lt;T&gt;</code>: detect adding new components to existing entities</li>
-<li><code>Changed&lt;T&gt;</code>: detect when a component is modified</li>
-</ul>
-<pre><code class="language-rust no_run noplayground">fn with_change_detection(query: Query&lt;&amp;MyData, Changed&lt;MyData&gt;&gt;) {
-    // only get `data` if it changed
-    for data in query.iter() {
-        // use data
-    }
-}
-</code></pre>
-<p>Change detection is triggered by <code>DerefMut</code>. Accessing components via a mutable
-query without it actually being a <code>&amp;mut</code> access, will <em>not</em> trigger it.</p>
-<p>Beware of <a href="./pitfalls/frame-delay.html">frame delay / 1-frame-lag</a>. You may want
-to use <a href="#system-order-of-execution">explicit system ordering</a>.</p>
 <h2 id="commands"><a class="header" href="#commands">Commands</a></h2>
+<p><a href="#table-of-contents">(back to top)</a></p>
 <p>[<a href="./programming/commands.html">explain</a>]</p>
 <pre><code class="language-rust no_run noplayground">fn manage_entities_components_resources(mut commands: Commands) {
     // replaces any existing resource of this type
@@ -342,14 +304,78 @@ to use <a href="#system-order-of-execution">explicit system ordering</a>.</p>
 }
 </code></pre>
 <p>These actions are applied at the end of the stage.</p>
-<h2 id="local-per-system-resources"><a class="header" href="#local-per-system-resources">Local (per-system) Resources</a></h2>
-<p>[<a href="./programming/local.html">explain</a>]</p>
-<pre><code class="language-rust no_run noplayground">fn with_local(local: Local&lt;MyData&gt;) {
-    // `local` is an instance of `MyData` uniquely for this system
+<h2 id="queries"><a class="header" href="#queries">Queries</a></h2>
+<p><a href="#table-of-contents">(back to top)</a></p>
+<p>[<a href="./programming/queries.html">explain</a>]</p>
+<pre><code class="language-rust no_run noplayground">fn my_system(
+    mut query: Query&lt;(Entity, &amp;ComponentA, &amp;mut ComponentB, Option&lt;&amp;mut ComponentC&gt;)&gt;
+) {
+    // operate on all matching entities
+    for (entity, a, mut b, c) in query.iter_mut() {
+        // do something with `a` and `b`; `entity` is the Entity id
+        if let Some(mut c) = c {
+            // do something with `c` if it exists
+        }
+    }
 }
 </code></pre>
-<p>The type must implement <code>Default</code> or <code>FromWorld</code>. It is automatically initialized.</p>
+<p>When expecting the query to match only one entity (returns <code>Result</code>):</p>
+<pre><code class="language-rust no_run noplayground">
+</code></pre>
+<p>To operate on a specific entity:</p>
+<pre><code class="language-rust no_run noplayground">    if let Ok((a, mut b)) = query.get_mut(entity) {
+        // do something with `a` and `b`
+    } else {
+        // entity does not match the query
+    }
+</code></pre>
+<p>Add query filters:</p>
+<pre><code class="language-rust no_run noplayground">fn with_filter(query: Query&lt;&amp;MyData, (Without&lt;ComponentA&gt;, Or&lt;(With&lt;Foo&gt;, With&lt;Bar&gt;)&gt;)&gt;) {
+    // only get `data` for entities that match the filter criteria
+    for data in query.iter() {
+        // use data
+    }
+}
+</code></pre>
+<h2 id="change-detection"><a class="header" href="#change-detection">Change Detection</a></h2>
+<p><a href="#table-of-contents">(back to top)</a></p>
+<p>[<a href="./programming/change-detection.html">explain</a>]</p>
+<p>Query filters:</p>
+<ul>
+<li><code>Added&lt;T&gt;</code>: detect adding new components to existing entities</li>
+<li><code>Changed&lt;T&gt;</code>: detect when a component is modified</li>
+</ul>
+<pre><code class="language-rust no_run noplayground">fn with_change_detection(query: Query&lt;&amp;MyData, Changed&lt;MyData&gt;&gt;) {
+    // only get `data` if it changed
+    for data in query.iter() {
+        // use data
+    }
+}
+</code></pre>
+<p>Change detection is triggered by <code>DerefMut</code>. Accessing components via a mutable
+query without it actually being a <code>&amp;mut</code> access, will <em>not</em> trigger it.</p>
+<p>Beware of <a href="./pitfalls/frame-delay.html">frame delay / 1-frame-lag</a>. You may want
+to use <a href="#system-order">explicit system ordering</a>.</p>
+<h2 id="query-sets"><a class="header" href="#query-sets">Query Sets</a></h2>
+<p><a href="#table-of-contents">(back to top)</a></p>
+<p>[<a href="./programming/query-sets.html">explain</a>]</p>
+<pre><code class="language-rust no_run noplayground">fn conflicting_queries(
+    mut set: QuerySet&lt;(
+        // these queries cannot be used at the same time, due to mutability conflict
+        Query&lt;&amp;mut MyData, With&lt;ComponentA&gt;&gt;,
+        Query&lt;&amp;mut MyData, With&lt;ComponentB&gt;&gt;,
+    )&gt;,
+) {
+    for data in set.q0_mut().iter_mut() {
+        // access `data` of entities that match the first query
+    }
+    for data in set.q1_mut().iter_mut() {
+        // access `data` of entities that match the second query
+    }
+}
+</code></pre>
 <h2 id="events"><a class="header" href="#events">Events</a></h2>
+<p><a href="#table-of-contents">(back to top)</a></p>
 <p>[<a href="./programming/events.html">explain</a>]</p>
 <pre><code class="language-rust no_run noplayground">struct MyEvent;
 
@@ -374,41 +400,17 @@ fn main() {
 which they are lost. If your systems do not handle events every frame, you could
 miss some.</p>
 <p>Beware of <a href="./pitfalls/frame-delay.html">frame delay / 1-frame-lag</a>. You may want
-to use <a href="#system-order-of-execution">explicit system ordering</a>.</p>
-<h2 id="entity-hierarchies-parentchild"><a class="header" href="#entity-hierarchies-parentchild">Entity Hierarchies (Parent/Child)</a></h2>
-<p>[<a href="./programming/parent-child.html">explain</a>]</p>
-<pre><code class="language-rust no_run noplayground">fn spawn_nested(mut commands: Commands) {
-    let parent = commands.spawn_bundle(MyParentBundle::default())
-        .with_children(|parent| {
-            parent.spawn_bundle(MyChildBundle::default());
-        }).id();
-
-    // despawn a parent and all its children
-    commands.entity(parent).despawn_recursive();
+to use <a href="#system-order">explicit system ordering</a>.</p>
+<h2 id="local-resources"><a class="header" href="#local-resources">Local Resources</a></h2>
+<p><a href="#table-of-contents">(back to top)</a></p>
+<p>[<a href="./programming/local.html">explain</a>]</p>
+<pre><code class="language-rust no_run noplayground">fn with_local(local: Local&lt;MyData&gt;) {
+    // `local` is an instance of `MyData` uniquely for this system
 }
 </code></pre>
-<p>Reparent an existing entity:</p>
-<pre><code class="language-rust no_run noplayground">    commands.entity(parent).push_children(&amp;[child]);
-</code></pre>
-<p>If you are using <code>Transform</code>s, ensure both the parent and the child also have a <code>GlobalTransform</code>.</p>
-<p>Child <code>Transform</code> is relative to the parent. <code>GlobalTransform</code> is internally managed by bevy.</p>
-<h2 id="system-chaining"><a class="header" href="#system-chaining">System Chaining</a></h2>
-<p>[<a href="./programming/system-chaining.html">explain</a>]</p>
-<pre><code class="language-rust no_run noplayground">fn output_system(/* system params */) -&gt; MyData {
-    MyData
-}
-
-fn input_system(In(data): In&lt;MyData&gt;) {
-    // use `data`
-}
-
-fn main() {
-    App::build()
-        .add_system(output_system.system().chain(input_system.system()))
-        .run();
-}
-</code></pre>
+<p>The type must implement <code>Default</code> or <code>FromWorld</code>. It is automatically initialized.</p>
 <h2 id="labels"><a class="header" href="#labels">Labels</a></h2>
+<p><a href="#table-of-contents">(back to top)</a></p>
 <p>[<a href="./programming/labels.html">explain</a>]</p>
 <p>Labels can be strings, or any other type that implements the relevant traits.</p>
 <p>For example, a custom enum type:</p>
@@ -422,7 +424,8 @@ fn main() {
         Input,
     }
 </code></pre>
-<h2 id="app-builder-main-function"><a class="header" href="#app-builder-main-function">App Builder (main function)</a></h2>
+<h2 id="app-builder"><a class="header" href="#app-builder">App Builder</a></h2>
+<p><a href="#table-of-contents">(back to top)</a></p>
 <p>[<a href="./programming/app-builder.html">explain</a>, <a href="./programming/stages.html">stages</a>, <a href="./programming/plugins.html">plugins</a>]</p>
 <p>App builder:</p>
 <pre><code class="language-rust no_run noplayground">fn main() {
@@ -465,9 +468,10 @@ impl Plugin for MyPlugin {
     }
 }
 </code></pre>
-<h2 id="system-order-of-execution"><a class="header" href="#system-order-of-execution">System Order of Execution</a></h2>
+<h2 id="system-order"><a class="header" href="#system-order">System Order</a></h2>
+<p><a href="#table-of-contents">(back to top)</a></p>
 <p>[<a href="./programming/system-order.html">explain</a>]</p>
-<p>Order is <em>nondeterministic</em> and may change every frame!</p>
+<p>Execution order is <em>nondeterministic</em> and may change every frame!</p>
 <p>Use <a href="#labels">labels</a> to specify order explicitly:</p>
 <pre><code class="language-rust no_run noplayground">fn main() {
     App::build()
@@ -484,6 +488,7 @@ impl Plugin for MyPlugin {
 }
 </code></pre>
 <h2 id="states"><a class="header" href="#states">States</a></h2>
+<p><a href="#table-of-contents">(back to top)</a></p>
 <p>[<a href="./programming/states.html">explain</a>]</p>
 <p>App builder with States:</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Debug, Clone, PartialEq, Eq, Hash)]
@@ -524,7 +529,48 @@ fn main() {
     }
 }
 </code></pre>
+<h2 id="transforms"><a class="header" href="#transforms">Transforms</a></h2>
+<p><a href="#table-of-contents">(back to top)</a></p>
+<p>[<a href="./features/transforms.html">explain</a>]</p>
+<p>Coordinate system: +X is right, +Y is up, +Z is out of the screen. Right-handed. 3D matches 2D.</p>
+<p>The <code>Transform</code> component is the relative/local transform. You may modify this directly.</p>
+<p>The <code>GlobalTransform</code> component is the absolute/global transform. Do not modify; internally managed by Bevy.</p>
+<h2 id="parentchild-hierarchy"><a class="header" href="#parentchild-hierarchy">Parent/Child Hierarchy</a></h2>
+<p><a href="#table-of-contents">(back to top)</a></p>
+<p>[<a href="./programming/parent-child.html">explain</a>]</p>
+<pre><code class="language-rust no_run noplayground">fn spawn_nested(mut commands: Commands) {
+    let parent = commands.spawn_bundle(MyParentBundle::default())
+        .with_children(|parent| {
+            parent.spawn_bundle(MyChildBundle::default());
+        }).id();
+
+    // despawn a parent and all its children
+    commands.entity(parent).despawn_recursive();
+}
+</code></pre>
+<p>Reparent an existing entity:</p>
+<pre><code class="language-rust no_run noplayground">    commands.entity(parent).push_children(&amp;[child]);
+</code></pre>
+<p>Transforms: Ensure both parent and child have both components: <code>Transform</code>, <code>GlobalTransform</code>.</p>
+<h2 id="system-chaining"><a class="header" href="#system-chaining">System Chaining</a></h2>
+<p><a href="#table-of-contents">(back to top)</a></p>
+<p>[<a href="./programming/system-chaining.html">explain</a>]</p>
+<pre><code class="language-rust no_run noplayground">fn output_system(/* system params */) -&gt; MyData {
+    MyData
+}
+
+fn input_system(In(data): In&lt;MyData&gt;) {
+    // use `data`
+}
+
+fn main() {
+    App::build()
+        .add_system(output_system.system().chain(input_system.system()))
+        .run();
+}
+</code></pre>
 <h2 id="assets"><a class="header" href="#assets">Assets</a></h2>
+<p><a href="#table-of-contents">(back to top)</a></p>
 <p>[<a href="./features/assets.html">explain</a>]</p>
 <p>Load asset:</p>
 <pre><code class="language-rust no_run noplayground">fn asset_setup(server: Res&lt;AssetServer&gt;) {
