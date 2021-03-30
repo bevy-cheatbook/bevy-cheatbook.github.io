@@ -757,7 +757,7 @@ impl FromWorld for MyFancyResource {
 <p>You can create your resources at <a href="programming/./app-builder.html"><code>App</code> creation</a>:</p>
 <pre><code class="language-rust no_run noplayground">fn main() {
     App::build()
-        // if it implements `Default` or `FromResources`
+        // if it implements `Default` or `FromWorld`
         .init_resource::&lt;MyFancyResource&gt;()
         // if not, or if you want to set a specific value
         .insert_resource(StartingLevel(3))
@@ -1000,7 +1000,7 @@ headless server.</p>
 
         // resources:
         .insert_resource(StartingLevel(3))
-        // if it implements `Default` or `FromResources`
+        // if it implements `Default` or `FromWorld`
         .init_resource::&lt;MyFancyResource&gt;()
 
         // events:
@@ -1058,7 +1058,79 @@ fn main() {
 <p>If you intend to publish plugins as crates for public use, you should read
 <a href="https://github.com/bevyengine/bevy/blob/main/docs/plugins_guidelines.md">the official guidelines for plugin authors</a>.</p>
 <h1 id="system-order-of-execution-1"><a class="header" href="#system-order-of-execution-1">System Order of Execution</a></h1>
-<p>(TODO)</p>
+<p>Bevy's scheduling algorithm is designed to deliver maximum performance by
+running as many systems as possible in parallel across the available CPU
+threads.</p>
+<p>This is possible when the systems do not conflict over the data they need
+to access. However, when a system needs to have mutable (exclusive) access to a
+piece of data, other systems that need to access the same data cannot be run at
+the same time. Bevy determines all of this information from the system's
+function signature (the types of the parameters it takes).</p>
+<p>In such situations, the order is <em>nondeterministic</em> by default. Bevy takes no
+regard for when each system will run, and the order could even change every frame!</p>
+<h2 id="does-it-even-matter"><a class="header" href="#does-it-even-matter">Does it even matter?</a></h2>
+<p>In many cases, you don't need to worry about this.</p>
+<p>However, sometimes you need to rely on specific systems to run in a particular
+order. For example:</p>
+<ul>
+<li>Maybe the logic you wrote in one of your systems needs any modifications
+done to that data by another system to always happen first?</li>
+<li>One system needs to receive <a href="programming/./events.html">events</a> sent by another system.</li>
+<li>You are using <a href="programming/./change-detection.html">change detection</a>.</li>
+</ul>
+<p>In such situations, systems running in the wrong order typically causes their
+behavior <a href="programming/../pitfalls/frame-delay.html">to be delayed until the next frame</a>. In
+rare cases, depending on your game logic, it may even result in more serious
+logic bugs!</p>
+<p>It is up to you to decide if this is important.</p>
+<p>With many things in typical games, such as juicy visual effects, it probably
+doesn't matter if they get delayed by a frame. It might not be worthwhile to
+bother with it. If you don't care, leaving the order ambiguous may also result
+in better performance.</p>
+<p>On the other hand, for things like handling the player input controls, this
+would result in annoying lag, so you should probably fix it.</p>
+<h2 id="explicit-system-ordering"><a class="header" href="#explicit-system-ordering">Explicit System Ordering</a></h2>
+<p>The solution is to use system <a href="programming/./labels.html">labels</a> to explicitly specify the order you want:</p>
+<pre><code class="language-rust no_run noplayground">fn main() {
+    App::build()
+        .add_plugins(DefaultPlugins)
+
+        // order doesn't matter for these systems:
+        .add_system(particle_effects.system())
+        .add_system(npc_behaviors.system())
+        .add_system(enemy_movement.system())
+
+        // create labels, because we need to order other systems around these:
+        .add_system(map_player_input.system().label(&quot;input&quot;))
+        .add_system(update_map.system().label(&quot;map&quot;))
+
+        // this will always run before anything labeled &quot;input&quot;
+        .add_system(input_parameters.system().before(&quot;input&quot;))
+
+        // this will always run after anything labeled &quot;input&quot; and &quot;map&quot;
+        // also label it just in case
+        .add_system(
+            player_movement.system()
+                .label(&quot;player_movement&quot;)
+                .after(&quot;input&quot;)
+                .after(&quot;map&quot;)
+        )
+        .run();
+}
+</code></pre>
+<p>Each label is a reference point that other systems can be ordered around.</p>
+<p><code>.label</code>/<code>.before</code>/<code>.after</code> may be used as many times as you need on one system.</p>
+<p>You can place multiple labels on one system.</p>
+<p>You can also use the same label on multiple systems.</p>
+<h2 id="circular-dependencies"><a class="header" href="#circular-dependencies">Circular Dependencies</a></h2>
+<p>If you have multiple systems mutually depending on each other, then it is
+clearly impossible to resolve the situation completely like that.</p>
+<p>You should try to redesign your game to avoid such situations, or just accept
+the consequences. You can at least make it behave predictably, using explicit
+ordering to specify the order you prefer.</p>
+<p>In really advanced scenarios, if you insist on all affected systems becoming
+settled during the same frame, you might be able to do it using <a href="programming/./run-criteria-loop.html">Looping Run
+Criteria</a>.</p>
 <h1 id="system-sets"><a class="header" href="#system-sets">System Sets</a></h1>
 <p>(TODO)</p>
 <h1 id="hierarchical-parentchild-entities"><a class="header" href="#hierarchical-parentchild-entities">Hierarchical (Parent/Child) Entities</a></h1>
@@ -1103,6 +1175,7 @@ child to be positioned relative to the parent and move with it.</p>
 <p>If you are not using such a bundle, you need to make sure to add these components to both the parent and the child: <code>GlobalTransform</code> and <code>Transform</code>.</p>
 <p>The <code>Transform</code> represents the relative position. You can manipulate it directly.</p>
 <p>The <code>GlobalTransform</code> represents the absolute position. It is managed by bevy internally; do not manipulate it yourself.</p>
+<p>For more info, see the <a href="programming/../features/transforms.html">dedicated page about transforms</a>.</p>
 <h1 id="change-detection-1"><a class="header" href="#change-detection-1">Change Detection</a></h1>
 <p>Bevy allows you to easily detect when components are changed.</p>
 <p>Use query filters:</p>
@@ -1163,6 +1236,8 @@ detecting system will see the change the next time it runs, typically on the
 next frame update.</p>
 <p>If you need to ensure that changes are handled immediately / during the same frame,
 you can use <a href="programming/./system-order.html">explicit system ordering</a>.</p>
+<p>However, when detecting component additions with <code>Added&lt;T&gt;</code> (which are typically
+done using <a href="programming/./commands.html"><code>Commands</code></a>), this is not enough; you need <a href="programming/./stages.html">stages</a>.</p>
 <h1 id="system-chaining-1"><a class="header" href="#system-chaining-1">System Chaining</a></h1>
 <p>Systems can take an input and produce an output, and be connected together to run as a single larger system (chain).</p>
 <p>Think of this as &quot;glue&quot;, for constructing a larger system out of multiple Rust functions.</p>

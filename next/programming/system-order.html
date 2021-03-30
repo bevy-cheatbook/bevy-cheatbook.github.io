@@ -164,7 +164,79 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="system-order-of-execution"><a class="header" href="#system-order-of-execution">System Order of Execution</a></h1>
-<p>(TODO)</p>
+<p>Bevy's scheduling algorithm is designed to deliver maximum performance by
+running as many systems as possible in parallel across the available CPU
+threads.</p>
+<p>This is possible when the systems do not conflict over the data they need
+to access. However, when a system needs to have mutable (exclusive) access to a
+piece of data, other systems that need to access the same data cannot be run at
+the same time. Bevy determines all of this information from the system's
+function signature (the types of the parameters it takes).</p>
+<p>In such situations, the order is <em>nondeterministic</em> by default. Bevy takes no
+regard for when each system will run, and the order could even change every frame!</p>
+<h2 id="does-it-even-matter"><a class="header" href="#does-it-even-matter">Does it even matter?</a></h2>
+<p>In many cases, you don't need to worry about this.</p>
+<p>However, sometimes you need to rely on specific systems to run in a particular
+order. For example:</p>
+<ul>
+<li>Maybe the logic you wrote in one of your systems needs any modifications
+done to that data by another system to always happen first?</li>
+<li>One system needs to receive <a href="./events.html">events</a> sent by another system.</li>
+<li>You are using <a href="./change-detection.html">change detection</a>.</li>
+</ul>
+<p>In such situations, systems running in the wrong order typically causes their
+behavior <a href="../pitfalls/frame-delay.html">to be delayed until the next frame</a>. In
+rare cases, depending on your game logic, it may even result in more serious
+logic bugs!</p>
+<p>It is up to you to decide if this is important.</p>
+<p>With many things in typical games, such as juicy visual effects, it probably
+doesn't matter if they get delayed by a frame. It might not be worthwhile to
+bother with it. If you don't care, leaving the order ambiguous may also result
+in better performance.</p>
+<p>On the other hand, for things like handling the player input controls, this
+would result in annoying lag, so you should probably fix it.</p>
+<h2 id="explicit-system-ordering"><a class="header" href="#explicit-system-ordering">Explicit System Ordering</a></h2>
+<p>The solution is to use system <a href="./labels.html">labels</a> to explicitly specify the order you want:</p>
+<pre><code class="language-rust no_run noplayground">fn main() {
+    App::build()
+        .add_plugins(DefaultPlugins)
+
+        // order doesn't matter for these systems:
+        .add_system(particle_effects.system())
+        .add_system(npc_behaviors.system())
+        .add_system(enemy_movement.system())
+
+        // create labels, because we need to order other systems around these:
+        .add_system(map_player_input.system().label(&quot;input&quot;))
+        .add_system(update_map.system().label(&quot;map&quot;))
+
+        // this will always run before anything labeled &quot;input&quot;
+        .add_system(input_parameters.system().before(&quot;input&quot;))
+
+        // this will always run after anything labeled &quot;input&quot; and &quot;map&quot;
+        // also label it just in case
+        .add_system(
+            player_movement.system()
+                .label(&quot;player_movement&quot;)
+                .after(&quot;input&quot;)
+                .after(&quot;map&quot;)
+        )
+        .run();
+}
+</code></pre>
+<p>Each label is a reference point that other systems can be ordered around.</p>
+<p><code>.label</code>/<code>.before</code>/<code>.after</code> may be used as many times as you need on one system.</p>
+<p>You can place multiple labels on one system.</p>
+<p>You can also use the same label on multiple systems.</p>
+<h2 id="circular-dependencies"><a class="header" href="#circular-dependencies">Circular Dependencies</a></h2>
+<p>If you have multiple systems mutually depending on each other, then it is
+clearly impossible to resolve the situation completely like that.</p>
+<p>You should try to redesign your game to avoid such situations, or just accept
+the consequences. You can at least make it behave predictably, using explicit
+ordering to specify the order you prefer.</p>
+<p>In really advanced scenarios, if you insist on all affected systems becoming
+settled during the same frame, you might be able to do it using <a href="./run-criteria-loop.html">Looping Run
+Criteria</a>.</p>
 
                     </main>
 

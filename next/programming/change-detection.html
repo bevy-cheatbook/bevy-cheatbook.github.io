@@ -223,6 +223,8 @@ detecting system will see the change the next time it runs, typically on the
 next frame update.</p>
 <p>If you need to ensure that changes are handled immediately / during the same frame,
 you can use <a href="./system-order.html">explicit system ordering</a>.</p>
+<p>However, when detecting component additions with <code>Added&lt;T&gt;</code> (which are typically
+done using <a href="./commands.html"><code>Commands</code></a>), this is not enough; you need <a href="./stages.html">stages</a>.</p>
 
                     </main>
 

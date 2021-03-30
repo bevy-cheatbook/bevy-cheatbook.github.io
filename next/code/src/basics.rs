@@ -12,6 +12,35 @@ struct ResourceA;
 struct ResourceB;
 struct ResourceC;
 
+#[allow(dead_code)]
+mod derive_systemparam {
+use bevy::prelude::*;
+pub struct UserKeybindings;
+pub struct GameSaveSettings;
+pub struct GraphicsSettings;
+// ANCHOR: derive-system-param
+use bevy::ecs::system::SystemParam;
+
+#[derive(SystemParam)]
+pub struct MyCommonSettings<'a> {
+    keys: Res<'a, UserKeybindings>,
+    save: Res<'a, GameSaveSettings>,
+    gfx: Res<'a, GraphicsSettings>,
+}
+
+fn read_all_settings(
+    settings: MyCommonSettings,
+) {
+    // ...
+}
+// ANCHOR_END: derive-system-param
+
+fn main() {
+    App::build().add_system(read_all_settings.system()).run();
+}
+
+}
+
 // ANCHOR: struct-component
 struct Health {
     hp: f32,
@@ -461,7 +490,7 @@ mod app1 {
 // ANCHOR: appinit-resource
 fn main() {
     App::build()
-        // if it implements `Default` or `FromResources`
+        // if it implements `Default` or `FromWorld`
         .init_resource::<MyFancyResource>()
         // if not, or if you want to set a specific value
         .insert_resource(StartingLevel(3))
@@ -486,7 +515,7 @@ fn main() {
 
         // resources:
         .insert_resource(StartingLevel(3))
-        // if it implements `Default` or `FromResources`
+        // if it implements `Default` or `FromWorld`
         .init_resource::<MyFancyResource>()
 
         // events:
@@ -695,6 +724,48 @@ fn main() {
         .run();
 }
 // ANCHOR_END: labels
+}
+
+#[allow(dead_code)]
+mod app8 {
+use bevy::prelude::*;
+
+    fn particle_effects() {}
+    fn npc_behaviors() {}
+    fn enemy_movement() {}
+    fn map_player_input() {}
+    fn update_map() {}
+    fn input_parameters() {}
+    fn player_movement() {}
+
+// ANCHOR: system-labels
+fn main() {
+    App::build()
+        .add_plugins(DefaultPlugins)
+
+        // order doesn't matter for these systems:
+        .add_system(particle_effects.system())
+        .add_system(npc_behaviors.system())
+        .add_system(enemy_movement.system())
+
+        // create labels, because we need to order other systems around these:
+        .add_system(map_player_input.system().label("input"))
+        .add_system(update_map.system().label("map"))
+
+        // this will always run before anything labeled "input"
+        .add_system(input_parameters.system().before("input"))
+
+        // this will always run after anything labeled "input" and "map"
+        // also label it just in case
+        .add_system(
+            player_movement.system()
+                .label("player_movement")
+                .after("input")
+                .after("map")
+        )
+        .run();
+}
+// ANCHOR_END: system-labels
 }
 
 /// REGISTER ALL SYSTEMS TO DETECT COMPILATION ERRORS!
