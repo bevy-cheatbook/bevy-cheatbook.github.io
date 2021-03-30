@@ -57,6 +57,11 @@ struct PlayerBundle {
     name: PlayerName,
     health: Health,
     _p: Player,
+
+    // We can nest/include another bundle.
+    // Add the components for a standard Bevy Sprite:
+    #[bundle]
+    sprite: SpriteSheetBundle,
 }
 // ANCHOR_END: bundle
 
@@ -235,6 +240,10 @@ fn update_player_xp(
 fn spawn_player(
     mut commands: Commands,
 ) {
+    // manage resources
+    commands.insert_resource(GoalsReached { main_goal: false, bonus: false });
+    commands.remove_resource::<MyResource>();
+
     // create a new entity using `spawn`
     let entity_id = commands.spawn()
         // add a component
@@ -252,6 +261,7 @@ fn spawn_player(
             hp: 100.0, extra: 20.0
         },
         _p: Player,
+        sprite: Default::default(),
     });
 
     // spawn another entity
@@ -262,7 +272,7 @@ fn spawn_player(
         ComponentC::default(),
     )).id();
 
-    // add/remove components of an existing entity:
+    // add/remove components of an existing entity
     commands.entity(entity_id)
         .insert(ComponentB)
         .remove::<ComponentA>()
@@ -393,11 +403,6 @@ fn commands_catchall(mut commands: Commands) {
 // ANCHOR: commands-current-entity
 let e = commands.spawn().id();
 // ANCHOR_END: commands-current-entity
-
-// ANCHOR: commands-resource
-commands.insert_resource(GoalsReached { main_goal: false, bonus: false });
-commands.remove_resource::<MyResource>();
-// ANCHOR_END: commands-resource
 
 // ANCHOR: parenting
 // spawn the parent and get its Entity id
