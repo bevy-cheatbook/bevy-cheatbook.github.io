@@ -408,6 +408,20 @@ fn main() {
         .run();
 }
 </code></pre>
+<h2 id="labels"><a class="header" href="#labels">Labels</a></h2>
+<p>[<a href="./programming/labels.html">explain</a>]</p>
+<p>Labels can be strings, or any other type that implements the relevant traits.</p>
+<p>For example, a custom enum type:</p>
+<pre><code class="language-rust no_run noplayground">    // required traits:
+    #[derive(Debug, Clone, PartialEq, Eq, Hash)]
+    #[derive(StageLabel)] // for stages
+    #[derive(SystemLabel)] // for systems
+    #[derive(RunCriteriaLabel)] // for run criteria
+    #[derive(AmbiguitySetLabel)] // for ambiguity sets
+    enum MyLabels {
+        Input,
+    }
+</code></pre>
 <h2 id="app-builder-main-function"><a class="header" href="#app-builder-main-function">App Builder (main function)</a></h2>
 <p>[<a href="./programming/app-builder.html">explain</a>, <a href="./programming/stages.html">stages</a>, <a href="./programming/plugins.html">plugins</a>]</p>
 <p>App builder:</p>
@@ -453,6 +467,22 @@ impl Plugin for MyPlugin {
 </code></pre>
 <h2 id="system-order-of-execution"><a class="header" href="#system-order-of-execution">System Order of Execution</a></h2>
 <p>[<a href="./programming/system-order.html">explain</a>]</p>
+<p>Order is <em>nondeterministic</em> and may change every frame!</p>
+<p>Use <a href="#labels">labels</a> to specify order explicitly:</p>
+<pre><code class="language-rust no_run noplayground">fn main() {
+    App::build()
+        .add_plugins(DefaultPlugins)
+        // non-deterministic order:
+        .add_system(particle_effects.system())
+        // create labels, because we need to order other systems around these:
+        .add_system(map_player_input.system().label(MyLabels::Input))
+        // this will always run before anything with the Input label
+        .add_system(input_parameters.system().before(MyLabels::Input))
+        // this will always run after anything with the Input label
+        .add_system(player_movement.system().after(MyLabels::Input))
+        .run();
+}
+</code></pre>
 <h2 id="states"><a class="header" href="#states">States</a></h2>
 <p>[<a href="./programming/states.html">explain</a>]</p>
 <p>App builder with States:</p>
