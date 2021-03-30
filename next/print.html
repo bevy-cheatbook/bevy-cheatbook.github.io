@@ -232,28 +232,27 @@ for brief explanations of each feature.</p>
 <hr />
 <h2 id="table-of-contents"><a class="header" href="#table-of-contents">Table of Contents</a></h2>
 <ul>
-<li><a href="cheatsheet.html#systems">Systems</a></li>
-<li><a href="cheatsheet.html#entities-and-components">Entities and Components</a></li>
-<li><a href="cheatsheet.html#resources">Resources</a></li>
-<li><a href="cheatsheet.html#commands">Commands</a></li>
-<li><a href="cheatsheet.html#queries">Queries</a></li>
-<li><a href="cheatsheet.html#change-detection">Change Detection</a></li>
-<li><a href="cheatsheet.html#query-sets">Query Sets</a></li>
-<li><a href="cheatsheet.html#events">Events</a></li>
-<li><a href="cheatsheet.html#local-resources">Local Resources</a></li>
-<li><a href="cheatsheet.html#labels">Labels</a></li>
 <li><a href="cheatsheet.html#app-builder">App Builder</a></li>
-<li><a href="cheatsheet.html#system-order">System Order</a></li>
-<li><a href="cheatsheet.html#states">States</a></li>
-<li><a href="cheatsheet.html#transforms">Transforms</a></li>
-<li><a href="cheatsheet.html#parentchild-hierarchy">Parent/Child Hierarchy</a></li>
-<li><a href="cheatsheet.html#system-chaining">System Chaining</a></li>
 <li><a href="cheatsheet.html#assets">Assets</a></li>
+<li><a href="cheatsheet.html#change-detection">Change Detection</a></li>
+<li><a href="cheatsheet.html#commands">Commands</a></li>
+<li><a href="cheatsheet.html#entities-and-components">Entities and Components</a></li>
+<li><a href="cheatsheet.html#events">Events</a></li>
+<li><a href="cheatsheet.html#labels">Labels</a></li>
+<li><a href="cheatsheet.html#local-resources">Local Resources</a></li>
+<li><a href="cheatsheet.html#parentchild-hierarchy">Parent/Child Hierarchy</a></li>
+<li><a href="cheatsheet.html#queries">Queries</a></li>
+<li><a href="cheatsheet.html#query-sets">Query Sets</a></li>
+<li><a href="cheatsheet.html#resources">Resources</a></li>
+<li><a href="cheatsheet.html#states">States</a></li>
+<li><a href="cheatsheet.html#systems">Systems</a></li>
+<li><a href="cheatsheet.html#system-chaining">System Chaining</a></li>
+<li><a href="cheatsheet.html#system-order">System Order</a></li>
+<li><a href="cheatsheet.html#transforms">Transforms</a></li>
 </ul>
 <hr />
 <h2 id="systems"><a class="header" href="#systems">Systems</a></h2>
-<p><a href="cheatsheet.html#table-of-contents">(back to top)</a></p>
-<p>[<a href="./programming/systems.html">explain</a>]</p>
+<p><a href="cheatsheet.html#table-of-contents">(back to top)</a> [<a href="./programming/systems.html">explain</a>]</p>
 <p>Regular Rust functions, but can only accept parameters that implement [trait <code>SystemParam</code>](TODO DOCS.RS).</p>
 <p>The standard system parameter types provided by Bevy:</p>
 <ul>
@@ -278,8 +277,7 @@ for brief explanations of each feature.</p>
 <p>Your function can have a maximum of 11 total parameters. If you need more, group
 them into tuples to work around the limit.</p>
 <h2 id="entities-and-components"><a class="header" href="#entities-and-components">Entities and Components</a></h2>
-<p><a href="cheatsheet.html#table-of-contents">(back to top)</a></p>
-<p>[<a href="./programming/ec.html">explain</a>]</p>
+<p><a href="cheatsheet.html#table-of-contents">(back to top)</a> [<a href="./programming/ec.html">explain</a>]</p>
 <p>Any Rust type (<code>struct</code> or <code>enum</code>) can be used as a component.</p>
 <p>Type must be unique; only one instance per type per entity can exist. Use newtypes.</p>
 <p>See <a href="cheatsheet.html#commands"><code>Commands</code></a> for how to add components to entities and spawn entities.</p>
@@ -291,8 +289,7 @@ struct AbBundle {
 }
 </code></pre>
 <h2 id="resources"><a class="header" href="#resources">Resources</a></h2>
-<p><a href="cheatsheet.html#table-of-contents">(back to top)</a></p>
-<p>[<a href="./programming/res.html">explain</a>]</p>
+<p><a href="cheatsheet.html#table-of-contents">(back to top)</a> [<a href="./programming/res.html">explain</a>]</p>
 <p>Any Rust type (<code>struct</code> or <code>enum</code>) can be used as a resource.</p>
 <p>Type must be unique; only one instance per type can exist. Use newtypes.</p>
 <p>Access from system:</p>
@@ -327,8 +324,7 @@ struct AbBundle {
 }
 </code></pre>
 <h2 id="commands"><a class="header" href="#commands">Commands</a></h2>
-<p><a href="cheatsheet.html#table-of-contents">(back to top)</a></p>
-<p>[<a href="./programming/commands.html">explain</a>]</p>
+<p><a href="cheatsheet.html#table-of-contents">(back to top)</a> [<a href="./programming/commands.html">explain</a>]</p>
 <pre><code class="language-rust no_run noplayground">fn manage_entities_components_resources(mut commands: Commands) {
     // replaces any existing resource of this type
     commands.insert_resource(MyData::default());
@@ -362,8 +358,7 @@ struct AbBundle {
 </code></pre>
 <p>These actions are applied at the end of the stage.</p>
 <h2 id="queries"><a class="header" href="#queries">Queries</a></h2>
-<p><a href="cheatsheet.html#table-of-contents">(back to top)</a></p>
-<p>[<a href="./programming/queries.html">explain</a>]</p>
+<p><a href="cheatsheet.html#table-of-contents">(back to top)</a> [<a href="./programming/queries.html">explain</a>]</p>
 <pre><code class="language-rust no_run noplayground">fn my_system(
     mut query: Query&lt;(Entity, &amp;ComponentA, &amp;mut ComponentB, Option&lt;&amp;mut ComponentC&gt;)&gt;
 ) {
@@ -395,8 +390,7 @@ struct AbBundle {
 }
 </code></pre>
 <h2 id="change-detection"><a class="header" href="#change-detection">Change Detection</a></h2>
-<p><a href="cheatsheet.html#table-of-contents">(back to top)</a></p>
-<p>[<a href="./programming/change-detection.html">explain</a>]</p>
+<p><a href="cheatsheet.html#table-of-contents">(back to top)</a> [<a href="./programming/change-detection.html">explain</a>]</p>
 <p>Query filters:</p>
 <ul>
 <li><code>Added&lt;T&gt;</code>: detect adding new components to existing entities</li>
@@ -414,8 +408,7 @@ query without it actually being a <code>&amp;mut</code> access, will <em>not</em
 <p>Beware of <a href="./pitfalls/frame-delay.html">frame delay / 1-frame-lag</a>. You may want
 to use <a href="cheatsheet.html#system-order">explicit system ordering</a>.</p>
 <h2 id="query-sets"><a class="header" href="#query-sets">Query Sets</a></h2>
-<p><a href="cheatsheet.html#table-of-contents">(back to top)</a></p>
-<p>[<a href="./programming/query-sets.html">explain</a>]</p>
+<p><a href="cheatsheet.html#table-of-contents">(back to top)</a> [<a href="./programming/query-sets.html">explain</a>]</p>
 <pre><code class="language-rust no_run noplayground">fn conflicting_queries(
     mut set: QuerySet&lt;(
         // these queries cannot be used at the same time, due to mutability conflict
@@ -432,8 +425,7 @@ to use <a href="cheatsheet.html#system-order">explicit system ordering</a>.</p>
 }
 </code></pre>
 <h2 id="events"><a class="header" href="#events">Events</a></h2>
-<p><a href="cheatsheet.html#table-of-contents">(back to top)</a></p>
-<p>[<a href="./programming/events.html">explain</a>]</p>
+<p><a href="cheatsheet.html#table-of-contents">(back to top)</a> [<a href="./programming/events.html">explain</a>]</p>
 <pre><code class="language-rust no_run noplayground">struct MyEvent;
 
 fn sender(mut writer: EventWriter&lt;MyEvent&gt;) {
@@ -459,16 +451,14 @@ miss some.</p>
 <p>Beware of <a href="./pitfalls/frame-delay.html">frame delay / 1-frame-lag</a>. You may want
 to use <a href="cheatsheet.html#system-order">explicit system ordering</a>.</p>
 <h2 id="local-resources"><a class="header" href="#local-resources">Local Resources</a></h2>
-<p><a href="cheatsheet.html#table-of-contents">(back to top)</a></p>
-<p>[<a href="./programming/local.html">explain</a>]</p>
+<p><a href="cheatsheet.html#table-of-contents">(back to top)</a> [<a href="./programming/local.html">explain</a>]</p>
 <pre><code class="language-rust no_run noplayground">fn with_local(local: Local&lt;MyData&gt;) {
     // `local` is an instance of `MyData` uniquely for this system
 }
 </code></pre>
 <p>The type must implement <code>Default</code> or <code>FromWorld</code>. It is automatically initialized.</p>
 <h2 id="labels"><a class="header" href="#labels">Labels</a></h2>
-<p><a href="cheatsheet.html#table-of-contents">(back to top)</a></p>
-<p>[<a href="./programming/labels.html">explain</a>]</p>
+<p><a href="cheatsheet.html#table-of-contents">(back to top)</a> [<a href="./programming/labels.html">explain</a>]</p>
 <p>Labels can be strings, or any other type that implements the relevant traits.</p>
 <p>For example, a custom enum type:</p>
 <pre><code class="language-rust no_run noplayground">    // required traits:
@@ -482,8 +472,7 @@ to use <a href="cheatsheet.html#system-order">explicit system ordering</a>.</p>
     }
 </code></pre>
 <h2 id="app-builder"><a class="header" href="#app-builder">App Builder</a></h2>
-<p><a href="cheatsheet.html#table-of-contents">(back to top)</a></p>
-<p>[<a href="./programming/app-builder.html">explain</a>, <a href="./programming/stages.html">stages</a>, <a href="./programming/plugins.html">plugins</a>]</p>
+<p><a href="cheatsheet.html#table-of-contents">(back to top)</a> [<a href="./programming/app-builder.html">explain</a>, <a href="./programming/stages.html">stages</a>, <a href="./programming/plugins.html">plugins</a>]</p>
 <p>App builder:</p>
 <pre><code class="language-rust no_run noplayground">fn main() {
     // labels for custom stages:
@@ -526,8 +515,7 @@ impl Plugin for MyPlugin {
 }
 </code></pre>
 <h2 id="system-order"><a class="header" href="#system-order">System Order</a></h2>
-<p><a href="cheatsheet.html#table-of-contents">(back to top)</a></p>
-<p>[<a href="./programming/system-order.html">explain</a>]</p>
+<p><a href="cheatsheet.html#table-of-contents">(back to top)</a> [<a href="./programming/system-order.html">explain</a>]</p>
 <p>Execution order is <em>nondeterministic</em> and may change every frame!</p>
 <p>Use <a href="cheatsheet.html#labels">labels</a> to specify order explicitly:</p>
 <pre><code class="language-rust no_run noplayground">fn main() {
@@ -545,8 +533,7 @@ impl Plugin for MyPlugin {
 }
 </code></pre>
 <h2 id="states"><a class="header" href="#states">States</a></h2>
-<p><a href="cheatsheet.html#table-of-contents">(back to top)</a></p>
-<p>[<a href="./programming/states.html">explain</a>]</p>
+<p><a href="cheatsheet.html#table-of-contents">(back to top)</a> [<a href="./programming/states.html">explain</a>]</p>
 <p>App builder with States:</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 enum MyState {
@@ -587,14 +574,12 @@ fn main() {
 }
 </code></pre>
 <h2 id="transforms"><a class="header" href="#transforms">Transforms</a></h2>
-<p><a href="cheatsheet.html#table-of-contents">(back to top)</a></p>
-<p>[<a href="./features/transforms.html">explain</a>]</p>
+<p><a href="cheatsheet.html#table-of-contents">(back to top)</a> [<a href="./features/transforms.html">explain</a>]</p>
 <p>Coordinate system: +X is right, +Y is up, +Z is out of the screen. Right-handed. 3D matches 2D.</p>
 <p>The <code>Transform</code> component is the relative/local transform. You may modify this directly.</p>
 <p>The <code>GlobalTransform</code> component is the absolute/global transform. Do not modify; internally managed by Bevy.</p>
 <h2 id="parentchild-hierarchy"><a class="header" href="#parentchild-hierarchy">Parent/Child Hierarchy</a></h2>
-<p><a href="cheatsheet.html#table-of-contents">(back to top)</a></p>
-<p>[<a href="./programming/parent-child.html">explain</a>]</p>
+<p><a href="cheatsheet.html#table-of-contents">(back to top)</a> [<a href="./programming/parent-child.html">explain</a>]</p>
 <pre><code class="language-rust no_run noplayground">fn spawn_nested(mut commands: Commands) {
     let parent = commands.spawn_bundle(MyParentBundle::default())
         .with_children(|parent| {
@@ -610,8 +595,7 @@ fn main() {
 </code></pre>
 <p>Transforms: Ensure both parent and child have both components: <code>Transform</code>, <code>GlobalTransform</code>.</p>
 <h2 id="system-chaining"><a class="header" href="#system-chaining">System Chaining</a></h2>
-<p><a href="cheatsheet.html#table-of-contents">(back to top)</a></p>
-<p>[<a href="./programming/system-chaining.html">explain</a>]</p>
+<p><a href="cheatsheet.html#table-of-contents">(back to top)</a> [<a href="./programming/system-chaining.html">explain</a>]</p>
 <pre><code class="language-rust no_run noplayground">fn output_system(/* system params */) -&gt; MyData {
     MyData
 }
@@ -627,8 +611,7 @@ fn main() {
 }
 </code></pre>
 <h2 id="assets"><a class="header" href="#assets">Assets</a></h2>
-<p><a href="cheatsheet.html#table-of-contents">(back to top)</a></p>
-<p>[<a href="./features/assets.html">explain</a>]</p>
+<p><a href="cheatsheet.html#table-of-contents">(back to top)</a> [<a href="./features/assets.html">explain</a>]</p>
 <p>Load asset:</p>
 <pre><code class="language-rust no_run noplayground">fn asset_setup(server: Res&lt;AssetServer&gt;) {
     // load path as an asset of specified type
