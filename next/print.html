@@ -1052,9 +1052,10 @@ system will only get a chance to receive the events on the next frame update.</p
 you can use <a href="programming/./system-order.html">explicit system ordering</a>.</p>
 <h1 id="app-builder-main-function"><a class="header" href="#app-builder-main-function">App Builder (main function)</a></h1>
 <p>To enter the bevy runtime, you need to configure an <code>App</code>, composed of all the
-systems, plugins, event types, and resources, that you want to use.</p>
+<a href="programming/./systems.html">systems</a>, <a href="programming/./plugins.html">plugins</a>, <a href="programming/./events.html">event</a> types,
+and <a href="programming/./res.html">resources</a>, that you want to use.</p>
 <p>Everything must be registered in the <code>App</code>, or it will not work.</p>
-<p>Component types and local resources do not need to be registered.</p>
+<p>Component types and <a href="programming/./local.html">local resources</a> do not need to be registered.</p>
 <p>Resources can also be created later, using <a href="programming/./commands.html"><code>Commands</code></a>.</p>
 <p>You also need to add Bevy's built-in functionality: either <code>DefaultPlugins</code> if
 you are making a full game/app, or <code>MinimalPlugins</code> for something like a
@@ -1188,6 +1189,7 @@ would result in annoying lag, so you should probably fix it.</p>
 <p><code>.label</code>/<code>.before</code>/<code>.after</code> may be used as many times as you need on one system.</p>
 <p>You can place multiple labels on one system.</p>
 <p>You can also use the same label on multiple systems.</p>
+<p>If you want to manage multiple systems together as a group, use <a href="programming/./system-sets.html">system sets</a>.</p>
 <h2 id="circular-dependencies"><a class="header" href="#circular-dependencies">Circular Dependencies</a></h2>
 <p>If you have multiple systems mutually depending on each other, then it is
 clearly impossible to resolve the situation completely like that.</p>
@@ -1533,7 +1535,7 @@ in those stages.</p>
 <p>(TODO) example</p>
 <h1 id="labels-1"><a class="header" href="#labels-1">Labels</a></h1>
 <p>You need labels to name various things in your app, such as <a href="programming/./stages.html">stages</a>,
-<a href="programming/./system-order.html">systems</a>, <a href="programming/TODO">run criteria</a>, and <a href="programming/TODO">ambiguity sets</a>.</p>
+<a href="programming/./system-order.html">systems</a>, <a href="programming/./run-criteria.html">run criteria</a>, and <a href="programming/TODO">ambiguity sets</a>.</p>
 <p>Bevy uses some clever Rust type system magic, to allow you to use strings
 as well as your own custom types for labels, and even mix them!</p>
 <p>You may use a value of any type as a label, as long as it has the following
