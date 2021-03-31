@@ -254,7 +254,7 @@ overlay states, forming a stack.</p>
 <p>This is how you can implement things like a &quot;game paused&quot; screen, or an overlay
 menu, with the game world still visible / running in the background.</p>
 <p>You can have some systems that are still running even when the state is
-&quot;inactive&quot;, that is, in the background, with other states are running on top.
+&quot;inactive&quot; (that is, in the background, with other states running on top).
 You can also add one-shot systems to run when &quot;pausing&quot; or &quot;resuming&quot; the state.</p>
 <p>In your <a href="./app-builder.html">app builder</a>:</p>
 <pre><code class="language-rust no_run noplayground">        // animate things even while paused
@@ -297,7 +297,7 @@ You can also add one-shot systems to run when &quot;pausing&quot; or &quot;resum
     // to go back into the game
     app_state.pop().unwrap();
 </code></pre>
-<p>(using <code>set</code> as shown before replaces the active state at the top of the stack)</p>
+<p>(using <code>.set</code> as shown before replaces the active state at the top of the stack)</p>
 <h2 id="known-pitfalls-and-limitations"><a class="header" href="#known-pitfalls-and-limitations">Known Pitfalls and Limitations</a></h2>
 <h3 id="combining-with-other-run-criteria"><a class="header" href="#combining-with-other-run-criteria">Combining with Other Run Criteria</a></h3>
 <p>Because states are implemented using run criteria, it is tricky to combine them
