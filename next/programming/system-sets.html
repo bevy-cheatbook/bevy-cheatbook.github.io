@@ -164,7 +164,40 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="system-sets"><a class="header" href="#system-sets">System Sets</a></h1>
-<p>(TODO)</p>
+<p>System Sets allow you to easily apply common properties to multiple systems, for
+purposes such as <a href="./labels.html">labeling</a>, <a href="./system-order.html">ordering</a>, <a href="./run-criteria.html">run
+criteria</a>, and <a href="./states.html">states</a>.</p>
+<pre><code class="language-rust no_run noplayground">fn main() {
+    App::build()
+        .add_plugins(DefaultPlugins)
+
+        // group our input handling systems into a set
+        .add_system_set(
+            SystemSet::new()
+                .label(&quot;input&quot;)
+                .with_system(keyboard_input.system())
+                .with_system(gamepad_input.system())
+        )
+
+        // our &quot;net&quot; systems should run before &quot;input&quot;
+        .add_system_set(
+            SystemSet::new()
+                .label(&quot;net&quot;)
+                .before(&quot;input&quot;)
+                // individual systems can still have
+                // their own labels (and ordering)
+                .with_system(server_session.system().label(&quot;session&quot;))
+                .with_system(server_updates.system().after(&quot;session&quot;))
+        )
+
+        // some ungrouped systems
+        .add_system(player_movement.system().after(&quot;input&quot;))
+        .add_system(session_ui.system().after(&quot;session&quot;))
+        .add_system(smoke_particles.system())
+
+        .run();
+}
+</code></pre>
 
                     </main>
 

@@ -467,6 +467,10 @@ fn load_extra_assets(
 // ANCHOR_END: asset-folder
 
 fn commands_catchall(mut commands: Commands) {
+// ANCHOR: ui-camera
+commands.spawn_bundle(UiCameraBundle::default());
+// ANCHOR_END: ui-camera
+
 // ANCHOR: commands-current-entity
 let e = commands.spawn().id();
 // ANCHOR_END: commands-current-entity
@@ -895,6 +899,52 @@ fn main() {
         .run();
 }
 // ANCHOR_END: system-labels
+}
+
+#[allow(dead_code)]
+mod app9 {
+use bevy::prelude::*;
+
+    fn server_session() {}
+    fn server_updates() {}
+    fn keyboard_input() {}
+    fn gamepad_input() {}
+    fn session_ui() {}
+    fn player_movement() {}
+    fn smoke_particles() {}
+
+// ANCHOR: systemset-labels
+fn main() {
+    App::build()
+        .add_plugins(DefaultPlugins)
+
+        // group our input handling systems into a set
+        .add_system_set(
+            SystemSet::new()
+                .label("input")
+                .with_system(keyboard_input.system())
+                .with_system(gamepad_input.system())
+        )
+
+        // our "net" systems should run before "input"
+        .add_system_set(
+            SystemSet::new()
+                .label("net")
+                .before("input")
+                // individual systems can still have
+                // their own labels (and ordering)
+                .with_system(server_session.system().label("session"))
+                .with_system(server_updates.system().after("session"))
+        )
+
+        // some ungrouped systems
+        .add_system(player_movement.system().after("input"))
+        .add_system(session_ui.system().after("session"))
+        .add_system(smoke_particles.system())
+
+        .run();
+}
+// ANCHOR_END: systemset-labels
 }
 
 /// REGISTER ALL SYSTEMS TO DETECT COMPILATION ERRORS!

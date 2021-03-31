@@ -1156,7 +1156,8 @@ in better performance.</p>
 <p>On the other hand, for things like handling the player input controls, this
 would result in annoying lag, so you should probably fix it.</p>
 <h2 id="explicit-system-ordering"><a class="header" href="#explicit-system-ordering">Explicit System Ordering</a></h2>
-<p>The solution is to use system <a href="programming/./labels.html">labels</a> to explicitly specify the order you want:</p>
+<p>The solution is to use system <a href="programming/./labels.html">labels</a> to explicitly specify the
+order you want:</p>
 <pre><code class="language-rust no_run noplayground">fn main() {
     App::build()
         .add_plugins(DefaultPlugins)
@@ -1188,7 +1189,8 @@ would result in annoying lag, so you should probably fix it.</p>
 <p><code>.label</code>/<code>.before</code>/<code>.after</code> may be used as many times as you need on one system.</p>
 <p>You can place multiple labels on one system.</p>
 <p>You can also use the same label on multiple systems.</p>
-<p>If you want to manage multiple systems together as a group, use <a href="programming/./system-sets.html">system sets</a>.</p>
+<p>When you have multiple systems with common labels or ordering, it may be
+convenient to use <a href="programming/./system-sets.html">system sets</a>.</p>
 <h2 id="circular-dependencies"><a class="header" href="#circular-dependencies">Circular Dependencies</a></h2>
 <p>If you have multiple systems mutually depending on each other, then it is
 clearly impossible to resolve the situation completely like that.</p>
@@ -1199,7 +1201,40 @@ ordering to specify the order you prefer.</p>
 settled during the same frame, you might be able to do it using <a href="programming/./run-criteria-loop.html">Looping Run
 Criteria</a>.</p>
 <h1 id="system-sets"><a class="header" href="#system-sets">System Sets</a></h1>
-<p>(TODO)</p>
+<p>System Sets allow you to easily apply common properties to multiple systems, for
+purposes such as <a href="programming/./labels.html">labeling</a>, <a href="programming/./system-order.html">ordering</a>, <a href="programming/./run-criteria.html">run
+criteria</a>, and <a href="programming/./states.html">states</a>.</p>
+<pre><code class="language-rust no_run noplayground">fn main() {
+    App::build()
+        .add_plugins(DefaultPlugins)
+
+        // group our input handling systems into a set
+        .add_system_set(
+            SystemSet::new()
+                .label(&quot;input&quot;)
+                .with_system(keyboard_input.system())
+                .with_system(gamepad_input.system())
+        )
+
+        // our &quot;net&quot; systems should run before &quot;input&quot;
+        .add_system_set(
+            SystemSet::new()
+                .label(&quot;net&quot;)
+                .before(&quot;input&quot;)
+                // individual systems can still have
+                // their own labels (and ordering)
+                .with_system(server_session.system().label(&quot;session&quot;))
+                .with_system(server_updates.system().after(&quot;session&quot;))
+        )
+
+        // some ungrouped systems
+        .add_system(player_movement.system().after(&quot;input&quot;))
+        .add_system(session_ui.system().after(&quot;session&quot;))
+        .add_system(smoke_particles.system())
+
+        .run();
+}
+</code></pre>
 <h1 id="hierarchical-parentchild-entities"><a class="header" href="#hierarchical-parentchild-entities">Hierarchical (Parent/Child) Entities</a></h1>
 <p>Technically, the Entities/Components themselves cannot form a hierarchy (it is a
 flat data structure). However, logical hierarchies are a common pattern in games.</p>
@@ -1929,7 +1964,7 @@ maximum numbers of parameters, or simply to organize your parameters into groups
 <p>If you are trying to build a UI, but it is not showing on the screen, you
 probably forgot to spawn a UI Camera. The UI Camera is required for Bevy to
 render UI.</p>
-<pre><code class="language-rust no_run noplayground">
+<pre><code class="language-rust no_run noplayground">commands.spawn_bundle(UiCameraBundle::default());
 </code></pre>
 <h1 id="slow-performance"><a class="header" href="#slow-performance">Slow Performance</a></h1>
 <p>(unoptimized debug builds)</p>
