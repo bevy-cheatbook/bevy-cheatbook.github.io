@@ -176,7 +176,8 @@ confusing compiler errors!</a></p>
     eprintln!(&quot;Starting on level {:?}&quot;, *start);
 }
 </code></pre>
-<p>System parameters can be grouped into tuples. This is useful for organization.</p>
+<p>System parameters can be grouped into tuples (which can be nested). This is
+useful for organization.</p>
 <pre><code class="language-rust no_run noplayground">fn complex_system(
     (a, mut b): (Res&lt;ResourceA&gt;, ResMut&lt;ResourceB&gt;),
     // this resource might not exist, so wrap it in an Option
@@ -187,6 +188,8 @@ confusing compiler errors!</a></p>
     }
 }
 </code></pre>
+<p>The maximum number of top-level system parameters, or tuple members, is 11. You
+can group/nest them into tuples, if you need to work around that limitation.</p>
 
                     </main>
 

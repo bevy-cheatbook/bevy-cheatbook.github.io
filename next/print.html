@@ -858,7 +858,8 @@ confusing compiler errors!</a></p>
     eprintln!(&quot;Starting on level {:?}&quot;, *start);
 }
 </code></pre>
-<p>System parameters can be grouped into tuples. This is useful for organization.</p>
+<p>System parameters can be grouped into tuples (which can be nested). This is
+useful for organization.</p>
 <pre><code class="language-rust no_run noplayground">fn complex_system(
     (a, mut b): (Res&lt;ResourceA&gt;, ResMut&lt;ResourceB&gt;),
     // this resource might not exist, so wrap it in an Option
@@ -869,6 +870,8 @@ confusing compiler errors!</a></p>
     }
 }
 </code></pre>
+<p>The maximum number of top-level system parameters, or tuple members, is 11. You
+can group/nest them into tuples, if you need to work around that limitation.</p>
 <h1 id="queries-1"><a class="header" href="#queries-1">Queries</a></h1>
 <p>Queries let you access components of entities.</p>
 <pre><code class="language-rust no_run noplayground">fn check_zero_health(
@@ -1100,7 +1103,7 @@ likely need at least some of these features as your project grows in complexity.
 <p>A system can also have multiple <code>Local</code>s of the same type.</p>
 <h1 id="plugins-1"><a class="header" href="#plugins-1">Plugins</a></h1>
 <p>As your project grows, it can be useful to make it more modular. You can split it into plugins.</p>
-<p>Plugins are simply collections of things to be added to the App Builder.</p>
+<p>Plugins are simply collections of things to be added to the <a href="programming/./app-builder.html">App Builder</a>.</p>
 <pre><code class="language-rust no_run noplayground">struct MyPlugin;
 
 impl Plugin for MyPlugin {
@@ -1120,7 +1123,19 @@ fn main() {
         .run();
 }
 </code></pre>
-<hr />
+<p>For internal organization in your own project, the main value of plugins comes
+from not having to declare all your Rust types and functions as <code>pub</code>, just so
+they can be accessible from <code>main</code> to be added to the app builder. Plugins let
+you add things to your app from multiple different places, like separate Rust
+files / modules.</p>
+<p>You can decide how plugins fit into the architecture of your game. Some suggestions:</p>
+<ul>
+<li>Create plugins for different <a href="programming/./states.html">states</a>.</li>
+<li>Create plugins for various sub-systems, like physics or input handling.</li>
+</ul>
+<h2 id="publishing-crates"><a class="header" href="#publishing-crates">Publishing Crates</a></h2>
+<p>Plugins give you a nice way to publish Bevy-based libraries for other people to
+easily include into their projects.</p>
 <p>If you intend to publish plugins as crates for public use, you should read
 <a href="https://github.com/bevyengine/bevy/blob/main/docs/plugins_guidelines.md">the official guidelines for plugin authors</a>.</p>
 <h1 id="system-order-of-execution"><a class="header" href="#system-order-of-execution">System Order of Execution</a></h1>
@@ -1447,6 +1462,7 @@ the same data) from running in parallel.</p>
 }
 </code></pre>
 <p>This ensures that only one of the conflicting queries can be used at the same time.</p>
+<p>The maximum number of queries in a query set is 4.</p>
 <h1 id="run-criteria"><a class="header" href="#run-criteria">Run Criteria</a></h1>
 <p>(TODO)</p>
 <h1 id="states-1"><a class="header" href="#states-1">States</a></h1>
@@ -1616,36 +1632,65 @@ DOCS.RS) and add that to the other stages before any state-dependent system sets
 in those stages.</p>
 <p>(TODO) example</p>
 <h1 id="labels-1"><a class="header" href="#labels-1">Labels</a></h1>
-<p>You need labels to name various things in your app, such as <a href="programming/./stages.html">stages</a>,
-<a href="programming/./system-order.html">systems</a>, <a href="programming/./run-criteria.html">run criteria</a>, and <a href="programming/TODO">ambiguity sets</a>.</p>
+<p>You need labels to name various things in your app, such as
+<a href="programming/./system-order.html">systems</a>, <a href="programming/./run-criteria.html">run criteria</a>,
+<a href="programming/./stages.html">stages</a>, and <a href="programming/TODO">ambiguity sets</a>.</p>
 <p>Bevy uses some clever Rust type system magic, to allow you to use strings
 as well as your own custom types for labels, and even mix them!</p>
 <p>You may use a value of any type as a label, as long as it has the following
 standard Rust traits: <code>Clone + Eq + Hash + Debug</code> (and the implied <code>+ Send + Sync + 'static</code>).</p>
 <p>You need to derive the appropriate trait: <code>StageLabel</code>, <code>SystemLabel</code>, <code>RunCriteriaLabel</code>, or <code>AmbiguitySetLabel</code>.</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+#[derive(SystemLabel)]
+enum MySystems {
+    InputSet,
+    Movement,
+}
+
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 #[derive(StageLabel)]
 enum MyStages {
     Prepare,
     Cleanup,
 }
 
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+#[derive(StageLabel)]
+struct DebugStage;
+
 fn main() {
     App::build()
         .add_plugins(DefaultPlugins)
+
+        // Add our game systems:
+        .add_system_set(
+            SystemSet::new()
+                .label(MySystems::InputSet)
+                .with_system(keyboard_input.system())
+                .with_system(gamepad_input.system())
+        )
+        .add_system(player_movement.system().label(MySystems::Movement))
+
+        // temporary debug system, let's just use a string label
+        .add_system(debug_movement.system().label(&quot;temp-debug&quot;))
+
         // Add our custom stages:
         // note that Bevy's `CoreStage` is an enum just like ours!
         .add_stage_before(CoreStage::Update, MyStages::Prepare, SystemStage::parallel())
         .add_stage_after(CoreStage::Update, MyStages::Cleanup, SystemStage::parallel())
+
+        .add_stage_after(CoreStage::Update, DebugStage, SystemStage::parallel())
+
         // we can just use a string for this one:
         .add_stage_before(CoreStage::PostUpdate, &quot;temp-debug-hack&quot;, SystemStage::parallel())
+
         .run();
 }
 </code></pre>
 <p>For quick prototyping, it is convenient to just use strings as labels.</p>
-<p>However, by defining your labels as a custom <code>enum</code> type, the Rust compiler can
-check them for you, and your IDE can auto-complete them. It is the recommended
-way, as it helps you stay organized in larger projects.</p>
+<p>However, by defining your labels as custom types, the Rust compiler can check
+them for you, and your IDE can auto-complete them. It is the recommended way, as
+it prevents mistakes, and helps you stay organized in larger projects.</p>
 <h1 id="bevy-programming-advanced"><a class="header" href="#bevy-programming-advanced">Bevy Programming: Advanced</a></h1>
 <p>This sub-chapter covers advanced Bevy programming.</p>
 <p>These topics may be useful for specialized scenarios in complex projects.</p>
