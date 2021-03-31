@@ -1235,6 +1235,54 @@ commands.spawn_bundle(MyParentBundle::default())
     }
 }
 </code></pre>
+<h2 id="accessing-the-parent-or-children"><a class="header" href="#accessing-the-parent-or-children">Accessing the Parent or Children</a></h2>
+<p>To make a system that works with the hierarchy, you typically need two queries:</p>
+<ul>
+<li>one with the components you need from the child entities</li>
+<li>one with the components you need from the parent entities</li>
+</ul>
+<p>One of the two queries should include the appropriate component, to obtain the
+entity ids to use with the other one:</p>
+<ul>
+<li><code>Parent</code> in the child query, if you want to iterate entities and look up
+their parents, or</li>
+<li><code>Children</code> in the parent query, if you want to iterate entities and look up
+their children</li>
+</ul>
+<p>For example, if we want to get the <code>Transform</code> of cameras that have a parent,
+and the <code>GlobalTransform</code> of their parent:</p>
+<pre><code class="language-rust no_run noplayground">fn camera_with_parent(
+    q_child: Query&lt;(&amp;Parent, &amp;Transform), With&lt;Camera&gt;&gt;,
+    q_parent: Query&lt;&amp;GlobalTransform&gt;,
+) {
+    for (parent, child_transform) in q_child.iter() {
+        // `parent` contains the Entity ID we can use
+        // to query components from the parent:
+        let parent_global_transform = q_parent.get(parent.0);
+
+        // do something with the components
+    }
+}
+</code></pre>
+<p>As another example, say we are making a strategy game, and we have Units that are
+children of a Squad. Say we need to make a system that works on each Squad, and it
+needs some information about the children:</p>
+<pre><code class="language-rust no_run noplayground">fn process_squad_damage(
+    q_parent: Query&lt;(&amp;MySquadDamage, &amp;Children)&gt;,
+    q_child: Query&lt;&amp;MyUnitHealth&gt;,
+) {
+    // get the properties of each squad
+    for (squad_dmg, children) in q_parent.iter() {
+        // `children` is a collection of Entity IDs
+        for &amp;child in children.iter() {
+            // get the health of each child unit
+            let health = q_child.get(child);
+
+            // do something
+        }
+    }
+}
+</code></pre>
 <h2 id="relative-transforms"><a class="header" href="#relative-transforms">Relative Transforms</a></h2>
 <p>If your entities represent &quot;objects in the game world&quot;, you probably expect the
 child to be positioned relative to the parent and move with it.</p>
@@ -1277,7 +1325,7 @@ fn debug_new_hostiles(
 }
 </code></pre>
 <p>Change detection is triggered by <code>DerefMut</code>. Simply accessing components via a
-mutable query, without it actually being a <code>&amp;mut</code> access, will <em>not</em> trigger it.</p>
+mutable query, without actually performing a <code>&amp;mut</code> access, will <em>not</em> trigger it.</p>
 <p>This makes change detection quite accurate. You can rely on it to optimize
 your game's performance, or to otherwise trigger things to happen.</p>
 <p>Also note that when you mutate a component, Bevy does not track if the new value
