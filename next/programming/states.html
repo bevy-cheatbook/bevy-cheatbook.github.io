@@ -257,26 +257,31 @@ menu, with the game world still visible / running in the background.</p>
 &quot;inactive&quot; (that is, in the background, with other states running on top).
 You can also add one-shot systems to run when &quot;pausing&quot; or &quot;resuming&quot; the state.</p>
 <p>In your <a href="./app-builder.html">app builder</a>:</p>
-<pre><code class="language-rust no_run noplayground">        // animate things even while paused
-        .add_system_set(
-            SystemSet::on_inactive_update(AppState::InGame)
-                .with_system(animate_trees.system())
-                .with_system(animate_water.system())
-        )
-        // player movement only when actively playing
+<pre><code class="language-rust no_run noplayground">        // player movement only when actively playing
         .add_system_set(
             SystemSet::on_update(AppState::InGame)
                 .with_system(player_movement.system())
         )
-        // reset player when unpausing
+        // player idle animation while paused
+        .add_system_set(
+            SystemSet::on_inactive(AppState::InGame)
+                .with_system(player_idle.system())
+        )
+        // animations both while paused and while active
+        .add_system_set(
+            SystemSet::on_in_stack_update(AppState::InGame)
+                .with_system(animate_trees.system())
+                .with_system(animate_water.system())
+        )
+        // things to do when becoming inactive
+        .add_system_set(
+            SystemSet::on_pause(AppState::InGame)
+                .with_system(hide_enemies.system())
+        )
+        // things to do when becoming active again
         .add_system_set(
             SystemSet::on_resume(AppState::InGame)
                 .with_system(reset_player.system())
-        )
-        // hide the player when pausing
-        .add_system_set(
-            SystemSet::on_pause(AppState::InGame)
-                .with_system(hide_player.system())
         )
         // setup when first entering the game
         .add_system_set(

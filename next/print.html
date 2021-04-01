@@ -675,7 +675,8 @@ for a condensed listing of just the syntax + important usage notes.</p>
 <p>This chapter is split into two sections:</p>
 <ul>
 <li><a href="programming/./_basics.html">Basics</a>: Covers the absolute essentials you need to get started.</li>
-<li><a href="programming/./_advanced.html">Advanced</a>: The next steps. Things you will likely need for non-trivial projects.</li>
+<li><a href="programming/./_next-steps.html">Next Steps</a>: The next steps. Things you will likely need for non-trivial projects.</li>
+<li><a href="programming/./_advanced.html">Advanced</a>: advanced topics, may be useful for specialized scenarios in complex projects.</li>
 </ul>
 <h1 id="bevy-programming-basics"><a class="header" href="#bevy-programming-basics">Bevy Programming: Basics</a></h1>
 <p>This sub-chapter covers the absolute essentials of Bevy programming -- the
@@ -1095,12 +1096,18 @@ familiarized yourself with these concepts.</p>
 <p>However, they would probably become useful to you pretty quickly -- you will
 likely need at least some of these features as your project grows in complexity.</p>
 <h1 id="local-resources-1"><a class="header" href="#local-resources-1">Local Resources</a></h1>
-<p>You can have per-system data, using <code>Local&lt;T&gt;</code>.</p>
-<pre><code class="language-rust no_run noplayground">fn my_system(mut local: Local&lt;MyState&gt;) {}
+<p><code>Local&lt;T&gt;</code> is a system parameter similar to <code>ResMut&lt;T&gt;</code>, which gives you full
+mutable access to an instance of some data type, that is independent from
+entities and components.</p>
+<p><code>Res&lt;T&gt;</code>/<code>ResMut&lt;T&gt;</code> refer to a single global instance of the type, shared
+between all systems. On the other hand, every <code>Local&lt;T&gt;</code> parameter is a separate
+instance, exclusively for that system.</p>
+<pre><code class="language-rust no_run noplayground">fn my_system(mut local: Local&lt;MyState&gt;) {
+    // you can do anything you want with the local here
+}
 </code></pre>
 <p>The type must implement <code>Default</code> or <code>FromWorld</code>. It is automatically initialized.</p>
-<p>These are similar to Resources, but each system will have its own instance.</p>
-<p>A system can also have multiple <code>Local</code>s of the same type.</p>
+<p>A system can have multiple <code>Local</code>s of the same type.</p>
 <h1 id="plugins-1"><a class="header" href="#plugins-1">Plugins</a></h1>
 <p>As your project grows, it can be useful to make it more modular. You can split it into plugins.</p>
 <p>Plugins are simply collections of things to be added to the <a href="programming/./app-builder.html">App Builder</a>.</p>
@@ -1559,26 +1566,31 @@ menu, with the game world still visible / running in the background.</p>
 &quot;inactive&quot; (that is, in the background, with other states running on top).
 You can also add one-shot systems to run when &quot;pausing&quot; or &quot;resuming&quot; the state.</p>
 <p>In your <a href="programming/./app-builder.html">app builder</a>:</p>
-<pre><code class="language-rust no_run noplayground">        // animate things even while paused
-        .add_system_set(
-            SystemSet::on_inactive_update(AppState::InGame)
-                .with_system(animate_trees.system())
-                .with_system(animate_water.system())
-        )
-        // player movement only when actively playing
+<pre><code class="language-rust no_run noplayground">        // player movement only when actively playing
         .add_system_set(
             SystemSet::on_update(AppState::InGame)
                 .with_system(player_movement.system())
         )
-        // reset player when unpausing
+        // player idle animation while paused
+        .add_system_set(
+            SystemSet::on_inactive(AppState::InGame)
+                .with_system(player_idle.system())
+        )
+        // animations both while paused and while active
+        .add_system_set(
+            SystemSet::on_in_stack_update(AppState::InGame)
+                .with_system(animate_trees.system())
+                .with_system(animate_water.system())
+        )
+        // things to do when becoming inactive
+        .add_system_set(
+            SystemSet::on_pause(AppState::InGame)
+                .with_system(hide_enemies.system())
+        )
+        // things to do when becoming active again
         .add_system_set(
             SystemSet::on_resume(AppState::InGame)
                 .with_system(reset_player.system())
-        )
-        // hide the player when pausing
-        .add_system_set(
-            SystemSet::on_pause(AppState::InGame)
-                .with_system(hide_player.system())
         )
         // setup when first entering the game
         .add_system_set(
