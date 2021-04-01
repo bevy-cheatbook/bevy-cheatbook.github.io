@@ -264,7 +264,7 @@ You can also add one-shot systems to run when &quot;pausing&quot; or &quot;resum
         )
         // player idle animation while paused
         .add_system_set(
-            SystemSet::on_inactive(AppState::InGame)
+            SystemSet::on_inactive_update(AppState::InGame)
                 .with_system(player_idle.system())
         )
         // animations both while paused and while active
