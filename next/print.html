@@ -1102,8 +1102,12 @@ entities and components.</p>
 <p><code>Res&lt;T&gt;</code>/<code>ResMut&lt;T&gt;</code> refer to a single global instance of the type, shared
 between all systems. On the other hand, every <code>Local&lt;T&gt;</code> parameter is a separate
 instance, exclusively for that system.</p>
-<pre><code class="language-rust no_run noplayground">fn my_system(mut local: Local&lt;MyState&gt;) {
+<pre><code class="language-rust no_run noplayground">fn my_system1(mut local: Local&lt;MyState&gt;) {
     // you can do anything you want with the local here
+}
+
+fn my_system2(mut local: Local&lt;MyState&gt;) {
+    // the local in this system is a different instance
 }
 </code></pre>
 <p>The type must implement <code>Default</code> or <code>FromWorld</code>. It is automatically initialized.</p>
