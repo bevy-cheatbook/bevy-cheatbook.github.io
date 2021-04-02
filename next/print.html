@@ -823,10 +823,13 @@ impl FromWorld for MyFancyResource {
 <p>You can create your resources at <a href="programming/./app-builder.html"><code>App</code> creation</a>:</p>
 <pre><code class="language-rust no_run noplayground">fn main() {
     App::build()
+        // ...
+
         // if it implements `Default` or `FromWorld`
         .init_resource::&lt;MyFancyResource&gt;()
         // if not, or if you want to set a specific value
         .insert_resource(StartingLevel(3))
+
         // ...
         .run();
 }
@@ -849,9 +852,16 @@ player and enemies.</p>
 <h1 id="systems-1"><a class="header" href="#systems-1">Systems</a></h1>
 <p>Systems are functions you write, which are run by Bevy.</p>
 <p>This is where you implement all your game logic.</p>
-<p>These functions can only take special parameter types, to specify what game data
-you want to access. <a href="programming/../pitfalls/into-system.html">If you use unsupported types in your function, you will get
-confusing compiler errors!</a></p>
+<p>These functions can only take special parameter types, to specify what you need
+access to. <a href="programming/../pitfalls/into-system.html">If you use unsupported parameter types in your function, you will
+get confusing compiler errors!</a></p>
+<p>Some of the options are:</p>
+<ul>
+<li>accessing <a href="programming/./res.html">resources</a> using <code>Res</code>/<code>ResMut</code></li>
+<li>accessing <a href="programming/./ec.html">components of entities</a> using <a href="programming/./queries.html">queries</a></li>
+<li>creating/destroying entities, components, and resources using <a href="programming/./commands.html"><code>Commands</code></a></li>
+<li>sending/receiving <a href="programming/./events.html">events</a> using <code>EventWriter</code>/<code>EventReader</code>.</li>
+</ul>
 <pre><code class="language-rust no_run noplayground">fn debug_start(
     // access resource
     start: Res&lt;StartingLevel&gt;
@@ -873,6 +883,30 @@ useful for organization.</p>
 </code></pre>
 <p>The maximum number of top-level system parameters, or tuple members, is 11. You
 can group/nest them into tuples, if you need to work around that limitation.</p>
+<h2 id="runtime"><a class="header" href="#runtime">Runtime</a></h2>
+<p>To run your systems, you need to add them to Bevy via the <a href="programming/./app-builder.html">app builder</a>:</p>
+<pre><code class="language-rust no_run noplayground">fn main() {
+    App::build()
+        // ...
+
+        // run it only once at launch
+        .add_startup_system(init_menu.system())
+        .add_startup_system(debug_start.system())
+
+        // run it every frame update
+        .add_system(move_player.system())
+        .add_system(enemies_ai.system())
+
+        // ...
+        .run();
+}
+</code></pre>
+<p>The above is enough for simple projects.</p>
+<p>As your project grows more complex, you might want to enhance your app builder
+with some of the powerful tools that Bevy offers for managing when/how your
+systems run, such as: <a href="programming/./system-order.html">explicit ordering</a> with
+<a href="programming/./labels.html">labels</a>, <a href="programming/./system-sets.html">system sets</a>, <a href="programming/./states.html">states</a>,
+<a href="programming/./run-criteria.html">run criteria</a>, and <a href="programming/./stages.html">stages</a>.</p>
 <h1 id="queries-1"><a class="header" href="#queries-1">Queries</a></h1>
 <p>Queries let you access components of entities.</p>
 <pre><code class="language-rust no_run noplayground">fn check_zero_health(
@@ -1038,6 +1072,15 @@ fn debug_levelups(
     for ev in ev_levelup.iter() {
         eprintln!(&quot;Entity {:?} leveled up!&quot;, ev.0);
     }
+}
+</code></pre>
+<p>You need to add your custom event types via the <a href="programming/./app-builder.html">app builder</a>:</p>
+<pre><code class="language-rust no_run noplayground">fn main() {
+    App::build()
+        // ...
+        .add_event::&lt;LevelUpEvent&gt;()
+        // ...
+        .run();
 }
 </code></pre>
 <p>Events should be your go-to data flow tool. As events can be sent from any
@@ -1415,9 +1458,11 @@ you can use <a href="programming/./system-order.html">explicit system ordering</
 <p>However, when detecting component additions with <code>Added&lt;T&gt;</code> (which are typically
 done using <a href="programming/./commands.html"><code>Commands</code></a>), this is not enough; you need <a href="programming/./stages.html">stages</a>.</p>
 <h1 id="system-chaining-1"><a class="header" href="#system-chaining-1">System Chaining</a></h1>
-<p>Systems can take an input and produce an output, and be connected together to run as a single larger system (chain).</p>
+<p>Systems can take an input and produce an output, and be connected together to
+run as a single larger system (chain).</p>
 <p>Think of this as &quot;glue&quot;, for constructing a larger system out of multiple Rust functions.</p>
-<p>One useful application of this is error handling (allowing the use of <code>?</code>):</p>
+<p>One useful application is to be able to return errors from systems (allowing the
+use of Rust's <code>?</code> operator) and handle them elsewhere:</p>
 <pre><code class="language-rust no_run noplayground">fn net_receive(mut netcode: ResMut&lt;MyNetProto&gt;) -&gt; std::io::Result&lt;()&gt; {
     netcode.receive_updates()?;
 
@@ -1440,9 +1485,9 @@ with the input/output). You have to connect them in a chain:</p>
         .run();
 }
 </code></pre>
-<p>Chains are a specialized tool; only use them if you really want to construct large
-systems out of modular parts. Avoid using them as a general-purpose data passing
-mechanism. For most use cases, you probably want to use <a href="programming/./events.html">Events</a> instead.</p>
+<p>Chaining effectively constructs a single large system out of modular parts. It
+is <em>not</em> a channel for passing data around. If you want to pass data between
+systems, you probably want to use <a href="programming/./events.html">Events</a> instead.</p>
 <h2 id="performance-warning"><a class="header" href="#performance-warning">Performance Warning</a></h2>
 <p>Beware that Bevy treats the whole chain as if it was a single big system, with
 all the combined resources and queries. This implies that parallelism could be

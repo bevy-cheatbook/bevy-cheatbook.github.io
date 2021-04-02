@@ -166,9 +166,16 @@
                         <h1 id="systems"><a class="header" href="#systems">Systems</a></h1>
 <p>Systems are functions you write, which are run by Bevy.</p>
 <p>This is where you implement all your game logic.</p>
-<p>These functions can only take special parameter types, to specify what game data
-you want to access. <a href="../pitfalls/into-system.html">If you use unsupported types in your function, you will get
-confusing compiler errors!</a></p>
+<p>These functions can only take special parameter types, to specify what you need
+access to. <a href="../pitfalls/into-system.html">If you use unsupported parameter types in your function, you will
+get confusing compiler errors!</a></p>
+<p>Some of the options are:</p>
+<ul>
+<li>accessing <a href="./res.html">resources</a> using <code>Res</code>/<code>ResMut</code></li>
+<li>accessing <a href="./ec.html">components of entities</a> using <a href="./queries.html">queries</a></li>
+<li>creating/destroying entities, components, and resources using <a href="./commands.html"><code>Commands</code></a></li>
+<li>sending/receiving <a href="./events.html">events</a> using <code>EventWriter</code>/<code>EventReader</code>.</li>
+</ul>
 <pre><code class="language-rust no_run noplayground">fn debug_start(
     // access resource
     start: Res&lt;StartingLevel&gt;
@@ -190,6 +197,30 @@ useful for organization.</p>
 </code></pre>
 <p>The maximum number of top-level system parameters, or tuple members, is 11. You
 can group/nest them into tuples, if you need to work around that limitation.</p>
+<h2 id="runtime"><a class="header" href="#runtime">Runtime</a></h2>
+<p>To run your systems, you need to add them to Bevy via the <a href="./app-builder.html">app builder</a>:</p>
+<pre><code class="language-rust no_run noplayground">fn main() {
+    App::build()
+        // ...
+
+        // run it only once at launch
+        .add_startup_system(init_menu.system())
+        .add_startup_system(debug_start.system())
+
+        // run it every frame update
+        .add_system(move_player.system())
+        .add_system(enemies_ai.system())
+
+        // ...
+        .run();
+}
+</code></pre>
+<p>The above is enough for simple projects.</p>
+<p>As your project grows more complex, you might want to enhance your app builder
+with some of the powerful tools that Bevy offers for managing when/how your
+systems run, such as: <a href="./system-order.html">explicit ordering</a> with
+<a href="./labels.html">labels</a>, <a href="./system-sets.html">system sets</a>, <a href="./states.html">states</a>,
+<a href="./run-criteria.html">run criteria</a>, and <a href="./stages.html">stages</a>.</p>
 
                     </main>
 

@@ -196,10 +196,13 @@ impl FromWorld for MyFancyResource {
 <p>You can create your resources at <a href="./app-builder.html"><code>App</code> creation</a>:</p>
 <pre><code class="language-rust no_run noplayground">fn main() {
     App::build()
+        // ...
+
         // if it implements `Default` or `FromWorld`
         .init_resource::&lt;MyFancyResource&gt;()
         // if not, or if you want to set a specific value
         .insert_resource(StartingLevel(3))
+
         // ...
         .run();
 }

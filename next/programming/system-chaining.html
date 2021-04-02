@@ -164,9 +164,11 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="system-chaining"><a class="header" href="#system-chaining">System Chaining</a></h1>
-<p>Systems can take an input and produce an output, and be connected together to run as a single larger system (chain).</p>
+<p>Systems can take an input and produce an output, and be connected together to
+run as a single larger system (chain).</p>
 <p>Think of this as &quot;glue&quot;, for constructing a larger system out of multiple Rust functions.</p>
-<p>One useful application of this is error handling (allowing the use of <code>?</code>):</p>
+<p>One useful application is to be able to return errors from systems (allowing the
+use of Rust's <code>?</code> operator) and handle them elsewhere:</p>
 <pre><code class="language-rust no_run noplayground">fn net_receive(mut netcode: ResMut&lt;MyNetProto&gt;) -&gt; std::io::Result&lt;()&gt; {
     netcode.receive_updates()?;
 
@@ -189,9 +191,9 @@ with the input/output). You have to connect them in a chain:</p>
         .run();
 }
 </code></pre>
-<p>Chains are a specialized tool; only use them if you really want to construct large
-systems out of modular parts. Avoid using them as a general-purpose data passing
-mechanism. For most use cases, you probably want to use <a href="./events.html">Events</a> instead.</p>
+<p>Chaining effectively constructs a single large system out of modular parts. It
+is <em>not</em> a channel for passing data around. If you want to pass data between
+systems, you probably want to use <a href="./events.html">Events</a> instead.</p>
 <h2 id="performance-warning"><a class="header" href="#performance-warning">Performance Warning</a></h2>
 <p>Beware that Bevy treats the whole chain as if it was a single big system, with
 all the combined resources and queries. This implies that parallelism could be

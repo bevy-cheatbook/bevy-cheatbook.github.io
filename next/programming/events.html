@@ -189,6 +189,15 @@ fn debug_levelups(
     }
 }
 </code></pre>
+<p>You need to add your custom event types via the <a href="./app-builder.html">app builder</a>:</p>
+<pre><code class="language-rust no_run noplayground">fn main() {
+    App::build()
+        // ...
+        .add_event::&lt;LevelUpEvent&gt;()
+        // ...
+        .run();
+}
+</code></pre>
 <p>Events should be your go-to data flow tool. As events can be sent from any
 system and received by multiple systems, they are <em>extremely</em> versatile.</p>
 <h2 id="possible-pitfalls"><a class="header" href="#possible-pitfalls">Possible Pitfalls</a></h2>
