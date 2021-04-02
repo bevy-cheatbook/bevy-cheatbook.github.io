@@ -1396,11 +1396,23 @@ child to be positioned relative to the parent and move with it.</p>
 <p>The <code>GlobalTransform</code> represents the absolute position. It is managed by bevy internally; do not manipulate it yourself.</p>
 <p>For more info, see the <a href="programming/../features/transforms.html">dedicated page about transforms</a>.</p>
 <h1 id="change-detection-1"><a class="header" href="#change-detection-1">Change Detection</a></h1>
-<p>Bevy allows you to easily detect when components are changed.</p>
-<p>Use query filters:</p>
+<p>Bevy allows you to easily detect when data is changed. You can use this to
+perform actions in response to changes.</p>
+<h1 id="components-1"><a class="header" href="#components-1">Components</a></h1>
+<p>Use <a href="programming/./queries.html#query-filters">query filters</a>:</p>
 <ul>
-<li><code>Added&lt;T&gt;</code>: detect adding new components to existing entities</li>
-<li><code>Changed&lt;T&gt;</code>: detect when a component is modified</li>
+<li><code>Added&lt;T&gt;</code>: detect new component instances
+<ul>
+<li>if the component was added to an existing entity</li>
+<li>if a new entity with the component was spawned</li>
+</ul>
+</li>
+<li><code>Changed&lt;T&gt;</code>: detect component instances that have been changed
+<ul>
+<li>triggers when the component is accessed mutably</li>
+<li>also triggers in if the component is newly-added (as per <code>Added</code>)</li>
+</ul>
+</li>
 </ul>
 <pre><code class="language-rust no_run noplayground">/// Print the stats of friendly players when they change
 fn debug_stats_change(
@@ -1428,7 +1440,7 @@ fn debug_new_hostiles(
     }
 }
 </code></pre>
-<p>Change detection is triggered by <code>DerefMut</code>. Simply accessing components via a
+<p><code>Changed</code> detection is triggered by <code>DerefMut</code>. Simply accessing components via a
 mutable query, without actually performing a <code>&amp;mut</code> access, will <em>not</em> trigger it.</p>
 <p>This makes change detection quite accurate. You can rely on it to optimize
 your game's performance, or to otherwise trigger things to happen.</p>
@@ -1448,6 +1460,10 @@ detection. If you want to avoid that, simply check it yourself:</p>
     }
 }
 </code></pre>
+<p>Change detection is reliable -- it will detect any changes that have occured
+since the last time your detecting system ran. If your system only runs
+sometimes (such as with <a href="programming/./states.html">states</a> or <a href="programming/./run-criteria.html">run criteria</a>),
+you <em>do not</em> have to worry about missing changes.</p>
 <h2 id="possible-pitfalls-1"><a class="header" href="#possible-pitfalls-1">Possible Pitfalls</a></h2>
 <p>Beware of <a href="programming/../pitfalls/frame-delay.html">frame delay / 1-frame-lag</a>. This can
 occur if Bevy runs the detecting system before the changing system. The
