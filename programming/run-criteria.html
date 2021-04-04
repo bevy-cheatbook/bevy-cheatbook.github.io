@@ -171,8 +171,8 @@ certain conditions.</p>
 abstractions on top, such as <a href="./states.html">States</a>. You can use Run Criteria
 without such abstractions, if you really need more direct control.</p>
 <p>Run Criteria can be applied to individual <a href="./systems.html">systems</a>, <a href="./system-sets.html">system sets</a>, and <a href="./stages.html">stages</a>.</p>
-<p>Run Criteria are Bevy systems that return a value of type [<code>enum ShouldRun</code>](TODO DOCS). They can accept any system parameters, like a normal
-system.</p>
+<p>Run Criteria are Bevy systems that return a value of type <a href="https://docs.rs/bevy/0.5.0/bevy/ecs/schedule/enum.ShouldRun.html"><code>enum ShouldRun</code></a>.
+They can accept any system parameters, like a normal system.</p>
 <p>This example shows how run criteria might be used to implement different
 multiplayer modes:</p>
 <pre><code class="language-rust no_run noplayground">use bevy::ecs::schedule::ShouldRun;

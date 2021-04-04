@@ -200,7 +200,7 @@ docs</a>, so here is a list:</p>
 <li><code>Local&lt;T&gt;</code></li>
 <li><code>EventReader&lt;T&gt;</code></li>
 <li><code>EventWriter&lt;T&gt;</code></li>
-<li><code>Query&lt;T, F = ()&gt;</code>; can contain tuples of up to 14 types</li>
+<li><code>Query&lt;T, F = ()&gt;</code>; can contain tuples of up to 15 types</li>
 <li><code>QuerySet</code> with up to 4 queries</li>
 <li><code>NonSend&lt;T&gt;</code> / <code>NonSendMut&lt;T&gt;</code></li>
 <li><code>Entities</code></li>
@@ -210,9 +210,9 @@ docs</a>, so here is a list:</p>
 <li><code>RemovedComponents&lt;T&gt;</code></li>
 <li><code>Arc&lt;parking_lot::Mutex&lt;Commands&gt;&gt;</code></li>
 <li><code>DrawContext</code></li>
-<li>tuples containing any of these types, with up to 11 members</li>
+<li>tuples containing any of these types, with up to 16 members</li>
 </ul>
-<p>Your function can have a maximum of 11 total parameters. If you need more, group
+<p>Your function can have a maximum of 16 total parameters. If you need more, group
 them into tuples to work around the limit.</p>
 <p>Note: the tuple/parameter limit used to be 16 (in Bevy 0.4). It was reduced due
 to limitations from the Rust standard library.</p>
