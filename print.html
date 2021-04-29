@@ -2215,14 +2215,15 @@ fn fixup_textures(
 <p>Bevy supports the following inputs:</p>
 <ul>
 <li>Keyboard</li>
-<li>Mouse (relative motion)</li>
+<li>Mouse (relative motion, buttons, scrolling)</li>
 <li>Cursor (absolute pointer position)</li>
 <li>Touchscreen (with multi-touch)</li>
 <li>Most controllers/gamepads/joysticks (via the <a href="https://gitlab.com/gilrs-project/gilrs">gilrs</a> library)</li>
 </ul>
 <p>Sensors like accelerometers, gyroscopes, VR head tracking, are not supported yet.</p>
 <p>For most input types (where it makes sense), Bevy provides two ways of dealing
-with them: by checking the current state, or via <a href="features/../programming/events.html">events</a>.</p>
+with them: by checking the current state via <a href="features/../programming/res.html">resources</a>,
+or via <a href="features/../programming/events.html">events</a>. Some inputs are only provided as events.</p>
 <p>Checking state is done using <a href="features/../programming/res.html">resources</a> such as <code>Input</code>
 (for binary inputs like keys or buttons), <code>Axis</code> (for analog inputs), <code>Touches</code>
 (for fingers on a touchscreen), etc. This way of handling input is very
