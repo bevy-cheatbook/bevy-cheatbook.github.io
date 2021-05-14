@@ -136,13 +136,15 @@
                         </a>
                         
                         
+                        
+
                     </div>
                 </div>
 
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -165,9 +167,9 @@
                     <main>
                         <h1 id="transforms-and-coordinates"><a class="header" href="#transforms-and-coordinates">Transforms and Coordinates</a></h1>
 <p>First, a quick definition, if you are new to game development:</p>
-<p>a Transform is what allows you to place an object in the game world. It is a
-combination of the object's &quot;translation&quot; (position/coordinates), &quot;rotation&quot;,
-and &quot;scale&quot; (size adjustment).</p>
+<p>a Transform is what allows you to place an object in the game world. It
+is a combination of the object's &quot;translation&quot; (position/coordinates),
+&quot;rotation&quot;, and &quot;scale&quot; (size adjustment).</p>
 <p>You move objects around by modifying the translation, rotate them by modifying
 the rotation, and make them larger or smaller by modifying the scale.</p>
 <h2 id="bevys-coordinate-system"><a class="header" href="#bevys-coordinate-system">Bevy's Coordinate System</a></h2>
@@ -187,35 +189,37 @@ the rotation, and make them larger or smaller by modifying the scale.</p>
 place other sprites at increasing positive Z coordinates to layer them on top.</p>
 <p>In 3D, the axes are oriented the same way.</p>
 <p>This is a right-handed coordinate system.</p>
-<p>It is the same as Godot, Maya, and OpenGL. Compared to Unity, the Z axis is inverted.</p>
+<p>It is the same as Godot, Maya, and OpenGL. Compared to Unity, the Z axis
+is inverted.</p>
 <p>Note: In Bevy, the Y axis always points <em>UP</em>.</p>
-<p>This may feel <a href="../pitfalls/ui-y-up.html">unintuitive when working with UI</a> (as it
-is the opposite from web pages), or if you are used to working with 2D libraries
-where the Y axis points down.</p>
+<p>This may feel <a href="../pitfalls/ui-y-up.html">unintuitive when working with UI</a>
+(as it is the opposite from web pages), or if you are used to working with
+2D libraries where the Y axis points down.</p>
 <p>Also beware of a common pitfall when working in 2D: <a href="../pitfalls/2d-camera-z.html">the camera must be
-positioned at a far away Z coordinate (=999.9 by default), or you might not be
-able to see your sprites!</a></p>
+positioned at a far away Z coordinate (=999.9 by default), or you might not
+be able to see your sprites!</a></p>
 <h2 id="bevys-transforms"><a class="header" href="#bevys-transforms">Bevy's Transforms</a></h2>
 <p>In Bevy, transforms are represented by <em>two</em> <a href="../programming/ec.html">components</a>:
-<code>Transform</code> and <code>GlobalTransform</code>. Any <a href="../programming/ecs-intro.html">Entity</a> that
-represents an object in the game world needs to have both.</p>
-<p><code>Transform</code> is what you typically work with. It is a <code>struct</code> containing the
-translation, rotation, and scale. To read or manipulate these values, access
-them from your <a href="../programming/systems.html">systems</a> using a <a href="../programming/queries.html">query</a>.</p>
+<code>Transform</code> and <code>GlobalTransform</code>. Any <a href="../programming/ecs-intro.html">Entity</a>
+that represents an object in the game world needs to have both.</p>
+<p><code>Transform</code> is what you typically work with. It is a <code>struct</code> containing
+the translation, rotation, and scale. To read or manipulate these values,
+access them from your <a href="../programming/systems.html">systems</a> using a
+<a href="../programming/queries.html">query</a>.</p>
 <p>If the entity has a <a href="../programming/parent-child.html">parent</a>, the <code>Transform</code>
 component is relative to the parent. This means that the child object will
 move/rotate/scale along with the parent.</p>
-<p><code>GlobalTransform</code> represents the absolute global position in the world. If the
-entity does not have a parent, then this will have the same value as the
-<code>Transform</code>. The value of <code>GlobalTransform</code> is calculated/managed internally by
-Bevy. You should treat it as read-only; do not mutate it.</p>
-<p>Beware: The two components are synchronized by a bevy-internal system (the
-&quot;transform propagation system&quot;), which runs in the PostUpdate
-<a href="../programming/stages.html">stage</a>. This is somewhat finnicky and can result in
-tricky pitfalls if you are trying to do advanced things that rely on both the
-relative/local and the absolute/global transforms of entities. When you mutate
-the <code>Transform</code>, the <code>GlobalTransform</code> is not updated immediately. They will
-be out-of-sync until the transform propagation system runs.</p>
+<p><code>GlobalTransform</code> represents the absolute global position in the world. If
+the entity does not have a parent, then this will have the same value as the
+<code>Transform</code>. The value of <code>GlobalTransform</code> is calculated/managed internally
+by Bevy. You should treat it as read-only; do not mutate it.</p>
+<p>Beware: The two components are synchronized by a bevy-internal system
+(the &quot;transform propagation system&quot;), which runs in the PostUpdate
+<a href="../programming/stages.html">stage</a>. This is somewhat finnicky and can result
+in tricky pitfalls if you are trying to do advanced things that rely on both
+the relative/local and the absolute/global transforms of entities. When you
+mutate the <code>Transform</code>, the <code>GlobalTransform</code> is not updated immediately. They
+will be out-of-sync until the transform propagation system runs.</p>
 
                     </main>
 

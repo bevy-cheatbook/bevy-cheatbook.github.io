@@ -136,13 +136,15 @@
                         </a>
                         
                         
+                        
+
                     </div>
                 </div>
 
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -168,8 +170,8 @@
 <hr />
 <p>You might want to know when your various assets have all finished loading, and
 take some action, such as exiting your loading screen and starting gameplay.</p>
-<p>To do this, we can convert our various handles to <code>HandleUntyped</code>s, so we
-can add them all into a single collection. Then we can loop over the collection
+<p>To do this, we can convert our various handles to <code>HandleUntyped</code>s, so we can
+add them all into a single collection. Then we can loop over the collection
 and ask the <code>AssetServer</code> about their status.</p>
 <pre><code class="language-rust no_run noplayground">struct AssetsLoading(Vec&lt;HandleUntyped&gt;);
 

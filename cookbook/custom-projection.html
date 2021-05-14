@@ -136,13 +136,15 @@
                         </a>
                         
                         
+                        
+
                     </div>
                 </div>
 
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -166,9 +168,14 @@
                         <h1 id="custom-camera-projection"><a class="header" href="#custom-camera-projection">Custom Camera Projection</a></h1>
 <p><a href="../code/examples/custom-projection.rs">Click here for the full example code.</a></p>
 <hr />
-<p>Camera with a custom projection (not using one of bevy's standard perspective or orthographic projections).</p>
-<p>Here we implement a simple orthographic projection that maps <code>-1.0</code> to <code>1.0</code> to the vertical axis of the window,
-and respects the window's aspect ratio for the horizontal axis:</p>
+<p>Camera with a custom projection (not using one of Bevy's standard perspective
+or orthographic projections).</p>
+<p>You could also use this to change the coordinate system, if you
+insist on using something other than <a href="../features/transforms.html">Bevy's default coordinate
+system</a>, for whatever reason.</p>
+<p>Here we implement a simple orthographic projection that maps <code>-1.0</code> to <code>1.0</code>
+to the vertical axis of the window, and respects the window's aspect ratio
+for the horizontal axis:</p>
 <pre><code class="language-rust no_run noplayground">use bevy::render::camera::{Camera, CameraProjection, DepthCalculation, VisibleEntities};
 
 struct SimpleOrthoProjection {

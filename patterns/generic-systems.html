@@ -136,13 +136,15 @@
                         </a>
                         
                         
+                        
+
                     </div>
                 </div>
 
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -167,7 +169,8 @@
 <p><a href="../code/examples/generic-systems.rs">Click here to download the code from this page.</a></p>
 <hr />
 <p>Bevy systems are just plain rust functions, which means they can be generic.</p>
-<p>This is especially useful when combined with bevy states. You can do the same thing to different sets of entities depending on state.</p>
+<p>This is especially useful when combined with bevy states. You can do the
+same thing to different sets of entities depending on state.</p>
 <hr />
 <p>One use-case is for cleanup.</p>
 <pre><code class="language-rust no_run noplayground">use bevy::ecs::component::Component;
@@ -187,8 +190,10 @@ fn cleanup_system&lt;T: Component&gt;(
     }
 }
 </code></pre>
-<p>Menu entities can be tagged with <code>cleanup::MenuExit</code>, entities from the game map can be tagged with <code>cleanup::LevelUnload</code>.</p>
-<p>We can add the generic cleanup system to our state transitions, to take care of the respective entities:</p>
+<p>Menu entities can be tagged with <code>cleanup::MenuExit</code>, entities from the game
+map can be tagged with <code>cleanup::LevelUnload</code>.</p>
+<p>We can add the generic cleanup system to our state transitions, to take care
+of the respective entities:</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Debug, Clone, Eq, PartialEq, Hash)]
 enum AppState {
     MainMenu,

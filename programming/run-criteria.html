@@ -136,13 +136,15 @@
                         </a>
                         
                         
+                        
+
                     </div>
                 </div>
 
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -165,12 +167,13 @@
                     <main>
                         <h1 id="run-criteria"><a class="header" href="#run-criteria">Run Criteria</a></h1>
 <p>Run Criteria are a mechanism for controlling if Bevy should run specific
-systems, at runtime. This is how you can make functionality that only runs under
-certain conditions.</p>
+systems, at runtime. This is how you can make functionality that only runs
+under certain conditions.</p>
 <p>Run Criteria are a lower-level primitive. Bevy provides higher-level
 abstractions on top, such as <a href="./states.html">States</a>. You can use Run Criteria
 without such abstractions, if you really need more direct control.</p>
-<p>Run Criteria can be applied to individual <a href="./systems.html">systems</a>, <a href="./system-sets.html">system sets</a>, and <a href="./stages.html">stages</a>.</p>
+<p>Run Criteria can be applied to individual <a href="./systems.html">systems</a>, <a href="./system-sets.html">system
+sets</a>, and <a href="./stages.html">stages</a>.</p>
 <p>Run Criteria are Bevy systems that return a value of type <a href="https://docs.rs/bevy/0.5.0/bevy/ecs/schedule/enum.ShouldRun.html"><code>enum ShouldRun</code></a>.
 They can accept any system parameters, like a normal system.</p>
 <p>This example shows how run criteria might be used to implement different
@@ -245,10 +248,10 @@ fn main() {
 }
 </code></pre>
 <h2 id="run-criteria-labels"><a class="header" href="#run-criteria-labels">Run Criteria Labels</a></h2>
-<p>If you have multiple systems or system sets that you want to share the same run
-criteria, you can give it a <a href="./labels.html">label</a>.</p>
-<p>When you use a label, Bevy will only execute the run criteria once, remember its
-output, and apply it to everything with the label.</p>
+<p>If you have multiple systems or system sets that you want to share the same
+run criteria, you can give it a <a href="./labels.html">label</a>.</p>
+<p>When you use a label, Bevy will only execute the run criteria once, remember
+its output, and apply it to everything with the label.</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 #[derive(RunCriteriaLabel)]
 enum MyRunCriteria {
@@ -280,13 +283,13 @@ fn main() {
 }
 
 </code></pre>
-<p>The run-once property is especially important if you have a complex run criteria
-system that performs mutations or is otherwise non-idempotent.</p>
+<p>The run-once property is especially important if you have a complex run
+criteria system that performs mutations or is otherwise non-idempotent.</p>
 <hr />
-<p>(for information about the other <code>ShouldRun</code> values besides <code>Yes</code>/<code>No</code>,
-see <a href="./run-criteria-loop.html">Looping Run Criteria</a>)</p>
-<p>Bevy's <a href="../features/fixed-timestep.html">fixed timestep</a> is also implemented using
-run criteria under the hood.</p>
+<p>(for information about the other <code>ShouldRun</code> values besides <code>Yes</code>/<code>No</code>, see
+<a href="./run-criteria-loop.html">Looping Run Criteria</a>)</p>
+<p>Bevy's <a href="../features/fixed-timestep.html">fixed timestep</a> is also implemented
+using run criteria under the hood.</p>
 
                     </main>
 

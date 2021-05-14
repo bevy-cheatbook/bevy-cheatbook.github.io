@@ -136,13 +136,15 @@
                         </a>
                         
                         
+                        
+
                     </div>
                 </div>
 
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -166,19 +168,20 @@
                         <h1 id="random-number-generation"><a class="header" href="#random-number-generation">Random Number Generation</a></h1>
 <p>The typical way to generate random numbers in Rust is using the <code>rand</code> crate.
 However, it requires some extra configuration to work with WASM. This is
-because, typically, randomness comes from the operating system. In a web app, it
-needs to come from the browser.</p>
-<p>The <code>rand</code> developers decided not to support this directly, but instead require
-us to set a feature flag on the <code>getrandom</code> crate, that they depend on.</p>
-<p>To use random numbers in your project, add this to your dependencies in <code>Cargo.toml</code>:</p>
+because, typically, randomness comes from the operating system. In a web app,
+it needs to come from the browser.</p>
+<p>The <code>rand</code> developers decided not to support this directly, but instead
+require us to set a feature flag on the <code>getrandom</code> crate, that they depend on.</p>
+<p>To use random numbers in your project, add this to your dependencies in
+<code>Cargo.toml</code>:</p>
 <pre><code class="language-toml">[dependencies]
 rand = &quot;0.8&quot;
 getrandom = { version = &quot;0.2&quot;, features = [&quot;wasm-bindgen&quot;] }
 </code></pre>
-<p>Note that you must ensure that all the versions are compatible. <code>getrandom</code> 0.2
-is the version that is needed for both <code>rand</code> 0.8 and <code>bevy</code> 0.5. Using other
-versions may result in you having multiple instances of the <code>getrandom</code> crate in
-your dependency tree!</p>
+<p>Note that you must ensure that all the versions are compatible. <code>getrandom</code>
+0.2 is the version that is needed for both <code>rand</code> 0.8 and <code>bevy</code> 0.5. Using
+other versions may result in you having multiple instances of the <code>getrandom</code>
+crate in your dependency tree!</p>
 
                     </main>
 

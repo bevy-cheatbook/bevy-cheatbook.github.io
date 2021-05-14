@@ -136,13 +136,15 @@
                         </a>
                         
                         
+                        
+
                     </div>
                 </div>
 
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -171,7 +173,8 @@
 as well as your own custom types for labels, and even mix them!</p>
 <p>You may use a value of any type as a label, as long as it has the following
 standard Rust traits: <code>Clone + Eq + Hash + Debug</code> (and the implied <code>+ Send + Sync + 'static</code>).</p>
-<p>You need to derive the appropriate trait: <code>StageLabel</code>, <code>SystemLabel</code>, <code>RunCriteriaLabel</code>, or <code>AmbiguitySetLabel</code>.</p>
+<p>You need to derive the appropriate trait: <code>StageLabel</code>, <code>SystemLabel</code>,
+<code>RunCriteriaLabel</code>, or <code>AmbiguitySetLabel</code>.</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 #[derive(SystemLabel)]
 enum MySystems {
@@ -221,8 +224,8 @@ fn main() {
 </code></pre>
 <p>For quick prototyping, it is convenient to just use strings as labels.</p>
 <p>However, by defining your labels as custom types, the Rust compiler can check
-them for you, and your IDE can auto-complete them. It is the recommended way, as
-it prevents mistakes, and helps you stay organized in larger projects.</p>
+them for you, and your IDE can auto-complete them. It is the recommended way,
+as it prevents mistakes, and helps you stay organized in larger projects.</p>
 
                     </main>
 

@@ -136,13 +136,15 @@
                         </a>
                         
                         
+                        
+
                     </div>
                 </div>
 
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -208,13 +210,14 @@ fn debug_new_hostiles(
     }
 }
 </code></pre>
-<p><code>Changed</code> detection is triggered by <code>DerefMut</code>. Simply accessing components via a
-mutable query, without actually performing a <code>&amp;mut</code> access, will <em>not</em> trigger it.</p>
+<p><code>Changed</code> detection is triggered by <code>DerefMut</code>. Simply accessing components
+via a mutable query, without actually performing a <code>&amp;mut</code> access, will <em>not</em>
+trigger it.</p>
 <p>This makes change detection quite accurate. You can rely on it to optimize
 your game's performance, or to otherwise trigger things to happen.</p>
-<p>Also note that when you mutate a component, Bevy does not track if the new value
-is actually different from the old value. It will always trigger the change
-detection. If you want to avoid that, simply check it yourself:</p>
+<p>Also note that when you mutate a component, Bevy does not track if the new
+value is actually different from the old value. It will always trigger the
+change detection. If you want to avoid that, simply check it yourself:</p>
 <pre><code class="language-rust no_run noplayground">fn update_player_xp(
     mut query: Query&lt;&amp;mut PlayerXp&gt;,
 ) {
@@ -228,19 +231,21 @@ detection. If you want to avoid that, simply check it yourself:</p>
     }
 }
 </code></pre>
-<p>Change detection is reliable -- it will detect any changes that have occured
-since the last time your detecting system ran. If your system only runs
-sometimes (such as with <a href="./states.html">states</a> or <a href="./run-criteria.html">run criteria</a>),
-you <em>do not</em> have to worry about missing changes.</p>
+<p>Change detection is reliable -- it will detect any changes that
+have occured since the last time your detecting system ran. If your
+system only runs sometimes (such as with <a href="./states.html">states</a> or <a href="./run-criteria.html">run
+criteria</a>), you <em>do not</em> have to worry about missing
+changes.</p>
 <h2 id="possible-pitfalls"><a class="header" href="#possible-pitfalls">Possible Pitfalls</a></h2>
 <p>Beware of <a href="../pitfalls/frame-delay.html">frame delay / 1-frame-lag</a>. This can
 occur if Bevy runs the detecting system before the changing system. The
-detecting system will see the change the next time it runs, typically on the
-next frame update.</p>
-<p>If you need to ensure that changes are handled immediately / during the same frame,
-you can use <a href="./system-order.html">explicit system ordering</a>.</p>
-<p>However, when detecting component additions with <code>Added&lt;T&gt;</code> (which are typically
-done using <a href="./commands.html"><code>Commands</code></a>), this is not enough; you need <a href="./stages.html">stages</a>.</p>
+detecting system will see the change the next time it runs, typically on
+the next frame update.</p>
+<p>If you need to ensure that changes are handled immediately / during the same
+frame, you can use <a href="./system-order.html">explicit system ordering</a>.</p>
+<p>However, when detecting component additions with <code>Added&lt;T&gt;</code> (which are
+typically done using <a href="./commands.html"><code>Commands</code></a>), this is not enough;
+you need <a href="./stages.html">stages</a>.</p>
 
                     </main>
 

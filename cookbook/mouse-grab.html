@@ -136,13 +136,15 @@
                         </a>
                         
                         
+                        
+
                     </div>
                 </div>
 
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -166,8 +168,10 @@
                         <h1 id="grabbing-the-mouse"><a class="header" href="#grabbing-the-mouse">Grabbing the Mouse</a></h1>
 <p><a href="../code/examples/mouse-grab.rs">Click here for the full example code.</a></p>
 <hr />
-<p>You can lock/release the mouse cursor using bevy's <a href="https://github.com/bevyengine/bevy/blob/latest/examples/window/window_settings.rs">window settings API</a>.</p>
-<p>Here is an example that locks and hides the cursor in the primary window on mouse click and releases it when pressing Esc:</p>
+<p>You can lock/release the mouse cursor using bevy's <a href="https://github.com/bevyengine/bevy/blob/latest/examples/window/window_settings.rs">window settings
+API</a>.</p>
+<p>Here is an example that locks and hides the cursor in the primary window on
+mouse click and releases it when pressing <code>Esc</code>:</p>
 <pre><code class="language-rust no_run noplayground">fn cursor_grab_system(
     mut windows: ResMut&lt;Windows&gt;,
     btn: Res&lt;Input&lt;MouseButton&gt;&gt;,

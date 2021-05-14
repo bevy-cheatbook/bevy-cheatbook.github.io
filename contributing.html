@@ -136,13 +136,15 @@
                         </a>
                         
                         
+                        
+
                     </div>
                 </div>
 
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -165,61 +167,68 @@
                     <main>
                         <h1 id="contributing"><a class="header" href="#contributing">Contributing</a></h1>
 <p>Be civil. If you need a code of conduct, have a look at Bevy's.</p>
-<p>If you have any suggestions for the book, such as ideas for new content, or if
-you notice anything that is incorrect or misleading, please file issues in <a href="https://github.com/bevy-cheatbook/bevy-cheatbook">the
-GitHub repository</a>!</p>
+<p>If you have any suggestions for the book, such as ideas for new content, or
+if you notice anything that is incorrect or misleading, please file issues in
+<a href="https://github.com/bevy-cheatbook/bevy-cheatbook">the GitHub repository</a>!</p>
 <h2 id="contributing-code"><a class="header" href="#contributing-code">Contributing Code</a></h2>
-<p>If you simply want to contribute code examples to the book, feel free to make a
-PR. I can take care of writing the book text / page that your code will be
-displayed on.</p>
+<p>If you simply want to contribute code examples to the book, feel free to
+make a PR. I can take care of writing the book text / page that your code
+will be displayed on.</p>
 <h3 id="cookbook-examples"><a class="header" href="#cookbook-examples">Cookbook Examples</a></h3>
-<p>The code for cookbook examples should be provided as a full, runnable, example
-file, under <code>src/code/examples</code>. The book page will only show the relevant parts
-of the code, without unnecessary boilerplate.</p>
+<p>The code for cookbook examples should be provided as a full, runnable,
+example file, under <code>src/code/examples</code>. The book page will only show the
+relevant parts of the code, without unnecessary boilerplate.</p>
 <p>Always use <a href="https://rust-lang.github.io/mdBook/format/mdbook.html#including-portions-of-a-file">mdbook anchor syntax</a>,
 not line numbers, to denote the parts of the code to be shown on the page.</p>
 <h3 id="credits"><a class="header" href="#credits">Credits</a></h3>
 <p>If you contribute a cookbook example, I will credit you in the book by your
-github username with a link to the PR. Please let me know if you prefer not to
-be credited, or if you would like to be credited in another way (but no
+github username with a link to the PR. Please let me know if you prefer not
+to be credited, or if you would like to be credited in another way (but no
 commercial self-promotion allowed).</p>
 <h2 id="contributing-book-text"><a class="header" href="#contributing-book-text">Contributing Book Text</a></h2>
-<p>I do not directly merge book text written by other people. This is because I
-want the book to follow a consistent editorial style.</p>
-<p>If you would like to write new content for the book, feel free to make a PR with
-the content to be included, but note that it will likely not be preserved
-exactly as you wrote it.</p>
-<p>I will likely merge it into a temporary branch and then edit or rewrite it as I
-see fit, for publishing into the book.</p>
+<p>I do not directly merge book text written by other people. This is because
+I want the book to follow a consistent editorial style.</p>
+<p>If you would like to write new content for the book, feel free to make a
+PR with the content to be included, but note that it will likely not be
+preserved exactly as you wrote it.</p>
+<p>I will likely merge it into a temporary branch and then edit or rewrite it
+as I see fit, for publishing into the book.</p>
 <h2 id="licensing"><a class="header" href="#licensing">Licensing</a></h2>
-<p>To avoid complications with copyright and licensing, you agree to provide any
-contributions you make to the project under the <a href="https://github.com/bevy-cheatbook/mit-0">MIT-0 No Attribution
+<p>To avoid complications with copyright and licensing, you agree to provide
+any contributions you make to the project under the <a href="https://github.com/bevy-cheatbook/mit-0">MIT-0 No Attribution
 License</a>.</p>
-<p>Note that this allows your work to be relicensed without preserving your copyright.</p>
-<p>As described previously, the actual published content in the book will be my own
-derivative work based on your contributions. I will license it consistently with
-the rest of the book; see: <a href="./introduction.html#license">License</a>.</p>
+<p>Note that this allows your work to be relicensed without preserving your
+copyright.</p>
+<p>As described previously, the actual published content in the book will be my
+own derivative work based on your contributions. I will license it consistently
+with the rest of the book; see: <a href="./introduction.html#license">License</a>.</p>
 <h2 id="bevy-version"><a class="header" href="#bevy-version">Bevy version</a></h2>
-<p>Content written for the current Bevy release, is accepted for the <code>main</code> branch of the book.</p>
+<p>Content written for the current Bevy release, is accepted for the <code>main</code>
+branch of the book.</p>
 <p>Content written for new developments in Bevy's main branch, is accepted for the
 <code>next</code> branch of the book, in preparation for the next upcoming Bevy release.</p>
 <h2 id="style-guidelines"><a class="header" href="#style-guidelines">Style Guidelines</a></h2>
-<p>Aim for simplicity and minimalism. Do not include things irrelevant to getting the point across.</p>
-<p>&quot;Perfection is achieved not when there is nothing more to add, but when there is nothing more to remove.&quot;</p>
-<p>Don't forget to point out potential gotchas and other relevant practical considerations.</p>
+<p>Aim for simplicity and minimalism. Do not include things irrelevant to
+getting the point across.</p>
+<p>&quot;Perfection is achieved not when there is nothing more to add, but when
+there is nothing more to remove.&quot;</p>
+<p>Don't forget to point out potential gotchas and other relevant practical
+considerations.</p>
 <p>Try to use the most common/standard terminology and keywords, to make things
 easy to find. Don't come up with new/extra terminology of your own.</p>
-<p>Avoid repeating information found elsewhere in the book, prefer linking to it instead.</p>
+<p>Avoid repeating information found elsewhere in the book, prefer linking to
+it instead.</p>
 <h3 id="code-style"><a class="header" href="#code-style">Code Style</a></h3>
-<p>Code snippets in the Cheatsheet should be as concise as possible. Feel free to
-use meaningless placeholder names; don't try to make them &quot;realistic&quot;.</p>
+<p>Code snippets in the Cheatsheet should be as concise as possible. Feel free
+to use meaningless placeholder names; don't try to make them &quot;realistic&quot;.</p>
 <p>Code in other sections, however, should aim to &quot;look realistic&quot;, as to
 illustrate what the feature might actually be used for.</p>
 <p>Avoid long lines of code, to keep it readable on small screens.</p>
-<p>Use reasonable formatting that does not deviate much from the common conventions
-used by the Rust language community. I don't enforce it strictly; there is no
-need to use <code>rustfmt</code>. If deviating from those standards allows for the code to
-be presented better in the context of the book, then doing so is preferable.</p>
+<p>Use reasonable formatting that does not deviate much from the common
+conventions used by the Rust language community. I don't enforce it strictly;
+there is no need to use <code>rustfmt</code>. If deviating from those standards allows
+for the code to be presented better in the context of the book, then doing
+so is preferable.</p>
 <h3 id="text-style"><a class="header" href="#text-style">Text Style</a></h3>
 <p>Make it easy to read.</p>
 <ul>

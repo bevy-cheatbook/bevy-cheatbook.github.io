@@ -136,13 +136,15 @@
                         </a>
                         
                         
+                        
+
                     </div>
                 </div>
 
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -163,18 +165,21 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="slow-performance"><a class="header" href="#slow-performance">Slow Performance</a></h1>
-<p>(unoptimized debug builds)</p>
-<p>Rust without compiler optimizations is <em>very slow</em>. With Bevy in particular, the
-default debug build settings will lead to <em>awful</em> runtime performance. Assets
-are slow to load and FPS is low.</p>
+                        <h1 id="performance"><a class="header" href="#performance">Performance</a></h1>
+<p>This page is a summary of performance issues when working with Bevy.</p>
+<p>(WIP)</p>
+<h2 id="unoptimized-debug-builds"><a class="header" href="#unoptimized-debug-builds">Unoptimized debug builds</a></h2>
+<p>Rust without compiler optimizations is <em>very slow</em>. With Bevy in
+particular, the default debug build settings will lead to <em>awful</em> runtime
+performance. Assets are slow to load and FPS is low.</p>
 <p>Common symptoms:</p>
 <ul>
-<li>Loading high-res 3D models with a lot of large textures, from GLTF files, can
-take over 20 seconds! This can trick you into thinking that your code is not
-working, because you will not see anything on the screen until it is ready.</li>
-<li>After spawning some 2D sprites or 3D models, framerate may drop to unplayable
-levels.</li>
+<li>Loading high-res 3D models with a lot of large textures, from GLTF
+files, can take over 20 seconds! This can trick you into thinking
+that your code is not working, because you will not see anything on
+the screen until it is ready.</li>
+<li>After spawning some 2D sprites or 3D models, framerate may drop to
+unplayable levels.</li>
 </ul>
 <p>However, fully-optimized release builds can be slow to compile.</p>
 <p>Solutions:</p>

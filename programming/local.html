@@ -136,13 +136,15 @@
                         </a>
                         
                         
+                        
+
                     </div>
                 </div>
 
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -164,12 +166,12 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="local-resources"><a class="header" href="#local-resources">Local Resources</a></h1>
-<p><code>Local&lt;T&gt;</code> is a system parameter similar to <code>ResMut&lt;T&gt;</code>, which gives you full
-mutable access to an instance of some data type, that is independent from
-entities and components.</p>
+<p><code>Local&lt;T&gt;</code> is a system parameter similar to <code>ResMut&lt;T&gt;</code>, which gives you
+full mutable access to an instance of some data type, that is independent
+from entities and components.</p>
 <p><code>Res&lt;T&gt;</code>/<code>ResMut&lt;T&gt;</code> refer to a single global instance of the type, shared
-between all systems. On the other hand, every <code>Local&lt;T&gt;</code> parameter is a separate
-instance, exclusively for that system.</p>
+between all systems. On the other hand, every <code>Local&lt;T&gt;</code> parameter is a
+separate instance, exclusively for that system.</p>
 <pre><code class="language-rust no_run noplayground">fn my_system1(mut local: Local&lt;MyState&gt;) {
     // you can do anything you want with the local here
 }
@@ -178,7 +180,8 @@ fn my_system2(mut local: Local&lt;MyState&gt;) {
     // the local in this system is a different instance
 }
 </code></pre>
-<p>The type must implement <code>Default</code> or <code>FromWorld</code>. It is automatically initialized.</p>
+<p>The type must implement <code>Default</code> or <code>FromWorld</code>. It is automatically
+initialized.</p>
 <p>A system can have multiple <code>Local</code>s of the same type.</p>
 
                     </main>

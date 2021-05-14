@@ -136,13 +136,15 @@
                         </a>
                         
                         
+                        
+
                     </div>
                 </div>
 
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -174,8 +176,8 @@
 </ul>
 <p>In every state, you can have different systems running. You can also add
 one-shot setup and cleanup systems to run when entering or exiting a state.</p>
-<p>To use states, define an enum type and add <a href="./system-sets.html">system sets</a> to
-your <a href="./app-builder.html">app builder</a>:</p>
+<p>To use states, define an enum type and add <a href="./system-sets.html">system sets</a>
+to your <a href="./app-builder.html">app builder</a>:</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Debug, Clone, Eq, PartialEq, Hash)]
 enum AppState {
     MainMenu,
@@ -216,13 +218,14 @@ fn main() {
 <p>It is OK to have multiple system sets for the same state.</p>
 <p>This is useful when you want to place <a href="./labels.html">labels</a> and use <a href="./system-order.html">explicit
 system ordering</a>.</p>
-<p>This can also be useful with <a href="./plugins.html">Plugins</a>. Each plugin can add its
-own set of systems to the same state.</p>
+<p>This can also be useful with <a href="./plugins.html">Plugins</a>. Each plugin can add
+its own set of systems to the same state.</p>
 <p>States are implemented using <a href="./run-criteria.html">run criteria</a> under the hood.
 These special system set constructors are really just helpers to automatically
 add the state management run criteria.</p>
 <h2 id="controlling-states"><a class="header" href="#controlling-states">Controlling States</a></h2>
-<p>Inside of systems, you can check and control the state using the <code>State&lt;T&gt;</code> resource:</p>
+<p>Inside of systems, you can check and control the state using the <code>State&lt;T&gt;</code>
+resource:</p>
 <pre><code class="language-rust no_run noplayground">fn play_music(
     app_state: Res&lt;State&lt;AppState&gt;&gt;,
     // ...
@@ -247,21 +250,21 @@ add the state management run criteria.</p>
     // or if another state change is already queued
 }
 </code></pre>
-<p>After the systems of the current state complete, Bevy will transition to the
-next state you set.</p>
+<p>After the systems of the current state complete, Bevy will transition to
+the next state you set.</p>
 <p>You can do arbitrarily many state transitions in a single frame update. Bevy
-will handle all of them and execute all the relevant systems (before moving on
-to the next <a href="./stages.html">stage</a>).</p>
+will handle all of them and execute all the relevant systems (before moving
+on to the next <a href="./stages.html">stage</a>).</p>
 <p>(if you are curious about how this is implemented, see <a href="./run-criteria-loop.html">Looping Run
 Criteria</a>)</p>
 <h2 id="state-stack"><a class="header" href="#state-stack">State Stack</a></h2>
 <p>Instead of completely transitioning from one state to another, you can also
 overlay states, forming a stack.</p>
-<p>This is how you can implement things like a &quot;game paused&quot; screen, or an overlay
-menu, with the game world still visible / running in the background.</p>
+<p>This is how you can implement things like a &quot;game paused&quot; screen, or an
+overlay menu, with the game world still visible / running in the background.</p>
 <p>You can have some systems that are still running even when the state is
-&quot;inactive&quot; (that is, in the background, with other states running on top).
-You can also add one-shot systems to run when &quot;pausing&quot; or &quot;resuming&quot; the state.</p>
+&quot;inactive&quot; (that is, in the background, with other states running on top). You
+can also add one-shot systems to run when &quot;pausing&quot; or &quot;resuming&quot; the state.</p>
 <p>In your <a href="./app-builder.html">app builder</a>:</p>
 <pre><code class="language-rust no_run noplayground">        // player movement only when actively playing
         .add_system_set(
@@ -311,11 +314,12 @@ You can also add one-shot systems to run when &quot;pausing&quot; or &quot;resum
 <p>(using <code>.set</code> as shown before replaces the active state at the top of the stack)</p>
 <h2 id="known-pitfalls-and-limitations"><a class="header" href="#known-pitfalls-and-limitations">Known Pitfalls and Limitations</a></h2>
 <h3 id="combining-with-other-run-criteria"><a class="header" href="#combining-with-other-run-criteria">Combining with Other Run Criteria</a></h3>
-<p>Because states are implemented using run criteria, it is tricky to combine them
-with other uses of run criteria, such as <a href="../features/fixed-timestep.html">fixed timestep</a>.</p>
+<p>Because states are implemented using run criteria, it is tricky
+to combine them with other uses of run criteria, such as <a href="../features/fixed-timestep.html">fixed
+timestep</a>.</p>
 <p>If you try to add another run criteria to your system set, it would replace
-Bevy's state-management run criteria! This would make the system set no longer
-constrained to run as part of a state!</p>
+Bevy's state-management run criteria! This would make the system set no
+longer constrained to run as part of a state!</p>
 <p>It may still be possible to accomplish such use cases using some trickery.</p>
 <p>(TODO) show an example of how it could be done.</p>
 <h3 id="with-input"><a class="header" href="#with-input">With Input</a></h3>
@@ -335,10 +339,11 @@ press, you need to clear the input manually by calling <code>.reset</code>:</p>
 <p>Not doing this can cause <a href="https://github.com/bevyengine/bevy/issues/1700">issues</a>.</p>
 <h3 id="multiple-stages"><a class="header" href="#multiple-stages">Multiple Stages</a></h3>
 <p>(TODO) move this under the <a href="../patterns/_index.html">Advanced Patterns</a> chapter.</p>
-<p>If you need state-dependent systems in multiple <a href="./stages.html">stages</a>, a workaround is required.</p>
-<p>You must add the state to one stage only, and then call [<code>.get_driver()</code>](TODO
-DOCS.RS) and add that to the other stages before any state-dependent system sets
-in those stages.</p>
+<p>If you need state-dependent systems in multiple <a href="./stages.html">stages</a>,
+a workaround is required.</p>
+<p>You must add the state to one stage only, and then call <code>.get_driver()</code>
+and add that to the other stages before any state-dependent system sets in
+those stages.</p>
 <p>(TODO) example</p>
 
                     </main>

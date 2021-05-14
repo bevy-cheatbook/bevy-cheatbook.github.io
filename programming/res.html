@@ -136,13 +136,15 @@
                         </a>
                         
                         
+                        
+
                     </div>
                 </div>
 
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -164,9 +166,12 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="resources"><a class="header" href="#resources">Resources</a></h1>
-<p>Resources allow you to store a single global instance of some data type, independently of entities.</p>
-<p>Use them for data that is truly global for your app, such as configuration / settings.</p>
-<p>Similar to components, any Rust type (<code>struct</code> or <code>enum</code>) can be used as a resource.</p>
+<p>Resources allow you to store a single global instance of some data type,
+independently of entities.</p>
+<p>Use them for data that is truly global for your app, such as configuration
+/ settings.</p>
+<p>Similar to components, any Rust type (<code>struct</code> or <code>enum</code>) can be used as
+a resource.</p>
 <p>Types must be unique; there can only be one instance of a given type.</p>
 <pre><code class="language-rust no_run noplayground">struct GoalsReached {
     main_goal: bool,
@@ -213,15 +218,15 @@ commands.remove_resource::&lt;MyResource&gt;();
 </code></pre>
 <p>If you insert a resource of a type that already exists, it will be overwritten.</p>
 <h2 id="usage-advice"><a class="header" href="#usage-advice">Usage Advice</a></h2>
-<p>The choice of when to use entities/components vs. resources is typically about
-how you want to access the data: globally from anywhere (resources), or using
-ECS patterns (entities/components).</p>
-<p>Even if there is only one of a certain thing in your game (such as the player in
-a single-player game), it can be a good fit to use an entity instead of
-resources, because entities are composed of multiple components, some of which
-can be common with other entities. This can make your game logic more flexible.
-For example, you could have a &quot;health/damage system&quot; that works with both the
-player and enemies.</p>
+<p>The choice of when to use entities/components vs. resources is typically
+about how you want to access the data: globally from anywhere (resources),
+or using ECS patterns (entities/components).</p>
+<p>Even if there is only one of a certain thing in your game (such as the
+player in a single-player game), it can be a good fit to use an entity
+instead of resources, because entities are composed of multiple components,
+some of which can be common with other entities. This can make your game
+logic more flexible.  For example, you could have a &quot;health/damage system&quot;
+that works with both the player and enemies.</p>
 
                     </main>
 

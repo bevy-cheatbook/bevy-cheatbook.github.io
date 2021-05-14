@@ -136,13 +136,15 @@
                         </a>
                         
                         
+                        
+
                     </div>
                 </div>
 
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -191,7 +193,8 @@ struct Enemy;
 </code></pre>
 <p>Components can be accessed from <a href="./systems.html">systems</a>, using <a href="./queries.html">queries</a>. </p>
 <h1 id="component-bundles"><a class="header" href="#component-bundles">Component Bundles</a></h1>
-<p>Bundles are like &quot;templates&quot;, to make it easy to create entities with a common set of components.</p>
+<p>Bundles are like &quot;templates&quot;, to make it easy to create entities with a
+common set of components.</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Bundle)]
 struct PlayerBundle {
     xp: PlayerXp,
@@ -209,11 +212,11 @@ struct PlayerBundle {
 <pre><code>(ComponentA, ComponentB, ComponentC)
 </code></pre>
 <h2 id="common-pitfalls"><a class="header" href="#common-pitfalls">Common Pitfalls</a></h2>
-<p>Because both bundles and individual components are regular Rust structs, Bevy /
-the Rust compiler often has no way to distinguish them.</p>
+<p>Because both bundles and individual components are regular Rust structs,
+Bevy / the Rust compiler often has no way to distinguish them.</p>
 <p>If you accidentally use a bundle struct somewhere where Bevy expects a
-component, you will not get an error. Bevy will just treat it as a component of
-that struct type!</p>
+component, you will not get an error. Bevy will just treat it as a component
+of that struct type!</p>
 <p>For example, this is why we needed the <code>#[bundle]</code> annotation to include a
 sub-bundle in the example above.</p>
 <p>Other places where this issue may come up are: when using

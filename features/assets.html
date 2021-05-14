@@ -136,13 +136,15 @@
                         </a>
                         
                         
+                        
+
                     </div>
                 </div>
 
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -167,7 +169,8 @@
 <p>Bevy has a flexible system for loading and managing your game assets
 asynchronously (in the background, without causing lag spikes in your game).</p>
 <p>The data of your loaded assets is stored in <code>Assets&lt;T&gt;</code> resources.</p>
-<p>Assets are tracked using handles. Handles are just lightweight IDs for specific assets.</p>
+<p>Assets are tracked using handles. Handles are just lightweight IDs for
+specific assets.</p>
 <h2 id="loading-using-assetserver"><a class="header" href="#loading-using-assetserver">Loading using AssetServer</a></h2>
 <p>To load assets from files, use the <code>AssetServer</code> resource.</p>
 <pre><code class="language-rust no_run noplayground">struct UiFont(Handle&lt;Font&gt;);
@@ -185,13 +188,14 @@ fn load_ui_font(
 }
 </code></pre>
 <p>This queues the asset loading to happen in the background. The asset will take
-some time to become available. You cannot access the actual data immediately in
-the same system, but you can use the handle.</p>
-<p>You can spawn your 2D sprites, 3D models, and UI, using the handle, even before
-the asset has loaded. They will just &quot;pop in&quot; later, when the asset becomes ready.</p>
+some time to become available. You cannot access the actual data immediately
+in the same system, but you can use the handle.</p>
+<p>You can spawn your 2D sprites, 3D models, and UI, using the handle, even
+before the asset has loaded. They will just &quot;pop in&quot; later, when the asset
+becomes ready.</p>
 <p>Note that it is OK to call <code>asset_server.load</code> as many times as you want, even
-if the asset is currently loading, or already loaded. It will just provide you
-with the same handle. If the asset is unavailable, it will begin loading.</p>
+if the asset is currently loading, or already loaded. It will just provide
+you with the same handle. If the asset is unavailable, it will begin loading.</p>
 <h2 id="creating-your-own-assets"><a class="header" href="#creating-your-own-assets">Creating your own assets</a></h2>
 <p>You can also add assets to <code>Assets&lt;T&gt;</code> manually.</p>
 <p>This is useful if you want to create them using code (such as for procedural
@@ -214,9 +218,9 @@ things into your game, such as 2D sprites, 3D models, or UI, their respective
 components will need handles for the assets they use.</p>
 <p>You could store your handles somewhere that is convenient for you (such as in
 <a href="../programming/res.html">resources</a>).</p>
-<p>If you don't have your handle stored anywhere, you can always generate one from
-a path by calling <code>asset_server.load</code>. You could simply do that whenever you
-need, and not bother storing handles.</p>
+<p>If you don't have your handle stored anywhere, you can always generate one
+from a path by calling <code>asset_server.load</code>. You could simply do that whenever
+you need, and not bother storing handles.</p>
 <h2 id="accessing-the-assets"><a class="header" href="#accessing-the-assets">Accessing the Assets</a></h2>
 <p>To access the actual asset data from systems, use the <code>Assets&lt;T&gt;</code> resource.</p>
 <p>You can identify your desired asset, using either the handle or the asset path:</p>
@@ -241,11 +245,12 @@ fn use_sprites(
 }
 </code></pre>
 <h2 id="assetpath-and-labels"><a class="header" href="#assetpath-and-labels">AssetPath and Labels</a></h2>
-<p>Assets from the filesystem can be identified by an <code>AssetPath</code>, which consists of
-the file path + a label. Labels are used in situations where multiple assets are
-contained in the same file. An example of this are GLTF files, which can contain
-meshes, scenes, textures, materials, etc.</p>
-<p>Asset paths can be created from a string, with the label (if any) attached after a <code>#</code> symbol.</p>
+<p>Assets from the filesystem can be identified by an <code>AssetPath</code>, which consists
+of the file path + a label. Labels are used in situations where multiple
+assets are contained in the same file. An example of this are GLTF files,
+which can contain meshes, scenes, textures, materials, etc.</p>
+<p>Asset paths can be created from a string, with the label (if any) attached
+after a <code>#</code> symbol.</p>
 <pre><code class="language-rust no_run noplayground">fn load_gltf_things(
     mut commands: Commands,
     server: Res&lt;AssetServer&gt;
@@ -258,25 +263,26 @@ meshes, scenes, textures, materials, etc.</p>
     commands.spawn_scene(my_scene);
 }
 </code></pre>
-<p>(For GLTF, Bevy will generate labels like <code>Scene0</code> based on the index of each
-object in the file, but if your GLTF file includes names/labels exported from
-your 3D modeling software, Bevy will make those available, too)</p>
+<p>(For GLTF, Bevy will generate labels like <code>Scene0</code> based on the index of
+each object in the file, but if your GLTF file includes names/labels exported
+from your 3D modeling software, Bevy will make those available, too)</p>
 <h2 id="handles-and-asset-lifetime-garbage-collection"><a class="header" href="#handles-and-asset-lifetime-garbage-collection">Handles and Asset Lifetime (Garbage Collection)</a></h2>
 <p>Handles have built-in reference counting (similar to <code>Rc</code>/<code>Arc</code> in Rust). This
 allows Bevy to track if an asset is still needed, and automatically unload it
 when it no longer is.</p>
-<p>You can use <code>.clone()</code> to create multiple handles to the same asset. The clone
-is a cheap operation, but it is explicit, to ensure that you are aware of the
-places in your code that create additional handles and may affect the lifetime
-of assets.</p>
+<p>You can use <code>.clone()</code> to create multiple handles to the same asset. The
+clone is a cheap operation, but it is explicit, to ensure that you are aware
+of the places in your code that create additional handles and may affect
+the lifetime of assets.</p>
 <h3 id="weak-handles"><a class="header" href="#weak-handles">Weak Handles</a></h3>
-<p>Handles can be &quot;strong&quot; (the default) or &quot;weak&quot;. Only strong handles are counted
-and cause the asset to remain loaded. Weak handles let you refer to an asset,
-while allowing it to be garbage-collected when no more strong handles remain.</p>
+<p>Handles can be &quot;strong&quot; (the default) or &quot;weak&quot;. Only strong handles are
+counted and cause the asset to remain loaded. Weak handles let you refer
+to an asset, while allowing it to be garbage-collected when no more strong
+handles remain.</p>
 <p>You can create weak handles using <code>.clone_weak()</code> instead of <code>.clone()</code>.</p>
 <h2 id="untyped-handles"><a class="header" href="#untyped-handles">Untyped Handles</a></h2>
-<p>Bevy also has a <code>HandleUntyped</code> type. Use this type of handle if you need to
-be able to refer to any asset, regardless of the asset type.</p>
+<p>Bevy also has a <code>HandleUntyped</code> type. Use this type of handle if you need
+to be able to refer to any asset, regardless of the asset type.</p>
 <p>This allows you to store a collection (such as <code>Vec</code> or <code>HashMap</code>) containing
 assets of mixed types.</p>
 <p>You can create an untyped handle using <code>.clone_untyped()</code>.</p>
@@ -296,8 +302,8 @@ fn load_extra_assets(
 </code></pre>
 <p>It will try to detect the format of each asset based on the file extension.</p>
 <h2 id="assetevent"><a class="header" href="#assetevent">AssetEvent</a></h2>
-<p>If you need to perform specific actions when the asset has finished loading, is
-modified, or removed, you can react to <code>AssetEvent</code>s.</p>
+<p>If you need to perform specific actions when the asset has finished loading,
+is modified, or removed, you can react to <code>AssetEvent</code>s.</p>
 <pre><code class="language-rust no_run noplayground">struct MapTexture {
     handle: Handle&lt;Texture&gt;,
 }

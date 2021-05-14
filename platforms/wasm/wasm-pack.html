@@ -136,13 +136,15 @@
                         </a>
                         
                         
+                        
+
                     </div>
                 </div>
 
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -170,9 +172,9 @@ general information.</p>
 <p><code>wasm-pack</code> is a simple and lightweight way to build your application for WASM.
 Compared to the <a href="./cargo-make.html">Cargo Make</a> approach, it is not as automated,
 but you may prefer the simpler setup and configuration.</p>
-<p>This page will show you how to configure a single Bevy project that can be
-compiled for both Web and Desktop (Linux/Mac/Windows). If you only care about
-Web, you could simplify the configuration shown here.</p>
+<p>This page will show you how to configure a single Bevy project that can
+be compiled for both Web and Desktop (Linux/Mac/Windows). If you only care
+about Web, you could simplify the configuration shown here.</p>
 <h2 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h2>
 <p>You need to have support for the WASM target for the Rust compiler. If you are
 using <code>rustup</code> to manage your Rust installation, you can install it like this:</p>
@@ -182,8 +184,8 @@ using <code>rustup</code> to manage your Rust installation, you can install it l
 <pre><code class="language-shell">cargo install wasm-pack
 </code></pre>
 <h2 id="cargo"><a class="header" href="#cargo">Cargo</a></h2>
-<p>The cross-platform setup requires the new <code>cargo</code> resolver, which was added in
-Rust 1.51.</p>
+<p>The cross-platform setup requires the new <code>cargo</code> resolver, which was added
+in Rust 1.51.</p>
 <p>Add the following options to your <code>Cargo.toml</code>:</p>
 <pre><code class="language-toml">[package]
 resolver = &quot;2&quot;
@@ -205,8 +207,9 @@ bevy = {version = &quot;0.5&quot;, default-features = false, features = [&quot;b
 bevy_webgl2 = &quot;0.5&quot;
 </code></pre>
 <h2 id="main-source-file"><a class="header" href="#main-source-file">Main Source File</a></h2>
-<p>When using <code>wasm-pack</code>, we are treating the project as a &quot;library&quot; rather than an
-&quot;application&quot;. This means that your main file is <code>lib.rs</code> instead of <code>main.rs</code>.</p>
+<p>When using <code>wasm-pack</code>, it is treating the project as a &quot;library&quot; rather
+than an &quot;application&quot;. This means that your main file is <code>lib.rs</code> instead of
+<code>main.rs</code>.</p>
 <p>In <code>src/lib.rs</code>, write your &quot;main function&quot; as follows:</p>
 <pre><code class="language-rust no_run noplayground">use bevy::prelude::*;
 use wasm_bindgen::prelude::*;
@@ -226,15 +229,15 @@ pub fn run() {
     app.run();
 }
 </code></pre>
-<p>To be able to also build the game as a normal desktop application, we also need
-to add a trivial <code>main.rs</code>. It just calls the function we defined above:</p>
+<p>To be able to also build the game as a normal desktop application, we also
+need to add a trivial <code>main.rs</code>. It just calls the function we defined above:</p>
 <pre><code class="language-rust no_run noplayground">fn main() {
     myproject::run();
 }
 </code></pre>
 <h2 id="web-page"><a class="header" href="#web-page">Web Page</a></h2>
-<p>To display and run your game, you need to create a website. As the bare minimum,
-you can create a simple HTML file (call it <code>index.html</code>) containing:</p>
+<p>To display and run your game, you need to create a website. As the bare
+minimum, you can create a simple HTML file (call it <code>index.html</code>) containing:</p>
 <pre><code class="language-html">&lt;html&gt;
 &lt;head&gt;
 &lt;title&gt;My Bevy Project&lt;/title&gt;
@@ -249,10 +252,10 @@ you can create a simple HTML file (call it <code>index.html</code>) containing:<
 &lt;/body&gt;
 &lt;/html&gt;
 </code></pre>
-<p>(make sure to rename the <code>myproject.js</code> and <code>myproject_bg.wasm</code> to the correct
-file names for your project; <a href="#building-and-running">see below</a>)</p>
-<p>The above HTML is enough for you to test your game. You can enhance and extend
-it as much as you want, to make a fancy website.</p>
+<p>(make sure to rename the <code>myproject.js</code> and <code>myproject_bg.wasm</code> to the
+correct file names for your project; <a href="#building-and-running">see below</a>)</p>
+<p>The above HTML is enough for you to test your game. You can enhance and
+extend it as much as you want, to make a fancy website.</p>
 <h2 id="building-and-running"><a class="header" href="#building-and-running">Building and Running</a></h2>
 <p>You can build your project like this:</p>
 <pre><code class="language-shell">wasm-pack build --target web --release
@@ -262,8 +265,8 @@ it as much as you want, to make a fancy website.</p>
 <li><code>myproject_bg.wasm</code></li>
 <li><code>myproject.js</code></li>
 </ul>
-<p>To create the website that will display your game, you need to place the above
-files, your <code>assets</code>, and the HTML file, together in the same folder.</p>
+<p>To create the website that will display your game, you need to place the
+above files, your <code>assets</code>, and the HTML file, together in the same folder.</p>
 <p>You can then open the HTML file in a web browser, and enjoy your game!</p>
 
                     </main>

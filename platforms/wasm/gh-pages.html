@@ -136,13 +136,15 @@
                         </a>
                         
                         
+                        
+
                     </div>
                 </div>
 
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -164,13 +166,14 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="hosting-on-github-pages"><a class="header" href="#hosting-on-github-pages">Hosting on GitHub Pages</a></h1>
-<p>GitHub Pages is a hosting service that allows you to publish your website on
-GitHub's servers.</p>
-<p>For more details, visit the official <a href="https://docs.github.com/en/pages">GitHub Pages documentation</a>.</p>
-<p>Deploying a website (like your WASM game) to GitHub pages is done by putting the
-files in a special branch in a GitHub repository. You could create a separate
-repository for this, but you could also do it from the same repository as your
-source code.</p>
+<p>GitHub Pages is a hosting service that allows you to publish your website
+on GitHub's servers.</p>
+<p>For more details, visit the official <a href="https://docs.github.com/en/pages">GitHub Pages
+documentation</a>.</p>
+<p>Deploying a website (like your WASM game) to GitHub pages is done by
+putting the files in a special branch in a GitHub repository. You could
+create a separate repository for this, but you could also do it from the
+same repository as your source code.</p>
 <p>You will need the final website files for deployment. See the <a href="./wasm-pack.html"><code>wasm-pack</code>
 setup</a> or the <a href="./cargo-make.html">Cargo Make setup</a> page,
 whichever is applicable to your project, for more information about that.</p>
@@ -179,7 +182,8 @@ whichever is applicable to your project, for more information about that.</p>
 git reset --hard
 </code></pre>
 <p>You should now be in an empty working directory.</p>
-<p>Put all files necessary for hosting, including your HTML, WASM, JavaScript, and <code>assets</code> files, and commit them into git:</p>
+<p>Put all files necessary for hosting, including your HTML, WASM, JavaScript,
+and <code>assets</code> files, and commit them into git:</p>
 <pre><code class="language-shell">git add *
 git commit
 </code></pre>

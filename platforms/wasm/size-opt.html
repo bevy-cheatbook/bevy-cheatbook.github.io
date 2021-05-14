@@ -136,13 +136,15 @@
                         </a>
                         
                         
+                        
+
                     </div>
                 </div>
 
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -173,20 +175,21 @@ development, and many of these techniques can get in the way of your workflow!
 They may come at the cost of longer compile times or less debuggability.</p>
 <p>Depending on the nature of your application, your mileage may vary, and
 performing measurements of binary size and execution speed is recommended.</p>
-<p><a href="https://github.com/rustwasm/twiggy">Twiggy</a> is a code size profiler for WASM
-binaries, which you can use to make measurements.</p>
-<p>For additional information and more techniques, refer to the Code Size chapter
-in the <a href="https://rustwasm.github.io/docs/book/reference/code-size.html">Rust WASM book</a>.</p>
+<p><a href="https://github.com/rustwasm/twiggy">Twiggy</a> is a code size profiler for
+WASM binaries, which you can use to make measurements.</p>
+<p>For additional information and more techniques,
+refer to the Code Size chapter in the <a href="https://rustwasm.github.io/docs/book/reference/code-size.html">Rust WASM
+book</a>.</p>
 <h2 id="link-time-optimization-lto"><a class="header" href="#link-time-optimization-lto">Link-Time Optimization (LTO)</a></h2>
 <p>In <code>Cargo.toml</code>, add the following:</p>
 <pre><code class="language-toml">[profile.release]
 lto = &quot;thin&quot;
 </code></pre>
-<p>LTO tells the compiler to optimize all code together, considering all crates as
-if they were one. It may be able to inline and prune functions much more
-aggressively.</p>
-<p>This typically results in smaller size <em>and</em> better performance, but do measure
-to confirm. Sometimes, the size can actually be larger.</p>
+<p>LTO tells the compiler to optimize all code together, considering all
+crates as if they were one. It may be able to inline and prune functions
+much more aggressively.</p>
+<p>This typically results in smaller size <em>and</em> better performance, but do
+measure to confirm. Sometimes, the size can actually be larger.</p>
 <p>The downside here is that compilation will take much longer.</p>
 <h2 id="compiling-for-size-instead-of-speed"><a class="header" href="#compiling-for-size-instead-of-speed">Compiling for size instead of speed</a></h2>
 <p>You can change the optimization profile of the compiler, to tell it to
@@ -200,13 +203,13 @@ opt-level = 's'
 opt-level = 'z'
 </code></pre>
 <p>These are two different profiles for size optimization. Usually, <code>z</code> produces
-smaller files than <code>s</code>, but sometimes it can be the opposite. Measure to confirm
-which one works better for you.</p>
+smaller files than <code>s</code>, but sometimes it can be the opposite. Measure to
+confirm which one works better for you.</p>
 <h2 id="use-the-wasm-opt-tool"><a class="header" href="#use-the-wasm-opt-tool">Use the <code>wasm-opt</code> tool</a></h2>
 <p>The <a href="https://github.com/WebAssembly/binaryen">binaryen</a> toolkit is a set of
 extra tools for working with WASM. One of them is <code>wasm-opt</code>. It goes much
-further than what the compiler can do, and can be used to further optimize for
-either speed or size:</p>
+further than what the compiler can do, and can be used to further optimize
+for either speed or size:</p>
 <pre><code class="language-shell"># Optimize for size (s profile).
 wasm-opt -Os -o output.wasm input.wasm
 
@@ -219,10 +222,10 @@ wasm-opt -O3 -o output.wasm input.wasm
 <p>Note: <code>wasm-pack</code> performs this partially by default.</p>
 <h2 id="use-the-wee-alloc-memory-allocator"><a class="header" href="#use-the-wee-alloc-memory-allocator">Use the <code>wee-alloc</code> memory allocator</a></h2>
 <p>You can replace Rust's default memory allocator with
-<a href="https://github.com/rustwasm/wee_alloc">wee-alloc</a>,
-which is slower, but is less than a single kilobyte in size.</p>
-<p>This may result in a significant performance hit. If your game runs fast enough
-with it, the smaller download size may be more important.</p>
+<a href="https://github.com/rustwasm/wee_alloc">wee-alloc</a>, which is slower, but is
+less than a single kilobyte in size.</p>
+<p>This may result in a significant performance hit. If your game runs fast
+enough with it, the smaller download size may be more important.</p>
 <p>In <code>Cargo.toml</code>, add the following:</p>
 <pre><code class="language-toml">[dependencies]
 wee_alloc = &quot;0.4&quot;

@@ -136,13 +136,15 @@
                         </a>
                         
                         
+                        
+
                     </div>
                 </div>
 
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -166,8 +168,8 @@
                         <h1 id="list-all-resource-types"><a class="header" href="#list-all-resource-types">List All Resource Types</a></h1>
 <p><a href="../code/examples/print-resources.rs">Click here for the full example code.</a></p>
 <hr />
-<p>We can access the metadata stored inside Bevy ECS to learn about the types of
-things currently stored.</p>
+<p>We can access the metadata stored inside Bevy ECS to learn about the types
+of things currently stored.</p>
 <p>This example shows how to print a list of all types that have been added as
 <a href="../programming/res.html">resources</a>.</p>
 <pre><code class="language-rust no_run noplayground">fn print_resources(archetypes: &amp;Archetypes, components: &amp;Components) {

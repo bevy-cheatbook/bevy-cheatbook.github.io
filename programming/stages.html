@@ -136,13 +136,15 @@
                         </a>
                         
                         
+                        
+
                     </div>
                 </div>
 
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -164,24 +166,27 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="stages"><a class="header" href="#stages">Stages</a></h1>
-<p>All systems to be run by Bevy are contained in stages. Every frame update, Bevy
-executes each stage, in order. Within each stage, Bevy's scheduling algorithm
-can run many systems in parallel, using multiple CPU cores for good performance.</p>
+<p>All systems to be run by Bevy are contained in stages. Every frame update,
+Bevy executes each stage, in order. Within each stage, Bevy's scheduling
+algorithm can run many systems in parallel, using multiple CPU cores for
+good performance.</p>
 <p>The boundaries between stages are effectively hard synchronization points.
 They ensure that all systems of the previous stage have completed before any
 systems of the next stage begin, and that there is a moment in time when no
 systems are in-progress.</p>
-<p>This makes it possible/safe to apply <a href="./commands.html"><code>Commands</code></a>. Any operations
-performed by systems using <code>Commands</code> are applied at the end of each stage.</p>
-<p>Internally, Bevy has at least these built-in stages: <code>First</code>, <code>PreUpdate</code>, <code>Update</code>, <code>PostUpdate</code>, <code>Last</code>.</p>
+<p>This makes it possible/safe to apply <a href="./commands.html"><code>Commands</code></a>. Any
+operations performed by systems using <code>Commands</code> are applied at the end of
+each stage.</p>
+<p>Internally, Bevy has at least these built-in stages: <code>First</code>, <code>PreUpdate</code>,
+<code>Update</code>, <code>PostUpdate</code>, <code>Last</code>.</p>
 <p>(<a href="./labels.html">labeled</a> with <code>enum CoreStage</code>)</p>
 <p>By default, when you add your systems, they are added to <code>CoreStage::Update</code>.</p>
 <p>Bevy's internal systems are in the other stages, to ensure they are ordered
 correctly relative to your game logic.</p>
-<p>If you want to add your own systems to any of Bevy's internal stages, you need
-to beware of potential unexpected interactions with Bevy's own internal systems.
-Remember: Bevy's internals are implemented using ordinary systems and ECS, just
-like your own stuff!</p>
+<p>If you want to add your own systems to any of Bevy's internal stages, you
+need to beware of potential unexpected interactions with Bevy's own internal
+systems.  Remember: Bevy's internals are implemented using ordinary systems
+and ECS, just like your own stuff!</p>
 <p>You can add your own additional stages. For example, if we want our debug
 systems to run after our game logic:</p>
 <pre><code class="language-rust no_run noplayground">fn main() {
@@ -207,16 +212,16 @@ systems to run after our game logic:</p>
         .run();
 }
 </code></pre>
-<p>If you need to manage when your systems run, relative to one another, it is
-generally preferable to avoid using stages, and to use <a href="./system-order.html">explicit system
-ordering</a> instead. Stages limit parallel execution and the
-performance of your game.</p>
-<p>However, stages can make it easier to organize things, when you really want to
-be sure that all previous systems have completed. Stages are also the only way
-to apply <code>Commands</code>.</p>
-<p>If you have systems that need to rely on the actions that other systems have
-performed by using <code>Commands</code>, and need to do so during the same frame, placing
-those systems into separate stages is the only way to accomplish that.</p>
+<p>If you need to manage when your systems run, relative to one another, it
+is generally preferable to avoid using stages, and to use <a href="./system-order.html">explicit system
+ordering</a> instead. Stages limit parallel execution and
+the performance of your game.</p>
+<p>However, stages can make it easier to organize things, when you really want
+to be sure that all previous systems have completed. Stages are also the
+only way to apply <code>Commands</code>.</p>
+<p>If you have systems that need to rely on the actions that other systems
+have performed by using <code>Commands</code>, and need to do so during the same frame,
+placing those systems into separate stages is the only way to accomplish that.</p>
 <p><a href="../pitfalls/frame-delay.html#commands">More information on avoiding frame delays / 1-frame-lag, when using <code>Commands</code>.</a></p>
 
                     </main>

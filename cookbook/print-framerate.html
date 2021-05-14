@@ -136,13 +136,15 @@
                         </a>
                         
                         
+                        
+
                     </div>
                 </div>
 
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -166,7 +168,8 @@
                         <h1 id="show-framerate-in-console"><a class="header" href="#show-framerate-in-console">Show Framerate in Console</a></h1>
 <p><a href="../code/examples/print-framerate.rs">Click here for the full example code.</a></p>
 <hr />
-<p>You can use bevy's builtin diagnostics system to print framerate (FPS) to the console, for monitoring performance.</p>
+<p>You can use bevy's builtin diagnostics system to print framerate (FPS)
+to the console, for monitoring performance.</p>
 <pre><code class="language-rust no_run noplayground">use bevy::diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin};
 
 fn main() {

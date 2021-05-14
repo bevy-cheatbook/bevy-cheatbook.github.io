@@ -136,13 +136,15 @@
                         </a>
                         
                         
+                        
+
                     </div>
                 </div>
 
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -202,7 +204,8 @@ fn query_entities(q: Query&lt;(Entity, /* ... */)&gt;) {
     }
 }
 </code></pre>
-<p>If you know that the query should only ever match a single entity, you can use <code>single</code>/<code>single_mut</code> (returns a <code>Result</code>), instead of iterating:</p>
+<p>If you know that the query should only ever match a single entity, you can
+use <code>single</code>/<code>single_mut</code> (returns a <code>Result</code>), instead of iterating:</p>
 <pre><code class="language-rust no_run noplayground">fn query_player(mut q: Query&lt;(&amp;Player, &amp;mut Transform)&gt;) {
     let (player, mut transform) = q.single_mut()
         .expect(&quot;There should always be exactly one player in the game!&quot;);

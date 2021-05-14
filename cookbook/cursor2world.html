@@ -136,13 +136,15 @@
                         </a>
                         
                         
+                        
+
                     </div>
                 </div>
 
                 
                 <div id="search-wrapper" class="hidden">
                     <form id="searchbar-outer" class="searchbar-outer">
-                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
                     </form>
                     <div id="searchresults-outer" class="searchresults-outer hidden">
                         <div id="searchresults-header" class="searchresults-header"></div>
@@ -166,9 +168,11 @@
                         <h1 id="convert-cursor-to-world-coordinates"><a class="header" href="#convert-cursor-to-world-coordinates">Convert cursor to world coordinates</a></h1>
 <p><a href="../code/examples/cursor2world.rs">Click here for the full example code.</a></p>
 <hr />
-<p>Bevy does not yet provide built-in functions to help with finding out what the cursor is pointing at.</p>
+<p>Bevy does not yet provide built-in functions to help with finding out what
+the cursor is pointing at.</p>
 <h2 id="3d-games"><a class="header" href="#3d-games">3D games</a></h2>
-<p>There is a good (unofficial) plugin: <a href="https://github.com/aevyrie/bevy_mod_picking"><code>bevy_mod_picking</code></a>.</p>
+<p>There is a good (unofficial) plugin:
+<a href="https://github.com/aevyrie/bevy_mod_picking"><code>bevy_mod_picking</code></a>.</p>
 <h2 id="2d-games"><a class="header" href="#2d-games">2D games</a></h2>
 <p>For a game using the default bevy 2d orthographic camera:</p>
 <pre><code class="language-rust no_run noplayground">/// Used to help identify our main camera
