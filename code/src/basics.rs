@@ -1287,22 +1287,22 @@ fn main() {
             SystemSet::new()
                 // This prints out "hello world" once every second
                 .with_run_criteria(FixedTimestep::step(TIMESTEP_1_PER_SECOND))
-                .with_system(fast_timestep.system())
+                .with_system(slow_timestep.system())
         )
         .add_system_set(
             SystemSet::new()
                 // This prints out "goodbye world" twice every second
                 .with_run_criteria(FixedTimestep::step(TIMESTEP_2_PER_SECOND))
-                .with_system(slow_timestep.system())
+                .with_system(fast_timestep.system())
         )
         .run();
 }
 
-fn fast_timestep() {
+fn slow_timestep() {
     println!("hello world");
 }
 
-fn slow_timestep() {
+fn fast_timestep() {
     println!("goodbye world");
 }
 // ANCHOR_END: fixed-timestep

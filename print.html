@@ -2668,22 +2668,22 @@ fn main() {
             SystemSet::new()
                 // This prints out &quot;hello world&quot; once every second
                 .with_run_criteria(FixedTimestep::step(TIMESTEP_1_PER_SECOND))
-                .with_system(fast_timestep.system())
+                .with_system(slow_timestep.system())
         )
         .add_system_set(
             SystemSet::new()
                 // This prints out &quot;goodbye world&quot; twice every second
                 .with_run_criteria(FixedTimestep::step(TIMESTEP_2_PER_SECOND))
-                .with_system(slow_timestep.system())
+                .with_system(fast_timestep.system())
         )
         .run();
 }
 
-fn fast_timestep() {
+fn slow_timestep() {
     println!(&quot;hello world&quot;);
 }
 
-fn slow_timestep() {
+fn fast_timestep() {
     println!(&quot;goodbye world&quot;);
 }
 </code></pre>
