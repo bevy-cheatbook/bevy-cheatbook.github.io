@@ -212,6 +212,16 @@ generation), or if you have gotten the data in some other way.</p>
     materials.add(new_mat);
 }
 </code></pre>
+<h2 id="hot-reloading"><a class="header" href="#hot-reloading">Hot-Reloading</a></h2>
+<p>At runtime, if you modify an asset file that is loaded into the game (via the
+<code>AssetServer</code>), Bevy will detect that and reload the asset automatically. This
+is very useful for quick iteration. You can edit your assets while the game
+is running and see the changes instantly in-game.</p>
+<p>Not all file formats and use cases are supported equally well. Typical asset
+types like textures / images should work without issues, but complex GLTF or
+scene files, or assets involving custom logic, might not.</p>
+<p>If you need to run custom logic as part of your hot-reloading workflow, you
+could implement it in a system, using <a href="#assetevent"><code>AssetEvent</code></a>.</p>
 <h2 id="handles"><a class="header" href="#handles">Handles</a></h2>
 <p>Handles are the typical way to refer to a particular asset. When you spawn
 things into your game, such as 2D sprites, 3D models, or UI, their respective
@@ -302,28 +312,34 @@ fn load_extra_assets(
 </code></pre>
 <p>It will try to detect the format of each asset based on the file extension.</p>
 <h2 id="assetevent"><a class="header" href="#assetevent">AssetEvent</a></h2>
-<p>If you need to perform specific actions when the asset has finished loading,
-is modified, or removed, you can react to <code>AssetEvent</code>s.</p>
-<pre><code class="language-rust no_run noplayground">struct MapTexture {
+<p>If you need to perform specific actions when an asset is created,
+modified, or removed, you can react to <code>AssetEvent</code>s.</p>
+<pre><code class="language-rust no_run noplayground">struct MyMapTexture {
     handle: Handle&lt;Texture&gt;,
 }
 
 fn fixup_textures(
     mut ev_asset: EventReader&lt;AssetEvent&lt;Texture&gt;&gt;,
     mut assets: ResMut&lt;Assets&lt;Texture&gt;&gt;,
-    map_tex: Res&lt;MapTexture&gt;,
+    map_tex: Res&lt;MyMapTexture&gt;,
 ) {
     for ev in ev_asset.iter() {
-        if let AssetEvent::Created { handle } = ev {
-            // a texture was just loaded!
+        match ev {
+            AssetEvent::Created { handle } |
+            AssetEvent::Modified { handle } =&gt; {
+                // a texture was just loaded or changed!
 
-            let texture = assets.get_mut(handle).unwrap();
-            // ^ unwrap is OK, because we know it is loaded now
+                let texture = assets.get_mut(handle).unwrap();
+                // ^ unwrap is OK, because we know it is loaded now
 
-            if *handle == map_tex.handle {
-                // it is our special map texture!
-            } else {
-                // it is some other texture
+                if *handle == map_tex.handle {
+                    // it is our special map texture!
+                } else {
+                    // it is some other texture
+                }
+            }
+            AssetEvent::Removed { handle } =&gt; {
+                // a texture was unloaded
             }
         }
     }
