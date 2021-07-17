@@ -149,15 +149,12 @@
 <hr />
 <p>You might want to know when your various assets have all finished loading, and
 take some action, such as exiting your loading screen and starting gameplay.</p>
-<p>To do this, we can convert our various handles to <code>HandleUntyped</code>s, so we can
-add them all into a single collection. Then we can loop over the collection
-and ask the <code>AssetServer</code> about their status.</p>
+<p>To do this, we can convert our various handles into <code>HandleUntyped</code>s, so we can
+add them all into a single collection.</p>
+<p>We can then ask the <code>AssetServer</code> about the loading state of the collection.</p>
 <pre><code class="language-rust no_run noplayground">struct AssetsLoading(Vec&lt;HandleUntyped&gt;);
 
-fn setup(
-    server: Res&lt;AssetServer&gt;,
-    mut loading: ResMut&lt;AssetsLoading&gt;,
-) {
+fn setup(server: Res&lt;AssetServer&gt;, mut loading: ResMut&lt;AssetsLoading&gt;) {
     // we can have different asset types
     let font: Handle&lt;Font&gt; = server.load(&quot;my_font.ttf&quot;);
     let menu_bg: Handle&lt;Texture&gt; = server.load(&quot;menu.png&quot;);
@@ -170,32 +167,34 @@ fn setup(
 }
 
 fn check_assets_ready(
+    mut commands: Commands,
     server: Res&lt;AssetServer&gt;,
-    loading: Res&lt;AssetsLoading&gt;,
+    loading: Res&lt;AssetsLoading&gt;
 ) {
     use bevy::asset::LoadState;
 
-    let mut ready = true;
+    match server.get_group_load_state(loading.0.iter().map(|h| h.id)) {
+        LoadState::Failed =&gt; {
+            // one of our assets had an error
+        }
+        LoadState::Loaded =&gt; {
+            // all assets are now ready
 
-    for handle in loading.0.iter() {
-        match server.get_load_state(handle) {
-            LoadState::Failed =&gt; {
-                // one of our assets had an error
-            }
-            LoadState::Loaded =&gt; {}
-            _ =&gt; {
-                ready = false;
-            }
+            // this might be a good place to transition into your in-game state
+
+            // remove the resource to drop the tracking handles
+            commands.remove_resource::&lt;AssetsLoading&gt;();
+            // (note: if you don't have any other handles to the assets
+            // elsewhere, they will get unloaded after this)
+        }
+        _ =&gt; {
+            // NotLoaded/Loading: not fully ready yet
         }
     }
-
-    if !ready {
-        return;
-    }
-
-    // all assets are now ready
 }
 </code></pre>
+<p>It is also possible to query the load state of a single asset, by passing an
+individual handle to <code>AssetServer.get_load_state()</code>.</p>
 
                     </main>
 
