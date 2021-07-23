@@ -3777,7 +3777,7 @@ require us to set a feature flag on the <code>getrandom</code> crate, that they 
 <code>Cargo.toml</code>:</p>
 <pre><code class="language-toml">[dependencies]
 rand = &quot;0.8&quot;
-getrandom = { version = &quot;0.2&quot;, features = [&quot;wasm-bindgen&quot;] }
+getrandom = { version = &quot;0.2&quot;, features = [&quot;js&quot;] }
 </code></pre>
 <p>Note that you must ensure that all the versions are compatible. <code>getrandom</code>
 0.2 is the version that is needed for both <code>rand</code> 0.8 and <code>bevy</code> 0.5. Using
