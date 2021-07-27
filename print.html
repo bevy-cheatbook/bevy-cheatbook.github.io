@@ -3075,6 +3075,11 @@ fn my_event_manager(
     }
 }
 </code></pre>
+<p><strong>Hint</strong>: <a href="patterns/./generic-systems.html">generic systems</a> could be very useful for
+this. You could implement your custom event management strategy as a system
+generic over the event type, and then add that system to your App as many
+times as you need, for each event type where you want to use your custom
+behavior.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="bevy-cookbook"><a class="header" href="#bevy-cookbook">Bevy Cookbook</a></h1>
 <p>This chapter shows you how to do various practical things using Bevy.</p>
 <p>Indended as a supplement to Bevy's <a href="https://github.com/bevyengine/bevy/tree/latest/examples#examples">official

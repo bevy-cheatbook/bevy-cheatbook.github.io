@@ -215,6 +215,11 @@ fn my_event_manager(
     }
 }
 </code></pre>
+<p><strong>Hint</strong>: <a href="./generic-systems.html">generic systems</a> could be very useful for
+this. You could implement your custom event management strategy as a system
+generic over the event type, and then add that system to your App as many
+times as you need, for each event type where you want to use your custom
+behavior.</p>
 
                     </main>
 
