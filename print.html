@@ -1168,7 +1168,10 @@ from entities and components.</p>
 <p><code>Res&lt;T&gt;</code>/<code>ResMut&lt;T&gt;</code> refer to a single global instance of the type, shared
 between all systems. On the other hand, every <code>Local&lt;T&gt;</code> parameter is a
 separate instance, exclusively for that system.</p>
-<pre><code class="language-rust no_run noplayground">fn my_system1(mut local: Local&lt;MyState&gt;) {
+<pre><code class="language-rust no_run noplayground">#[derive(Default)]
+struct MyState;
+
+fn my_system1(mut local: Local&lt;MyState&gt;) {
     // you can do anything you want with the local here
 }
 
@@ -1179,6 +1182,43 @@ fn my_system2(mut local: Local&lt;MyState&gt;) {
 <p>The type must implement <code>Default</code> or <code>FromWorld</code>. It is automatically
 initialized.</p>
 <p>A system can have multiple <code>Local</code>s of the same type.</p>
+<h2 id="specify-an-initial-value"><a class="header" href="#specify-an-initial-value">Specify an initial value</a></h2>
+<p>You can initialize a <code>Local</code> to a value other than the type's default, using
+<code>.config</code>, when adding your system to your <code>App</code>.</p>
+<p><code>.config</code> is Bevy's API for &quot;configuring&quot; specific system parameters. Most
+other types of system parameters do not support configuration, but <code>Local</code>s
+let you specify the initial value.</p>
+<pre><code class="language-rust no_run noplayground">/// Configuration for `my_system`.
+///
+/// The system will access it using `Local&lt;MyConfig&gt;`.
+/// It will be initialized with the correct value at App build time.
+///
+/// Must still impl `Default`, because of requirement for `Local`.
+#[derive(Default)]
+struct MyConfig {
+    magic: usize,
+}
+
+fn my_system(
+    mut cmd: Commands,
+    my_res: Res&lt;MyStuff&gt;,
+    config: Local&lt;MyConfig&gt;,
+) {
+    // TODO: do stuff
+}
+
+fn main() {
+    App::build()
+        .add_system(my_system.system().config(|params| {
+            // our config is the third parameter in the system fn,
+            // hence `.2`
+            params.2 = Some(MyConfig {
+                magic: 420,
+            });
+        }))
+        .run();
+}
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugins-1"><a class="header" href="#plugins-1">Plugins</a></h1>
 <p>As your project grows, it can be useful to make it more modular. You can
 split it into plugins.</p>
