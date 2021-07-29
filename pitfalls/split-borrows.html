@@ -176,6 +176,8 @@ fn my_system(mut q: Query&lt;&amp;mut MyThing&gt;) {
 <pre><code class="language-rust no_run noplayground">        // add this at the start of the for loop, before using `thing`:
         let thing = &amp;mut *thing;
 </code></pre>
+<p>Note that this line triggers <a href="../programming/change-detection.html">change detection</a>.
+Even if you don't modify the data afterwards, the component gets marked as changed.</p>
 <h2 id="explanation"><a class="header" href="#explanation">Explanation</a></h2>
 <p>Bevy typically gives you access to your data via special wrapper types
 (like <code>Res&lt;T&gt;</code>, <code>ResMut&lt;T&gt;</code>, and <code>Mut&lt;T&gt;</code> (when querying for components
