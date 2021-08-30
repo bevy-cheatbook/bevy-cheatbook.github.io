@@ -1098,6 +1098,8 @@ fn debug_levelups(
     App::build()
         // ...
         .add_event::&lt;LevelUpEvent&gt;()
+        .add_system(player_level_up.system())
+        .add_system(debug_levelups.system())
         // ...
         .run();
 }
