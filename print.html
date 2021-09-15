@@ -3737,6 +3737,10 @@ install the <code>assets</code> folder and the EXE to the same path.</p>
 <h3 id="setting-the-exe-icon"><a class="header" href="#setting-the-exe-icon">Setting the EXE icon</a></h3>
 <p>(adapted from <a href="https://github.com/NiklasEi/bevy_game_template">here</a>)</p>
 <p>The EXE icon can be set using a cargo build script.</p>
+<p>Add a build dependency of <code>embed_resources</code> to your <code>Cargo.toml</code> allow embedding assets into your compiled executables</p>
+<pre><code class="language-toml">[build-dependencies]
+embed-resource = &quot;1.6.3&quot;
+</code></pre>
 <p>Create a <code>build.rs</code> file in your project folder:</p>
 <pre><pre class="playground"><code class="language-rust">extern crate embed_resource;
 
