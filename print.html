@@ -689,6 +689,16 @@ on Discord (<code>@Ida Iyes#0981</code>).</p>
 <p>Bevy development moves very fast, and there are often exciting new things that
 are yet unreleased. This page will give you advice about using development
 versions of bevy.</p>
+<h2 id="quick-start"><a class="header" href="#quick-start">Quick Start</a></h2>
+<p>If you are not using any 3rd-party plugins and just want to use the bevy
+main development branch:</p>
+<pre><code class="language-toml">[dependencies]
+bevy = &quot;0.5&quot;
+
+[patch.crates-io]
+bevy = { git = &quot;https://github.com/bevyengine/bevy&quot; }
+</code></pre>
+<p>For more info, read on.</p>
 <h2 id="should-you-use-bleeding-edge-bevy"><a class="header" href="#should-you-use-bleeding-edge-bevy">Should you use bleeding-edge bevy?</a></h2>
 <p>Currently, bevy does not make patch releases, only major releases when there
 are enough exciting new changes for a flashy press release. The latest release
@@ -734,7 +744,7 @@ bevy = &quot;0.5&quot;
 # override it with bevy from git
 bevy = { git = &quot;https://github.com/bevyengine/bevy&quot; }
 # or if you have it cloned locally:
-bevy = { path = &quot;../bevy&quot; }
+#bevy = { path = &quot;../bevy&quot; }
 </code></pre>
 <p>Doing it this way will tell cargo to replace the version of bevy in your
 entire dependency tree, including for 3rd-party plugins (assuming that they
@@ -748,6 +758,15 @@ you use have specified a different version.</p>
 another cargo patch, to also override the git repository:</p>
 <pre><code class="language-toml">[patch.&quot;https://github.com/bevyengine/bevy&quot;]
 bevy = { path = &quot;../bevy&quot; }
+</code></pre>
+<p>Some 3rd-party plugins depend on specific bevy sub-crates, rather than the
+full bevy. You may additionally have to patch those individually:</p>
+<pre><code class="language-toml">[patch.crates-io]
+bevy = { path = &quot;../bevy&quot; }
+# specific crates as needed by the plugins you use (check their `Cargo.toml`)
+bevy_ecs = { path = &quot;../bevy/crates/bevy_ecs&quot; }
+bevy_math = { path = &quot;../bevy/crates/bevy_math&quot; }
+# ... and so on
 </code></pre>
 <h2 id="updating-bevy"><a class="header" href="#updating-bevy">Updating Bevy</a></h2>
 <p>The <code>Cargo.lock</code> file keeps track of the exact version (including the git
