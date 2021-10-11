@@ -148,20 +148,21 @@ cannot feasibly cover every feature of bevy. It is my best attempt to teach
 the most practically-relevant aspects.</p>
 <p>The book has several sections:</p>
 <ul>
-<li><a href="./cheatsheet.html">Bevy Cheatsheet</a>:
-condensed one-page listing of common Bevy syntax and features</li>
+<li><a href="./cheatsheet.html">Quick Reference</a>:
+alphabetical listing of various Bevy and game dev jargon and concepts,
+with quick definitions and links to relevant pages in the book</li>
 <li><a href="./setup/_index.html">Bevy Setup Tips</a>:
 Tips and tricks for your development tools (only some may be relevant to you)</li>
 <li><a href="./programming/_index.html">Bevy Programming</a>:
 overview of programming in Bevy</li>
 <li><a href="./features/_index.html">Bevy Features</a>:
-how to use various Bevy features</li>
+how to use various Bevy game engine features</li>
 <li><a href="./pitfalls/_index.html">Common Pitfalls</a>:
 common issues or surprises to watch out for</li>
 <li><a href="./patterns/_index.html">Advanced Patterns</a>:
-non-obvious tricks or techniques; may be controversial</li>
+expert topics; non-obvious tricks or techniques; may be controversial</li>
 <li><a href="./cookbook/_index.html">Bevy Cookbook</a>:
-examples covering common practical use cases</li>
+miscellaneous examples for specific common tasks</li>
 <li><a href="./platforms/_index.html">Bevy on Different Platforms</a>:
 information about using Bevy with different platforms and OSs</li>
 </ul>
@@ -195,7 +196,7 @@ independent learning resource for the Bevy community.</p>
 official project.</p>
 <p><a class="github-button" href="https://github.com/sponsors/cart" data-icon="octicon-heart" data-size="large" aria-label="Sponsor @cart on GitHub">Sponsor</a></p>
 <h2 id="license"><a class="header" href="#license">License</a></h2>
-<p>Copyright © 2021 Jasen Borisov.</p>
+<p>Copyright © 2021 Ida Iyes.</p>
 <p>All code in the book is provided under the
 <a href="https://github.com/bevy-cheatbook/mit-0">MIT-0 License</a>.
 At your option, you may also use it under the regular MIT License.</p>
@@ -280,6 +281,7 @@ content. This book is WIP/incomplete; thank you for understanding! &lt;3 )</p>
 <p>Terms and concepts related to the community and ecosystem around bevy and the
 development of the project, such as libraries and technologies that bevy uses.</p>
 <table><thead><tr><th>Topic</th><th>Definition</th></tr></thead><tbody>
+<tr><td><a href="https://bevyengine.org/assets">Assets; Bevy Assets</a></td><td>Page on the Bevy Website listing community-made plugins and content (not to be confused with Assets, as in your game's data).</td></tr>
 <tr><td>Data-driven</td><td>Programming style / paradigm, where functionality is thought of in terms of the data it works with. Bevy is based on this philosophy.</td></tr>
 <tr><td><a href="./programming/ecs-intro.html">ECS</a></td><td>The data storage / programming paradigm Bevy uses. Conceptually like a database. Bevy is often compared to other ECS implementations.</td></tr>
 <tr><td><a href="./setup/bevy-config.html#bevy-cargo-features">Features (cargo)</a></td><td>A way to configure what optional functionality is included in your build.</td></tr>
@@ -306,6 +308,7 @@ development of the project, such as libraries and technologies that bevy uses.</
 <tr><td><a href="./features/materials.html">Material</a></td><td>The shading properties for a surface to be drawn by the GPU, such as its color/texture, how shiny it is, ...</td></tr>
 <tr><td><a href="./features/meshes.html">Mesh</a></td><td>3D geometry data, consists of vertices, typically arranged into many triangles. Required for the GPU to draw an object.</td></tr>
 <tr><td><a href="./programming/parent-child.html">Parent/Child Hierarchy</a></td><td>Entities in a hierarchical relationship.</td></tr>
+<tr><td>Procedural Generation</td><td>Creating game assets using code/math/algorithms (often done at runtime, instead of loading asset files).</td></tr>
 <tr><td>Raycast</td><td>Calculating a simulated &quot;ray&quot; in the game world. Used, for example, for checking what object is under the mouse cursor.</td></tr>
 <tr><td><a href="./features/scenes.html">Scenes</a></td><td>Collection of preconfigured entities that you can spawn into the world. Similar to &quot;prefabs&quot; in other game engines.</td></tr>
 <tr><td>Shaders</td><td>Code that runs on the GPU. Typically for rendering graphics, but also for general computations.</td></tr>
@@ -315,13 +318,20 @@ development of the project, such as libraries and technologies that bevy uses.</
 <tr><td>UI</td><td>User Interfaces like menus and in-game HUDs, typically displayed as overlays on top.</td></tr>
 </tbody></table>
 <h2 id="rendering-jargon"><a class="header" href="#rendering-jargon">Rendering Jargon</a></h2>
-<p>Concepts that come up when working with computer graphics and the GPU, as applicable to bevy.</p>
+<p>Concepts that come up when working with computer graphics and the GPU, as applicable to Bevy.</p>
 <table><thead><tr><th>Topic</th><th>Definition</th></tr></thead><tbody>
 <tr><td>Anisotropic Filtering</td><td>Method of sampling a texture that accounts for the angle between the surface and the camera, resulting in better visual quality.</td></tr>
 <tr><td>Anti-Aliasing</td><td>Techniques to reduce aliasing artifacts (shimmering or jagged edges, when there is too much detail for the display resolution).</td></tr>
+<tr><td>Batching</td><td>Combining compatible data from many meshes/entities together, so that it can be drawn by the GPU all at once.</td></tr>
 <tr><td><a href="./features/camera.html">Camera</a></td><td>Entity representing a &quot;view&quot; into the game world, to be rendered.</td></tr>
 <tr><td>Compute Shaders / GPU Compute</td><td>A way to use the GPU for general data processing.</td></tr>
 <tr><td><a href="./features/transforms.html#bevys-coordinate-system">Coordinate System</a></td><td>Orientation of the X/Y/Z axes, defining the 3D space.</td></tr>
+<tr><td>Culling</td><td>Figuring out which parts of the scene don't need to be drawn and skipping them to improve performance.</td></tr>
+<tr><td>Directional Light</td><td>Global light source that illuminates the whole world, at a specified angle/direction. Typically models the sun in outdoor scenes.</td></tr>
+<tr><td>Draw Call</td><td>Telling the GPU to render something. Expensive; for best performance, aim to draw everything you need with the fewest draw calls.</td></tr>
+<tr><td>Frustum</td><td>The space/volume that is visible from a camera. Everything that the camera can see.</td></tr>
+<tr><td><a href="./features/meshes.html">Indices / Index Buffer</a></td><td>A way to make mesh data more compact (to save memory) by deduplicating vertices.</td></tr>
+<tr><td>Instancing</td><td>A way to tell the GPU to draw many copies of the same mesh efficiently. Useful for things like vegetation (lots of grass / trees).</td></tr>
 <tr><td><a href="./features/materials.html">Material</a></td><td>The shading properties for a surface to be drawn by the GPU, such as its color/texture, how shiny it is, ...</td></tr>
 <tr><td><a href="./features/meshes.html">Mesh</a></td><td>3D geometry data, consists of vertices, typically arranged into many triangles. Required for the GPU to draw an object.</td></tr>
 <tr><td>Mipmaps</td><td>Textures with data available in many sizes (like 64x64, 32x32, 16x16, 8x8, ...). The GPU automatically uses the most appropriate.</td></tr>
@@ -329,12 +339,16 @@ development of the project, such as libraries and technologies that bevy uses.</
 <tr><td>Normals / Normal Vectors</td><td>The direction perpendicular to a surface. Useful for shading, to compute how light interacts with the surface.</td></tr>
 <tr><td>Normal Maps</td><td>A way to add extra detail to a 3D object, using a texture that changes the normals to affect how light interacts with it.</td></tr>
 <tr><td><a href="./features/pbr.html">Physically-Based Rendering</a></td><td>Modern realistic 3D graphics technique that uses materials that model physical properties, like how rough or metallic a surface is.</td></tr>
+<tr><td>Point Light</td><td>A light source that radiates in all directions from a given position, like a lamp or candle.</td></tr>
+<tr><td>Post-Processing</td><td>After rendering (but before displaying), apply some visual effects to the whole image.</td></tr>
 <tr><td>Render Graph</td><td>Bevy's abstraction for modular configurable rendering. Connects &quot;nodes&quot; together to enable various graphical features.</td></tr>
-<tr><td>Render Pipeline</td><td>The procedure to be executed by the GPU to draw something, includes shaders to run, as well as setting fixed hardware parameters.</td></tr>
+<tr><td>Render Pipeline</td><td>The procedure to be executed by the GPU to draw something. Includes the shaders to run, as well as setting fixed hardware parameters.</td></tr>
 <tr><td>Sampler / Sampling (textures)</td><td>How the GPU picks a value (like a color) from a specific position on a texture.</td></tr>
 <tr><td>Shaders</td><td>Code that runs on the GPU. Typically for rendering graphics, but also for general computations.</td></tr>
 <tr><td><a href="./features/textures.html">Texture</a></td><td>Typically an image (but more generally any data) that can be sampled by the GPU during rendering (in a shader).</td></tr>
+<tr><td>Texel</td><td>A pixel that is part of a texture.</td></tr>
 <tr><td><a href="./features/transforms.html">Transforms</a></td><td>Position and orientation of an object. May be relative to a parent object.</td></tr>
+<tr><td>Uniforms</td><td>Shader input data that is &quot;global&quot; for the whole mesh (unlike Vertex Attributes, which are per-vertex).</td></tr>
 <tr><td>UVs / UV coordinates</td><td>Texture coordinates, used to map a texture to a mesh. The position on the texture that each vertex corresponds to.</td></tr>
 <tr><td><a href="./features/meshes.html">Vertex / Vertices</a></td><td>Building block of Meshes, typically a point in 3D space, with associated vertex attributes.</td></tr>
 <tr><td><a href="./features/meshes.html">Vertex Attributes</a></td><td>Data associated with each vertex in a mesh, such as its position, color, UVs, normals, etc.</td></tr>
