@@ -329,13 +329,15 @@ fn gltf_manual_entity(
 }
 </code></pre>
 <h3 id="assetpath-with-labels"><a class="header" href="#assetpath-with-labels">AssetPath with Labels</a></h3>
-<p>This is another way to access specific sub-assets. It is more limited,
+<p>This is another way to access specific sub-assets. It is less reliable,
 but may be easier to use in some cases.</p>
 <p>Use the <code>AssetServer</code> to convert a path string into a <code>Handle</code>.</p>
 <p>The advantage is that you can get handles to your sub-assets immediately,
 even if your GLTF file hasn't loaded yet.</p>
-<p>The disadvantage is that currently only using a numerial index is
-supported. You cannot address sub-assets by name.</p>
+<p>The disadvantage is that it is more error-prone. If you specify a sub-asset
+that doesn't actually exist in the file, or mis-type the label, or use the
+wrong label, it will just silently not work. Also, currently only using a
+numerial index is supported. You cannot address sub-assets by name.</p>
 <pre><code class="language-rust no_run noplayground">fn use_gltf_things(
     mut commands: Commands,
     ass: Res&lt;AssetServer&gt;,
