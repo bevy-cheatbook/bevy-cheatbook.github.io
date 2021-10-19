@@ -170,11 +170,6 @@ places, like separate Rust files / modules.</p>
 <li>Create plugins for different <a href="./states.html">states</a>.</li>
 <li>Create plugins for various sub-systems, like physics or input handling.</li>
 </ul>
-<h2 id="publishing-crates"><a class="header" href="#publishing-crates">Publishing Crates</a></h2>
-<p>Plugins give you a nice way to publish Bevy-based libraries for other people
-to easily include into their projects.</p>
-<p>If you intend to publish plugins as crates for public use, you should read
-<a href="https://github.com/bevyengine/bevy/blob/main/docs/plugins_guidelines.md">the official guidelines for plugin authors</a>.</p>
 <h2 id="plugin-groups"><a class="header" href="#plugin-groups">Plugin groups</a></h2>
 <p>Plugin groups register multiple plugins at once. Bevy's <code>DefaultPlugins</code>
 and <code>MinimalPlugins</code> are examples of this. To create your own plugin group:</p>
@@ -211,6 +206,17 @@ be compiled into your program.</p>
 <p>If you want to slim down your build, you should look at disabling Bevy's
 default cargo features, or depending on the various Bevy sub-crates
 individually.</p>
+<h2 id="publishing-crates"><a class="header" href="#publishing-crates">Publishing Crates</a></h2>
+<p>Plugins give you a nice way to publish Bevy-based libraries for other people
+to easily include into their projects.</p>
+<p>If you intend to publish plugins as crates for public use, you should read
+<a href="https://github.com/bevyengine/bevy/blob/main/docs/plugins_guidelines.md">the official guidelines for plugin authors</a>.</p>
+<p>Don't forget to submit an entry to <a href="https://bevyengine.org/assets">Bevy Assets</a>
+on the official website, so that people can find your plugin
+more easily. You can do this by making a PR in <a href="https://github.com/bevyengine/bevy-assets">the Github
+repo</a>.</p>
+<p>If you are interested in supporting bleeding-edge Bevy (main), <a href="../setup/bevy-git.html#advice-for-plugin-authors">see here
+for advice</a>.</p>
 
                     </main>
 
