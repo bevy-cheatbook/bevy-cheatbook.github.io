@@ -4566,9 +4566,13 @@ wasm-bindgen --out-dir ./out/ --target web ./target/
 </code></pre>
 <p><code>./out/</code> is the directory where it will place the output files.</p>
 <p>You need to put these on your web server.</p>
-<h3 id="wasm-pack"><a class="header" href="#wasm-pack"><code>wasm-pack</code></a></h3>
-<p>As an alternative, <a href="https://github.com/rustwasm/wasm-pack"><code>wasm-pack</code></a>
-is another, higher-level, tool, with its own opinionated workflow.</p>
+<h3 id="higher-level-tools"><a class="header" href="#higher-level-tools">Higher-level Tools</a></h3>
+<p>Here are some higher-level alternatives. These tools can do more for you
+and automate more of your workflow, but are more opinionated in how they work.</p>
+<ul>
+<li><a href="https://trunkrs.dev/">Trunk</a></li>
+<li><a href="https://github.com/rustwasm/wasm-pack"><code>wasm-pack</code></a></li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="panic-messages"><a class="header" href="#panic-messages">Panic Messages</a></h1>
 <p>Unless we do something about it, you will not be able to see Rust panic
 messages when running in a web browser. This means that, if your game crashes,
@@ -4673,9 +4677,8 @@ documentation</a>.</p>
 putting the files in a special branch in a GitHub repository. You could
 create a separate repository for this, but you could also do it from the
 same repository as your source code.</p>
-<p>You will need the final website files for deployment. You are probably
-generating these using a tool like <code>wasm-bindgen</code> or <code>wasm-pack</code>, maybe
-as part of a larger website.</p>
+<p>You will need the final website files for deployment.</p>
+<hr />
 <p>Create an empty branch in your git repository:</p>
 <pre><code class="language-shell">git checkout --orphan web
 git reset --hard
