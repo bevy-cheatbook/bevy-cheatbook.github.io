@@ -137,9 +137,23 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="performance"><a class="header" href="#performance">Performance</a></h1>
-<p>This page is a summary of performance issues when working with Bevy.</p>
-<p>(WIP)</p>
 <h2 id="unoptimized-debug-builds"><a class="header" href="#unoptimized-debug-builds">Unoptimized debug builds</a></h2>
+<p>You can enable compiler optimizations in debug/dev mode!</p>
+<p>Even <code>opt-level=1</code> is enough to make Bevy not painfully slow! You can also
+enable higher optimizations for dependencies, but not your own code, to keep
+recompilations fast!</p>
+<pre><code class="language-toml"># in `Cargo.toml` or `.cargo/config.toml`
+
+# Enable only a small amount of optimization in debug mode
+[profile.dev]
+opt-level = 1
+
+# Enable high optimizations for dependencies (incl. Bevy), but not for our code:
+[profile.dev.package.&quot;*&quot;]
+opt-level = 3
+
+</code></pre>
+<h3 id="why-is-this-necessary"><a class="header" href="#why-is-this-necessary">Why is this necessary?</a></h3>
 <p>Rust without compiler optimizations is <em>very slow</em>. With Bevy in
 particular, the default cargo build debug settings will lead to <em>awful</em> runtime
 performance. Assets are slow to load and FPS is low.</p>
@@ -152,25 +166,20 @@ the screen until it is ready.</li>
 <li>After spawning even a few 2D sprites or 3D models, framerate may drop
 to unplayable levels.</li>
 </ul>
-<p>However, fully-optimized release builds can be slow to compile.</p>
-<p>Solutions:</p>
-<pre><code class="language-toml"># in `Cargo.toml` or `.cargo/config.toml`
-
-# Enable optimizations for dependencies (incl. Bevy), but not for our code:
-[profile.dev.package.&quot;*&quot;]
-opt-level = 3
-
-# Maybe also enable only a small amount of optimization for our code:
-[profile.dev]
-opt-level = 1
-</code></pre>
-<p>The above config changes the default settings for debug builds, to compile
-dependencies with full optimizatons (slowing down initial clean builds, but
-not incremental builds), and enable minimal optimization for your own code
-(minimal slowdown of incremental builds).</p>
-<p>Now you no longer need to build with <code>--release</code> just to test your game with
-adequate performance. You can use it for <em>actual</em> release builds that you
-send to your users.</p>
+<h3 id="why-not-use---release"><a class="header" href="#why-not-use---release">Why not use <code>--release</code>?</a></h3>
+<p>You may have heard the advice: just run with <code>--release</code>! However, this is
+bad advice. Don't do it.</p>
+<p>Release mode also disables &quot;debug assertions&quot;: extra checks useful during
+development. Many libraries also include additional stuff under that
+setting. In Bevy and WGPU that includes validation for shaders and GPU API
+usage. Release mode disables these checks, causing less-informative crashes,
+issues with hot-reloading, or potentially buggy/invalid logic going unnoticed.</p>
+<p>Release mode also makes incremental recompilation slow. That negates
+Bevy's fast compile times, and can be very annoying while you develop.</p>
+<hr />
+<p>With the advice at the top of this page, you don't need to build with
+<code>--release</code>, just to test your game with adequate performance. You can use
+it for <em>actual</em> release builds that you send to your users.</p>
 <p>If you want, you can also enable LTO (Link-Time-Optimization) for the actual
 release builds, to squeeze out even more performance at the cost of very
 slow compile times:</p>
