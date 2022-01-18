@@ -137,9 +137,11 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="query-sets"><a class="header" href="#query-sets">Query Sets</a></h1>
-<p>For safety reasons, a system cannot have multiple queries with mutability
-conflicts on the same components.</p>
-<p>Bevy provides a solution: wrap them in a <code>QuerySet</code>:</p>
+<p>{{#include ../include/links.md}}</p>
+<p>For safety reasons, a [system][cb::system] cannot have multiple
+[queries][cb::query] with mutability conflicts on the same
+[components][cb::component].</p>
+<p>Bevy provides a solution: wrap them in a [<code>QuerySet</code>][bevy::QuerySet]:</p>
 <pre><code class="language-rust no_run noplayground">fn reset_health(
     // access the health of enemies and the health of players
     // (note: some entities could be both!)
@@ -159,6 +161,7 @@ conflicts on the same components.</p>
     }
 }
 </code></pre>
+<p>(Note: you have to use [<code>QueryState</code>][bevy::QueryState] instead of [<code>Query</code>][bevy::Query])</p>
 <p>This ensures only one of the conflicting queries can be used at the same time.</p>
 <p>The maximum number of queries in a query set is 4.</p>
 

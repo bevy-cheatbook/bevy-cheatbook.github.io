@@ -137,28 +137,33 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="hot-reloading-assets"><a class="header" href="#hot-reloading-assets">Hot-Reloading Assets</a></h1>
+<p>{{#include ../include/links.md}}</p>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/latest/examples/asset/hot_asset_reloading.rs"><code>hot_asset_reloading</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/latest/examples/shader/hot_shader_reloading.rs"><code>hot_shader_reloading</code></a>.</p>
+[<code>hot_asset_reloading</code>][example::hot_asset_reloading],
+[<code>hot_shader_reloading</code>][example::hot_shader_reloading].</p>
 <hr />
-<p>At runtime, if you modify the file of an <a href="./assets.html">asset</a> that is loaded
-into the game (via the <code>AssetServer</code>), Bevy will detect that and reload the
-asset automatically. This is very useful for quick iteration. You can edit
-your assets while the game is running and see the changes instantly in-game.</p>
-<p>Not all file formats and use cases are supported equally well. Typical asset
-types like textures / images should work without issues, but complex GLTF or
-scene files, or assets involving custom logic, might not.</p>
-<p>If you need to run custom logic as part of your hot-reloading workflow, you
-could implement it in a system, using <a href="./assets.html#assetevent"><code>AssetEvent</code></a>.</p>
+<p>At runtime, if you modify the file of an [asset][cb::asset] that is loaded
+into the game (via the [<code>AssetServer</code>][bevy::AssetServer]), Bevy will detect
+that and reload the asset automatically. This is very useful for quick
+iteration. You can edit your assets while the game is running and see the
+changes instantly in-game.</p>
+<p>Not all [file formats][builtins::file-formats] and use cases are supported
+equally well. Typical asset types like textures / images should work without
+issues, but complex GLTF or scene files, or assets involving custom logic,
+might not.</p>
+<p>If you need to run custom logic as part of your hot-reloading
+workflow, you could implement it in a [system][cb::system], using
+[<code>AssetEvent</code>][bevy::AssetEvent] ([learn more][cb::assetevent]).</p>
 <p>Hot reloading is opt-in and has to be enabled in order to work. You can do
-this in a <a href="../programming/app-builder.html">startup system</a>:</p>
+this in a [startup system][cb::app]:</p>
 <pre><code class="language-rust no_run noplayground">    asset_server.watch_for_changes().unwrap();
 </code></pre>
 <h2 id="shaders"><a class="header" href="#shaders">Shaders</a></h2>
-<p>Bevy also supports hot-reloading for shaders. You can edit your custom shader
-code and see the changes immediately. This only works if you are loading
-your shaders through the bevy asset system (via the <code>AssetServer</code>). See the
-<a href="https://github.com/bevyengine/bevy/blob/latest/examples/shader/hot_shader_reloading.rs">official example</a>.</p>
+<p>Bevy also supports hot-reloading for shaders. You can edit your
+custom shader code and see the changes immediately. This only works
+if you are loading your shaders through the bevy asset system
+(via the [<code>AssetServer</code>][bevy::AssetServer]). See the [official
+example][example::hot_shader_reloading].</p>
 
                     </main>
 

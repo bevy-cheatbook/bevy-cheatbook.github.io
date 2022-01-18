@@ -137,8 +137,9 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="resources"><a class="header" href="#resources">Resources</a></h1>
+<p>{{#include ../include/links.md}}</p>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/latest/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
+[<code>ecs_guide</code>][example::ecs_guide].</p>
 <hr />
 <p>Resources allow you to store a single global instance of some data type,
 independently of entities.</p>
@@ -146,14 +147,14 @@ independently of entities.</p>
 / settings.</p>
 <p>Any Rust type (<code>struct</code> or <code>enum</code>) can be used as a resource. Currently,
 no special trait or derive is required, but that may change in future Bevy
-versions (similar to how Components require it).</p>
+versions (similar to how [Components][cb::component] require it).</p>
 <p>Types must be unique; there can only be one instance of a given type.</p>
 <pre><code class="language-rust no_run noplayground">struct GoalsReached {
     main_goal: bool,
     bonus: bool,
 }
 </code></pre>
-<p>Resources can be accessed from <a href="./systems.html">systems</a>, using <code>Res</code>/<code>ResMut</code>.</p>
+<p>Resources can be accessed from [systems][cb::system], using <code>Res</code>/<code>ResMut</code>.</p>
 <h2 id="resource-initialization"><a class="header" href="#resource-initialization">Resource Initialization</a></h2>
 <p>Implement <code>Default</code> for simple resources:</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Default)]
@@ -173,7 +174,7 @@ impl FromWorld for MyFancyResource {
     }
 }
 </code></pre>
-<p>You can initialize your resources at <a href="./app-builder.html"><code>App</code> creation</a>:</p>
+<p>You can initialize your resources at [<code>App</code> creation][cb::app]:</p>
 <pre><code class="language-rust no_run noplayground">fn main() {
     App::new()
         // ...
@@ -187,7 +188,7 @@ impl FromWorld for MyFancyResource {
         .run();
 }
 </code></pre>
-<p><a href="./commands.html"><code>Commands</code></a> can be used to create/remove resources from
+<p>[<code>Commands</code>][cb::commands] can be used to create/remove resources from
 inside a system:</p>
 <pre><code class="language-rust no_run noplayground">commands.insert_resource(GoalsReached { main_goal: false, bonus: false });
 commands.remove_resource::&lt;MyResource&gt;();

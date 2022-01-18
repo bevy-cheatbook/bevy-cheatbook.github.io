@@ -137,6 +137,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="coordinate-system"><a class="header" href="#coordinate-system">Coordinate System</a></h1>
+<p>{{#include ../include/links.md}}</p>
 <p>Bevy uses a right-handed Y-up coordinate system.</p>
 <p>Bevy uses the same coordinate system for 3D, 2D, and UI, for consistency.</p>
 <p>It is easiest to explain in terms of 2D:</p>
@@ -158,12 +159,12 @@ hand to visualize the 3 axes: thumb=X, index=Y, middle=Z.</p>
 <p>It is the same as Godot, Maya, and OpenGL. Compared to Unity, the Z axis
 is inverted.</p>
 <p>Note: In Bevy, the Y axis always points <em>UP</em>.</p>
-<p>This may feel <a href="/pitfalls/ui-y-up.html">unintuitive when working with UI</a>
+<p>This may feel [unintuitive when working with UI][pitfall::ui-y-up]
 (as it is the opposite from web pages), or if you are used to working with
 2D libraries where the Y axis points down.</p>
-<p>Also beware of a common pitfall when working in 2D: <a href="/pitfalls/2d-camera-z.html">the camera must be
+<p>Also beware of a common pitfall when working in 2D: [the camera must be
 positioned at a far away Z coordinate (=999.9 by default), or you might not
-be able to see your sprites!</a></p>
+be able to see your sprites!][pitfall::2d-camera-z]</p>
 
                     </main>
 

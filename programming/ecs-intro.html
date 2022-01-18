@@ -137,8 +137,12 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="ecs-as-a-data-structure"><a class="header" href="#ecs-as-a-data-structure">ECS as a Data Structure</a></h1>
+<p>{{#include ../include/links.md}}</p>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/latest/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
+[<code>ecs_guide</code>][example::ecs_guide].</p>
+<p>Also check out the complete game examples:
+[<code>alien_cake_addict</code>][example::alien_cake_addict],
+[<code>breakout</code>][example::breakout].</p>
 <hr />
 <p>Bevy stores and manages all your data for you, using the Bevy ECS
 (Entity-Component System).</p>
@@ -150,7 +154,7 @@ values / instances of each component.</p>
 then have many entities representing different things in your game, such
 as the player, NPCs, or monsters, all of which can have a <code>Health</code> value
 (as well as other relevant components).</p>
-<p>This makes it easy to write game logic (<a href="./systems.html">Systems</a>) that can
+<p>This makes it easy to write game logic ([Systems][cb::system]) that can
 operate on any entity with the necessary components (such as a health/damage
 system for anything that has <code>Health</code>), regardless of whether that's the
 player, an NPC, or a monster (or anything else). This makes your game logic
@@ -180,15 +184,16 @@ the fields / properties of the player.</p>
 it more difficult to work with your data, and limit performance.</p>
 <p>Instead, you should make things granular, when different pieces of data may
 be accessed independently.</p>
-<p>For example, represent the Player in your game as an entity, composed of
-separate component types (separate <code>struct</code>s) for things like the health,
-XP, or whatever is relevant to your game. You can also attach standard Bevy
-components like <code>Transform</code> to it.</p>
+<p>For example, represent the Player in your game as an entity, composed
+of separate component types (separate <code>struct</code>s) for things like the
+health, XP, or whatever is relevant to your game. You can also attach
+standard Bevy components like [<code>Transform</code>][bevy::Transform] ([transforms
+explained][cb::transform]) to it.</p>
 <p>This will make it easier for you to develop your systems (game logic /
 behaviors), as well as make your game's runtime performance better.</p>
-<p>However, something like a <code>Transform</code>, or a set of coordinates, still makes
-sense as a single <code>struct</code>, because its fields are not likely to be useful
-independently.</p>
+<p>However, something like a [<code>Transform</code>][bevy::Transform], or a set of
+coordinates, still makes sense as a single <code>struct</code>, because its fields are
+not likely to be useful independently.</p>
 
                     </main>
 

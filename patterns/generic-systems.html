@@ -137,13 +137,14 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="generic-systems"><a class="header" href="#generic-systems">Generic Systems</a></h1>
-<p>Bevy <a href="/programming/systems.html">systems</a> are just plain rust functions, which means they
+<p>{{#include ../include/links.md}}</p>
+<p>Bevy [systems][cb::system] are just plain rust functions, which means they
 can be generic. You can add the same system multiple times, parametrized to
 work on different Rust types or values.</p>
 <h2 id="generic-over-component-types"><a class="header" href="#generic-over-component-types">Generic over Component types</a></h2>
 <p>You can use the generic type parameter to specify what compnent types (and
 hence what entities) your system should operate on.</p>
-<p>This can be useful when combined with Bevy <a href="/programming/states.html">states</a>.
+<p>This can be useful when combined with Bevy [states][cb::state].
 You can do the same thing to different sets of entities depending on state.</p>
 <h3 id="example-cleanup"><a class="header" href="#example-cleanup">Example: Cleanup</a></h3>
 <p>One straightforward use-case is for cleanup. We can make a generic cleanup
@@ -196,15 +197,15 @@ fn main() {
 varying implementation/functionality for each type.</p>
 <h3 id="example-bevys-camera-projections"><a class="header" href="#example-bevys-camera-projections">Example: Bevy's Camera Projections</a></h3>
 <p>(this is a use-case within Bevy itself)</p>
-<p>Bevy has a <a href="https://docs.rs/bevy/0.6.0/bevy/render/camera/trait.CameraProjection.html"><code>CameraProjection</code></a> trait. Different
-projection types like <a href="https://docs.rs/bevy/0.6.0/bevy/render/camera/struct.PerspectiveProjection.html"><code>PerspectiveProjection</code></a>
-and <a href="https://docs.rs/bevy/0.6.0/bevy/render/camera/struct.OrthographicProjection.html"><code>OrthographicProjection</code></a> implement that
+<p>Bevy has a [<code>CameraProjection</code>][bevy::CameraProjection] trait. Different
+projection types like [<code>PerspectiveProjection</code>][bevy::PerspectiveProjection]
+and [<code>OrthographicProjection</code>][bevy::OrthographicProjection] implement that
 trait, providing the correct logic for how to respond to resizing the window,
 calculating the projection matrix, etc.</p>
 <p>There is a generic system <code>fn camera_system::&lt;T: CameraProjection + Component&gt;</code>, which handles all the cameras with a given projection type. It
 will call the trait methods when appropriate (like on window resize events).</p>
-<p>The <a href="/cookbook/custom-projection.html">Bevy Cookbook Custom Camera Projection
-Example</a> shows this API in action.</p>
+<p>The [Bevy Cookbook Custom Camera Projection
+Example][cb::camera-custom-projection] shows this API in action.</p>
 <h2 id="using-const-generics"><a class="header" href="#using-const-generics">Using Const Generics</a></h2>
 <p>Now that Rust has support for Const Generics, functions can also be
 parametrized by values, not just types.</p>
@@ -227,7 +228,7 @@ fn main() {
 some cases, when you might suspect that you could use const generics, you might realize that
 you actually want a runtime value.</p>
 <p>If you need to &quot;configure&quot; your system by passing in some data, you could, instead, use a
-<a href="/programming/res.html">Resource</a> or <a href="/programming/local.html">Local</a>.</p>
+[Resource][cb::res] or [Local][cb::local].</p>
 <p>Note: As of Rust 1.53, support for using <code>enum</code> values as const generics is not yet stable. To
 use <code>enum</code>s, you need Rust Nightly, and to enable the experimental/unstable feature (put this
 at the top of your <code>main.rs</code> or <code>lib.rs</code>):</p>

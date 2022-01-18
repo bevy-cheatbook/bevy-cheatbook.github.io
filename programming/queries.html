@@ -137,10 +137,11 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="queries"><a class="header" href="#queries">Queries</a></h1>
+<p>{{#include ../include/links.md}}</p>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/latest/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
+[<code>ecs_guide</code>][example::ecs_guide].</p>
 <hr />
-<p>Queries let you access components of entities.</p>
+<p>Queries let you access [components of entities][cb::ecs-intro].</p>
 <pre><code class="language-rust no_run noplayground">fn check_zero_health(
     // access entities that have `Health` and `Transform` components
     // get read-only access to `Health` and mutable access to `Transform`
@@ -163,14 +164,16 @@
     }
 }
 </code></pre>
-<p>Get the components associated with a specific entity:</p>
+<p>Get the [components][cb::component] associated with a specific
+[entity][cb::entity]:</p>
 <pre><code class="language-rust no_run noplayground">    if let Ok((health, mut transform)) = query.get_mut(entity) {
         // do something with the components
     } else {
         // the entity does not have the components from the query
     }
 </code></pre>
-<p>Get the IDs of the entities you access with your queries:</p>
+<p>Get the IDs ([<code>Entity</code>][bevy::Entity]) of the entities you access with
+your queries:</p>
 <pre><code class="language-rust no_run noplayground">// add `Entity` to `Query` to get Entity IDs
 fn query_entities(q: Query&lt;(Entity, /* ... */)&gt;) {
     for (e, /* ... */) in q.iter() {
@@ -179,21 +182,23 @@ fn query_entities(q: Query&lt;(Entity, /* ... */)&gt;) {
 }
 </code></pre>
 <p>If you know that the query should only ever match a single entity, you can
-use <code>single</code>/<code>single_mut</code> (returns a <code>Result</code>), instead of iterating:</p>
+use <code>single</code>/<code>single_mut</code>, instead of iterating:</p>
 <pre><code class="language-rust no_run noplayground">fn query_player(mut q: Query&lt;(&amp;Player, &amp;mut Transform)&gt;) {
     let (player, mut transform) = q.single_mut();
 
     // do something with the player and its transform
 }
 </code></pre>
+<p>(this will panic if the query matches more than one entity)</p>
 <h2 id="bundles"><a class="header" href="#bundles">Bundles</a></h2>
 <p>Queries work with individual components. If you created an entity using a
-<a href="./ec.html#component-bundles">bundle</a>, you need to query for the specific
-components from that bundle that you care about.</p>
+[bundle][cb::bundle], you need to query for the specific components from
+that bundle that you care about.</p>
 <p>A common beginner mistake is to query for the bundle type!</p>
 <h2 id="query-filters"><a class="header" href="#query-filters">Query Filters</a></h2>
 <p>Add query filters to narrow down the entities you get from the query.</p>
-<p>Use <code>With</code>/<code>Without</code> to only get entities that have specific components.</p>
+<p>Use [<code>With</code>][bevy::With]/[<code>Without</code>][bevy::Without] to only get entities
+that have specific components.</p>
 <pre><code class="language-rust no_run noplayground">fn debug_player_hp(
     // access the health, only for friendly players, optionally with name
     query: Query&lt;(&amp;Health, Option&lt;&amp;PlayerName&gt;), (With&lt;Player&gt;, Without&lt;Enemy&gt;)&gt;,

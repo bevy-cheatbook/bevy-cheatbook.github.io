@@ -137,29 +137,30 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="change-detection"><a class="header" href="#change-detection">Change Detection</a></h1>
+<p>{{#include ../include/links.md}}</p>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/latest/examples/ecs/change_detection.rs"><code>change_detection</code></a>.</p>
+[<code>component_change_detection</code>][example::component_change_detection].</p>
 <hr />
 <p>Bevy allows you to easily detect when data is changed. You can use this to
 perform actions in response to changes.</p>
 <h2 id="components"><a class="header" href="#components">Components</a></h2>
-<p>Use <a href="./queries.html#query-filters">query filters</a>:</p>
+<p>Use [query filters][cb::query-filter]:</p>
 <ul>
-<li><code>Added&lt;T&gt;</code>: detect new component instances
+<li>[<code>Added&lt;T&gt;</code>][bevy::Added]: detect new component instances
 <ul>
 <li>if the component was added to an existing entity</li>
 <li>if a new entity with the component was spawned</li>
 </ul>
 </li>
-<li><code>Changed&lt;T&gt;</code>: detect component instances that have been changed
+<li>[<code>Changed&lt;T&gt;</code>][bevy::Changed]: detect component instances that have been changed
 <ul>
 <li>triggers when the component is accessed mutably</li>
-<li>also triggers if the component is newly-added (as per <code>Added</code>)</li>
+<li>also triggers if the component is newly-added (as per [<code>Added</code>][bevy::Added])</li>
 </ul>
 </li>
 </ul>
-<p>(If you want to react to removals, see the page on <a href="./removal-detection.html">removal
-detection</a>. It works differently and is much
+<p>(If you want to react to removals, see the page on [removal
+detection][cb::removal-detection]. It works differently and is much
 trickier to use.)</p>
 <pre><code class="language-rust no_run noplayground">/// Print the stats of friendly players when they change
 fn debug_stats_change(
@@ -187,9 +188,9 @@ fn debug_new_hostiles(
     }
 }
 </code></pre>
-<p><code>Changed</code> detection is triggered by <code>DerefMut</code>. Simply accessing components
-via a mutable query, without actually performing a <code>&amp;mut</code> access, will <em>not</em>
-trigger it.</p>
+<p>[<code>Changed</code>][bevy::Changed] detection is triggered by
+[<code>DerefMut</code>][std::DerefMut]. Simply accessing components via a mutable query,
+without actually performing a <code>&amp;mut</code> access, will <em>not</em> trigger it.</p>
 <p>This makes change detection quite accurate. You can rely on it to optimize
 your game's performance, or to otherwise trigger things to happen.</p>
 <p>Also note that when you mutate a component, Bevy does not track if the new
@@ -210,12 +211,11 @@ change detection. If you want to avoid that, simply check it yourself:</p>
 </code></pre>
 <p>Change detection is reliable -- it will detect any changes that
 have occured since the last time your detecting system ran. If your
-system only runs sometimes (such as with <a href="./states.html">states</a> or <a href="./run-criteria.html">run
-criteria</a>), you <em>do not</em> have to worry about missing
-changes.</p>
+system only runs sometimes (such as with [states][cb::state] or [run
+criteria][cb::runcriteria]), you <em>do not</em> have to worry about missing changes.</p>
 <h2 id="resources"><a class="header" href="#resources">Resources</a></h2>
-<p>For resources, change detection is provided via methods on the
-<code>Res</code>/<code>ResMut</code> system parameters.</p>
+<p>For [resources][cb::res], change detection is provided via methods on the
+[<code>Res</code>][bevy::Res]/[<code>ResMut</code>][bevy::ResMut] system parameters.</p>
 <pre><code class="language-rust no_run noplayground">fn check_res_changed(
     my_res: Res&lt;MyResource&gt;,
 ) {
@@ -239,16 +239,18 @@ fn check_res_added(
 }
 </code></pre>
 <p>This works the same way as change detection for components.</p>
+<p>Note that change detection cannot currently be used to detect
+[states][cb::state] changes (via the [<code>State</code>][bevy::State]
+[resource][cb::res]) ([bug][bevy::2343]).</p>
 <h2 id="possible-pitfalls"><a class="header" href="#possible-pitfalls">Possible Pitfalls</a></h2>
-<p>Beware of <a href="../pitfalls/frame-delay.html">frame delay / 1-frame-lag</a>. This can
-occur if Bevy runs the detecting system before the changing system. The
-detecting system will see the change the next time it runs, typically on
-the next frame update.</p>
+<p>Beware of frame delay / 1-frame-lag. This can occur if Bevy runs the detecting
+system before the changing system. The detecting system will see the change
+the next time it runs, typically on the next frame update.</p>
 <p>If you need to ensure that changes are handled immediately / during the same
-frame, you can use <a href="./system-order.html">explicit system ordering</a>.</p>
-<p>However, when detecting component additions with <code>Added&lt;T&gt;</code> (which are
-typically done using <a href="./commands.html"><code>Commands</code></a>), this is not enough;
-you need <a href="./stages.html">stages</a>.</p>
+frame, you can use [explicit system ordering][cb::system-order].</p>
+<p>However, when detecting component additions with [<code>Added&lt;T&gt;</code>][bevy::Added]
+(which are typically done using [<code>Commands</code>][cb::commands]), this is not
+enough; you need [stages][cb::stage].</p>
 
                     </main>
 

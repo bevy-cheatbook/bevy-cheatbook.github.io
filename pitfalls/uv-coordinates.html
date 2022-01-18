@@ -137,6 +137,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="uv-coordinates-in-bevy"><a class="header" href="#uv-coordinates-in-bevy">UV coordinates in Bevy</a></h1>
+<p>{{#include ../include/links.md}}</p>
 <p>In Bevy, the vertical axis for the pixels of textures / images, and when
 sampling textures in a shader, points <em>downwards</em>, from top to bottom. The
 origin is at the top left.</p>
@@ -147,9 +148,8 @@ but <em>not</em> OpenGL).</p>
 experience is with these, you may find that the textures on your meshes are
 flipped vertically. You will have to reexport / regenerate your meshes in
 the correct UV format.</p>
-<p>This is also inconsistent with the <a href="../features/transforms.html">World-coordinate
-system used everywhere else in Bevy</a>, where the
-Y axis points up.</p>
+<p>This is also inconsistent with the [World-coordinate system used everywhere
+else in Bevy][cb::coords], where the Y axis points up.</p>
 <p>If the images of your 2D sprites are flipped (for whatever reason), you can
 correct that using Bevy's sprite-flipping feature:</p>
 <pre><code class="language-rust no_run noplayground">commands.spawn_bundle(SpriteBundle {

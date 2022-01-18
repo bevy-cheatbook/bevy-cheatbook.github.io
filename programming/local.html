@@ -137,15 +137,18 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="local-resources"><a class="header" href="#local-resources">Local Resources</a></h1>
+<p>{{#include ../include/links.md}}</p>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/latest/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
+[<code>ecs_guide</code>][example::ecs_guide].</p>
 <hr />
-<p><code>Local&lt;T&gt;</code> is a system parameter similar to <code>ResMut&lt;T&gt;</code>, which gives you
-full mutable access to an instance of some data type, that is independent
-from entities and components.</p>
-<p><code>Res&lt;T&gt;</code>/<code>ResMut&lt;T&gt;</code> refer to a single global instance of the type, shared
-between all systems. On the other hand, every <code>Local&lt;T&gt;</code> parameter is a
-separate instance, exclusively for that system.</p>
+<p>Local resources allow you to have per-[system][cb::system] data.</p>
+<p>[<code>Local&lt;T&gt;</code>][bevy::Local] is a system parameter similar to
+[<code>ResMut&lt;T&gt;</code>][bevy::ResMut], which gives you full mutable access to an
+instance of some data type, that is independent from entities and components.</p>
+<p>[<code>Res&lt;T&gt;</code>][bevy::Res]/[<code>ResMut&lt;T&gt;</code>][bevy::ResMut] refer to a single global
+instance of the type, shared between all systems. On the other hand, every
+[<code>Local&lt;T&gt;</code>][bevy::Local] parameter is a separate instance, exclusively for
+that system.</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Default)]
 struct MyState;
 
@@ -157,15 +160,16 @@ fn my_system2(mut local: Local&lt;MyState&gt;) {
     // the local in this system is a different instance
 }
 </code></pre>
-<p>The type must implement <code>Default</code> or <code>FromWorld</code>. It is automatically
-initialized.</p>
-<p>A system can have multiple <code>Local</code>s of the same type.</p>
+<p>The type must implement [<code>Default</code>][std::Default] or
+[<code>FromWorld</code>][bevy::FromWorld]. It is automatically initialized.</p>
+<p>A system can have multiple [<code>Local</code>][bevy::Local]s of the same type.</p>
 <h2 id="specify-an-initial-value"><a class="header" href="#specify-an-initial-value">Specify an initial value</a></h2>
-<p>You can initialize a <code>Local</code> to a value other than the type's default, using
-<code>.config</code>, when adding your system to your <code>App</code>.</p>
+<p>You can initialize a [<code>Local</code>][bevy::Local] to a value other than the
+type's default, using <code>.config</code>, when [adding your system][cb::app] to your
+[<code>App</code>][bevy::App].</p>
 <p><code>.config</code> is Bevy's API for &quot;configuring&quot; specific system parameters. Most
-other types of system parameters do not support configuration, but <code>Local</code>s
-let you specify the initial value.</p>
+other types of system parameters do not support configuration, but
+[<code>Local</code>][bevy::Local]s let you specify the initial value.</p>
 <pre><code class="language-rust no_run noplayground">/// Configuration for `my_system`.
 ///
 /// The system will access it using `Local&lt;MyConfig&gt;`.
