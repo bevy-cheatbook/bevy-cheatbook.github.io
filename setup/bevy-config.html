@@ -137,7 +137,6 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="configuring-bevy"><a class="header" href="#configuring-bevy">Configuring Bevy</a></h1>
-<p>{{#include ../include/links.md}}</p>
 <p>Bevy is very modular and configurable. It is implemented as many separate
 cargo crates, allowing you to remove the parts you don't need. Higher-level
 functionality is built on top of lower-level foundational crates, and can
@@ -187,7 +186,7 @@ features = [
   &quot;wayland&quot;
 ]
 </code></pre>
-<p>(See [here][bevy::features] for a full list of Bevy's cargo features.)</p>
+<p>(See <a href="https://docs.rs/crate/bevy/0.6.0/features">here</a> for a full list of Bevy's cargo features.)</p>
 <h3 id="graphics--rendering"><a class="header" href="#graphics--rendering">Graphics / Rendering</a></h3>
 <p>For a graphical application or game (most Bevy projects),
 you need <code>render</code>, <code>bevy_winit</code>.</p>
@@ -195,18 +194,18 @@ you need <code>render</code>, <code>bevy_winit</code>.</p>
 simulation, etc.), you may remove these features.</p>
 <h3 id="audio"><a class="header" href="#audio">Audio</a></h3>
 <p>Bevy's audio is very limited in functionality and somewhat broken. It is
-recommended that you use the [<code>bevy_kira_audio</code>][project::bevy_kira_audio]
+recommended that you use the <a href="https://github.com/NiklasEi/bevy_kira_audio"><code>bevy_kira_audio</code></a>
 plugin instead. Disable <code>bevy_audio</code> and <code>vorbis</code>.</p>
-<p>See [this page][cb::audio] for more information.</p>
+<p>See <a href="/features/audio.html">this page</a> for more information.</p>
 <h3 id="file-formats"><a class="header" href="#file-formats">File Formats</a></h3>
 <p>You can use the relevant cargo features to enable/disable support for loading
 assets with various different file formats.</p>
 <p>See [this page][cb::file-format] for more information.</p>
 <h3 id="input-devices"><a class="header" href="#input-devices">Input Devices</a></h3>
-<p>If you do not care about [controller/joystick][input::gamepad] support,
+<p>If you do not care about <a href="/input/gamepad.html">controller/joystick</a> support,
 you can disable <code>bevy_gilrs</code>.</p>
 <h3 id="linux-windowing-backend"><a class="header" href="#linux-windowing-backend">Linux Windowing Backend</a></h3>
-<p>On [Linux][platform::linux], you can choose to support X11, Wayland,
+<p>On <a href="/platforms/linux.html">Linux</a>, you can choose to support X11, Wayland,
 or both. Only <code>x11</code> is enabled by default, as it is the legacy system
 that should be compatible with most/all distributions, to make your builds
 smaller and compile faster. You might want to additionally enable <code>wayland</code>,

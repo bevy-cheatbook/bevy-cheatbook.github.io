@@ -137,7 +137,6 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="using-bleeding-edge-bevy-bevy-main"><a class="header" href="#using-bleeding-edge-bevy-bevy-main">Using bleeding-edge Bevy (bevy main)</a></h1>
-<p>{{#include ../include/links.md}}</p>
 <p>Bevy development moves very fast, and there are often exciting new things that
 are yet unreleased. This page will give you advice about using development
 versions of bevy.</p>
@@ -168,7 +167,7 @@ in bevy main, and you may have to fix it yourself.</p>
 to cargo, you can update bevy at your convenience, whenever you feel ready
 to handle any possible breaking changes.</p>
 <p>If you choose to use bevy main, you are highly encouraged to interact with
-the Bevy community on [Discord][bevy::discord] and [GitHub][project::bevy], so
+the Bevy community on <a href="https://discord.gg/bevy">Discord</a> and <a href="https://github.com/bevyengine/bevy">GitHub</a>, so
 you can keep track of what's going on, get help, or participate in discussions.</p>
 <h2 id="common-pitfall-mysterious-compile-errors"><a class="header" href="#common-pitfall-mysterious-compile-errors">Common pitfall: mysterious compile errors</a></h2>
 <p>When changing between different versions of Bevy (say, transitioning an existing
@@ -177,8 +176,8 @@ strange unexpected build errors.</p>
 <p>You can typically fix them by removing <code>Cargo.lock</code> and the <code>target</code> directory:</p>
 <pre><code class="language-sh">rm -rf Cargo.lock target
 </code></pre>
-<p>See [this page][pitfall::build-errors] for more info. See this [cargo
-issue][cargo::9994] about this bug.</p>
+<p>See <a href="/pitfalls/build-errors.html">this page</a> for more info. See this <a href="https://github.com/rust-lang/cargo/issues/9994">cargo
+issue</a> about this bug.</p>
 <p>If you are still getting errors, it is probably because cargo is trying
 to use multiple different versions of bevy in your dependency tree
 simultaneously. This can happen if some of the plugins you use have specified

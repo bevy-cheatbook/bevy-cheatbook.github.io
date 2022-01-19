@@ -137,19 +137,18 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="hierarchical-parentchild-entities"><a class="header" href="#hierarchical-parentchild-entities">Hierarchical (Parent/Child) Entities</a></h1>
-<p>{{#include ../include/links.md}}</p>
 <p>Relevant official examples:
-[<code>hierarchy</code>][example::hierarchy],
-[<code>parenting</code>][example::parenting].</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.6.0/examples/ecs/hierarchy.rs"><code>hierarchy</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.6.0/examples/3d/parenting.rs"><code>parenting</code></a>.</p>
 <hr />
-<p>Technically, the [Entities/Components][cb::ec] themselves cannot form a
-hierarchy (the [ECS][cb::ecs-intro] is a flat data structure). However,
+<p>Technically, the <a href="/programming/ec.html">Entities/Components</a> themselves cannot form a
+hierarchy (the <a href="/programming/ecs-intro.html">ECS</a> is a flat data structure). However,
 logical hierarchies are a common pattern in games.</p>
 <p>Bevy supports creating such a logical link between entities, to form
-a virtual &quot;hierarchy&quot;, by simply adding [<code>Parent</code>][bevy::Parent] and
-[<code>Children</code>][bevy::Children] components on the respective entities.</p>
-<p>When using [Commands][cb::commands] to spawn entities,
-[<code>Commands</code>][bevy::Commands] has methods for adding children to entities,
+a virtual &quot;hierarchy&quot;, by simply adding <a href="https://docs.rs/bevy/0.6.0/bevy/transform/components/struct.Parent.html"><code>Parent</code></a> and
+<a href="https://docs.rs/bevy/0.6.0/bevy/transform/components/struct.Children.html"><code>Children</code></a> components on the respective entities.</p>
+<p>When using <a href="/programming/commands.html">Commands</a> to spawn entities,
+<a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a> has methods for adding children to entities,
 which automatically add the correct components:</p>
 <pre><code class="language-rust no_run noplayground">// spawn the parent and get its Entity id
 let parent = commands.spawn_bundle(MyParentBundle::default())
@@ -168,7 +167,7 @@ commands.spawn_bundle(MyParentBundle::default())
         parent.spawn_bundle(MyChildBundle::default());
     });
 </code></pre>
-<p>You can despawn an entire hierarchy with a single [command][cb::commands]:</p>
+<p>You can despawn an entire hierarchy with a single <a href="/programming/commands.html">command</a>:</p>
 <pre><code class="language-rust no_run noplayground">fn close_menu(
     mut commands: Commands,
     query: Query&lt;Entity, With&lt;MainMenuUI&gt;&gt;,
@@ -180,7 +179,7 @@ commands.spawn_bundle(MyParentBundle::default())
 }
 </code></pre>
 <h2 id="accessing-the-parent-or-children"><a class="header" href="#accessing-the-parent-or-children">Accessing the Parent or Children</a></h2>
-<p>To make a system that works with the hierarchy, you typically need two [queries][cb::query]:</p>
+<p>To make a system that works with the hierarchy, you typically need two <a href="/programming/queries.html">queries</a>:</p>
 <ul>
 <li>one with the components you need from the child entities</li>
 <li>one with the components you need from the parent entities</li>
@@ -188,14 +187,14 @@ commands.spawn_bundle(MyParentBundle::default())
 <p>One of the two queries should include the appropriate component, to obtain the
 entity ids to use with the other one:</p>
 <ul>
-<li>[<code>Parent</code>][bevy::Parent] in the child query, if you want to iterate entities
+<li><a href="https://docs.rs/bevy/0.6.0/bevy/transform/components/struct.Parent.html"><code>Parent</code></a> in the child query, if you want to iterate entities
 and look up their parents, or</li>
-<li>[<code>Children</code>][bevy::Children] in the parent query, if you want to iterate entities
+<li><a href="https://docs.rs/bevy/0.6.0/bevy/transform/components/struct.Children.html"><code>Children</code></a> in the parent query, if you want to iterate entities
 and look up their children</li>
 </ul>
-<p>For example, if we want to get the [<code>Transform</code>][bevy::Transform]
-of cameras ([<code>Camera</code>][bevy::Camera]) that have a parent, and the
-[<code>GlobalTransform</code>][bevy::GlobalTransform] of their parent:</p>
+<p>For example, if we want to get the <a href="https://docs.rs/bevy/0.6.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>
+of cameras (<a href="https://docs.rs/bevy/0.6.0/bevy/render/camera/struct.Camera.html"><code>Camera</code></a>) that have a parent, and the
+<a href="https://docs.rs/bevy/0.6.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> of their parent:</p>
 <pre><code class="language-rust no_run noplayground">fn camera_with_parent(
     q_child: Query&lt;(&amp;Parent, &amp;Transform), With&lt;Camera&gt;&gt;,
     q_parent: Query&lt;&amp;GlobalTransform&gt;,
@@ -234,12 +233,12 @@ the child to be positioned relative to the parent and move with it.</p>
 <p>All Bundles that come with Bevy provide this behavior automatically.</p>
 <p>If you are not using such a bundle, you need to make sure
 to add these components to both the parent and the child entities:
-[<code>GlobalTransform</code>][bevy::GlobalTransform] and [<code>Transform</code>][bevy::Transform].</p>
-<p>The [<code>Transform</code>][bevy::Transform] represents the relative position.
+<a href="https://docs.rs/bevy/0.6.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> and <a href="https://docs.rs/bevy/0.6.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>.</p>
+<p>The <a href="https://docs.rs/bevy/0.6.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> represents the relative position.
 You can manipulate it directly.</p>
-<p>The [<code>GlobalTransform</code>][bevy::GlobalTransform] represents the absolute position.
+<p>The <a href="https://docs.rs/bevy/0.6.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> represents the absolute position.
 It is managed by bevy internally; do not manipulate it yourself.</p>
-<p>For more info, see the [dedicated page about transforms][cb::transform].</p>
+<p>For more info, see the <a href="/features/transforms.html">dedicated page about transforms</a>.</p>
 
                     </main>
 

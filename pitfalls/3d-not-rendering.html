@@ -137,21 +137,20 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="3d-objects-not-displaying"><a class="header" href="#3d-objects-not-displaying">3D objects not displaying</a></h1>
-<p>{{#include ../include/links.md}}</p>
 <p>This page will list some common issues that you may encounter, if you are
 trying to spawn a 3D object, but cannot see it on the screen.</p>
 <h2 id="incorrect-usage-of-bevy-gltf-assets"><a class="header" href="#incorrect-usage-of-bevy-gltf-assets">Incorrect usage of Bevy GLTF assets</a></h2>
-<p>Refer to the [GLTF page][cb::gltf] to learn how to correctly
+<p>Refer to the <a href="/features/gltf.html">GLTF page</a> to learn how to correctly
 use GLTF with Bevy.</p>
 <p>GLTF files are complex. They contain many sub-assets, represented by
 different Bevy types. Make sure you are using the correct thing.</p>
 <p>Make sure you are spawning a GLTF Scene, or using the correct
-[<code>Mesh</code>][bevy::Mesh] and [<code>StandardMaterial</code>][bevy::StandardMaterial]
+<a href="https://docs.rs/bevy/0.6.0/bevy/render/mesh/struct.Mesh.html"><code>Mesh</code></a> and <a href="https://docs.rs/bevy/0.6.0/bevy/pbr/struct.StandardMaterial.html"><code>StandardMaterial</code></a>
 associated with the correct GLTF Primitive.</p>
 <p>If you are using an asset path, be sure to include a label for the sub-asset you want:</p>
 <pre><code class="language-rust no_run noplayground">asset_server.load(&quot;my.gltf#Scene0&quot;);
 </code></pre>
-<p>If you are spawning the top-level [<code>Gltf</code>][bevy::Gltf] [master asset][cb::gltf-master], it won't work.</p>
+<p>If you are spawning the top-level <a href="https://docs.rs/bevy/0.6.0/bevy/gltf/struct.Gltf.html"><code>Gltf</code></a> <a href="/features/gltf.html#gltf-master-asset">master asset</a>, it won't work.</p>
 <p>If you are spawning a GLTF Mesh, it won't work.</p>
 <p>If you are using the top-level <code>Gltf</code> master asset or a <code>GltfMesh</code> on a Bevy
 <code>PbrBundle</code> entity that you have created yourself, it won't work. You need
@@ -184,12 +183,12 @@ did not know of or forgot to include here. :)</p>
 <p>Maybe your asset just takes a while to load? Bevy (and Rust in general)
 is very slow without compiler optimizations. It's actually possible that
 complex GLTF files with big textures can take over a minute to load and
-show up on the screen. It would be almost instant in optimized builds. [See
-here][pitfall::perf].</p>
+show up on the screen. It would be almost instant in optimized builds. <a href="/pitfalls/performance.html">See
+here</a>.</p>
 <h2 id="vertex-order-and-culling"><a class="header" href="#vertex-order-and-culling">Vertex Order and Culling</a></h2>
 <p>By default, the Bevy renderer assumes Counter-Clockwise vertex order and has
 back-face culling enabled.</p>
-<p>If you are generating your [<code>Mesh</code>][bevy::Mesh] from code, make sure your
+<p>If you are generating your <a href="https://docs.rs/bevy/0.6.0/bevy/render/mesh/struct.Mesh.html"><code>Mesh</code></a> from code, make sure your
 vertices are in the correct order.</p>
 
                     </main>

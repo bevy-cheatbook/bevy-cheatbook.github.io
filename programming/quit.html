@@ -137,17 +137,16 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="quitting-the-app"><a class="header" href="#quitting-the-app">Quitting the App</a></h1>
-<p>{{#include ../include/links.md}}</p>
-<p>To cleanly shut down bevy, send an [<code>AppExit</code>][bevy::AppExit]
-[event][cb::event] from any [system][cb::system]:</p>
+<p>To cleanly shut down bevy, send an <a href="https://docs.rs/bevy/0.6.0/bevy/app/struct.AppExit.html"><code>AppExit</code></a>
+<a href="/programming/events.html">event</a> from any <a href="/programming/systems.html">system</a>:</p>
 <pre><code class="language-rust no_run noplayground">use bevy::app::AppExit;
 
 fn exit_system(mut exit: EventWriter&lt;AppExit&gt;) {
     exit.send(AppExit);
 }
 </code></pre>
-<p>For prototyping, bevy provides a system you can [add to your
-<code>App</code>][cb::app], to exit on pressing the <code>Esc</code> key:</p>
+<p>For prototyping, bevy provides a system you can <a href="/programming/app-builder.html">add to your
+<code>App</code></a>, to exit on pressing the <code>Esc</code> key:</p>
 <pre><code class="language-rust no_run noplayground">fn main() {
     App::new()
         .add_plugins(DefaultPlugins)

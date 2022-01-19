@@ -137,9 +137,8 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="transforms"><a class="header" href="#transforms">Transforms</a></h1>
-<p>{{#include ../include/links.md}}</p>
 <p>Relevant official examples:
-[<code>parenting</code>][example::parenting],
+<a href="https://github.com/bevyengine/bevy/blob/v0.6.0/examples/3d/parenting.rs"><code>parenting</code></a>,
 anything that spawns 2D or 3D objects.</p>
 <hr />
 <p>First, a quick definition, if you are new to game development:</p>
@@ -149,28 +148,28 @@ is a combination of the object's &quot;translation&quot; (position/coordinates),
 <p>You move objects around by modifying the translation, rotate them by modifying
 the rotation, and make them larger or smaller by modifying the scale.</p>
 <h2 id="transform-components"><a class="header" href="#transform-components">Transform Components</a></h2>
-<p>In Bevy, transforms are represented by <em>two</em> [components][cb::component]:
-[<code>Transform</code>][bevy::Transform] and [<code>GlobalTransform</code>][bevy::GlobalTransform].
-Any [Entity][cb::ecs-intro] that represents an object in the game world
+<p>In Bevy, transforms are represented by <em>two</em> <a href="/programming/ec.html#components">components</a>:
+<a href="https://docs.rs/bevy/0.6.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> and <a href="https://docs.rs/bevy/0.6.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a>.
+Any <a href="/programming/ecs-intro.html">Entity</a> that represents an object in the game world
 needs to have both.</p>
-<p>[<code>Transform</code>][bevy::Transform] is what you typically work with. It is
+<p><a href="https://docs.rs/bevy/0.6.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> is what you typically work with. It is
 a <code>struct</code> containing the translation, rotation, and scale. To read or
-manipulate these values, access them from your [systems][cb::system] using a
-[query][cb::query].</p>
-<p>If the entity has a [parent][cb::hierarchy], the [<code>Transform</code>][bevy::Transform]
+manipulate these values, access them from your <a href="/programming/systems.html">systems</a> using a
+<a href="/programming/queries.html">query</a>.</p>
+<p>If the entity has a <a href="/features/parent-child.html">parent</a>, the <a href="https://docs.rs/bevy/0.6.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>
 component is relative to the parent. This means that the child object will
 move/rotate/scale along with the parent.</p>
-<p>[<code>GlobalTransform</code>][bevy::GlobalTransform] represents the absolute global
+<p><a href="https://docs.rs/bevy/0.6.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> represents the absolute global
 position in the world. If the entity does not have a parent, then this will
-have the same value as the [<code>Transform</code>][bevy::Transform]. The value of
-[<code>GlobalTransform</code>][bevy::GlobalTransform] is calculated/managed internally
+have the same value as the <a href="https://docs.rs/bevy/0.6.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>. The value of
+<a href="https://docs.rs/bevy/0.6.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> is calculated/managed internally
 by Bevy. You should treat it as read-only; do not mutate it.</p>
 <p>Beware: The two components are synchronized by a bevy-internal system
-(the &quot;transform propagation system&quot;), which runs in the [<code>PostUpdate</code>][bevy::CoreStage]
-[stage][cb::stage]. This is somewhat finnicky and can result in tricky pitfalls
+(the &quot;transform propagation system&quot;), which runs in the <a href="https://docs.rs/bevy/0.6.0/bevy/app/enum.CoreStage.html"><code>PostUpdate</code></a>
+<a href="/programming/stages.html">stage</a>. This is somewhat finnicky and can result in tricky pitfalls
 if you are trying to do advanced things that rely on both the relative/local
 and the absolute/global transforms of entities. When you mutate the
-[<code>Transform</code>][bevy::Transform], the [<code>GlobalTransform</code>][bevy::GlobalTransform]
+<a href="https://docs.rs/bevy/0.6.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>, the <a href="https://docs.rs/bevy/0.6.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a>
 is not updated immediately. They will be out-of-sync until the transform
 propagation system runs.</p>
 

@@ -137,13 +137,12 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="strange-build-errors"><a class="header" href="#strange-build-errors">Strange Build Errors</a></h1>
-<p>{{#include ../include/links.md}}</p>
 <p>Sometimes, you can get strange and confusing build errors when trying to
 compile your project.</p>
 <h2 id="update-your-rust"><a class="header" href="#update-your-rust">Update your Rust</a></h2>
 <p>First, make sure your Rust is up-to-date. When using Bevy, you must use at
 least the latest stable version of Rust (or nightly).</p>
-<p>If you are using [<code>rustup</code>][rustup] to manage your Rust installation, you
+<p>If you are using <a href="https://rustup.rs"><code>rustup</code></a> to manage your Rust installation, you
 can run:</p>
 <pre><code class="language-shell">rustup update
 </code></pre>
@@ -157,7 +156,7 @@ the <code>Cargo.lock</code> file and the <code>target</code> directory.</p>
 mysterious errors will go away.</p>
 <p>This trick often fixes the broken build, but if it doesn't help you,
 your issue might require further investigation. Reach out to the Bevy
-community via GitHub or [Discord][bevy::discord], and ask for help.</p>
+community via GitHub or <a href="https://discord.gg/bevy">Discord</a>, and ask for help.</p>
 <p>If you are using bleeding-edge Bevy (&quot;main&quot;), and the above does not solve
 the problem, your errors might be caused by 3rd-party plugins. See <a href="../setup/bevy-git.html#how-to-use-bleeding-edge-bevy">this
 page</a> for solutions.</p>
@@ -222,7 +221,7 @@ it is because of dependencies not being resolved properly, causing cargo to
 try to link multiple versions of Bevy into your project. This often occurs when
 transitioning your project between the release and the git version of Bevy. Cargo
 remembers the versions it was previously using, and gets confused.</p>
-<p>See this [cargo issue][cargo::9994] about this bug. If you have any interesting
+<p>See this <a href="https://github.com/rust-lang/cargo/issues/9994">cargo issue</a> about this bug. If you have any interesting
 information to add, you can help by contributing to that issue.</p>
 
                     </main>

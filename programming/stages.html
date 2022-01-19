@@ -137,8 +137,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="stages"><a class="header" href="#stages">Stages</a></h1>
-<p>{{#include ../include/links.md}}</p>
-<p>All [systems][cb::system] to be run by Bevy are contained in stages. Every
+<p>All <a href="/programming/systems.html">systems</a> to be run by Bevy are contained in stages. Every
 frame update, Bevy executes each stage, in order. Within each stage, Bevy's
 scheduling algorithm can run many systems in parallel, using multiple CPU
 cores for good performance.</p>
@@ -146,14 +145,14 @@ cores for good performance.</p>
 They ensure that all systems of the previous stage have completed before any
 systems of the next stage begin, and that there is a moment in time when no
 systems are in-progress.</p>
-<p>This makes it possible/safe to apply [Commands][cb::commands]. Any operations
-performed by systems using [<code>Commands</code>][bevy::Commands] are applied at the
+<p>This makes it possible/safe to apply <a href="/programming/commands.html">Commands</a>. Any operations
+performed by systems using <a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a> are applied at the
 end of that stage.</p>
-<p>Internally, Bevy has at least these built-in [stages][cb::stage]:</p>
+<p>Internally, Bevy has at least these built-in <a href="/programming/stages.html">stages</a>:</p>
 <ul>
-<li>In the [main app][cb::app] ([<code>CoreStage</code>][bevy::CoreStage]):
+<li>In the <a href="/programming/app-builder.html">main app</a> (<a href="https://docs.rs/bevy/0.6.0/bevy/app/enum.CoreStage.html"><code>CoreStage</code></a>):
 <code>First</code>, <code>PreUpdate</code>, <code>Update</code>, <code>PostUpdate</code>, <code>Last</code></li>
-<li>In the render [sub-app][cb::subapp] ([<code>RenderStage</code>][bevy::RenderStage]):
+<li>In the render <a href="/programming/sub-apps.html">sub-app</a> (<a href="https://docs.rs/bevy/0.6.0/bevy/render/enum.RenderStage.html"><code>RenderStage</code></a>):
 <code>Extract</code>, <code>Prepare</code>, <code>Queue</code>, <code>PhaseSort</code>, <code>Render</code>, <code>Cleanup</code></li>
 </ul>
 <p>By default, when you add your systems, they are added to <code>CoreStage::Update</code>.</p>
@@ -189,14 +188,14 @@ systems to run after our game logic:</p>
 }
 </code></pre>
 <p>If you need to manage when your systems run, relative to one another, it
-is generally preferable to avoid using stages, and to use [explicit system
-ordering][cb::system-order] instead. Stages limit parallel execution and
+is generally preferable to avoid using stages, and to use <a href="/programming/system-order.html">explicit system
+ordering</a> instead. Stages limit parallel execution and
 the performance of your game.</p>
 <p>However, stages can make it easier to organize things, when you really want
 to be sure that all previous systems have completed. Stages are also the
-only way to apply [Commands][cb::commands].</p>
+only way to apply <a href="/programming/commands.html">Commands</a>.</p>
 <p>If you have systems that need to rely on the actions that other systems have
-performed by using [Commands][cb::commands], and need to do so during the
+performed by using <a href="/programming/commands.html">Commands</a>, and need to do so during the
 same frame, placing those systems into separate stages is the only way to
 accomplish that.</p>
 

@@ -137,10 +137,9 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="manual-event-clearing"><a class="header" href="#manual-event-clearing">Manual Event Clearing</a></h1>
-<p>{{#include ../include/links.md}}</p>
-<p>[Click here to download a full example file with the code from this page.][cbexample::manual-event-clear]</p>
+<p><a href="/code/examples/manual-event-clear.rs">Click here to download a full example file with the code from this page.</a></p>
 <hr />
-<p>The [event][cb::event] queue needs to be cleared periodically,
+<p>The <a href="/programming/events.html">event</a> queue needs to be cleared periodically,
 so that it does not grow indefinitely and waste unbounded memory.</p>
 <p>Bevy's default cleanup strategy is to clear events every frame, but with double
 buffering, so that events from the previous frame update stay available. This
@@ -152,26 +151,26 @@ every time, which is the typical usage pattern.</p>
 miss some events. Some common scenarios where this occurs are:</p>
 <ul>
 <li>systems with an early-return, that don't read events every time they run</li>
-<li>when using [fixed timestep][cb::fixedtimestep]</li>
-<li>systems that only run in specific [states][cb::state],
+<li>when using <a href="/features/fixed-timestep.html">fixed timestep</a></li>
+<li>systems that only run in specific <a href="/programming/states.html">states</a>,
 such as if your game has a pause state</li>
-<li>when using custom [run criteria][cb::runcriteria] to control
+<li>when using custom <a href="/programming/run-criteria.html">run criteria</a> to control
 your systems</li>
 </ul>
 <p>To be able to reliably manage events in such circumstances, you might want
 to have manual control over how long the events are held in memory.</p>
 <p>You can replace Bevy's default cleanup strategy with your own.</p>
-<p>To do this, simply add your event type (wrapped as [<code>Events&lt;T&gt;</code>][bevy::Events])
-to the [app builder][cb::app] using <code>.init_resource</code>, instead of <code>.add_event</code>.</p>
+<p>To do this, simply add your event type (wrapped as <a href="https://docs.rs/bevy/0.6.0/bevy/ecs/event/struct.Events.html"><code>Events&lt;T&gt;</code></a>)
+to the <a href="/programming/app-builder.html">app builder</a> using <code>.init_resource</code>, instead of <code>.add_event</code>.</p>
 <p>(<code>.add_event</code> is actually just a convenience method that initializes the
-[resource][cb::res] and adds Bevy's built-in system ([generic][cb::system-generic]
+<a href="/programming/res.html">resource</a> and adds Bevy's built-in system (<a href="/patterns/generic-systems.html">generic</a>
 over your event type) for the default cleanup strategy)</p>
 <p>You must then clear the events at your discretion. If you don't do this often
 enough, your events might pile up and waste memory.</p>
 <h2 id="example"><a class="header" href="#example">Example</a></h2>
-<p>We can create [generic systems][cb::system-generic] for this. Implement
-the custom cleanup strategy, and then add that [system][cb::system] to your
-[<code>App</code>][bevy::App] as many times as you need, for each [event][cb::event] type
+<p>We can create <a href="/patterns/generic-systems.html">generic systems</a> for this. Implement
+the custom cleanup strategy, and then add that <a href="/programming/systems.html">system</a> to your
+<a href="https://docs.rs/bevy/0.6.0/bevy/app/struct.App.html"><code>App</code></a> as many times as you need, for each <a href="/programming/events.html">event</a> type
 where you want to use your custom behavior.</p>
 <pre><code class="language-rust no_run noplayground">use bevy::app::Events;
 

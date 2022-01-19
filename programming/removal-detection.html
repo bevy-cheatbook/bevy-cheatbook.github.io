@@ -137,27 +137,26 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="removal-detection"><a class="header" href="#removal-detection">Removal Detection</a></h1>
-<p>{{#include ../include/links.md}}</p>
 <p>Relevant official examples:
-[<code>removal_detection</code>][example::removal_detection].</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.6.0/examples/ecs/removal_detection.rs"><code>removal_detection</code></a>.</p>
 <hr />
-<p>Removal detection is special. This is because, unlike with [change
-detection][cb::change-detection], the data does not exist in the ECS anymore
+<p>Removal detection is special. This is because, unlike with <a href="/programming/change-detection.html">change
+detection</a>, the data does not exist in the ECS anymore
 (obviously), so Bevy cannot keep tracking metadata for it.</p>
 <p>Nevertheless, being able to respond to removals is important for some
 applications, so Bevy offers a limited form of it.</p>
 <h2 id="components"><a class="header" href="#components">Components</a></h2>
-<p>You can check for [components][cb::component] that have been removed during
+<p>You can check for <a href="/programming/ec.html#components">components</a> that have been removed during
 the current frame. The data is cleared at the end of every frame update. Note
 that this makes this feature tricky to use, and requires you to use multiple
-[stages][cb::stage].</p>
-<p>When you remove a component (using [Commands][cb::commands]
-([<code>Commands</code>][bevy::Commands])), the operation is applied at the end of the
-[stage][cb::stage]. The [system][cb::system] that checks for the removal
+<a href="/programming/stages.html">stages</a>.</p>
+<p>When you remove a component (using <a href="/programming/commands.html">Commands</a>
+(<a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>)), the operation is applied at the end of the
+<a href="/programming/stages.html">stage</a>. The <a href="/programming/systems.html">system</a> that checks for the removal
 must run in a later stage during the same frame update. Otherwise, it will
 not detect the removal.</p>
-<p>Use the [<code>RemovedComponents&lt;T&gt;</code>][bevy::RemovedComponents] special system
-parameter type, to get an iterator for the [<code>Entity</code>][bevy::Entity] IDs of
+<p>Use the <a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.RemovedComponents.html"><code>RemovedComponents&lt;T&gt;</code></a> special system
+parameter type, to get an iterator for the <a href="https://docs.rs/bevy/0.6.0/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> IDs of
 all the entities that had a component of type <code>T</code> that was removed earlier
 this frame.</p>
 <pre><code class="language-rust no_run noplayground">/// Some component type for the sake of this example.
@@ -199,11 +198,11 @@ fn detect_removals(
 }
 </code></pre>
 <p>(To do things with these entities, you can just use the <code>Entity</code> IDs with
-[<code>Commands::entity()</code>][cb::commands] or [<code>Query::get()</code>][cb::query].)</p>
+<a href="/programming/commands.html"><code>Commands::entity()</code></a> or <a href="/programming/queries.html"><code>Query::get()</code></a>.)</p>
 <h2 id="resources"><a class="header" href="#resources">Resources</a></h2>
-<p>Bevy does not provide any API for detecting when [resources][cb::res] are removed.</p>
-<p>You can work around this using [<code>Option</code>][std::Option] and a separate
-[<code>Local</code>][cb::local] system parameter, effectively implementing your own
+<p>Bevy does not provide any API for detecting when <a href="/programming/res.html">resources</a> are removed.</p>
+<p>You can work around this using <a href="https://doc.rust-lang.org/stable/std/option/enum.Option.html"><code>Option</code></a> and a separate
+<a href="/programming/local.html"><code>Local</code></a> system parameter, effectively implementing your own
 detection.</p>
 <pre><code class="language-rust no_run noplayground">fn detect_removed_res(
     my_res: Option&lt;Res&lt;MyResource&gt;&gt;,

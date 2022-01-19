@@ -137,16 +137,15 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="writing-tests-for-systems"><a class="header" href="#writing-tests-for-systems">Writing Tests for Systems</a></h1>
-<p>{{#include ../include/links.md}}</p>
-<p>You might want to write and run automated tests for your [systems][cb::system].</p>
+<p>You might want to write and run automated tests for your <a href="/programming/systems.html">systems</a>.</p>
 <p>You can use the regular Rust testing features (<code>cargo test</code>) with Bevy.</p>
-<p>To do this, you can create an empty ECS [<code>World</code>][bevy::World] in your
-tests, and then, using [direct World access][cb::world], insert whatever
-[entities][cb::entity] and [resources][cb::res] you need for testing. Create
-a standalone [stage][cb::stage] with the [systems][cb::system] you want to
-run, and manually run it on the [<code>World</code>][bevy::World].</p>
-<p>Bevy's official repository has a fantastic [example of how to do
-this][bevy::system-test].</p>
+<p>To do this, you can create an empty ECS <a href="https://docs.rs/bevy/0.6.0/bevy/ecs/world/struct.World.html"><code>World</code></a> in your
+tests, and then, using <a href="/programming/world.html">direct World access</a>, insert whatever
+<a href="/programming/ec.html#entities">entities</a> and <a href="/programming/res.html">resources</a> you need for testing. Create
+a standalone <a href="/programming/stages.html">stage</a> with the <a href="/programming/systems.html">systems</a> you want to
+run, and manually run it on the <a href="https://docs.rs/bevy/0.6.0/bevy/ecs/world/struct.World.html"><code>World</code></a>.</p>
+<p>Bevy's official repository has a fantastic <a href="https://github.com/bevyengine/bevy/blob/main/tests/how_to_test_systems.rs">example of how to do
+this</a>.</p>
 
                     </main>
 

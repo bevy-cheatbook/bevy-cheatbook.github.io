@@ -137,7 +137,6 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="system-order-of-execution"><a class="header" href="#system-order-of-execution">System Order of Execution</a></h1>
-<p>{{#include ../include/links.md}}</p>
 <p>Bevy's scheduling algorithm is designed to deliver maximum performance
 by running as many systems as possible in parallel across the available
 CPU threads.</p>
@@ -156,8 +155,8 @@ order. For example:</p>
 <ul>
 <li>Maybe the logic you wrote in one of your systems needs any modifications
 done to that data by another system to always happen first?</li>
-<li>One system needs to receive [events][cb::event] sent by another system.</li>
-<li>You are using [change detection][cb::change-detection].</li>
+<li>One system needs to receive <a href="/programming/events.html">events</a> sent by another system.</li>
+<li>You are using <a href="/programming/change-detection.html">change detection</a>.</li>
 </ul>
 <p>In such situations, systems running in the wrong order typically causes
 their behavior to be delayed until the next frame. In rare cases, depending
@@ -170,7 +169,7 @@ result in better performance.</p>
 <p>On the other hand, for things like handling the player input controls,
 this would result in annoying lag, so you should probably fix it.</p>
 <h2 id="explicit-system-ordering"><a class="header" href="#explicit-system-ordering">Explicit System Ordering</a></h2>
-<p>The solution is to use system [labels][cb::label] to explicitly specify
+<p>The solution is to use system <a href="/features/labels.html">labels</a> to explicitly specify
 the order you want:</p>
 <pre><code class="language-rust no_run noplayground">fn main() {
     App::new()
@@ -204,7 +203,7 @@ the order you want:</p>
 <p>You can place multiple labels on one system.</p>
 <p>You can also use the same label on multiple systems.</p>
 <p>When you have multiple systems with common labels or ordering, it may be
-convenient to use [system sets][cb::systemset].</p>
+convenient to use <a href="/programming/system-sets.html">system sets</a>.</p>
 <h2 id="circular-dependencies"><a class="header" href="#circular-dependencies">Circular Dependencies</a></h2>
 <p>If you have multiple systems mutually depending on each other, then it is
 clearly impossible to resolve the situation completely like that.</p>

@@ -137,7 +137,6 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="error-adding-function-as-system"><a class="header" href="#error-adding-function-as-system">Error adding function as system</a></h1>
-<p>{{#include ../include/links.md}}</p>
 <p>You can sometimes get confusing arcane compiler errors when you try to add
 systems to your Bevy app.</p>
 <p>The errors can look like this:</p>
@@ -154,55 +153,55 @@ the trait `WorldQuery` is not implemented for `Component`
 <p>These errors are caused by a malformed query.</p>
 <h2 id="common-beginner-mistakes"><a class="header" href="#common-beginner-mistakes">Common beginner mistakes</a></h2>
 <ul>
-<li>Using <code>&amp;mut Commands</code> (bevy 0.4 syntax) instead of [<code>Commands</code>][bevy::Commands].</li>
+<li>Using <code>&amp;mut Commands</code> (bevy 0.4 syntax) instead of <a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>.</li>
 <li>Using <code>Query&lt;MyStuff&gt;</code> instead of <code>Query&lt;&amp;MyStuff&gt;</code> or <code>Query&lt;&amp;mut MyStuff&gt;</code>.</li>
 <li>Using <code>Query&lt;&amp;ComponentA, &amp;ComponentB&gt;</code> instead of <code>Query&lt;(&amp;ComponentA, &amp;ComponentB)&gt;</code>
 (forgetting the tuple)</li>
-<li>Using your resource types directly without [<code>Res</code>][bevy::Res] or [<code>ResMut</code>][bevy::ResMut].</li>
-<li>Using your component types directly without putting them in a [<code>Query</code>][bevy::Query].</li>
+<li>Using your resource types directly without <a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.Res.html"><code>Res</code></a> or <a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut</code></a>.</li>
+<li>Using your component types directly without putting them in a <a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.Query.html"><code>Query</code></a>.</li>
 <li>Using other arbitrary types in your function.</li>
 </ul>
 <p>Note that <code>Query&lt;Entity&gt;</code> is correct, because the Entity ID is special;
 it is not a component.</p>
 <h2 id="supported-types"><a class="header" href="#supported-types">Supported types</a></h2>
 <p>Only the following types are supported as system parameters:</p>
-<p>[(List in API Docs)][bevy::impl::SystemParam]</p>
+<p><a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/trait.SystemParam.html#implementors">(List in API Docs)</a></p>
 <ul>
-<li>[<code>Commands</code>][bevy::Commands]:
-Manipulate the ECS using [commands][cb::commands]</li>
-<li>[<code>Res&lt;T&gt;</code>][bevy::Res]:
-Shared access to a [resource][cb::res]</li>
-<li>[<code>ResMut&lt;T&gt;</code>][bevy::ResMut]:
-Exclusive (mutable) access to a [resource][cb::res]</li>
+<li><a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>:
+Manipulate the ECS using <a href="/programming/commands.html">commands</a></li>
+<li><a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.Res.html"><code>Res&lt;T&gt;</code></a>:
+Shared access to a <a href="/programming/res.html">resource</a></li>
+<li><a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a>:
+Exclusive (mutable) access to a <a href="/programming/res.html">resource</a></li>
 <li><code>Option&lt;Res&lt;T&gt;&gt;</code>:
 Shared access to a resource that may not exist</li>
 <li><code>Option&lt;ResMut&lt;T&gt;&gt;</code>:
 Exclusive (mutable) access to a resource that may not exist</li>
-<li>[<code>Query&lt;T, F = ()&gt;</code>][bevy::Query] (can contain tuples of up to 15 types):
-Access to [entities and components][cb::ec]</li>
-<li>[<code>QuerySet</code>][bevy::QuerySet] (with up to 4 queries):
-Resolve [conflicting queries][cb::queryset]</li>
-<li>[<code>Local&lt;T&gt;</code>][bevy::Local]:
-Data [local][cb::local] to the system</li>
-<li>[<code>EventReader&lt;T&gt;</code>][bevy::EventReader]:
-Receive [events][cb::event]</li>
-<li>[<code>EventWriter&lt;T&gt;</code>][bevy::EventWriter]:
-Send [events][cb::event]</li>
-<li>[<code>RemovedComponents&lt;T&gt;</code>][bevy::RemovedComponents]:
-[Removal detection][cb::removal-detection]</li>
-<li>[<code>NonSend&lt;T&gt;</code>][bevy::NonSend]:
-Shared access to [Non-<code>Send</code>][cb::nonsend] (main thread only) data</li>
-<li>[<code>NonSendMut&lt;T&gt;</code>][bevy::NonSendMut]:
-Mut access to [Non-<code>Send</code>][cb::nonsend] (main thread only) data</li>
-<li>[<code>Entities</code>][bevy::Entities]:
+<li><a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.Query.html"><code>Query&lt;T, F = ()&gt;</code></a> (can contain tuples of up to 15 types):
+Access to <a href="/programming/ec.html">entities and components</a></li>
+<li><a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.QuerySet.html"><code>QuerySet</code></a> (with up to 4 queries):
+Resolve <a href="/programming/query-sets.html">conflicting queries</a></li>
+<li><a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a>:
+Data <a href="/programming/local.html">local</a> to the system</li>
+<li><a href="https://docs.rs/bevy/0.6.0/bevy/ecs/event/struct.EventReader.html"><code>EventReader&lt;T&gt;</code></a>:
+Receive <a href="/programming/events.html">events</a></li>
+<li><a href="https://docs.rs/bevy/0.6.0/bevy/ecs/event/struct.EventWriter.html"><code>EventWriter&lt;T&gt;</code></a>:
+Send <a href="/programming/events.html">events</a></li>
+<li><a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.RemovedComponents.html"><code>RemovedComponents&lt;T&gt;</code></a>:
+<a href="/programming/removal-detection.html">Removal detection</a></li>
+<li><a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.NonSend.html"><code>NonSend&lt;T&gt;</code></a>:
+Shared access to <a href="/programming/non-send.html">Non-<code>Send</code></a> (main thread only) data</li>
+<li><a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.NonSendMut.html"><code>NonSendMut&lt;T&gt;</code></a>:
+Mut access to <a href="/programming/non-send.html">Non-<code>Send</code></a> (main thread only) data</li>
+<li><a href="https://docs.rs/bevy/0.6.0/bevy/ecs/entity/struct.Entities.html"><code>Entities</code></a>:
 Low-level ECS metadata: All entities</li>
-<li>[<code>Components</code>][bevy::Components]:
+<li><a href="https://docs.rs/bevy/0.6.0/bevy/ecs/component/struct.Components.html"><code>Components</code></a>:
 Low-level ECS metadata: All components</li>
-<li>[<code>Bundles</code>][bevy::Bundles]:
+<li><a href="https://docs.rs/bevy/0.6.0/bevy/ecs/bundle/struct.Bundles.html"><code>Bundles</code></a>:
 Low-level ECS metadata: All bundles</li>
-<li>[<code>Archetypes</code>][bevy::Archetypes]:
+<li><a href="https://docs.rs/bevy/0.6.0/bevy/ecs/archetype/struct.Archetypes.html"><code>Archetypes</code></a>:
 Low-level ECS metadata: All archetypes</li>
-<li>[<code>SystemChangeTick</code>][bevy::SystemChangeTick]:
+<li><a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.SystemChangeTick.html"><code>SystemChangeTick</code></a>:
 Low-level ECS metadata: Tick used for change detection</li>
 <li>tuples containing any of these types, with up to 16 members</li>
 </ul>

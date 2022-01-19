@@ -137,11 +137,10 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="queries"><a class="header" href="#queries">Queries</a></h1>
-<p>{{#include ../include/links.md}}</p>
 <p>Relevant official examples:
-[<code>ecs_guide</code>][example::ecs_guide].</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.6.0/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
 <hr />
-<p>Queries let you access [components of entities][cb::ecs-intro].</p>
+<p>Queries let you access <a href="/programming/ecs-intro.html">components of entities</a>.</p>
 <pre><code class="language-rust no_run noplayground">fn check_zero_health(
     // access entities that have `Health` and `Transform` components
     // get read-only access to `Health` and mutable access to `Transform`
@@ -164,15 +163,15 @@
     }
 }
 </code></pre>
-<p>Get the [components][cb::component] associated with a specific
-[entity][cb::entity]:</p>
+<p>Get the <a href="/programming/ec.html#components">components</a> associated with a specific
+<a href="/programming/ec.html#entities">entity</a>:</p>
 <pre><code class="language-rust no_run noplayground">    if let Ok((health, mut transform)) = query.get_mut(entity) {
         // do something with the components
     } else {
         // the entity does not have the components from the query
     }
 </code></pre>
-<p>Get the IDs ([<code>Entity</code>][bevy::Entity]) of the entities you access with
+<p>Get the IDs (<a href="https://docs.rs/bevy/0.6.0/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a>) of the entities you access with
 your queries:</p>
 <pre><code class="language-rust no_run noplayground">// add `Entity` to `Query` to get Entity IDs
 fn query_entities(q: Query&lt;(Entity, /* ... */)&gt;) {
@@ -192,12 +191,12 @@ use <code>single</code>/<code>single_mut</code>, instead of iterating:</p>
 <p>(this will panic if the query matches more than one entity)</p>
 <h2 id="bundles"><a class="header" href="#bundles">Bundles</a></h2>
 <p>Queries work with individual components. If you created an entity using a
-[bundle][cb::bundle], you need to query for the specific components from
+<a href="/programming/ec.html#component-bundles">bundle</a>, you need to query for the specific components from
 that bundle that you care about.</p>
 <p>A common beginner mistake is to query for the bundle type!</p>
 <h2 id="query-filters"><a class="header" href="#query-filters">Query Filters</a></h2>
 <p>Add query filters to narrow down the entities you get from the query.</p>
-<p>Use [<code>With</code>][bevy::With]/[<code>Without</code>][bevy::Without] to only get entities
+<p>Use <a href="https://docs.rs/bevy/0.6.0/bevy/ecs/query/struct.With.html"><code>With</code></a>/<a href="https://docs.rs/bevy/0.6.0/bevy/ecs/query/struct.Without.html"><code>Without</code></a> to only get entities
 that have specific components.</p>
 <pre><code class="language-rust no_run noplayground">fn debug_player_hp(
     // access the health, only for friendly players, optionally with name

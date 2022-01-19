@@ -137,13 +137,12 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="panic-messages"><a class="header" href="#panic-messages">Panic Messages</a></h1>
-<p>{{#include ../../include/links.md}}</p>
 <p>Unless we do something about it, you will not be able to see Rust panic
 messages when running in a web browser. This means that, if your game crashes,
 you will not know why.</p>
 <p>To fix this, we can set up a panic hook that will cause
 the messages to appear in the browser console, using the
-[console_error_panic_hook][project::console_error_panic_hook] crate.</p>
+<a href="https://github.com/rustwasm/console_error_panic_hook">console_error_panic_hook</a> crate.</p>
 <p>Add the crate to your dependencies in <code>Cargo.toml</code>:</p>
 <pre><code class="language-toml">[dependencies]
 console_error_panic_hook = &quot;0.1&quot;

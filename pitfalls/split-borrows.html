@@ -137,8 +137,7 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="borrow-multiple-fields-from-struct"><a class="header" href="#borrow-multiple-fields-from-struct">Borrow multiple fields from struct</a></h1>
-<p>{{#include ../include/links.md}}</p>
-<p>When you have a [component][cb::component] or [resource][cb::res], that is
+<p>When you have a <a href="/programming/ec.html#components">component</a> or <a href="/programming/res.html">resource</a>, that is
 larger struct with multiple fields, sometimes you want to borrow several of
 the fields at the same time, possibly mutably.</p>
 <pre><code class="language-rust no_run noplayground">struct MyThing {
@@ -169,14 +168,14 @@ fn helper_func(foo: &amp;Foo, bar: &amp;mut Bar) {
 <pre><code class="language-rust no_run noplayground">        // add this at the start of the for loop, before using `thing`:
         let thing = &amp;mut *thing;
 </code></pre>
-<p>Note that this line triggers [change detection][cb::change-detection]. Even if
+<p>Note that this line triggers <a href="/programming/change-detection.html">change detection</a>. Even if
 you don't modify the data afterwards, the component gets marked as changed.</p>
 <h2 id="explanation"><a class="header" href="#explanation">Explanation</a></h2>
 <p>Bevy typically gives you access to your data via special wrapper types (like
-[<code>Res&lt;T&gt;</code>][bevy::Res], [<code>ResMut&lt;T&gt;</code>][bevy::ResMut], and [<code>Mut&lt;T&gt;</code>][bevy::Mut]
-(when [querying][cb::query] for components mutably)). This lets Bevy track
+<a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.Res.html"><code>Res&lt;T&gt;</code></a>, <a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a>, and <a href="https://docs.rs/bevy/0.6.0/bevy/ecs/world/struct.Mut.html"><code>Mut&lt;T&gt;</code></a>
+(when <a href="/programming/queries.html">querying</a> for components mutably)). This lets Bevy track
 access to the data.</p>
-<p>These are &quot;smart pointer&quot; types that use the Rust [<code>Deref</code>][std::Deref]
+<p>These are &quot;smart pointer&quot; types that use the Rust <a href="https://doc.rust-lang.org/stable/std/ops/trait.Deref.html"><code>Deref</code></a>
 trait to dereference to your data. They usually work seamlessly and you
 don't even notice them.</p>
 <p>However, in a sense, they are opaque to the compiler. The Rust language
@@ -184,7 +183,7 @@ allows fields of a struct to be borrowed individually, when you have direct
 access to the struct, but this does not work when it is wrapped in another type.</p>
 <p>The &quot;reborrow&quot; trick shown above, effectively converts the wrapper
 into a regular Rust reference. <code>*thing</code> dereferences the wrapper via
-[<code>DerefMut</code>][std::DerefMut], and then <code>&amp;mut</code> borrows it mutably. You now have
+<a href="https://doc.rust-lang.org/stable/std/ops/trait.DerefMut.html"><code>DerefMut</code></a>, and then <code>&amp;mut</code> borrows it mutably. You now have
 <code>&amp;mut MyStuff</code> instead of <code>Mut&lt;MyStuff&gt;</code>.</p>
 
                     </main>

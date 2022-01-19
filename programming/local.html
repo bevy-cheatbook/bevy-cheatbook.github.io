@@ -137,17 +137,16 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="local-resources"><a class="header" href="#local-resources">Local Resources</a></h1>
-<p>{{#include ../include/links.md}}</p>
 <p>Relevant official examples:
-[<code>ecs_guide</code>][example::ecs_guide].</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.6.0/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
 <hr />
-<p>Local resources allow you to have per-[system][cb::system] data.</p>
-<p>[<code>Local&lt;T&gt;</code>][bevy::Local] is a system parameter similar to
-[<code>ResMut&lt;T&gt;</code>][bevy::ResMut], which gives you full mutable access to an
+<p>Local resources allow you to have per-<a href="/programming/systems.html">system</a> data.</p>
+<p><a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a> is a system parameter similar to
+<a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a>, which gives you full mutable access to an
 instance of some data type, that is independent from entities and components.</p>
-<p>[<code>Res&lt;T&gt;</code>][bevy::Res]/[<code>ResMut&lt;T&gt;</code>][bevy::ResMut] refer to a single global
+<p><a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.Res.html"><code>Res&lt;T&gt;</code></a>/<a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a> refer to a single global
 instance of the type, shared between all systems. On the other hand, every
-[<code>Local&lt;T&gt;</code>][bevy::Local] parameter is a separate instance, exclusively for
+<a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a> parameter is a separate instance, exclusively for
 that system.</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Default)]
 struct MyState;
@@ -160,16 +159,16 @@ fn my_system2(mut local: Local&lt;MyState&gt;) {
     // the local in this system is a different instance
 }
 </code></pre>
-<p>The type must implement [<code>Default</code>][std::Default] or
-[<code>FromWorld</code>][bevy::FromWorld]. It is automatically initialized.</p>
-<p>A system can have multiple [<code>Local</code>][bevy::Local]s of the same type.</p>
+<p>The type must implement <a href="https://doc.rust-lang.org/stable/std/default/trait.Default.html"><code>Default</code></a> or
+<a href="https://docs.rs/bevy/0.6.0/bevy/ecs/world/trait.FromWorld.html"><code>FromWorld</code></a>. It is automatically initialized.</p>
+<p>A system can have multiple <a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.Local.html"><code>Local</code></a>s of the same type.</p>
 <h2 id="specify-an-initial-value"><a class="header" href="#specify-an-initial-value">Specify an initial value</a></h2>
-<p>You can initialize a [<code>Local</code>][bevy::Local] to a value other than the
-type's default, using <code>.config</code>, when [adding your system][cb::app] to your
-[<code>App</code>][bevy::App].</p>
+<p>You can initialize a <a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.Local.html"><code>Local</code></a> to a value other than the
+type's default, using <code>.config</code>, when <a href="/programming/app-builder.html">adding your system</a> to your
+<a href="https://docs.rs/bevy/0.6.0/bevy/app/struct.App.html"><code>App</code></a>.</p>
 <p><code>.config</code> is Bevy's API for &quot;configuring&quot; specific system parameters. Most
 other types of system parameters do not support configuration, but
-[<code>Local</code>][bevy::Local]s let you specify the initial value.</p>
+<a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.Local.html"><code>Local</code></a>s let you specify the initial value.</p>
 <pre><code class="language-rust no_run noplayground">/// Configuration for `my_system`.
 ///
 /// The system will access it using `Local&lt;MyConfig&gt;`.

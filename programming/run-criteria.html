@@ -137,17 +137,16 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="run-criteria"><a class="header" href="#run-criteria">Run Criteria</a></h1>
-<p>{{#include ../include/links.md}}</p>
 <p>Run Criteria are a mechanism for controlling if Bevy should run specific
-[systems][cb::system], at runtime. This is how you can make functionality
+<a href="/programming/systems.html">systems</a>, at runtime. This is how you can make functionality
 that only runs under certain conditions.</p>
 <p>Run Criteria are a lower-level primitive. Bevy provides higher-level
-abstractions on top, such as [States][cb::state]. You can use Run Criteria
+abstractions on top, such as <a href="/programming/states.html">States</a>. You can use Run Criteria
 without such abstractions, if you really need more direct control.</p>
-<p>Run Criteria can be applied to individual [systems][cb::system], [system
-sets][cb::systemset], and [stages][cb::stage].</p>
-<p>Run Criteria are Bevy systems that return a value of type [<code>enum ShouldRun</code>][bevy::ShouldRun]. They can accept any [system
-parameters][builtins::systemparam], like a normal system.</p>
+<p>Run Criteria can be applied to individual <a href="/programming/systems.html">systems</a>, <a href="/programming/system-sets.html">system
+sets</a>, and <a href="/programming/stages.html">stages</a>.</p>
+<p>Run Criteria are Bevy systems that return a value of type <a href="https://docs.rs/bevy/0.6.0/bevy/ecs/schedule/enum.ShouldRun.html"><code>enum ShouldRun</code></a>. They can accept any <a href="/builtins.html#systemparams">system
+parameters</a>, like a normal system.</p>
 <p>This example shows how run criteria might be used to implement different
 multiplayer modes:</p>
 <pre><code class="language-rust no_run noplayground">use bevy::ecs::schedule::ShouldRun;
@@ -221,7 +220,7 @@ fn main() {
 </code></pre>
 <h2 id="run-criteria-labels"><a class="header" href="#run-criteria-labels">Run Criteria Labels</a></h2>
 <p>If you have multiple systems or system sets that you want to share the same
-run criteria, you can give it a [label][cb::label].</p>
+run criteria, you can give it a <a href="/features/labels.html">label</a>.</p>
 <p>When you use a label, Bevy will only execute the run criteria once, remember
 its output, and apply it to everything with the label.</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Debug, Clone, PartialEq, Eq, Hash)]
@@ -258,14 +257,14 @@ fn main() {
 <p>The run-once property is especially important if you have a complex run
 criteria system that performs mutations or is otherwise non-idempotent.</p>
 <h2 id="known-pitfalls"><a class="header" href="#known-pitfalls">Known Pitfalls</a></h2>
-<p>When receiving [events][cb::event] in systems that don't run every frame,
+<p>When receiving <a href="/programming/events.html">events</a> in systems that don't run every frame,
 you will miss any events that are sent during the frames when the receiving
 systems are not running!</p>
-<p>To mitigate this, you could implement a [custom cleanup
-strategy][cb::event-manual], to manually manage the lifetime of the relevant
+<p>To mitigate this, you could implement a <a href="/patterns/manual-event-clear.html">custom cleanup
+strategy</a>, to manually manage the lifetime of the relevant
 event types.</p>
 <hr />
-<p>Bevy's [fixed timestep][cb::fixedtimestep] is also implemented
+<p>Bevy's <a href="/features/fixed-timestep.html">fixed timestep</a> is also implemented
 using run criteria under the hood.</p>
 
                     </main>

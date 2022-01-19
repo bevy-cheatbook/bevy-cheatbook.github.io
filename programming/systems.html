@@ -137,23 +137,22 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="systems"><a class="header" href="#systems">Systems</a></h1>
-<p>{{#include ../include/links.md}}</p>
 <p>Relevant official examples:
-[<code>ecs_guide</code>][example::ecs_guide],
-[<code>startup_system</code>][example::startup_system],
-[<code>system_param</code>][example::system_param].</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.6.0/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.6.0/examples/ecs/startup_system.rs"><code>startup_system</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.6.0/examples/ecs/system_param.rs"><code>system_param</code></a>.</p>
 <hr />
 <p>Systems are functions you write, which are run by Bevy.</p>
 <p>This is where you implement all your game logic.</p>
-<p>These functions can only take [special parameter types][builtins::systemparam],
-to specify what you need access to. [If you use unsupported parameter types
-in your function, you will get confusing compiler errors!][pitfall::intosystem]</p>
+<p>These functions can only take <a href="/builtins.html#systemparams">special parameter types</a>,
+to specify what you need access to. <a href="/pitfalls/into-system.html">If you use unsupported parameter types
+in your function, you will get confusing compiler errors!</a></p>
 <p>Some of the options are:</p>
 <ul>
-<li>accessing [resources][cb::res] using [<code>Res</code>][bevy::Res]/[<code>ResMut</code>][bevy::ResMut]</li>
-<li>accessing [components of entities][cb::component] using [queries][cb::query] ([<code>Query</code>][bevy::Query])</li>
-<li>creating/destroying entities, components, and resources using [Commands][cb::commands] ([<code>Commands</code>][bevy::Commands])</li>
-<li>sending/receiving [events][cb::event] using [<code>EventWriter</code>][bevy::EventWriter]/[<code>EventReader</code>][bevy::EventReader]</li>
+<li>accessing <a href="/programming/res.html">resources</a> using <a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.Res.html"><code>Res</code></a>/<a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut</code></a></li>
+<li>accessing <a href="/programming/ec.html#components">components of entities</a> using <a href="/programming/queries.html">queries</a> (<a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.Query.html"><code>Query</code></a>)</li>
+<li>creating/destroying entities, components, and resources using <a href="/programming/commands.html">Commands</a> (<a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>)</li>
+<li>sending/receiving <a href="/programming/events.html">events</a> using <a href="https://docs.rs/bevy/0.6.0/bevy/ecs/event/struct.EventWriter.html"><code>EventWriter</code></a>/<a href="https://docs.rs/bevy/0.6.0/bevy/ecs/event/struct.EventReader.html"><code>EventReader</code></a></li>
 </ul>
 <pre><code class="language-rust no_run noplayground">fn debug_start(
     // access resource
@@ -178,7 +177,7 @@ useful for organization.</p>
 group them into tuples to work around the limit. Tuples can contain up to
 16 members, but can be nested indefinitely.</p>
 <h2 id="runtime"><a class="header" href="#runtime">Runtime</a></h2>
-<p>To run your systems, you need to add them to Bevy via the [app builder][cb::app]:</p>
+<p>To run your systems, you need to add them to Bevy via the <a href="/programming/app-builder.html">app builder</a>:</p>
 <pre><code class="language-rust no_run noplayground">fn main() {
     App::new()
         // ...
@@ -198,9 +197,9 @@ group them into tuples to work around the limit. Tuples can contain up to
 <p>The above is enough for simple projects.</p>
 <p>As your project grows more complex, you might want to enhance your app builder
 with some of the powerful tools that Bevy offers for managing when/how
-your systems run, such as: [explicit ordering][cb::system-order] with
-[labels][cb::label], [system sets][cb::systemset], [states][cb::state],
-[run criteria][cb::runcriteria], and [stages][cb::stage].</p>
+your systems run, such as: <a href="/programming/system-order.html">explicit ordering</a> with
+<a href="/features/labels.html">labels</a>, <a href="/programming/system-sets.html">system sets</a>, <a href="/programming/states.html">states</a>,
+<a href="/programming/run-criteria.html">run criteria</a>, and <a href="/programming/stages.html">stages</a>.</p>
 
                     </main>
 
