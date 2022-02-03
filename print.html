@@ -765,53 +765,51 @@ could use to help diagnose them. It tries to provide more user-friendly
 Bevy-specific error messages.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="using-3rd-party-plugins"><a class="header" href="#using-3rd-party-plugins">Using 3rd-party Plugins</a></h1>
 <p>There is a growing ecosystem of unofficial community-made plugins for Bevy,
-which provide a lot of functionality that is not officially included with
-the engine. For many kinds/genres of games, you might greatly benefit from
-using some of these.</p>
-<p>To find such plugins, you should search the <a href="https://bevyengine.org/assets/">Bevy
-Assets</a> page on the official Bevy website. This
-is the official registry of known community-made things for Bevy. If you
-publish your own plugins for Bevy, you should <a href="https://github.com/bevyengine/bevy-assets">contribute a link to be added
-to that page</a>.</p>
+which provide a lot of functionality that is not officially included with the
+engine. You might greatly benefit from using some of these in your projects.</p>
+<p>To find such plugins, you should search the <a href="https://bevyengine.org/assets">Bevy Assets</a>
+page on the official Bevy website. This is the official registry of known
+community-made things for Bevy. If you publish your own plugins for Bevy,
+you should <a href="https://github.com/bevyengine/bevy-assets">contribute a link to be added to that page</a>.</p>
 <p>Please beware that some 3rd-party plugins may use unusual licenses. Be sure
 to check the license before using a plugin in your project.</p>
 <hr />
 <p>Other pages in this book with valuable information when using 3rd-party plugins:</p>
 <ul>
-<li>Some plugins may require you to <a href="setup/./bevy-config.html">configure Bevy in some specific way</a>.</li>
-<li>If you are <a href="setup/./bevy-git.html">using bleeding-edge unreleased Bevy (main)</a>, you may encounter difficulties with plugin compatibility.</li>
+<li>Some plugins may require you to <a href="setup//setup/bevy-config.html">configure Bevy in some specific way</a>.</li>
+<li>If you are <a href="setup//setup/bevy-git.html">using bleeding-edge unreleased Bevy (main)</a>, you may encounter difficulties with plugin compatibility.</li>
 </ul>
 <h2 id="plugin-recommendations"><a class="header" href="#plugin-recommendations">Plugin Recommendations</a></h2>
 <p>This here is my personal, curated, opinionated list of recommendations,
 featuring the most important plugins (in my opinion) in the Bevy ecosystem.</p>
-<p>My goal here is to help direct new Bevy users to some known-good resources, so you can
-start working on the kinds of games you want to make. :)</p>
+<p>My goal here is to help direct new Bevy users to some known-good resources,
+so you can start working on the kinds of games you want to make. :)</p>
 <p>The plugins listed here are compatible with the latest Bevy release and use
 permissive licenses (like Bevy itself).</p>
 <p>This page is very limited. I can only recommend plugins I know enough
 about. Please also check the <a href="https://bevyengine.org/assets">Bevy Assets</a>
 page to find even more things. :)</p>
 <h3 id="development-tools-and-editors"><a class="header" href="#development-tools-and-editors">Development Tools and Editors</a></h3>
-<p><a href="setup/./bevy-tools.html">These are listed on a separate page.</a></p>
+<p><a href="setup//setup/bevy-tools.html">These are listed on a separate page.</a></p>
 <h3 id="code-helpers"><a class="header" href="#code-helpers">Code Helpers</a></h3>
 <p><a href="https://github.com/inodentry/bevy_loading"><code>bevy_loading</code></a> is a helper for
 <a href="setup/../programming/states.html">state</a> transitions. It lets you register systems
 that report their progress, tracks the progress, and transitions to the next
 state when they are all ready. Most useful for loading screens, but can be used
 more generally. Can also track the loading of <a href="setup/../features/assets.html">assets</a>.</p>
-<p><a href="https://github.com/NiklasEi/bevy_asset_loader"><code>bevy_asset_loader</code></a> is a
-more flexible and opinionated helper for managing and loading game assets.
-Uses custom annotations to let you declare your assets more conveniently.</p>
+<p><a href="https://github.com/NiklasEi/bevy_asset_loader"><code>bevy_asset_loader</code></a> is a more flexible
+and opinionated helper for managing and loading game assets. Uses custom
+annotations to let you declare your assets more conveniently.</p>
 <h3 id="audio"><a class="header" href="#audio">Audio</a></h3>
 <p>Use <a href="https://github.com/NiklasEi/bevy_kira_audio"><code>bevy_kira_audio</code></a> instead of the built-in <code>bevy_audio</code>.</p>
 <p>The built-in audio is very limited in features, and you are likely going to
 need this plugin for pretty much any game with audio.</p>
-<p>See <a href="setup/../features/audio.html">this page</a> for help on how to set it up.</p>
+<p>See <a href="setup//features/audio.html">this page</a> for help on how to set it up.</p>
 <h3 id="camera"><a class="header" href="#camera">Camera</a></h3>
-<p><a href="https://github.com/BlackPhlox/bevy_config_cam"><code>bevy_config_cam</code></a> is a nice
-plugin for easily adding camera controls to your Bevy 3D project. It gives
-you a a choice of various common camera behaviors (like follow, top-view,
-FPS-style, free-roaming).</p>
+<p><a href="https://github.com/BlackPhlox/bevy_config_cam"><code>bevy_config_cam</code></a> is a nice plugin for easily
+adding camera controls to your Bevy 3D project. It gives you a a choice
+of various common camera behaviors (like follow, top-view, FPS-style,
+free-roaming).</p>
 <p>Cameras are something that can be very game-specific. As you progress with
 your project, you would probably want to implement your own custom camera
 control logic for your game. However, this plugin is amazing when you are
@@ -820,7 +818,7 @@ starting out on a new project.</p>
 <p>If you are making a 2D game based on a tile-map, there are plugins to
 help do it efficiently with high performance. It is better to use one
 of these plugins, instead of just spawning lots of individual Bevy
-<a href="setup/../features/sprites.html">Sprites</a> for each tile.</p>
+sprites for each tile.</p>
 <ul>
 <li><a href="https://github.com/StarArawn/bevy_ecs_tilemap"><code>bevy_ecs_tilemap</code></a>
 <ul>
@@ -847,7 +845,7 @@ of these plugins, instead of just spawning lots of individual Bevy
 <p>If you want to draw 2D shapes, use the
 <a href="https://github.com/Nilirad/bevy_prototype_lyon"><code>bevy_prototype_lyon</code></a> plugin.</p>
 <h3 id="game-ai"><a class="header" href="#game-ai">Game AI</a></h3>
-<p><a href="https://github.com/zkat/big-brain"><code>big-brain</code></a> is a fantastic plugin for game AI behaviors (Utility AI).</p>
+<p><a href="https://github.com/zkat/big-brain"><code>big-brain</code></a> is a plugin for game AI behaviors (Utility AI).</p>
 <h3 id="gui"><a class="header" href="#gui">GUI</a></h3>
 <p>If you want an alternative to Bevy UI, see <a href="https://github.com/mvlabat/bevy_egui"><code>bevy_egui</code></a>.
 This integrates the <a href="https://github.com/emilk/egui"><code>egui</code> toolkit</a> into Bevy.</p>
@@ -864,8 +862,8 @@ or non-game applications.</p>
 <ul>
 <li>Maintained officially by the Rapier project developers.</li>
 <li>This is a &quot;raw&quot; plugin that gives you direct access to Rapier.</li>
-<li>Gives you the most control, but is hard to use and not idiomatic-Bevy.</li>
-<li>You will probably need to read a lot of documentation, hard to learn.</li>
+<li>Gives you the most control, but may be harder to use and not idiomatic-Bevy.</li>
+<li>You will probably need to read a lot of documentation, harder to learn.</li>
 </ul>
 </li>
 <li><a href="https://github.com/jcornaz/heron"><code>heron</code></a>
@@ -878,13 +876,13 @@ or non-game applications.</p>
 </ul>
 <h3 id="animation"><a class="header" href="#animation">Animation</a></h3>
 <p>For simple &quot;smooth motion&quot; (easing/tweening/interpolation), try
-<a href="https://crates.io/crates/bevy_easings"><code>bevy_easings</code></a>. This might be good
-enough for moving 2D objects around, moving the camera, or other such transitions.</p>
-<p>For animating 2D sprites, try <a href="https://github.com/jcornaz/benimator"><code>benimator</code></a>.</p>
+[<code>bevy_easings</code>][project::bevy_easings]. This might be good enough for moving
+2D objects around, moving the camera, or other such transitions.</p>
+<p>For animating 2D sprites, try [<code>benimator</code>][project::benimator].</p>
 <p>For 3D skeletal animation, unfortunately, there do not seem to be plugins yet.</p>
-<p>Also, a long time ago, there was <a href="https://github.com/bevyengine/bevy/pull/1429">this PR</a>
-with an attempt to contribute a full-featured animation system to Bevy. To
-my knowledge, it has not (yet) been made available as a separate plugin.</p>
+<p>Also, a long time ago, there was [this PR][bevy::1429] with an attempt to
+contribute a full-featured animation system to Bevy. To my knowledge, it
+has not (yet) been made available as a separate plugin.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="configuring-bevy"><a class="header" href="#configuring-bevy">Configuring Bevy</a></h1>
 <p>Bevy is very modular and configurable. It is implemented as many separate
 cargo crates, allowing you to remove the parts you don't need. Higher-level
@@ -4213,11 +4211,12 @@ are available and linked on each page.</p>
 <a href="/programming.html">Bevy Programming</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="changing-the-background-color"><a class="header" href="#changing-the-background-color">Changing the Background Color</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/latest/examples/window/clear_color.rs"><code>clear_color</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.6.0/examples/window/clear_color.rs"><code>clear_color</code></a>.</p>
 <hr />
-<p><a href="cookbook/../code/examples/clear-color.rs">Click here for the full example code.</a></p>
+<p><a href="cookbook//code/examples/clear-color.rs">Click here for the full example code.</a></p>
 <hr />
-<p>Use the <code>ClearColor</code> resource to choose the background color.</p>
+<p>Use the <a href="https://docs.rs/bevy/0.6.0/bevy/core_pipeline/struct.ClearColor.html"><code>ClearColor</code></a> <a href="cookbook//programming/res.html">resource</a> to choose the
+background color.</p>
 <pre><code class="language-rust no_run noplayground">fn main() {
     App::new()
         .insert_resource(ClearColor(Color::rgb(0.4, 0.4, 0.4)))
@@ -4226,7 +4225,7 @@ are available and linked on each page.</p>
 }
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="show-framerate-in-console"><a class="header" href="#show-framerate-in-console">Show Framerate in Console</a></h1>
-<p><a href="cookbook/../code/examples/print-framerate.rs">Click here for the full example code.</a></p>
+<p><a href="cookbook//code/examples/print-framerate.rs">Click here for the full example code.</a></p>
 <hr />
 <p>You can use bevy's builtin diagnostics system to print framerate (FPS)
 to the console, for monitoring performance.</p>
@@ -4241,12 +4240,13 @@ fn main() {
 }
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="grabbing-the-mouse"><a class="header" href="#grabbing-the-mouse">Grabbing the Mouse</a></h1>
-<p><a href="cookbook/../code/examples/mouse-grab.rs">Click here for the full example code.</a></p>
+<p><a href="cookbook//code/examples/mouse-grab.rs">Click here for the full example code.</a></p>
 <hr />
-<p>You can lock/release the mouse cursor using bevy's <a href="https://github.com/bevyengine/bevy/blob/latest/examples/window/window_settings.rs">window settings
+<p>You can lock/release the mouse cursor using bevy's <a href="https://github.com/bevyengine/bevy/blob/v0.6.0/examples/window/window_settings.rs">window settings
 API</a>.</p>
-<p>Here is an example that locks and hides the cursor in the primary window on
-mouse click and releases it when pressing <code>Esc</code>:</p>
+<p>Here is an example that locks and hides the cursor in the primary window
+on <a href="cookbook//input/mouse.html">mouse click</a> and releases it when <a href="cookbook//input/keyboard.html">pressing
+<code>Esc</code></a>:</p>
 <pre><code class="language-rust no_run noplayground">fn cursor_grab_system(
     mut windows: ResMut&lt;Windows&gt;,
     btn: Res&lt;Input&lt;MouseButton&gt;&gt;,
@@ -4266,7 +4266,7 @@ mouse click and releases it when pressing <code>Esc</code>:</p>
 }
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="setting-the-window-icon"><a class="header" href="#setting-the-window-icon">Setting the Window Icon</a></h1>
-<p><a href="cookbook/../code/examples/window-icon.rs">Click here for the full example code.</a></p>
+<p><a href="cookbook//code/examples/window-icon.rs">Click here for the full example code.</a></p>
 <hr />
 <p>You might want to set a custom Window Icon. On Windows and Linux, this is
 the icon image shown in the window title bar (if any) and task bar (if any).</p>
@@ -4275,9 +4275,8 @@ to do this. However, it can be done via the <code>winit</code> APIs.</p>
 <p>The way shown here is quite hacky. To save on code complexity, instead of
 using Bevy's asset system to load the image in the background, we bypass
 the assets system and directly load the file using the <code>image</code> library.</p>
-<p>There is some WIP on adding a proper API for this to Bevy; see
-<a href="https://github.com/bevyengine/bevy/pull/2268">PR #2268</a> and
-<a href="https://github.com/bevyengine/bevy/issues/1031">Issue #1031</a>.</p>
+<p>There is some WIP on adding a proper API for this to Bevy; see <a href="https://github.com/bevyengine/bevy/pull/2268">PR
+#2268</a> and <a href="https://github.com/bevyengine/bevy/issues/1031">Issue #1031</a>.</p>
 <p>This example shows how to set the icon for the primary/main window, from
 a Bevy startup system.</p>
 <pre><code class="language-rust no_run noplayground">use bevy::window::WindowId;
@@ -4313,17 +4312,19 @@ fn main() {
 }
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="track-assets-loading"><a class="header" href="#track-assets-loading">Track Assets Loading</a></h1>
-<p><a href="cookbook/../code/examples/assets-ready.rs">Click here for the full example code.</a></p>
+<p><a href="cookbook//code/examples/assets-ready.rs">Click here for the full example code.</a></p>
 <hr />
-<p>You might want to use a 3rd-party library for this. See <a href="cookbook/../setup/unofficial-plugins.html#code-helpers">my recommendations
-for helper crates</a> that can do
-this for you. Otherwise, this page shows you how to roll your own.</p>
+<p>You might want to use a 3rd-party library for this. See <a href="cookbook//setup/unofficial-plugins.html#code-helpers">my recommendations for
+helper crates</a> that can do this for you. Otherwise,
+this page shows you how to roll your own.</p>
 <hr />
 <p>You might want to know when your various assets have all finished loading, and
 take some action, such as exiting your loading screen and starting gameplay.</p>
-<p>To do this, we can convert our various handles into <code>HandleUntyped</code>s, so we can
-add them all into a single collection.</p>
-<p>We can then ask the <code>AssetServer</code> about the loading state of the collection.</p>
+<p>To do this, we can convert our various handles into
+<a href="https://docs.rs/bevy/0.6.0/bevy/asset/struct.HandleUntyped.html"><code>HandleUntyped</code></a>s, so we can add them all into a
+single collection.</p>
+<p>We can then ask the <a href="https://docs.rs/bevy/0.6.0/bevy/asset/struct.AssetServer.html"><code>AssetServer</code></a> about the loading
+state of the collection.</p>
 <pre><code class="language-rust no_run noplayground">struct AssetsLoading(Vec&lt;HandleUntyped&gt;);
 
 fn setup(server: Res&lt;AssetServer&gt;, mut loading: ResMut&lt;AssetsLoading&gt;) {
@@ -4368,7 +4369,7 @@ fn check_assets_ready(
 <p>It is also possible to query the load state of a single asset, by passing an
 individual handle to <code>AssetServer.get_load_state()</code>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="convert-cursor-to-world-coordinates"><a class="header" href="#convert-cursor-to-world-coordinates">Convert cursor to world coordinates</a></h1>
-<p><a href="cookbook/../code/examples/cursor2world.rs">Click here for the full example code.</a></p>
+<p><a href="cookbook//code/examples/cursor2world.rs">Click here for the full example code.</a></p>
 <hr />
 <p>Bevy does not yet provide built-in functions to help with finding out what
 the cursor is pointing at.</p>
@@ -4415,13 +4416,13 @@ fn my_cursor_system(
 }
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="custom-camera-projection"><a class="header" href="#custom-camera-projection">Custom Camera Projection</a></h1>
-<p><a href="cookbook/../code/examples/custom-projection.rs">Click here for the full example code.</a></p>
+<p><a href="cookbook//code/examples/custom-projection.rs">Click here for the full example code.</a></p>
 <hr />
 <p>Camera with a custom projection (not using one of Bevy's standard perspective
 or orthographic projections).</p>
-<p>You could also use this to change the coordinate system, if you
-insist on using something other than <a href="cookbook/../features/transforms.html">Bevy's default coordinate
-system</a>, for whatever reason.</p>
+<p>You could also use this to change the coordinate system, if you insist on
+using something other than <a href="cookbook//features/coords.html">Bevy's default coordinate system</a>,
+for whatever reason.</p>
 <p>Here we implement a simple orthographic projection that maps <code>-1.0</code> to <code>1.0</code>
 to the vertical axis of the window, and respects the window's aspect ratio
 for the horizontal axis:</p>
@@ -4508,15 +4509,18 @@ fn main() {
 }
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="pan--orbit-camera"><a class="header" href="#pan--orbit-camera">Pan + Orbit Camera</a></h1>
-<p><a href="cookbook/../code/examples/pan-orbit-camera.rs">Click here for the full example code.</a></p>
+<p>[Click here for the full example code.][cbexample::pan-orbit-camera.rs]</p>
 <hr />
 <p>This code is a community contribution.</p>
 <p>Current version developed by <a href="https://github.com/bevy-cheatbook/bevy-cheatbook/pull/1"><strong>@mirenbharta</strong></a>.
-Initial work by <a href="https://github.com/inodentry/bevy-cookbook/pull/2"><strong>@skairunner</strong></a>.</p>
+Initial work by <a href="https://github.com/bevy-cheatbook/bevy-cookbook/pull/2"><strong>@skairunner</strong></a>.</p>
 <hr />
 <p>This is a camera controller similar to the ones in 3D editors like Blender.</p>
 <p>Use the right mouse button to rotate, middle button to pan, scroll wheel to
 move inwards/outwards.</p>
+<p>This is largely shown for illustrative purposes, as an example
+to learn from. In your projects, you may want to try the
+<a href="https://github.com/BlackPhlox/bevy_config_cam"><code>bevy_config_cam</code></a> plugin.</p>
 <pre><code class="language-rust no_run noplayground">/// Tags an entity as capable of panning and orbiting.
 #[derive(Component)]
 struct PanOrbitCamera {
@@ -4641,12 +4645,10 @@ fn spawn_camera(mut commands: Commands) {
 }
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="list-all-resource-types"><a class="header" href="#list-all-resource-types">List All Resource Types</a></h1>
-<p><a href="cookbook/../code/examples/print-resources.rs">Click here for the full example code.</a></p>
+<p><a href="cookbook//code/examples/print-resources.rs">Click here for the full example code.</a></p>
 <hr />
-<p>We can access the metadata stored inside Bevy ECS to learn about the types
-of things currently stored.</p>
 <p>This example shows how to print a list of all types that have been added as
-<a href="cookbook/../programming/res.html">resources</a>.</p>
+<a href="cookbook//programming/res.html">resources</a>.</p>
 <pre><code class="language-rust no_run noplayground">fn print_resources(archetypes: &amp;Archetypes, components: &amp;Components) {
     let mut r: Vec&lt;String&gt; = archetypes
         .resource()
@@ -4667,6 +4669,7 @@ of things currently stored.</p>
 <p>Note that this does <em>not</em> give you a comprehensive list of every Bevy-provided
 type that is useful as a resource. It lists the types of all the resources
 <em>currently added</em> to the app (by all registered plugins, your own, etc.).</p>
+<p><a href="cookbook//builtins.html">See here for a more useful list types provided in Bevy.</a></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="bevy-on-different-platforms"><a class="header" href="#bevy-on-different-platforms">Bevy on Different Platforms</a></h1>
 <p>This chapter is a collection of platform-specific information, about using
 Bevy with different operating systems or environments.</p>
