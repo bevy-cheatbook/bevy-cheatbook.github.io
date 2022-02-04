@@ -993,8 +993,13 @@ specific to working with/on different Operating Systems.</p>
 <p>(also check out the <a href="setup/cross//platforms/windows.html">Windows Platform page</a> for info
 about developing for Windows generally)</p>
 <hr />
-<h2 id="first-time-setup"><a class="header" href="#first-time-setup">First-Time Setup</a></h2>
-<h3 id="rust-toolchain"><a class="header" href="#rust-toolchain">Rust Toolchain</a></h3>
+<p>Rust offers two different toolchains for building for Windows:</p>
+<ul>
+<li><a href="setup/cross/linux-windows.html#first-time-setup-msvc">MSVC</a>: the default when working in Windows, requires downloading Microsoft SDKs</li>
+<li><a href="setup/cross/linux-windows.html#first-time-setup-gnu">GNU</a>: alternative MINGW-based build, may be easier to setup</li>
+</ul>
+<h2 id="first-time-setup-msvc"><a class="header" href="#first-time-setup-msvc">First-Time Setup (MSVC)</a></h2>
+<h3 id="rust-toolchain-msvc"><a class="header" href="#rust-toolchain-msvc">Rust Toolchain (MSVC)</a></h3>
 <p>You can actually use the same MSVC-based Rust toolchain, that is the standard
 when working on Windows, from Linux.</p>
 <p>Add the target to your Rust installation (assuming you use <a href="https://rustup.rs"><code>rustup</code></a>):</p>
@@ -1014,7 +1019,7 @@ from Microsoft servers, and install them to a directory of your choosing.</p>
 <p>For example, to install to <code>/opt/xwin/</code>:</p>
 <pre><code class="language-sh">xwin --accept-license 1 splat --output /opt/xwin
 </code></pre>
-<h3 id="linking"><a class="header" href="#linking">Linking</a></h3>
+<h3 id="linking-msvc"><a class="header" href="#linking-msvc">Linking (MSVC)</a></h3>
 <p>Rust needs to know how to link the final EXE file.</p>
 <p>The default Microsoft linker (<code>link.exe</code>) is not available on Linux. Instead,
 we need to use the LLD linker (this is also recommended when working on
@@ -1030,10 +1035,25 @@ rustflags = [
   &quot;-Lnative=/opt/xwin/sdk/lib/ucrt/x86_64&quot;
 ]
 </code></pre>
+<h2 id="first-time-setup-gnu"><a class="header" href="#first-time-setup-gnu">First-Time Setup (GNU)</a></h2>
+<h3 id="rust-toolchain-gnu"><a class="header" href="#rust-toolchain-gnu">Rust Toolchain (GNU)</a></h3>
+<p>You can also use the alternative GNU-based Windows toolchain.</p>
+<p>Add the target to your Rust installation (assuming you use <a href="https://rustup.rs"><code>rustup</code></a>):</p>
+<pre><code class="language-sh">rustup target add x86_64-pc-windows-gnu
+</code></pre>
+<p>This installs the files Rust needs to compile for Windows, including the
+Rust standard library.</p>
+<h3 id="mingw"><a class="header" href="#mingw">MINGW</a></h3>
+<p>The GNU toolchain requires the MINGW environment to be installed. Your distro likely
+provides a package for it. Search your distro for a cross-compilation mingw package.</p>
+<p>It might be called something like: <code>cross-x86_64-w64-mingw32</code>, but that varies in different distros.</p>
+<p>You don't need any files from Microsoft.</p>
 <h2 id="building-your-project"><a class="header" href="#building-your-project">Building Your Project</a></h2>
 <p>Finally, with all the setup done, you can just build your Rust/Bevy projects
 for Windows:</p>
 <pre><code class="language-sh">cargo build --target=x86_64-pc-windows-msvc --release
+</code></pre>
+<pre><code class="language-sh">cargo build --target=x86_64-pc-windows-gnu --release
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="common-pitfalls"><a class="header" href="#common-pitfalls">Common Pitfalls</a></h1>
 <p>This chapter covers some common issues or surprises that you might be
