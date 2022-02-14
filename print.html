@@ -800,6 +800,10 @@ more generally. Can also track the loading of <a href="setup/../features/assets.
 <p><a href="https://github.com/NiklasEi/bevy_asset_loader"><code>bevy_asset_loader</code></a> is a more flexible
 and opinionated helper for managing and loading game assets. Uses custom
 annotations to let you declare your assets more conveniently.</p>
+<h3 id="input-mappings"><a class="header" href="#input-mappings">Input Mappings</a></h3>
+<p>To help with your game's [input handling][chapter::input] needs, try the
+<a href="https://github.com/leafwing-studios/leafwing-input-manager">Input Manager plugin by Leafwing Studios</a>. It is a very
+flexible way to handle your game's bindings / mappings.</p>
 <h3 id="audio"><a class="header" href="#audio">Audio</a></h3>
 <p>Use <a href="https://github.com/NiklasEi/bevy_kira_audio"><code>bevy_kira_audio</code></a> instead of the built-in <code>bevy_audio</code>.</p>
 <p>The built-in audio is very limited in features, and you are likely going to
@@ -2261,7 +2265,8 @@ from that class of input device, rather than only checking for specific inputs.<
 bindings, etc). You need to come up with your own way of translating the
 inputs into logical actions in your game/app.</p>
 <p>There are some community-made plugins that may help with that: <a href="https://bevyengine.org/assets/#input">see the
-input-section on bevy-assets</a>.</p>
+input-section on bevy-assets</a>. My personal recommendation:
+<a href="https://github.com/leafwing-studios/leafwing-input-manager">Input Manager plugin by Leafwing Studios</a>.</p>
 <p>It may be a good idea to build your own abstractions specific to your
 game. For example, if you need to handle player movement, you might want to
 have a system for reading inputs and converting them to your own internal
