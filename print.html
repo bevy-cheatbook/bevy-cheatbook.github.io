@@ -4665,6 +4665,10 @@ fn main() {
         .run();
 }
 </code></pre>
+<p>Note: you need to add <code>winit</code> to your project's dependencies, and it must
+be the same version as the one used by Bevy. You can use <code>cargo tree</code> to
+visualize the dependency tree and see which is the correct version. As of
+Bevy 0.6, that should be <code>winit = &quot;0.26&quot;</code>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="track-assets-loading"><a class="header" href="#track-assets-loading">Track Assets Loading</a></h1>
 <p><a href="cookbook//code/examples/assets-ready.rs">Click here for the full example code.</a></p>
 <hr />
