@@ -3078,7 +3078,7 @@ group them into tuples to work around the limit. Tuples can contain up to
 <p>As your project grows more complex, you might want to enhance your app builder
 with some of the powerful tools that Bevy offers for managing when/how
 your systems run, such as: <a href="programming//programming/system-order.html">explicit ordering</a> with
-<a href="programming//features/labels.html">labels</a>, <a href="programming//programming/system-sets.html">system sets</a>, <a href="programming//programming/states.html">states</a>,
+<a href="programming//programming/labels.html">labels</a>, <a href="programming//programming/system-sets.html">system sets</a>, <a href="programming//programming/states.html">states</a>,
 <a href="programming//programming/run-criteria.html">run criteria</a>, and <a href="programming//programming/stages.html">stages</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="queries"><a class="header" href="#queries">Queries</a></h1>
 <p>Relevant official examples:
@@ -3552,7 +3552,7 @@ result in better performance.</p>
 <p>On the other hand, for things like handling the player input controls,
 this would result in annoying lag, so you should probably fix it.</p>
 <h2 id="explicit-system-ordering"><a class="header" href="#explicit-system-ordering">Explicit System Ordering</a></h2>
-<p>The solution is to use system <a href="programming//features/labels.html">labels</a> to explicitly specify
+<p>The solution is to use system <a href="programming//programming/labels.html">labels</a> to explicitly specify
 the order you want:</p>
 <pre><code class="language-rust no_run noplayground">fn main() {
     App::new()
@@ -3595,7 +3595,7 @@ the consequences. You can at least make it behave predictably, using explicit
 ordering to specify the order you prefer.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="system-sets"><a class="header" href="#system-sets">System Sets</a></h1>
 <p>System Sets allow you to easily apply common properties to multiple systems,
-for purposes such as <a href="programming//features/labels.html">labeling</a>, <a href="programming//programming/system-order.html">ordering</a>,
+for purposes such as <a href="programming//programming/labels.html">labeling</a>, <a href="programming//programming/system-order.html">ordering</a>,
 <a href="programming//programming/run-criteria.html">run criteria</a>, and <a href="programming//programming/states.html">states</a>.</p>
 <pre><code class="language-rust no_run noplayground">fn main() {
     App::new()
@@ -3797,7 +3797,7 @@ fn main() {
 }
 </code></pre>
 <p>It is OK to have multiple system sets for the same state.</p>
-<p>This is useful when you want to place <a href="programming//features/labels.html">labels</a> and use <a href="programming//programming/system-order.html">explicit
+<p>This is useful when you want to place <a href="programming//programming/labels.html">labels</a> and use <a href="programming//programming/system-order.html">explicit
 system ordering</a>.</p>
 <p>This can also be useful with <a href="programming//programming/plugins.html">Plugins</a>. Each plugin can add
 its own set of systems to the same state.</p>
@@ -4014,7 +4014,7 @@ fn main() {
 </code></pre>
 <h2 id="run-criteria-labels"><a class="header" href="#run-criteria-labels">Run Criteria Labels</a></h2>
 <p>If you have multiple systems or system sets that you want to share the same
-run criteria, you can give it a <a href="programming//features/labels.html">label</a>.</p>
+run criteria, you can give it a <a href="programming//programming/labels.html">label</a>.</p>
 <p>When you use a label, Bevy will only execute the run criteria once, remember
 its output, and apply it to everything with the label.</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Debug, Clone, PartialEq, Eq, Hash)]
