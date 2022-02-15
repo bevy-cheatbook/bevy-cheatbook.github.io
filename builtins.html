@@ -282,7 +282,7 @@ Text element</li>
 <h3 id="configuration-resources"><a class="header" href="#configuration-resources">Configuration Resources</a></h3>
 <p>These resources allow you to change the settings for how various parts of Bevy work.</p>
 <p>Some of them affect the low-level initialization of the engine, so must be present from the
-start to take effect. You need to insert these at the start of your <a href="/programming/app-builder.html">app builder</a>.</p>
+start to take effect. You need to insert these at the start of your <a href="/programming/app-builder.html">app builder</a>:</p>
 <ul>
 <li><a href="https://docs.rs/bevy/0.6.0/bevy/log/struct.LogSettings.html"><code>LogSettings</code></a>:
 Configure what messages get logged to the console</li>
@@ -294,7 +294,7 @@ Low-level settings for the GPU API and backends</li>
 Advanced configuration of the <a href="https://docs.rs/bevy/0.6.0/bevy/asset/struct.AssetServer.html"><code>AssetServer</code></a></li>
 </ul>
 <p>These may be inserted at the start, but should also be fine to change at runtime (from a
-<a href="/programming/systems.html">system</a>).</p>
+<a href="/programming/systems.html">system</a>):</p>
 <ul>
 <li><a href="https://docs.rs/bevy/0.6.0/bevy/core_pipeline/struct.ClearColor.html"><code>ClearColor</code></a>:
 Global renderer background color to clear the window at the start of each frame</li>
