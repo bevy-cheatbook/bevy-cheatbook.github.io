@@ -188,6 +188,9 @@ wasm-opt -Oz -o output.wasm input.wasm
 
 # Optimize aggressively for speed.
 wasm-opt -O3 -o output.wasm input.wasm
+
+# Optimize aggressively for both size and speed.
+wasm-opt -O -ol 100 -s 100 -o output.wasm input.wasm
 </code></pre>
 <h2 id="use-the-wee-alloc-memory-allocator"><a class="header" href="#use-the-wee-alloc-memory-allocator">Use the <code>wee-alloc</code> memory allocator</a></h2>
 <p>You can replace Rust's default memory allocator with
