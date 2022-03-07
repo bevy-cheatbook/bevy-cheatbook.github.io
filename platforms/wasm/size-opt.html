@@ -193,25 +193,6 @@ wasm-opt -O3 -o output.wasm input.wasm
 # Optimize aggressively for both size and speed.
 wasm-opt -O -ol 100 -s 100 -o output.wasm input.wasm
 </code></pre>
-<h2 id="use-the-wee-alloc-memory-allocator"><a class="header" href="#use-the-wee-alloc-memory-allocator">Use the <code>wee-alloc</code> memory allocator</a></h2>
-<p>You can replace Rust's default memory allocator with
-<a href="https://github.com/rustwasm/wee_alloc">wee-alloc</a>, which is slower, but is less than a single
-kilobyte in size.</p>
-<p>This may result in a significant performance hit. If your game runs fast
-enough with it, the smaller download size may be more important.</p>
-<p>In <code>Cargo.toml</code>, add the following:</p>
-<pre><code class="language-toml">[dependencies]
-wee_alloc = &quot;0.4&quot;
-</code></pre>
-<p>And now add the following to <code>main.rs</code>:</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>#[cfg(target_arch = &quot;wasm32&quot;)]
-#[global_allocator]
-static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
-<span class="boring">}
-</span></code></pre></pre>
 <hr />
 <p>Do you know of more WASM size-optimization techniques? Post about them in the
 <a href="https://github.com/bevy-cheatbook/bevy-cheatbook">GitHub Issue Tracker</a> so that they can be added to this page!</p>
