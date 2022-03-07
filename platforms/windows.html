@@ -152,6 +152,27 @@ the same directory as the EXE on the user's computer.</p>
 <p>The easiest way to give your game to other people to play is to put them
 together in a ZIP file. If you use some other method of installation,
 install the <code>assets</code> folder and the EXE to the same path.</p>
+<h2 id="disabling-the-windows-console"><a class="header" href="#disabling-the-windows-console">Disabling the Windows Console</a></h2>
+<p>By default, when you run a Bevy app (or any Rust program for that matter)
+on Windows, a Console window also shows up. To disable this,
+place this Rust attribute at the top of your <code>main.rs</code>:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span>#![windows_subsystem = &quot;windows&quot;)]
+<span class="boring">fn main() {
+</span><span class="boring">}
+</span></code></pre></pre>
+<p>This tells Windows that your executable is a graphical application, not a
+command-line program. Windows will know not display a console.</p>
+<p>However, the console can be useful for development, to see log messages.
+You can disable it only for release builds, and leave it enabled in debug
+builds, like this:</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span>#![cfg_attr(not(debug_assertions), windows_subsystem = &quot;windows&quot;)]
+<span class="boring">fn main() {
+</span><span class="boring">}
+</span></code></pre></pre>
 <h2 id="creating-an-icon-for-your-app"><a class="header" href="#creating-an-icon-for-your-app">Creating an icon for your app</a></h2>
 <p>There are two places where you might want to put your application icon:</p>
 <ul>
