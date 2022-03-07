@@ -143,7 +143,14 @@
 <hr />
 <p>Bevy allows you to easily detect when data is changed. You can use this to
 perform actions in response to changes.</p>
+<p>One of the main use cases is optimization – avoiding unnecessary work by
+only doing it if the relevant data has changed. Another use case is triggering
+special actions to occur on changes, like configuring something or sending
+the data somewhere.</p>
 <h2 id="components"><a class="header" href="#components">Components</a></h2>
+<h3 id="filtering"><a class="header" href="#filtering">Filtering</a></h3>
+<p>You can make a <a href="/programming/queries.html">query</a> that only yields entities if specific
+<a href="/programming/ec.html#components">components</a> on them have been modified.</p>
 <p>Use <a href="/programming/queries.html#query-filters">query filters</a>:</p>
 <ul>
 <li><a href="https://docs.rs/bevy/0.6.0/bevy/ecs/query/struct.Added.html"><code>Added&lt;T&gt;</code></a>: detect new component instances
@@ -188,31 +195,29 @@ fn debug_new_hostiles(
     }
 }
 </code></pre>
-<p><a href="https://docs.rs/bevy/0.6.0/bevy/ecs/query/struct.Changed.html"><code>Changed</code></a> detection is triggered by
-<a href="https://doc.rust-lang.org/stable/std/ops/trait.DerefMut.html"><code>DerefMut</code></a>. Simply accessing components via a mutable query,
-without actually performing a <code>&amp;mut</code> access, will <em>not</em> trigger it.</p>
-<p>This makes change detection quite accurate. You can rely on it to optimize
-your game's performance, or to otherwise trigger things to happen.</p>
-<p>Also note that when you mutate a component, Bevy does not track if the new
-value is actually different from the old value. It will always trigger the
-change detection. If you want to avoid that, simply check it yourself:</p>
-<pre><code class="language-rust no_run noplayground">fn update_player_xp(
-    mut query: Query&lt;&amp;mut PlayerXp&gt;,
+<h3 id="checking"><a class="header" href="#checking">Checking</a></h3>
+<p>If you want to access all the entities, as normal, regardless of if they have
+been modified, but you just want to check the status, you can use the special
+<a href="https://docs.rs/bevy/0.6.0/bevy/ecs/query/struct.ChangeTrackers.html"><code>ChangeTrackers&lt;T&gt;</code></a> query parameter.</p>
+<pre><code class="language-rust no_run noplayground">/// Make sprites flash red on frames when the Health changes
+fn debug_damage(
+    mut query: Query&lt;(&amp;mut Sprite, ChangeTrackers&lt;Health&gt;)&gt;,
 ) {
-    for mut xp in query.iter_mut() {
-        let new_xp = maybe_lvl_up(&amp;xp);
-
-        // avoid triggering change detection if the value is the same
-        if new_xp != *xp {
-            *xp = new_xp;
+    for (mut sprite, tracker) in query.iter_mut() {
+        // detect if the Health changed this frame
+        if tracker.is_changed() {
+            sprite.color = Color::RED;
+        } else {
+            // extra check so we don't mutate on every frame without changes
+            if sprite.color != Color::WHITE {
+                sprite.color = Color::WHITE;
+            }
         }
     }
 }
 </code></pre>
-<p>Change detection is reliable -- it will detect any changes that
-have occured since the last time your detecting system ran. If your
-system only runs sometimes (such as with <a href="/programming/states.html">states</a> or <a href="/programming/run-criteria.html">run
-criteria</a>), you <em>do not</em> have to worry about missing changes.</p>
+<p>This is useful for processing all entities, but doing different things
+depending on if they have been modified.</p>
 <h2 id="resources"><a class="header" href="#resources">Resources</a></h2>
 <p>For <a href="/programming/res.html">resources</a>, change detection is provided via methods on the
 <a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.Res.html"><code>Res</code></a>/<a href="https://docs.rs/bevy/0.6.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut</code></a> system parameters.</p>
@@ -238,10 +243,35 @@ fn check_res_added(
     }
 }
 </code></pre>
-<p>This works the same way as change detection for components.</p>
 <p>Note that change detection cannot currently be used to detect
 <a href="/programming/states.html">states</a> changes (via the <a href="https://docs.rs/bevy/0.6.0/bevy/ecs/schedule/struct.State.html"><code>State</code></a>
 <a href="/programming/res.html">resource</a>) (<a href="https://github.com/bevyengine/bevy/issues/2343">bug</a>).</p>
+<h2 id="what-gets-detected"><a class="header" href="#what-gets-detected">What gets detected?</a></h2>
+<p><a href="https://docs.rs/bevy/0.6.0/bevy/ecs/query/struct.Changed.html"><code>Changed</code></a> detection is triggered by
+<a href="https://doc.rust-lang.org/stable/std/ops/trait.DerefMut.html"><code>DerefMut</code></a>. Simply accessing components via a mutable query,
+without actually performing a <code>&amp;mut</code> access, will <em>not</em> trigger it.</p>
+<p>This makes change detection quite accurate. You can rely on it to optimize
+your game's performance, or to otherwise trigger things to happen.</p>
+<p>Also note that when you mutate a component, Bevy does not track if the new
+value is actually different from the old value. It will always trigger the
+change detection. If you want to avoid that, simply check it yourself:</p>
+<pre><code class="language-rust no_run noplayground">fn update_player_xp(
+    mut query: Query&lt;&amp;mut PlayerXp&gt;,
+) {
+    for mut xp in query.iter_mut() {
+        let new_xp = maybe_lvl_up(&amp;xp);
+
+        // avoid triggering change detection if the value is the same
+        if new_xp != *xp {
+            *xp = new_xp;
+        }
+    }
+}
+</code></pre>
+<p>Change detection is reliable -- it will detect any changes that
+have occured since the last time your detecting system ran. If your
+system only runs sometimes (such as with <a href="/programming/states.html">states</a> or <a href="/programming/run-criteria.html">run
+criteria</a>), you <em>do not</em> have to worry about missing changes.</p>
 <h2 id="possible-pitfalls"><a class="header" href="#possible-pitfalls">Possible Pitfalls</a></h2>
 <p>Beware of frame delay / 1-frame-lag. This can occur if Bevy runs the detecting
 system before the changing system. The detecting system will see the change
