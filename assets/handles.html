@@ -138,6 +138,48 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="handles"><a class="header" href="#handles">Handles</a></h1>
+<p>Handles are lightweight IDs that refer to a specific asset. You need them
+to use your assets, for example to <a href="/programming/commands.html">spawn entities</a> like
+<a href="/2d/sprites.html">2D sprites</a> or <a href="/features/gltf.html">3D models</a>, or to <a href="/assets/data.html">access the data
+of the assets</a>.</p>
+<p>Handles have the Rust type <a href="https://docs.rs/bevy/0.6.0/bevy/asset/struct.Handle.html"><code>Handle&lt;T&gt;</code></a>, where <code>T</code> is the
+<a href="/builtins.html#assets">asset type</a>.</p>
+<p>You can store handles in your <a href="/programming/ec.html#components">entity components</a> or
+<a href="/programming/res.html">resources</a>.</p>
+<p>Handles can refer to not-yet-loaded assets, meaning you can just spawn your
+entities anyway, using the handles, and the assets will just &quot;pop in&quot; when
+they become ready.</p>
+<h2 id="obtaining-handles"><a class="header" href="#obtaining-handles">Obtaining Handles</a></h2>
+<p>If you are <a href="/assets/assetserver.html">loading an asset from a file</a>, the
+<code>asset_server.load(…)</code> call will give you the handle. The loading of the
+data happens in the background, meaning that the handle will initially refer
+to an unloaded asset, and the actual data will become available later.</p>
+<p>If you are <a href="/assets/data.html">creating your own asset data from code</a>,
+the <code>assets.add(…)</code> call will give you the handle.</p>
+<h2 id="reference-counting-strong-and-weak-handles"><a class="header" href="#reference-counting-strong-and-weak-handles">Reference Counting; Strong and Weak Handles</a></h2>
+<p>Bevy keeps track of how many handles to a given asset exist at any time. Bevy
+will automatically unload unused assets, after the last handle is dropped.</p>
+<p>For this reason, creating additional handles to the same asset requires you
+to call <code>handle.clone()</code>. This makes the operation explicit, to ensure you are
+aware of all the places in your code where you create additional handles. The
+<code>.clone()</code> operation is cheap, so don't worry about performance (in most cases).</p>
+<p>There are two kinds of handles: &quot;strong&quot; and &quot;weak&quot;. Strong assets are
+counted, weak handles are not. By default, handles are strong. If you want
+to create a weak handle, use <code>.clone_weak()</code> (instead of <code>.clone()</code>) on an
+existing handle. Bevy can unload the asset after all strong handles are gone,
+even if you are still holding some weak handles.</p>
+<h2 id="untyped-handles"><a class="header" href="#untyped-handles">Untyped Handles</a></h2>
+<p>Bevy also has a <a href="https://docs.rs/bevy/0.6.0/bevy/asset/struct.HandleUntyped.html"><code>HandleUntyped</code></a> type. Use this type
+of handle if you need to be able to refer to any asset, regardless of the
+asset type.</p>
+<p>This allows you to store a collection (such as <a href="https://doc.rust-lang.org/stable/std/vec/struct.Vec.html"><code>Vec</code></a> or
+<a href="https://doc.rust-lang.org/stable/std/collections/struct.HashMap.html"><code>HashMap</code></a>) containing assets of mixed types.</p>
+<p>Just like regular handles, untyped handles can be strong or weak, and can
+be used to <a href="/assets/data.html">access asset data</a>.</p>
+<p>You can create an untyped handle using <code>.clone_untyped()</code> on an existing
+handle.</p>
+<p>You can convert an untyped handle into a typed handle with <code>.typed::&lt;T&gt;()</code>,
+specifying the type to use.</p>
 
                     </main>
 

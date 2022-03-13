@@ -138,6 +138,59 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="access-the-asset-data"><a class="header" href="#access-the-asset-data">Access the Asset Data</a></h1>
+<p>To access the actual asset data from systems, use the
+<a href="https://docs.rs/bevy/0.6.0/bevy/asset/struct.Assets.html"><code>Assets&lt;T&gt;</code></a> <a href="/programming/res.html">resource</a>.</p>
+<p>You can identify your desired asset using either the <a href="/assets/handles.html">handle</a>
+(<a href="/assets/handles.html#untyped-handles">untyped handles</a> can also be used) or the <a href="/assets/assetserver.html#assetpath-and-labels">asset
+path</a>:</p>
+<pre><code class="language-rust no_run noplayground">struct SpriteSheets {
+    map_tiles: Handle&lt;TextureAtlas&gt;,
+}
+
+fn use_sprites(
+    handles: Res&lt;SpriteSheets&gt;,
+    atlases: Res&lt;Assets&lt;TextureAtlas&gt;&gt;,
+    images: Res&lt;Assets&lt;Image&gt;&gt;,
+) {
+    // Could be `None` if the asset isn't loaded yet
+    if let Some(atlas) = atlases.get(&amp;handles.map_tiles) {
+        // do something with the texture atlas
+    }
+
+    // Can use a path instead of a handle
+    if let Some(map_tex) = images.get(&quot;map.png&quot;) {
+        // if &quot;map.png&quot; was loaded, we can use it!
+    }
+}
+</code></pre>
+<h2 id="creating-assets-from-code"><a class="header" href="#creating-assets-from-code">Creating Assets from Code</a></h2>
+<p>You can also add assets to <a href="https://docs.rs/bevy/0.6.0/bevy/asset/struct.Assets.html"><code>Assets&lt;T&gt;</code></a> manually.</p>
+<p>Sometimes you need to create assets from code, rather than <a href="/assets/assetserver.html">loading them
+from files</a>. Some common examples of such use-cases are:</p>
+<ul>
+<li>creating texture atlases</li>
+<li>creating 3D or 2D materials</li>
+<li>procedurally-generating assets like images or 3D meshes</li>
+</ul>
+<p>To do this, first create the data for the asset (an instance of the
+<a href="/builtins.html#assets">asset type</a>), and then add it <code>.add(…)</code> it to the
+<a href="https://docs.rs/bevy/0.6.0/bevy/asset/struct.Assets.html"><code>Assets&lt;T&gt;</code></a> resource, for it to be stored and tracked by
+Bevy. You will get a <a href="/assets/handles.html">handle</a> to use to refer to it, just like
+any other asset.</p>
+<pre><code class="language-rust no_run noplayground">fn add_material(
+    mut materials: ResMut&lt;Assets&lt;StandardMaterial&gt;&gt;,
+) {
+    let new_mat = StandardMaterial {
+        base_color: Color::rgba(0.25, 0.50, 0.75, 1.0),
+        unlit: true,
+        ..Default::default()
+    };
+
+    let handle = materials.add(new_mat);
+
+    // do something with the handle
+}
+</code></pre>
 
                     </main>
 

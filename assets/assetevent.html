@@ -138,6 +138,40 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="react-to-changes-with-asset-events"><a class="header" href="#react-to-changes-with-asset-events">React to Changes with Asset Events</a></h1>
+<p>If you need to perform specific actions when an asset is created,
+modified, or removed, you can make a <a href="/programming/systems.html">system</a> that reacts to
+<a href="https://docs.rs/bevy/0.6.0/bevy/asset/enum.AssetEvent.html"><code>AssetEvent</code></a> <a href="/programming/events.html">events</a>.</p>
+<pre><code class="language-rust no_run noplayground">struct MyMapImage {
+    handle: Handle&lt;Image&gt;,
+}
+
+fn fixup_images(
+    mut ev_asset: EventReader&lt;AssetEvent&lt;Image&gt;&gt;,
+    mut assets: ResMut&lt;Assets&lt;Image&gt;&gt;,
+    map_img: Res&lt;MyMapImage&gt;,
+) {
+    for ev in ev_asset.iter() {
+        match ev {
+            AssetEvent::Created { handle } |
+            AssetEvent::Modified { handle } =&gt; {
+                // a texture was just loaded or changed!
+
+                let texture = assets.get_mut(handle).unwrap();
+                // ^ unwrap is OK, because we know it is loaded now
+
+                if *handle == map_img.handle {
+                    // it is our special map image!
+                } else {
+                    // it is some other image
+                }
+            }
+            AssetEvent::Removed { handle } =&gt; {
+                // an image was unloaded
+            }
+        }
+    }
+}
+</code></pre>
 
                     </main>
 

@@ -137,7 +137,101 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="load-assets-from-files"><a class="header" href="#load-assets-from-files">Load Assets from Files</a></h1>
+                        <h1 id="load-assets-from-files-with-assetserver"><a class="header" href="#load-assets-from-files-with-assetserver">Load Assets from Files with AssetServer</a></h1>
+<p>Relevant official examples:
+<a href="https://github.com/bevyengine/bevy/blob/v0.6.0/examples/asset/asset_loading.rs"><code>asset_loading</code></a>.</p>
+<hr />
+<p>To load assets from files, use the <a href="https://docs.rs/bevy/0.6.0/bevy/asset/struct.AssetServer.html"><code>AssetServer</code></a>
+<a href="/programming/res.html">resource</a>.</p>
+<pre><code class="language-rust no_run noplayground">struct UiFont(Handle&lt;Font&gt;);
+
+fn load_ui_font(
+    mut commands: Commands,
+    server: Res&lt;AssetServer&gt;
+) {
+    let handle: Handle&lt;Font&gt; = server.load(&quot;font.ttf&quot;);
+
+    // we can store the handle in a resource:
+    //  - to prevent the asset from being unloaded
+    //  - if we want to use it to access the asset later
+    commands.insert_resource(UiFont(handle));
+}
+</code></pre>
+<p>This queues the asset loading to happen in the background, and return a
+<a href="/assets/handles.html">handle</a>. The asset will take some time to become available. You
+cannot access the actual data immediately in the same <a href="/programming/systems.html">system</a>,
+but you can use the handle.</p>
+<p>You can spawn entities like your 2D sprites, 3D models, and UI, using the
+handle, even before the asset has loaded. They will just &quot;pop in&quot; later,
+when the asset becomes ready.</p>
+<p>Note that it is OK to call <code>asset_server.load(…)</code> as many times as you want,
+even if the asset is currently loading, or already loaded. It will just
+provide you with the same handle. Every time you call it, it will just check
+the status of the asset, begin loading it if needed, and give you a handle.</p>
+<p>Bevy supports loading <a href="/builtins.html#file-formats">a variety of asset file formats</a>,
+and can be extended to support more. The asset loader implementation to use
+is selected based on the file extension.</p>
+<h2 id="untyped-loading"><a class="header" href="#untyped-loading">Untyped Loading</a></h2>
+<p>If you want an <a href="/assets/handles.html#untyped-handles">untyped handle</a>, you can use
+<code>asset_server.load_untyped(…)</code> instead.</p>
+<p>You can also load an entire folder of assets, regardless of how many
+files are inside, using <code>asset_server.load_folder(…)</code>. This gives you a
+<code>Vec&lt;HandleUntyped&gt;</code> with all the untyped handles.</p>
+<pre><code class="language-rust no_run noplayground">struct ExtraAssets(Vec&lt;HandleUntyped&gt;);
+
+fn load_extra_assets(
+    mut commands: Commands,
+    server: Res&lt;AssetServer&gt;,
+) {
+    if let Ok(handles) = server.load_folder(&quot;extra&quot;) {
+        commands.insert_resource(ExtraAssets(handles));
+    }
+}
+</code></pre>
+<p>Untyped loading is possible, because Bevy always detects the file type from
+the file extension anyway.</p>
+<h2 id="assetpath-and-labels"><a class="header" href="#assetpath-and-labels">AssetPath and Labels</a></h2>
+<p>The asset path you use to identify an asset from the filesystem is actually
+a special <a href="https://docs.rs/bevy/0.6.0/bevy/asset/struct.AssetPath.html"><code>AssetPath</code></a>, which consists of the file path +
+a label. Labels are used in situations where multiple assets are contained
+in the same file. An example of this are <a href="/features/gltf.html">GLTF files</a>, which can
+contain meshes, scenes, textures, materials, etc.</p>
+<p>Asset paths can be created from a string, with the label (if any) attached
+after a <code>#</code> symbol.</p>
+<pre><code class="language-rust no_run noplayground">fn load_gltf_things(
+    mut commands: Commands,
+    server: Res&lt;AssetServer&gt;
+) {
+    // get a specific mesh
+    let my_mesh: Handle&lt;Mesh&gt; = server.load(&quot;my_scene.gltf#Mesh0/Primitive0&quot;);
+
+    // spawn a whole scene
+    let my_scene: Handle&lt;Scene&gt; = server.load(&quot;my_scene.gltf#Scene0&quot;);
+    commands.spawn_scene(my_scene);
+}
+</code></pre>
+<p>See the <a href="/features/gltf.html">GLTF page</a> for more info about working with 3D models.</p>
+<h2 id="where-are-assets-loaded-from"><a class="header" href="#where-are-assets-loaded-from">Where are assets loaded from?</a></h2>
+<p>The asset server internally relies on an implementation of the
+<a href="https://docs.rs/bevy/0.6.0/bevy/asset/trait.AssetIo.html"><code>AssetIo</code></a> Rust trait, which is Bevy's way of providing
+&quot;backends&quot; for fetching data from different types of storage.</p>
+<p>Bevy provides its own default built-in I/O backend for desktop platforms
+and for WebAssembly.</p>
+<p>On desktop platforms, it treats asset paths as relative to a folder called
+<code>assets</code>, that must be placed at one of the following locations:</p>
+<ul>
+<li>Alongside the game's executable file, for distribution</li>
+<li>In your Cargo project folder, when running your game using <code>cargo</code> during development
+<ul>
+<li>This is identified by the <code>CARGO_MANIFEST_DIR</code> environment variable</li>
+</ul>
+</li>
+</ul>
+<p>On the web, it fetches assets using HTTP URLs pointing within an <code>assets</code>
+folder located alongside the game's <code>.wasm</code> file.</p>
+<p>There are <a href="/setup/unofficial-plugins.html">unofficial plugins</a> available that provide additional
+I/O backend implementations, such as for loading assets from inside archive
+files.</p>
 
                     </main>
 
