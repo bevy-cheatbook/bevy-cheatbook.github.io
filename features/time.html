@@ -138,13 +138,12 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="time-and-timers"><a class="header" href="#time-and-timers">Time and Timers</a></h1>
-<p>Time is one of the most important variables in game development – you need
-it to move or animate anything, trigger things to happen, etc.</p>
 <h2 id="time"><a class="header" href="#time">Time</a></h2>
 <p>The <a href="https://docs.rs/bevy/0.6.0/bevy/core/struct.Time.html"><code>Time</code></a> <a href="/programming/res.html">resource</a> is your main global source
 of timing information, that you can access from any <a href="/programming/systems.html">system</a>
 that does anything that needs time. <a href="/pitfalls/time.html">You should derive all timings from
 it</a>.</p>
+<p>Bevy updates these values at the beginning of every frame.</p>
 <h3 id="delta-time"><a class="header" href="#delta-time">Delta Time</a></h3>
 <p>The most common use case is &quot;delta time&quot; – how much time passed between the
 previous frame update and the current one. This tells you how fast the game
@@ -161,7 +160,7 @@ can happen smoothly, regardless of the game's frame rate.</p>
     }
 }
 </code></pre>
-<h3 id="running-time"><a class="header" href="#running-time">Running Time</a></h3>
+<h3 id="ongoing-time"><a class="header" href="#ongoing-time">Ongoing Time</a></h3>
 <p><a href="https://docs.rs/bevy/0.6.0/bevy/core/struct.Time.html"><code>Time</code></a> can also give you the total running time since startup.
 Use this if you need a cumulative, increasing, measurement of time.</p>
 <pre><code class="language-rust no_run noplayground">use std::time::Instant;
@@ -194,10 +193,11 @@ has elapsed. Timers have a set duration. They can be &quot;repeating&quot; or
 &quot;non-repeating&quot;.</p>
 <p>Both kinds can be manually &quot;reset&quot; (start counting the time interval from the
 beginning) and &quot;paused&quot; (they will not progress even if you keep ticking them).</p>
-<p>Repeating timers will automatically reset themselves after they reach their set duration.</p>
-<p>Use <code>.finished()</code> to detect when a timer has reached its set duration. For non-repeating timers,
-you can also use <code>.just_finished()</code>, if you need to respond only on the exact update when the
-duration was reached.</p>
+<p>Repeating timers will automatically reset themselves after they reach their
+set duration.</p>
+<p>Use <code>.finished()</code> to detect when a timer has reached its set duration. For
+non-repeating timers, you can also use <code>.just_finished()</code>, if you need to
+respond only on the exact update when the duration was reached.</p>
 <pre><code class="language-rust no_run noplayground">use std::time::Duration;
 
 #[derive(Component)]
@@ -255,11 +255,15 @@ fn setup_bomb_spawning(
     })
 }
 </code></pre>
+<p>Note that Bevy's timers do <em>not</em> work like typical real-life timers (which
+count downwards toward zero). Bevy's timers start from zero and count <em>up</em>
+towards their set duration. They are basically like stopwatches with extra
+features: a maximum duration and optional auto-reset.</p>
 <h3 id="stopwatch"><a class="header" href="#stopwatch">Stopwatch</a></h3>
 <p><a href="https://docs.rs/bevy/0.6.0/bevy/core/struct.Stopwatch.html"><code>Stopwatch</code></a> allow you to track how much time has passed
 since a certain point.</p>
-<p>It will just keep accumulating time, which you can check with <code>.elapsed()</code>/<code>.elapsed_secs()</code>.
-You can manually reset it at any time.</p>
+<p>It will just keep accumulating time, which you can check with
+<code>.elapsed()</code>/<code>.elapsed_secs()</code>. You can manually reset it at any time.</p>
 <pre><code class="language-rust no_run noplayground">use bevy::core::Stopwatch;
 
 #[derive(Component)]
