@@ -1516,6 +1516,154 @@ and the absolute/global transforms of entities. When you mutate the
 is not updated immediately. They will be out-of-sync until the transform
 propagation system runs.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="time-and-timers"><a class="header" href="#time-and-timers">Time and Timers</a></h1>
+<p>Time is one of the most important variables in game development – you need
+it to move or animate anything, trigger things to happen, etc.</p>
+<h2 id="time"><a class="header" href="#time">Time</a></h2>
+<p>The <a href="https://docs.rs/bevy/0.6.0/bevy/core/struct.Time.html"><code>Time</code></a> <a href="features//programming/res.html">resource</a> is your main global source
+of timing information, that you can access from any <a href="features//programming/systems.html">system</a>
+that does anything that needs time. <a href="features//pitfalls/time.html">You should derive all timings from
+it</a>.</p>
+<h3 id="delta-time"><a class="header" href="#delta-time">Delta Time</a></h3>
+<p>The most common use case is &quot;delta time&quot; – how much time passed between the
+previous frame update and the current one. This tells you how fast the game
+is running, so you can scale things like movement and animations, so they
+can happen smoothly, regardless of the game's frame rate.</p>
+<pre><code class="language-rust no_run noplayground">fn asteroids_fly(
+    time: Res&lt;Time&gt;,
+    mut q: Query&lt;&amp;mut Transform, With&lt;Asteroid&gt;&gt;,
+) {
+    for mut transform in q.iter_mut() {
+        // move our asteroids along the X axis
+        // at a speed of 10.0 units per second
+        transform.translation.x += 10.0 * time.delta_seconds();
+    }
+}
+</code></pre>
+<h3 id="running-time"><a class="header" href="#running-time">Running Time</a></h3>
+<p><a href="https://docs.rs/bevy/0.6.0/bevy/core/struct.Time.html"><code>Time</code></a> can also give you the total running time since startup.
+Use this if you need a cumulative, increasing, measurement of time.</p>
+<pre><code class="language-rust no_run noplayground">use std::time::Instant;
+
+/// Say, for whatever reason, we want to keep track
+/// of when exactly some specific entities were spawned.
+#[derive(Component)]
+struct SpawnedTime(Instant);
+
+fn spawn_my_stuff(
+    mut commands: Commands,
+    time: Res&lt;Time&gt;,
+) {
+    commands.spawn()
+        .insert(SpawnedTime(time.startup() + time.time_since_startup()));
+}
+</code></pre>
+<h2 id="timers-and-stopwatches"><a class="header" href="#timers-and-stopwatches">Timers and Stopwatches</a></h2>
+<p>There are also facilities to help you track specific intervals or timings:
+<a href="https://docs.rs/bevy/0.6.0/bevy/core/struct.Timer.html"><code>Timer</code></a> and <a href="https://docs.rs/bevy/0.6.0/bevy/core/struct.Stopwatch.html"><code>Stopwatch</code></a>. You can create
+many instances of these, to track whatever you want. You can add them
+as <a href="features//programming/ec.html">components</a> to your entities, nest/wrap them in your own
+<a href="features//programming/ec.html#components">component</a> or <a href="features//programming/res.html">resource</a> types, etc.</p>
+<p>Timers and Stopwatches need to be ticked. You need to have some system
+calling <code>.tick(delta)</code>, for it to make progress, or it will be inactive.
+The delta should come from the <a href="https://docs.rs/bevy/0.6.0/bevy/core/struct.Time.html"><code>Time</code></a> resource.</p>
+<h3 id="timer"><a class="header" href="#timer">Timer</a></h3>
+<p><a href="https://docs.rs/bevy/0.6.0/bevy/core/struct.Timer.html"><code>Timer</code></a> allows you to detect when a certain interval of time
+has elapsed. Timers have a set duration. They can be &quot;repeating&quot; or
+&quot;non-repeating&quot;.</p>
+<p>Both kinds can be manually &quot;reset&quot; (start counting the time interval from the
+beginning) and &quot;paused&quot; (they will not progress even if you keep ticking them).</p>
+<p>Repeating timers will automatically reset themselves after they reach their set duration.</p>
+<p>Use <code>.finished()</code> to detect when a timer has reached its set duration. For non-repeating timers,
+you can also use <code>.just_finished()</code>, if you need to respond only on the exact update when the
+duration was reached.</p>
+<pre><code class="language-rust no_run noplayground">use std::time::Duration;
+
+#[derive(Component)]
+struct FuseTime {
+    /// track when the bomb should explode (non-repeating timer)
+    timer: Timer,
+}
+
+fn explode_bombs(
+    mut commands: Commands,
+    mut q: Query&lt;(Entity, &amp;mut FuseTime)&gt;,
+    time: Res&lt;Time&gt;,
+) {
+    for (entity, mut fuse_timer) in q.iter_mut() {
+        // timers gotta be ticked, to work
+        fuse_timer.timer.tick(time.delta());
+
+        // if it finished, despawn the bomb
+        if fuse_timer.timer.finished() {
+            commands.entity(entity).despawn();
+        }
+    }
+}
+
+struct BombsSpawnConfig {
+    /// How often to spawn a new bomb? (repeating timer)
+    timer: Timer,
+}
+
+/// Spawn a new bomb in set intervals of time
+fn spawn_bombs(
+    mut commands: Commands,
+    time: Res&lt;Time&gt;,
+    mut config: ResMut&lt;BombsSpawnConfig&gt;,
+) {
+    // tick the timer
+    config.timer.tick(time.delta());
+
+    if config.timer.finished() {
+        commands.spawn()
+            .insert(FuseTime {
+                // create the non-repeating fuse timer
+                timer: Timer::new(Duration::from_secs(5), false),
+            });
+    }
+}
+
+/// Configure our bomb spawning algorithm
+fn setup_bomb_spawning(
+    mut commands: Commands,
+) {
+    commands.insert_resource(BombsSpawnConfig {
+        // create the repeating timer
+        timer: Timer::new(Duration::from_secs(10), true),
+    })
+}
+</code></pre>
+<h3 id="stopwatch"><a class="header" href="#stopwatch">Stopwatch</a></h3>
+<p><a href="https://docs.rs/bevy/0.6.0/bevy/core/struct.Stopwatch.html"><code>Stopwatch</code></a> allow you to track how much time has passed
+since a certain point.</p>
+<p>It will just keep accumulating time, which you can check with <code>.elapsed()</code>/<code>.elapsed_secs()</code>.
+You can manually reset it at any time.</p>
+<pre><code class="language-rust no_run noplayground">use bevy::core::Stopwatch;
+
+#[derive(Component)]
+struct JumpDuration {
+    time: Stopwatch,
+}
+
+fn jump_duration(
+    time: Res&lt;Time&gt;,
+    mut q_player: Query&lt;&amp;mut JumpDuration, With&lt;Player&gt;&gt;,
+    kbd: Res&lt;Input&lt;KeyCode&gt;&gt;,
+) {
+    // assume we have exactly one player that jumps with Spacebar
+    let mut jump = q_player.single_mut();
+
+    if kbd.just_pressed(KeyCode::Space) {
+        jump.time.reset();
+    }
+
+    if kbd.pressed(KeyCode::Space) {
+        println!(&quot;Jumping for {} seconds.&quot;, jump.time.elapsed_secs());
+        // stopwatch has to be ticked to progress
+        jump.time.tick(time.delta());
+    }
+}
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="hierarchical-parentchild-entities"><a class="header" href="#hierarchical-parentchild-entities">Hierarchical (Parent/Child) Entities</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.6.0/examples/ecs/hierarchy.rs"><code>hierarchy</code></a>,
