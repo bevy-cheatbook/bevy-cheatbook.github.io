@@ -268,10 +268,12 @@ change detection. If you want to avoid that, simply check it yourself:</p>
     }
 }
 </code></pre>
-<p>Change detection is reliable -- it will detect any changes that
-have occured since the last time your detecting system ran. If your
-system only runs sometimes (such as with <a href="/programming/states.html">states</a> or <a href="/programming/run-criteria.html">run
-criteria</a>), you <em>do not</em> have to worry about missing changes.</p>
+<p>Change detection works on a per-<a href="/programming/systems.html">system</a> granularity, and is
+reliable. A system will not detect changes that it made itself, only those
+done by other systems, and only if it has not seen them before (the changes
+happened since the last time it ran). If your system only runs sometimes
+(such as with <a href="/programming/states.html">states</a> or <a href="/programming/run-criteria.html">run criteria</a>),
+you do <em>not</em> have to worry about missing changes.</p>
 <h2 id="possible-pitfalls"><a class="header" href="#possible-pitfalls">Possible Pitfalls</a></h2>
 <p>Beware of frame delay / 1-frame-lag. This can occur if Bevy runs the detecting
 system before the changing system. The detecting system will see the change
