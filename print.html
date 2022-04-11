@@ -139,13 +139,37 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="unofficial-bevy-cheat-book"><a class="header" href="#unofficial-bevy-cheat-book">Unofficial Bevy Cheat Book</a></h1>
-<p>Concise practical reference to the <a href="https://bevyengine.org">Bevy game engine</a>
+<p>This is a reference-style book for the <a href="https://bevyengine.org">Bevy game engine</a>
 (<a href="https://github.com/bevyengine/bevy">GitHub</a>).</p>
+<p>It aims to teach Bevy concepts in a concise way, help you be productive,
+and discover the knowledge you need.</p>
+<p>This book aggregates a lot of community wisdom that is often not covered
+by official documentation, saving you the need to struggle with issues that
+others have figured out already!</p>
+<p>While it aims to be exhaustive, documenting an entire game engine is
+a monumental task. I focus my time on whatever I believe the community
+needs most.</p>
+<p>Therefore, there are still a lot of omissions, both for basics and advanced
+topics. Nevertheless, I am confident this book will prove to be a valuable
+resource to you!</p>
 <p><em><strong>Welcome! May this book serve you well!</strong></em></p>
 <p>(don't forget to
 <a class="github-button" href="https://github.com/bevy-cheatbook/bevy-cheatbook" data-icon="octicon-star" aria-label="Star bevy-cheatbook/bevy-cheatbook on GitHub">Star</a>
 the book's <a href="https://github.com/bevy-cheatbook/bevy-cheatbook">GitHub repository</a>,
 and consider <a href="https://github.com/sponsors/inodentry">donating</a> 🙂)</p>
+<h2 id="how-to-use-this-book"><a class="header" href="#how-to-use-this-book">How to use this book</a></h2>
+<p>The pages in this book are not designed to be read in order. Each page covers
+a standalone topic. Feel free to jump to whatever interests you.</p>
+<p>If you have a specific topic in mind that you would like to learn about, you
+can find it from the table-of-contents (sidebar) or using the search function
+(in the top bar).</p>
+<p>The <a href="/overview.html">Chapter Overview</a> page will give you a general idea
+of how the book is structured.</p>
+<p>If you are new to Bevy, or would like a more guided experience, try the
+<a href="/tutorial.html">tutorial page</a>. It will help you navigate the book in
+an order that makes sense for learning, from beginner to advanced topics.</p>
+<p>The <a href="/builtins.html">Bevy Builtins</a> page is a concise cheatsheet of useful
+information about types and features provided by Bevy.</p>
 <h2 id="recommended-additional-resources"><a class="header" href="#recommended-additional-resources">Recommended Additional Resources</a></h2>
 <p>Bevy has a rich collection of <a href="https://github.com/bevyengine/bevy/tree/latest/examples#examples">official code
 examples</a>.</p>
@@ -5367,7 +5391,7 @@ a component to change an entity's behavior, but probably not nearly as often, or
 <h2 id="sparse-set-storage"><a class="header" href="#sparse-set-storage">Sparse-Set Storage</a></h2>
 <p>Sparse-Set storage is optimized for fast adding/removing of a component to existing entities, at
 the cost of slower querying. It can be more efficient for components that you would like to add/remove very frequently.</p>
-<p>An example of this might be a <a href="patterns//patterns/marker-components.html">marker component</a> indicating whether an enemy can
+<p>An example of this might be a <a href="patterns//programming/ec.html#components">marker component</a> indicating whether an enemy can
 currently see the player. You might want to have such a component type, so that you can easily
 use a <a href="patterns//programming/queries.html#query-filters">query filter</a> to find all the enemies that are currently tracking the
 player. However, this is something that can change every frame, as enemies or the player move
