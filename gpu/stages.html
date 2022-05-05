@@ -200,12 +200,12 @@ If you have some custom data stored in <a href="/programming/res.html">resources
 stay for the next frame, or add a system to clear it, if you want.</p>
 </li>
 </ul>
-<p>The way Bevy is set up, you shouldn't need to do anything in Render
-or PhaseSort. If your custom rendering is part of the Bevy <a href="/TODO.html">render
-graph</a>, it will just be handled automatically when Bevy
-executes the render graph in the Render stage. If you are implementing custom
-<a href="/TODO.html">phase items</a>, the Main Pass render graph node will
-render them together with everything else.</p>
+<p>The way Bevy is set up, you shouldn't need to do anything in <a href="#render">Render</a>
+or <a href="#phasesort">PhaseSort</a>. If your custom rendering is part of the Bevy
+<a href="/TODO.html">render graph</a>, it will just be handled automatically
+when Bevy executes the render graph in the <a href="#render">Render</a> stage. If you
+are implementing custom <a href="/TODO.html">phase items</a>, the Main Pass
+render graph node will render them together with everything else.</p>
 <p>You can add your rendering systems to the respective stages, using the render
 <a href="/programming/sub-apps.html">sub-app</a>:</p>
 <pre><code>// TODO: code example
@@ -226,6 +226,10 @@ for use within the render World, with only the data you need.</p>
 <p>For example, Bevy's 2D sprites uses a <a href="https://docs.rs/bevy/0.7.0/bevy/sprite/struct.ExtractedSprite.html"><code>struct ExtractedSprite</code></a>, where it copies the relevant data
 from the &quot;user-facing&quot; components of sprite and spritesheet entities in the
 main World.</p>
+<p>Bevy <strong>reserves Entity IDs</strong> in the render World, matching all the Entities
+existing in the main World. In most cases, you do not need to <em>spawn</em>
+new entities in the render World. You can just <a href="/programming/commands.html">insert components with
+Commands</a> on the same Entity IDs as from the main World.</p>
 <pre><code>// TODO: code example
 </code></pre>
 <h2 id="prepare"><a class="header" href="#prepare">Prepare</a></h2>
@@ -248,8 +252,8 @@ function</a>, for everything that you need to draw.</p>
 </code></pre>
 <h2 id="phasesort"><a class="header" href="#phasesort">PhaseSort</a></h2>
 <p>This stage exists for Bevy to sort all of the <a href="/TODO.html">phase
-items</a> that were set up during the Queue stage,
-before rendering in the Render stage.</p>
+items</a> that were set up during the <a href="#queue">Queue</a>
+stage, before rendering in the <a href="#render">Render</a> stage.</p>
 <p>It is unlikely that you will need to add anything custom here. I'm not aware
 of use cases. <a href="/contact.html">Let me know</a> if you know of any.</p>
 <h2 id="render"><a class="header" href="#render">Render</a></h2>
