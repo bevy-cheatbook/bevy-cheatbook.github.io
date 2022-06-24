@@ -2911,6 +2911,11 @@ useful for things like clicking and hovering over objects in your game or UI.</p
 <p>Note that you can only get the position of the mouse inside a window;
 you cannot get the global position of the mouse in the whole OS Desktop /
 on the screen as a whole.</p>
+<p>The coordinates you get are in &quot;window space&quot;. They represent window
+pixels, and the origin is the bottom left corner of the window. They do not
+relate to your camera or in-game coordinates in any way. <a href="input//cookbook/cursor2world.html">See this cookbook
+example</a> for converting these window cursor coordinates
+into world-space coordinates.</p>
 <p>To track when the mouse cursor enters and leaves your window(s), use
 <a href="https://docs.rs/bevy/0.7.0/bevy/window/struct.CursorEntered.html"><code>CursorEntered</code></a> and <a href="https://docs.rs/bevy/0.7.0/bevy/window/struct.CursorLeft.html"><code>CursorLeft</code></a>
 <a href="input//programming/events.html">events</a>.</p>
