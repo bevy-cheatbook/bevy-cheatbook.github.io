@@ -248,7 +248,7 @@ Audio that is currently active, can be used to control playback</li>
 for each one can be enabled/disabled using <a href="/setup/bevy-config.html">cargo features</a>. Some
 are enabled by default, many are not.</p>
 <p>Image formats (loaded as <a href="https://docs.rs/bevy/0.7.0/bevy/render/texture/struct.Image.html"><code>Image</code></a> assets):</p>
-<table><thead><tr><th>Format</th><th>Cargo feature</th><th>Default?</th><th>Filename extensions</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Format</th><th>Cargo feature</th><th>Default?</th><th>Filename extensions</th></tr></thead><tbody>
 <tr><td>PNG</td><td><code>&quot;png&quot;</code></td><td>Yes</td><td><code>.png</code></td></tr>
 <tr><td>HDR</td><td><code>&quot;hdr&quot;</code></td><td>Yes</td><td><code>.hdr</code></td></tr>
 <tr><td>JPEG</td><td><code>&quot;jpeg&quot;</code></td><td>No</td><td><code>.jpg</code>, <code>.jpeg</code></td></tr>
@@ -258,28 +258,33 @@ are enabled by default, many are not.</p>
 <tr><td>KTX2</td><td><code>&quot;ktx2&quot;</code></td><td>No</td><td><code>.ktx2</code></td></tr>
 <tr><td>Basis</td><td><code>&quot;basis-universal&quot;</code></td><td>No</td><td><code>.basis</code></td></tr>
 </tbody></table>
+</div>
 <p>Audio formats (loaded as <a href="https://docs.rs/bevy/0.7.0/bevy/audio/struct.AudioSource.html"><code>AudioSource</code></a> assets):</p>
-<table><thead><tr><th>Format</th><th>Cargo feature</th><th>Default?</th><th>Filename extensions</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Format</th><th>Cargo feature</th><th>Default?</th><th>Filename extensions</th></tr></thead><tbody>
 <tr><td>OGG Vorbis</td><td><code>&quot;vorbis&quot;</code></td><td>Yes</td><td><code>.ogg</code></td></tr>
 <tr><td>FLAC</td><td><code>&quot;flac&quot;</code></td><td>No</td><td><code>.flac</code></td></tr>
 <tr><td>WAV</td><td><code>&quot;wav&quot;</code></td><td>No</td><td><code>.wav</code></td></tr>
 <tr><td>MP3</td><td><code>&quot;mp3&quot;</code></td><td>No</td><td><code>.mp3</code></td></tr>
 </tbody></table>
+</div>
 <p>3D asset (model or scene) formats:</p>
-<table><thead><tr><th>Format</th><th>Cargo feature</th><th>Default?</th><th>Filename extensions</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Format</th><th>Cargo feature</th><th>Default?</th><th>Filename extensions</th></tr></thead><tbody>
 <tr><td>GLTF</td><td><code>&quot;bevy_gltf&quot;</code></td><td>Yes</td><td><code>.gltf</code>, <code>.glb</code></td></tr>
 </tbody></table>
+</div>
 <p>Shader formats (loaded as <a href="https://docs.rs/bevy/0.7.0/bevy/render/render_resource/struct.Shader.html"><code>Shader</code></a> assets):</p>
-<table><thead><tr><th>Format</th><th>Cargo feature</th><th>Default?</th><th>Filename extensions</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Format</th><th>Cargo feature</th><th>Default?</th><th>Filename extensions</th></tr></thead><tbody>
 <tr><td>SPIR-V</td><td>n/a</td><td>Yes</td><td><code>.spv</code></td></tr>
 <tr><td>WGSL</td><td>n/a</td><td>Yes</td><td><code>.wgsl</code></td></tr>
 <tr><td>GLSL</td><td>n/a</td><td>Yes</td><td><code>.vert</code>, <code>.frag</code></td></tr>
 </tbody></table>
+</div>
 <p>Font formats (loaded as <a href="https://docs.rs/bevy/0.7.0/bevy/text/struct.Font.html"><code>Font</code></a> assets):</p>
-<table><thead><tr><th>Format</th><th>Cargo feature</th><th>Default?</th><th>Filename extensions</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th>Format</th><th>Cargo feature</th><th>Default?</th><th>Filename extensions</th></tr></thead><tbody>
 <tr><td>TrueType</td><td>n/a</td><td>Yes</td><td><code>.ttf</code></td></tr>
 <tr><td>OpenType</td><td>n/a</td><td>Yes</td><td><code>.otf</code></td></tr>
 </tbody></table>
+</div>
 <p>There are <a href="/setup/unofficial-plugins.html#file-formats">unofficial plugins</a> available for adding
 support for even more file formats.</p>
 <h2 id="wgpu-backends"><a class="header" href="#wgpu-backends"><code>wgpu</code> Backends</a></h2>
