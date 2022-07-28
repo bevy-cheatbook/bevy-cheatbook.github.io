@@ -140,20 +140,22 @@
                     <main>
                         <h1 id="performance"><a class="header" href="#performance">Performance</a></h1>
 <h2 id="unoptimized-debug-builds"><a class="header" href="#unoptimized-debug-builds">Unoptimized debug builds</a></h2>
-<p>You can enable compiler optimizations in debug/dev mode!</p>
-<p>Even <code>opt-level=1</code> is enough to make Bevy not painfully slow! You can also
-enable higher optimizations for dependencies, but not your own code, to keep
-recompilations fast!</p>
-<pre><code class="language-toml"># in `Cargo.toml` or `.cargo/config.toml`
-
-# Enable only a small amount of optimization in debug mode
-[profile.dev]
-opt-level = 1
-
-# Enable high optimizations for dependencies (incl. Bevy), but not for our code:
+<p>You can partially enable compiler optimizations in debug/dev mode!</p>
+<p>You can enable higher optimizations for dependencies (incl. Bevy), but not
+your own code, to keep recompilations fast!</p>
+<p>In <code>Cargo.toml</code> or <code>.cargo/config.toml</code>:</p>
+<pre><code class="language-toml"># Enable max optimizations for dependencies, but not for our code:
 [profile.dev.package.&quot;*&quot;]
 opt-level = 3
-
+</code></pre>
+<p>The above is enough to make Bevy run fast. It will only slow down clean
+builds, without affecting recompilation times for your project.</p>
+<p>If your own code does CPU-intensive work, you might want to also enable some
+optimization for it. However, this might greatly affect compile times in some
+projects (similar to a full release build), so it is not generally recommended.</p>
+<pre><code class="language-toml"># Enable only a small amount of optimization in debug mode
+[profile.dev]
+opt-level = 1
 </code></pre>
 <h3 id="why-is-this-necessary"><a class="header" href="#why-is-this-necessary">Why is this necessary?</a></h3>
 <p>Rust without compiler optimizations is <em>very slow</em>. With Bevy in
