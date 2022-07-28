@@ -1,0 +1,323 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Render Stages - Unofficial Bevy Cheat Book</title>
+        <!-- Custom HTML head -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<meta name="robots" content="noindex">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../nagbar.css">
+        <link rel="stylesheet" href="../sidebar.css">
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../introduction.html">Introduction</a></li><li class="chapter-item expanded affix "><a href="../overview.html">Chapter Overview</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../tutorial.html">New to Bevy? Guided Tutorial!</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../builtins.html">List of Bevy Builtins</a></li><li class="spacer"></li><li class="chapter-item expanded "><a href="../setup.html"><strong aria-hidden="true">1.</strong> Bevy Setup Tips</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../setup/getting-started.html"><strong aria-hidden="true">1.1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="../setup/bevy-git.html"><strong aria-hidden="true">1.2.</strong> Using bleeding-edge Bevy (main)</a></li><li class="chapter-item expanded "><a href="../setup/editor.html"><strong aria-hidden="true">1.3.</strong> Text Editor / IDE</a></li><li class="chapter-item expanded "><a href="../setup/bevy-tools.html"><strong aria-hidden="true">1.4.</strong> Dev Tools and Editors for Bevy</a></li><li class="chapter-item expanded "><a href="../setup/unofficial-plugins.html"><strong aria-hidden="true">1.5.</strong> Community Plugin Ecosystem</a></li><li class="chapter-item expanded "><a href="../setup/bevy-config.html"><strong aria-hidden="true">1.6.</strong> Customizing Bevy (features, modularity)</a></li></ol></li><li class="chapter-item expanded "><a href="../pitfalls.html"><strong aria-hidden="true">2.</strong> Common Pitfalls</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../pitfalls/build-errors.html"><strong aria-hidden="true">2.1.</strong> Strange compile errors from Bevy or dependencies</a></li><li class="chapter-item expanded "><a href="../pitfalls/performance.html"><strong aria-hidden="true">2.2.</strong> Slow Performance</a></li><li class="chapter-item expanded "><a href="../pitfalls/into-system.html"><strong aria-hidden="true">2.3.</strong> Error adding function as system</a></li><li class="chapter-item expanded "><a href="../pitfalls/ui-camera.html"><strong aria-hidden="true">2.4.</strong> UI is not displaying</a></li><li class="chapter-item expanded "><a href="../pitfalls/2d-camera-z.html"><strong aria-hidden="true">2.5.</strong> 2D objects not displaying</a></li><li class="chapter-item expanded "><a href="../pitfalls/3d-not-rendering.html"><strong aria-hidden="true">2.6.</strong> 3D objects not displaying</a></li><li class="chapter-item expanded "><a href="../pitfalls/split-borrows.html"><strong aria-hidden="true">2.7.</strong> Borrow multiple fields from struct</a></li><li class="chapter-item expanded "><a href="../pitfalls/time.html"><strong aria-hidden="true">2.8.</strong> Jittering Time (choppy movement/animation)</a></li><li class="chapter-item expanded "><a href="../pitfalls/ui-y-up.html"><strong aria-hidden="true">2.9.</strong> UI layout is inverted</a></li><li class="chapter-item expanded "><a href="../pitfalls/uv-coordinates.html"><strong aria-hidden="true">2.10.</strong> Textures/Images are flipped</a></li></ol></li><li class="chapter-item expanded "><a href="../features.html"><strong aria-hidden="true">3.</strong> Bevy Game Engine Core</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../features/coords.html"><strong aria-hidden="true">3.1.</strong> Coordinate System</a></li><li class="chapter-item expanded "><a href="../features/transforms.html"><strong aria-hidden="true">3.2.</strong> Transforms</a></li><li class="chapter-item expanded "><a href="../features/time.html"><strong aria-hidden="true">3.3.</strong> Time and Timers</a></li><li class="chapter-item expanded "><a href="../features/log.html"><strong aria-hidden="true">3.4.</strong> Logging, Console Messages</a></li><li class="chapter-item expanded "><a href="../features/parent-child.html"><strong aria-hidden="true">3.5.</strong> Parent/Child Hierarchies</a></li><li class="chapter-item expanded "><a href="../features/fixed-timestep.html"><strong aria-hidden="true">3.6.</strong> Fixed Timestep</a></li><li class="chapter-item expanded "><a href="../features/audio.html"><strong aria-hidden="true">3.7.</strong> Audio</a></li></ol></li><li class="chapter-item expanded "><a href="../assets.html"><strong aria-hidden="true">4.</strong> Bevy Asset Management</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../assets/handles.html"><strong aria-hidden="true">4.1.</strong> Handles</a></li><li class="chapter-item expanded "><a href="../assets/assetserver.html"><strong aria-hidden="true">4.2.</strong> Load Assets from Files</a></li><li class="chapter-item expanded "><a href="../assets/data.html"><strong aria-hidden="true">4.3.</strong> Access the Asset Data</a></li><li class="chapter-item expanded "><a href="../assets/assetevent.html"><strong aria-hidden="true">4.4.</strong> React to Changes with Asset Events</a></li><li class="chapter-item expanded "><a href="../assets/ready.html"><strong aria-hidden="true">4.5.</strong> Track Loading Progress</a></li><li class="chapter-item expanded "><a href="../assets/hot-reload.html"><strong aria-hidden="true">4.6.</strong> Hot-Reloading Assets</a></li></ol></li><li class="chapter-item expanded "><a href="../input.html"><strong aria-hidden="true">5.</strong> Input Handling</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../input/keyboard.html"><strong aria-hidden="true">5.1.</strong> Keyboard</a></li><li class="chapter-item expanded "><a href="../input/mouse.html"><strong aria-hidden="true">5.2.</strong> Mouse</a></li><li class="chapter-item expanded "><a href="../input/char.html"><strong aria-hidden="true">5.3.</strong> Text / Character</a></li><li class="chapter-item expanded "><a href="../input/gamepad.html"><strong aria-hidden="true">5.4.</strong> Gamepad (Controller, Joystick)</a></li><li class="chapter-item expanded "><a href="../input/touch.html"><strong aria-hidden="true">5.5.</strong> Touchscreen</a></li><li class="chapter-item expanded "><a href="../input/dnd.html"><strong aria-hidden="true">5.6.</strong> Drag-and-Drop (Files)</a></li><li class="chapter-item expanded "><a href="../input/midi.html"><strong aria-hidden="true">5.7.</strong> MIDI (Musical Instrument)</a></li></ol></li><li class="chapter-item expanded "><a href="../window.html"><strong aria-hidden="true">6.</strong> Window Management</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../window/props.html"><strong aria-hidden="true">6.1.</strong> [WIP] Window Properties</a></li><li class="chapter-item expanded "><a href="../window/clear-color.html"><strong aria-hidden="true">6.2.</strong> Change the Background Color</a></li><li class="chapter-item expanded "><a href="../window/mouse-grab.html"><strong aria-hidden="true">6.3.</strong> Grab/Capture the Mouse Cursor</a></li><li class="chapter-item expanded "><a href="../window/icon.html"><strong aria-hidden="true">6.4.</strong> Set the Window Icon</a></li></ol></li><li class="chapter-item expanded "><a href="../2d.html"><strong aria-hidden="true">7.</strong> Bevy 2D</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../2d/camera.html"><strong aria-hidden="true">7.1.</strong> [WIP] 2D Camera Setup</a></li><li class="chapter-item expanded "><a href="../2d/sprites.html"><strong aria-hidden="true">7.2.</strong> [WIP] Sprites and Atlases</a></li></ol></li><li class="chapter-item expanded "><a href="../3d.html"><strong aria-hidden="true">8.</strong> Bevy 3D</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../3d/camera.html"><strong aria-hidden="true">8.1.</strong> [WIP] 3D Camera Setup</a></li><li class="chapter-item expanded "><a href="../3d/gltf.html"><strong aria-hidden="true">8.2.</strong> 3D Models and Scenes (GLTF)</a></li></ol></li><li class="chapter-item expanded "><a href="../programming.html"><strong aria-hidden="true">9.</strong> Bevy Programming Framework</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../programming/ecs-intro.html"><strong aria-hidden="true">9.1.</strong> Intro to ECS</a></li><li class="chapter-item expanded "><a href="../programming/ec.html"><strong aria-hidden="true">9.2.</strong> Entities and Components</a></li><li class="chapter-item expanded "><a href="../programming/res.html"><strong aria-hidden="true">9.3.</strong> Resources</a></li><li class="chapter-item expanded "><a href="../programming/systems.html"><strong aria-hidden="true">9.4.</strong> Systems</a></li><li class="chapter-item expanded "><a href="../programming/queries.html"><strong aria-hidden="true">9.5.</strong> Queries</a></li><li class="chapter-item expanded "><a href="../programming/commands.html"><strong aria-hidden="true">9.6.</strong> Commands</a></li><li class="chapter-item expanded "><a href="../programming/events.html"><strong aria-hidden="true">9.7.</strong> Events</a></li><li class="chapter-item expanded "><a href="../programming/app-builder.html"><strong aria-hidden="true">9.8.</strong> App Builder (fn main)</a></li><li class="chapter-item expanded "><a href="../programming/quit.html"><strong aria-hidden="true">9.9.</strong> Quit the App</a></li><li class="chapter-item expanded "><a href="../programming/local.html"><strong aria-hidden="true">9.10.</strong> Local Resources</a></li><li class="chapter-item expanded "><a href="../programming/plugins.html"><strong aria-hidden="true">9.11.</strong> Plugins</a></li><li class="chapter-item expanded "><a href="../programming/system-order.html"><strong aria-hidden="true">9.12.</strong> System Order of Execution</a></li><li class="chapter-item expanded "><a href="../programming/system-sets.html"><strong aria-hidden="true">9.13.</strong> System Sets</a></li><li class="chapter-item expanded "><a href="../programming/change-detection.html"><strong aria-hidden="true">9.14.</strong> Change Detection</a></li><li class="chapter-item expanded "><a href="../programming/states.html"><strong aria-hidden="true">9.15.</strong> States</a></li><li class="chapter-item expanded "><a href="../programming/run-criteria.html"><strong aria-hidden="true">9.16.</strong> Run Criteria</a></li><li class="chapter-item expanded "><a href="../programming/labels.html"><strong aria-hidden="true">9.17.</strong> Labels</a></li><li class="chapter-item expanded "><a href="../programming/stages.html"><strong aria-hidden="true">9.18.</strong> Stages</a></li><li class="chapter-item expanded "><a href="../programming/removal-detection.html"><strong aria-hidden="true">9.19.</strong> Removal Detection</a></li><li class="chapter-item expanded "><a href="../programming/paramset.html"><strong aria-hidden="true">9.20.</strong> ParamSet</a></li><li class="chapter-item expanded "><a href="../programming/system-chaining.html"><strong aria-hidden="true">9.21.</strong> System Chaining</a></li><li class="chapter-item expanded "><a href="../programming/world.html"><strong aria-hidden="true">9.22.</strong> Direct ECS World Access</a></li><li class="chapter-item expanded "><a href="../programming/exclusive.html"><strong aria-hidden="true">9.23.</strong> Exclusive Systems</a></li><li class="chapter-item expanded "><a href="../programming/sub-apps.html"><strong aria-hidden="true">9.24.</strong> [WIP] Sub-Apps</a></li><li class="chapter-item expanded "><a href="../programming/non-send.html"><strong aria-hidden="true">9.25.</strong> Non-Send</a></li><li class="chapter-item expanded "><a href="../programming/system-tests.html"><strong aria-hidden="true">9.26.</strong> Writing Tests for Systems</a></li></ol></li><li class="chapter-item expanded "><a href="../patterns.html"><strong aria-hidden="true">10.</strong> Programming Patterns</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../patterns/generic-systems.html"><strong aria-hidden="true">10.1.</strong> Generic Systems</a></li><li class="chapter-item expanded "><a href="../patterns/component-storage.html"><strong aria-hidden="true">10.2.</strong> Component Storage (Table/Sparse-Set)</a></li><li class="chapter-item expanded "><a href="../patterns/manual-event-clear.html"><strong aria-hidden="true">10.3.</strong> Manual Event Clearing</a></li></ol></li><li class="chapter-item expanded "><a href="../gpu.html"><strong aria-hidden="true">11.</strong> [WIP] Bevy Render (GPU) Framework</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../gpu/intro.html"><strong aria-hidden="true">11.1.</strong> Render Architecture Overview</a></li><li class="chapter-item expanded "><a href="../gpu/stages.html" class="active"><strong aria-hidden="true">11.2.</strong> Render Stages</a></li></ol></li><li class="chapter-item expanded "><a href="../cookbook.html"><strong aria-hidden="true">12.</strong> Bevy Cookbook</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cookbook/print-framerate.html"><strong aria-hidden="true">12.1.</strong> Show Framerate in Console</a></li><li class="chapter-item expanded "><a href="../cookbook/cursor2world.html"><strong aria-hidden="true">12.2.</strong> Convert cursor to world coordinates</a></li><li class="chapter-item expanded "><a href="../cookbook/custom-projection.html"><strong aria-hidden="true">12.3.</strong> Custom Camera Projection</a></li><li class="chapter-item expanded "><a href="../cookbook/pan-orbit-camera.html"><strong aria-hidden="true">12.4.</strong> Pan+Orbit Camera</a></li><li class="chapter-item expanded "><a href="../cookbook/print-resources.html"><strong aria-hidden="true">12.5.</strong> List All Resource Types</a></li></ol></li><li class="chapter-item expanded "><a href="../platforms.html"><strong aria-hidden="true">13.</strong> Bevy on Different Platforms</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../platforms/linux.html"><strong aria-hidden="true">13.1.</strong> Linux Desktop</a></li><li class="chapter-item expanded "><a href="../platforms/macos.html"><strong aria-hidden="true">13.2.</strong> macOS Desktop</a></li><li class="chapter-item expanded "><a href="../platforms/windows.html"><strong aria-hidden="true">13.3.</strong> Windows Desktop</a></li><li class="chapter-item expanded "><a href="../setup/cross.html"><strong aria-hidden="true">13.4.</strong> Cross-Compilation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../setup/cross/linux-windows.html"><strong aria-hidden="true">13.4.1.</strong> From Linux to Windows</a></li></ol></li><li class="chapter-item expanded "><a href="../platforms/wasm.html"><strong aria-hidden="true">13.5.</strong> Browser (WebAssembly)</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../platforms/wasm/panic-console.html"><strong aria-hidden="true">13.5.1.</strong> Panic Messages</a></li><li class="chapter-item expanded "><a href="../platforms/wasm/size-opt.html"><strong aria-hidden="true">13.5.2.</strong> Optimize for Size</a></li><li class="chapter-item expanded "><a href="../platforms/wasm/gh-pages.html"><strong aria-hidden="true">13.5.3.</strong> Hosting on GitHub Pages</a></li><li class="spacer"></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../credits.html">Credits</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../contact.html">Contact Me</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../contributing-bevy.html">Contribute to Bevy</a></li><li class="chapter-item expanded affix "><a href="../contributing.html">Contribute to this Book</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Unofficial Bevy Cheat Book</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="render-stages"><a class="header" href="#render-stages">Render Stages</a></h1>
+<p>Everything on the CPU side (the whole process of driving the GPU workloads)
+is structured in a sequence of &quot;render stages&quot;:</p>
+<ul>
+<li><code>Extract</code>: quickly copy the minimal data you need from the main World to the render World</li>
+<li><code>Prepare</code>: send data to the GPU (buffers, textures, bind groups)</li>
+<li><code>Queue</code>: generate the render jobs to be run (usually <a href="/TODO.html">phase items</a>)</li>
+<li><code>PhaseSort</code>: sort and batch <a href="/TODO.html">phase items</a> for efficient rendering</li>
+<li><code>Render</code>: execute the <a href="/TODO.html">render graph</a> to produce actual GPU commands and do the work</li>
+<li><code>Cleanup</code>: clear any data from the render World that should not persist to the next frame</li>
+</ul>
+<h2 id="timings"><a class="header" href="#timings">Timings</a></h2>
+<p>Note: Pipelined rendering is not yet actually enabled in Bevy 0.7. This section
+explains the intended behavior, which will land in a future Bevy version. You
+have to understand it, because any custom rendering code you write will have to
+work with it in mind.</p>
+<p><img src="/img/pipelined-rendering.png" alt="Diagram of pipelined rendering timings in app-bound and render-bound cases" /></p>
+<p>Every frame, <a href="#extract">Extract</a> serves as the synchronization point.</p>
+<p>When the Render Schedule completes, it will start again, but Extract will
+wait for the App Schedule, if it has not completed yet. The App Schedule
+will start again as soon as Extract has completed.</p>
+<p>Therefore:</p>
+<ul>
+<li>in an App-bound scenario (if app takes longer than render):
+<ul>
+<li>The start of Extract is waiting for App to finish</li>
+</ul>
+</li>
+<li>in a Render-bound scenario (if render takes longer than app):
+<ul>
+<li>The start of App is waiting for Extract to finish</li>
+</ul>
+</li>
+</ul>
+<p>If <a href="/TODO.html">vsync</a> is enabled, the wait for the next refresh of the
+screen will happen in the <a href="#prepare">Prepare</a> stage. This has the effect of
+prolonging the Prepare stage in the Render schedule. Therefore, in practice,
+your game will behave like the &quot;Render-bound&quot; scenario shown above.</p>
+<p>The final render (the framebuffer with the pixels to show in the
+<a href="/window/props.html">window</a>) is <em>presented</em> to the OS/driver at the end of the
+<a href="#render">Render</a> stage.</p>
+<p>Currently Bevy updates its <a href="/features/time.html">timing information</a> (in <a href="https://docs.rs/bevy/0.7.0/bevy/core/struct.Time.html"><code>Res&lt;Time&gt;</code></a>)
+at the start of the First stage in the main App schedule. Note that this is not linked
+to rendering in any way. This is a <a href="https://github.com/bevyengine/bevy/issues/4669">known issue</a>.</p>
+<h2 id="adding-systems-to-render-stages"><a class="header" href="#adding-systems-to-render-stages">Adding Systems to Render Stages</a></h2>
+<p>If you are implementing custom rendering functionality in Bevy, you will likely
+need to add some of your own systems to at least some of the render stages:</p>
+<ul>
+<li>
+<p>Anything that needs data from your main App World will need a system in
+<a href="#extract">Extract</a> to copy that data. In practice, this is almost everything,
+unless it is fully contained on the GPU / in VRAM.</p>
+</li>
+<li>
+<p>Most use cases will need to do some setup of GPU resources
+in <a href="#prepare">Prepare</a> and/or <a href="#queue">Queue</a>.</p>
+</li>
+<li>
+<p>In <a href="#cleanup">Cleanup</a>, all <a href="/programming/ec.html">entities</a> are cleared automatically.
+If you have some custom data stored in <a href="/programming/res.html">resources</a>, you can let it
+stay for the next frame, or add a system to clear it, if you want.</p>
+</li>
+</ul>
+<p>The way Bevy is set up, you shouldn't need to do anything in <a href="#render">Render</a>
+or <a href="#phasesort">PhaseSort</a>. If your custom rendering is part of the Bevy
+<a href="/TODO.html">render graph</a>, it will just be handled automatically
+when Bevy executes the render graph in the <a href="#render">Render</a> stage. If you
+are implementing custom <a href="/TODO.html">phase items</a>, the Main Pass
+render graph node will render them together with everything else.</p>
+<p>You can add your rendering systems to the respective stages, using the render
+<a href="/programming/sub-apps.html">sub-app</a>:</p>
+<pre><code>// TODO: code example
+</code></pre>
+<h2 id="extract"><a class="header" href="#extract">Extract</a></h2>
+<p>Extract is a very important and special stage. It is the synchronization
+point that links the two ECS Worlds. This is where the data required for
+rendering is copied (&quot;extracted&quot;) from the main App World into the Render
+World, allowing for pipelined rendering.</p>
+<p>During the Extract stage, nothing else can run in parallel, on either the
+main App World or the Render World. Hence, Extract should be kept minimal
+and complete its work as quickly as possible.</p>
+<p>It is recommended that you avoid doing any computations in Extract, if
+possible. Just copy data.</p>
+<p>It is recommended that you only copy the data you actually need for rendering.
+Create new <a href="/programming/ec.html#components">component types</a> and <a href="/programming/res.html">resources</a> just
+for use within the render World, with only the data you need.</p>
+<p>For example, Bevy's 2D sprites uses a <a href="https://docs.rs/bevy/0.7.0/bevy/sprite/struct.ExtractedSprite.html"><code>struct ExtractedSprite</code></a>, where it copies the relevant data
+from the &quot;user-facing&quot; components of sprite and spritesheet entities in the
+main World.</p>
+<p>Bevy <strong>reserves Entity IDs</strong> in the render World, matching all the Entities
+existing in the main World. In most cases, you do not need to <em>spawn</em>
+new entities in the render World. You can just <a href="/programming/commands.html">insert components with
+Commands</a> on the same Entity IDs as from the main World.</p>
+<pre><code>// TODO: code example
+</code></pre>
+<h2 id="prepare"><a class="header" href="#prepare">Prepare</a></h2>
+<p>Prepare is the stage to use if you need to set up any data on the
+GPU. This is where you can create GPU <a href="/TODO.html">buffers</a>,
+<a href="/TODO.html">textures</a>, and <a href="/TODO.html">bind groups</a>.</p>
+<p>// TODO: elaborate on different ways Bevy is using it internally</p>
+<pre><code>// TODO: code example
+</code></pre>
+<h2 id="queue"><a class="header" href="#queue">Queue</a></h2>
+<p>Queue is the stage where you can set up the &quot;rendering jobs&quot; you will need to
+execute.</p>
+<p>Typically, this means creating <a href="/TODO.html">phase items</a>
+with the correct <a href="/TODO.html">render pipeline</a> and <a href="/TODO.html">draw
+function</a>, for everything that you need to draw.</p>
+<p>For other things, analogously, Queue is where you would set up the workloads
+(like compute or draw calls) that the GPU would need to perform.</p>
+<p>// TODO: elaborate on different ways Bevy is using it internally</p>
+<pre><code>// TODO: code example
+</code></pre>
+<h2 id="phasesort"><a class="header" href="#phasesort">PhaseSort</a></h2>
+<p>This stage exists for Bevy to sort all of the <a href="/TODO.html">phase
+items</a> that were set up during the <a href="#queue">Queue</a>
+stage, before rendering in the <a href="#render">Render</a> stage.</p>
+<p>It is unlikely that you will need to add anything custom here. I'm not aware
+of use cases. <a href="/contact.html">Let me know</a> if you know of any.</p>
+<h2 id="render"><a class="header" href="#render">Render</a></h2>
+<p>Render is the stage where Bevy executes the <a href="/TODO.html">Render Graph</a>.</p>
+<p>If you are using any of the <a href="/TODO.html">standard render phases</a>,
+you don't need to do anything. Your custom <a href="/TODO.html">phase items</a>
+will be rendered automatically as part of the Main Pass built-in render graph
+<a href="/TODO.html">nodes</a>, alongside everything else.</p>
+<p>If you are implementing a rendering feature that needs a separate step, you
+can add it as a <a href="/TODO.html">render graph node</a>, and it will be
+rendered automatically.</p>
+<p>The only time you might need to do something custom here is if you really
+want to sidestep Bevy's frameworks and reach for low-level <code>wgpu</code> access.
+You could place it in the Render stage.</p>
+<h2 id="cleanup"><a class="header" href="#cleanup">Cleanup</a></h2>
+<p>Bevy has a built-in system in Cleanup that clears all <a href="/programming/ec.html">entities</a> in
+the render World. Therefore, all data stored in components will be lost.
+It is expected that fresh data will be obtained in the next frame's
+<a href="#extract">Extract</a> stage.</p>
+<p>To persist rendering data over multiple frames, you should store it in
+<a href="/programming/res.html">resources</a>. That way you have control over it.</p>
+<p>If you need to clear some data from your resources sometimes, you could
+add a custom system to the Cleanup stage to do it.</p>
+<pre><code>// TODO: code example
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../gpu/intro.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="../cookbook.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../gpu/intro.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="../cookbook.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        <script type="text/javascript" src="../nagbar.js"></script>
+    </body>
+</html>
