@@ -172,14 +172,14 @@ as an <a href="https://docs.rs/bevy/0.7.0/bevy/input/struct.Input.html"><code>In
 <pre><code class="language-rust no_run noplayground">fn mouse_button_events(
     mut mousebtn_evr: EventReader&lt;MouseButtonInput&gt;,
 ) {
-    use bevy::input::ElementState;
+    use bevy::input::ButtonState;
 
     for ev in mousebtn_evr.iter() {
         match ev.state {
-            ElementState::Pressed =&gt; {
+            ButtonState::Pressed =&gt; {
                 println!(&quot;Mouse button press: {:?}&quot;, ev.button);
             }
-            ElementState::Released =&gt; {
+            ButtonState::Released =&gt; {
                 println!(&quot;Mouse button release: {:?}&quot;, ev.button);
             }
         }

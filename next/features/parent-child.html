@@ -204,7 +204,7 @@ of cameras (<a href="https://docs.rs/bevy/0.7.0/bevy/render/camera/struct.Camera
     for (parent, child_transform) in q_child.iter() {
         // `parent` contains the Entity ID we can use
         // to query components from the parent:
-        let parent_global_transform = q_parent.get(parent.0);
+        let parent_global_transform = q_parent.get(parent.get());
 
         // do something with the components
     }

@@ -164,14 +164,12 @@ and use its <a href="/features/transforms.html">transform</a>.</p>
     // note that we have to include the `Scene0` label
     let my_gltf = ass.load(&quot;my.glb#Scene0&quot;);
 
-    // to be able to position our 3d model:
-    // spawn a parent entity with a TransformBundle
-    // and spawn our gltf as a scene under it
-    commands.spawn_bundle(TransformBundle {
-        local: Transform::from_xyz(2.0, 0.0, -5.0),
-        global: GlobalTransform::identity(),
-    }).with_children(|parent| {
-        parent.spawn_scene(my_gltf);
+    // to position our 3d model, simply use the Transform
+    // in the SceneBundle
+    commands.spawn_bundle(SceneBundle {
+        scene: my_gltf,
+        transform: Transform::from_xyz(2.0, 0.0, -5.0),
+        ..Default::default()
     });
 }
 </code></pre>
@@ -305,15 +303,16 @@ fn spawn_gltf_objects(
     // if the GLTF has loaded, we can navigate its contents
     if let Some(gltf) = assets_gltf.get(&amp;my.0) {
         // spawn the first scene in the file
-        commands.spawn_scene(gltf.scenes[0].clone());
+        commands.spawn_bundle(SceneBundle {
+            scene: gltf.scenes[0].clone(),
+            ..Default::default()
+        });
 
         // spawn the scene named &quot;YellowCar&quot;
-        // do it under a parent entity, to position it in the world
-        commands.spawn_bundle(TransformBundle {
-            local: Transform::from_xyz(1.0, 2.0, 3.0),
-            global: GlobalTransform::identity(),
-        }).with_children(|parent| {
-            parent.spawn_scene(gltf.named_scenes[&quot;YellowCar&quot;].clone());
+        commands.spawn_bundle(SceneBundle {
+            scene: gltf.named_scenes[&quot;YellowCar&quot;].clone(),
+            transform: Transform::from_xyz(1.0, 2.0, 3.0),
+            ..Default::default()
         });
 
         // PERF: the `.clone()`s are just for asset handles, don't worry :)
@@ -363,16 +362,17 @@ numerial index is supported. You cannot address sub-assets by name.</p>
 ) {
     // spawn the first scene in the file
     let scene0 = ass.load(&quot;my_asset_pack.glb#Scene0&quot;);
-    commands.spawn_scene(scene0);
+    commands.spawn_bundle(SceneBundle {
+        scene: scene0,
+        ..Default::default()
+    });
 
-    // spawn the second scene under a parent entity
-    // (to move it)
+    // spawn the second scene
     let scene1 = ass.load(&quot;my_asset_pack.glb#Scene1&quot;);
-    commands.spawn_bundle(TransformBundle {
-        local: Transform::from_xyz(1.0, 2.0, 3.0),
-        global: GlobalTransform::identity(),
-    }).with_children(|parent| {
-        parent.spawn_scene(scene1);
+    commands.spawn_bundle(SceneBundle {
+        scene: scene1,
+        transform: Transform::from_xyz(1.0, 2.0, 3.0),
+        ..Default::default()
     });
 }
 </code></pre>

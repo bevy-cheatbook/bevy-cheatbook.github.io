@@ -141,6 +141,8 @@
                         <h1 id="custom-camera-projection"><a class="header" href="#custom-camera-projection">Custom Camera Projection</a></h1>
 <p><a href="/code/examples/custom-projection.rs">Click here for the full example code.</a></p>
 <hr />
+<p><strong>Note</strong>: this example is showing you how to do something not officially
+supported/endorsed by Bevy. Do at your own risk.</p>
 <p>Camera with a custom projection (not using one of Bevy's standard perspective
 or orthographic projections).</p>
 <p>You could also use this to change the coordinate system, if you insist on
@@ -149,15 +151,18 @@ for whatever reason.</p>
 <p>Here we implement a simple orthographic projection that maps <code>-1.0</code> to <code>1.0</code>
 to the vertical axis of the window, and respects the window's aspect ratio
 for the horizontal axis:</p>
-<p>See how Bevy constructs its camera bundles, for reference:
-<a href="https://docs.rs/bevy_render/0.7.0/src/bevy_render/camera/bundle.rs.html#73-167">orthographic</a>,
-<a href="https://docs.rs/bevy_render/0.7.0/src/bevy_render/camera/bundle.rs.html#21-71">perspective</a>.</p>
+<p>See how Bevy constructs its camera bundles, for reference:</p>
+<ul>
+<li><a href="https://github.com/bevyengine/bevy/blob/v0.8.0/crates/bevy_core_pipeline/src/core_2d/camera_2d.rs#L47">2d</a></li>
+<li><a href="https://github.com/bevyengine/bevy/blob/v0.8.0/crates/bevy_core_pipeline/src/core_3d/camera_3d.rs#L72">3d</a></li>
+</ul>
 <p>This example is based on the setup for a 2D camera:</p>
 <pre><code class="language-rust no_run noplayground">use bevy::render::primitives::Frustum;
-use bevy::render::camera::{Camera, Camera2d, CameraProjection, DepthCalculation};
+use bevy::render::camera::{Camera, CameraProjection, DepthCalculation};
 use bevy::render::view::VisibleEntities;
 
-#[derive(Component)]
+#[derive(Component, Debug, Clone, Reflect)]
+#[reflect(Component, Default)]
 struct SimpleOrthoProjection {
     near: f32,
     far: f32,
@@ -197,15 +202,15 @@ impl Default for SimpleOrthoProjection {
 
 fn setup(mut commands: Commands) {
     // We need all the components that Bevy's built-in camera bundles would add
+    // Refer to the Bevy source code to make sure you do it correctly:
+
+    // here we show a 2d example
 
     let projection = SimpleOrthoProjection::default();
-    let camera = Camera {
-        near: projection.near,
-        far: projection.far,
-        ..default()
-    };
+
     // position the camera like bevy would do by default for 2D:
     let transform = Transform::from_xyz(0.0, 0.0, projection.far - 0.1);
+
     // frustum construction code copied from Bevy
     let view_projection =
         projection.get_projection_matrix() * transform.compute_matrix().inverse();
@@ -217,29 +222,26 @@ fn setup(mut commands: Commands) {
     );
 
     commands.spawn_bundle((
-        camera,
+        bevy::render::camera::CameraRenderGraph::new(bevy::core_pipeline::core_2d::graph::NAME),
         projection,
         frustum,
-        VisibleEntities::default(),
         transform,
         GlobalTransform::default(),
-        Camera2d,
+        VisibleEntities::default(),
+        Camera::default(),
+        Camera2d::default(),
     ));
 }
 
 fn main() {
-    // need to add a bevy-internal camera system to update
-    // the projection on window resizing
-
-    use bevy::render::camera::camera_system;
+    // need to add bevy-internal camera projection management functionality
+    // for our custom projection type
+    use bevy::render::camera::CameraProjectionPlugin;
 
     App::new()
         .add_plugins(DefaultPlugins)
         .add_startup_system(setup)
-        .add_system_to_stage(
-            CoreStage::PostUpdate,
-            camera_system::&lt;SimpleOrthoProjection&gt;,
-        )
+        .add_plugin(CameraProjectionPlugin::&lt;SimpleOrthoProjection&gt;::default())
         .run();
 }
 </code></pre>

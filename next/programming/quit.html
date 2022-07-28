@@ -147,12 +147,13 @@ fn exit_system(mut exit: EventWriter&lt;AppExit&gt;) {
     exit.send(AppExit);
 }
 </code></pre>
-<p>For prototyping, bevy provides a system you can <a href="/programming/app-builder.html">add to your
-<code>App</code></a>, to exit on pressing the <code>Esc</code> key:</p>
+<p>For prototyping, bevy provides a system you can <a href="/programming/app-builder.html">add to your <code>App</code></a>,
+to close the focused window on pressing the <code>Esc</code> key. When all windows are
+closed, Bevy will quit automatically.</p>
 <pre><code class="language-rust no_run noplayground">fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
-        .add_system(bevy::input::system::exit_on_esc_system)
+        .add_system(bevy::window::close_on_esc)
         .run();
 }
 </code></pre>

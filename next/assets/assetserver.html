@@ -208,7 +208,10 @@ after a <code>#</code> symbol.</p>
 
     // spawn a whole scene
     let my_scene: Handle&lt;Scene&gt; = server.load(&quot;my_scene.gltf#Scene0&quot;);
-    commands.spawn_scene(my_scene);
+    commands.spawn_bundle(SceneBundle {
+        scene: my_scene,
+        ..Default::default()
+    });
 }
 </code></pre>
 <p>See the <a href="/features/gltf.html">GLTF page</a> for more info about working with 3D models.</p>

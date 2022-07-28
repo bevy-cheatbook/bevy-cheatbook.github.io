@@ -149,7 +149,7 @@ provides an alternative implementation that does not suffer from the
 is Physics updates), you can add the respective <a href="/programming/systems.html">systems</a> to
 your <a href="/programming/app-builder.html">app</a> using Bevy's <a href="https://docs.rs/bevy/0.7.0/bevy/core/struct.FixedTimestep.html"><code>FixedTimestep</code></a>
 <a href="/programming/run-criteria.html">Run Criteria</a>.</p>
-<pre><code class="language-rust no_run noplayground">use bevy::core::FixedTimestep;
+<pre><code class="language-rust no_run noplayground">use bevy::time::FixedTimestep;
 
 // The timestep says how many times to run the SystemSet every second
 // For TIMESTEP_1, it's once every second

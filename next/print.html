@@ -180,7 +180,7 @@ Discord</a> to chat, ask questions, or get involved in the project!</p>
 <p>If you want to see some games made with Bevy, see <a href="https://itch.io/games/tag-bevy">itch.io</a>
 or <a href="https://bevyengine.org/assets/#input">Bevy Assets</a>.</p>
 <h2 id="maintenance"><a class="header" href="#maintenance">Maintenance</a></h2>
-<p>This version of the book is for Bevy release 0.7.</p>
+<p>This version of the book is for Bevy release 0.8.</p>
 <p>I intend to keep this book up-to-date and relevant with every new Bevy release.
 I also try to regularly make improvements to it, when I can manage it.</p>
 <h2 id="support-me"><a class="header" href="#support-me">Support Me</a></h2>
@@ -889,7 +889,7 @@ version = &quot;0.1.0&quot;
 edition = &quot;2021&quot;
 
 [dependencies]
-bevy = &quot;0.7&quot;
+bevy = &quot;0.8&quot;
 </code></pre>
 <p>The <code>src/main.rs</code> file is your main source code file. This is where you
 start writing your Rust code. For a minimal Bevy <a href="setup//programming/app-builder.html">app</a>, you need
@@ -1308,7 +1308,7 @@ default features, so you need to disable all default bevy features and
 re-enable the ones you need.</p>
 <p>Here is how you might configure your Bevy:</p>
 <pre><code class="language-toml">[dependencies.bevy]
-version = &quot;0.7&quot;
+version = &quot;0.8&quot;
 # Disable the default features if there are any that you do not want
 default-features = false
 features = [
@@ -1316,10 +1316,12 @@ features = [
   # (re-enable whichever you like)
 
   # Bevy functionality:
-  &quot;animation&quot;,          # Animation support
+  &quot;bevy_asset&quot;,         # Assets management
+  &quot;bevy_scene&quot;,         # Scenes management
   &quot;bevy_gilrs&quot;,         # Gamepad input support
   &quot;bevy_audio&quot;,         # Builtin audio
   &quot;bevy_winit&quot;,         # Window management
+  &quot;animation&quot;,          # Animation support
   &quot;x11&quot;,                # Linux: Support X11 windowing system
   &quot;filesystem_watcher&quot;, # Asset hot-reloading
   &quot;render&quot;,             # Graphics Rendering
@@ -1327,7 +1329,7 @@ features = [
   ## &quot;render&quot; actually just includes:
   ## (feel free to use just a subset of these, instead of &quot;render&quot;)
   &quot;bevy_render&quot;,        # Rendering framework core
-  &quot;bevy_core_pipeline&quot;, # Higher-level rendering abstractions
+  &quot;bevy_core_pipeline&quot;, # Common rendering abstractions
   &quot;bevy_sprite&quot;,        # 2D (sprites) rendering
   &quot;bevy_pbr&quot;,           # 3D (physically-based) rendering
   &quot;bevy_gltf&quot;,          # GLTF 3D assets format support
@@ -2028,7 +2030,7 @@ features: a maximum duration and optional auto-reset.</p>
 since a certain point.</p>
 <p>It will just keep accumulating time, which you can check with
 <code>.elapsed()</code>/<code>.elapsed_secs()</code>. You can manually reset it at any time.</p>
-<pre><code class="language-rust no_run noplayground">use bevy::core::Stopwatch;
+<pre><code class="language-rust no_run noplayground">use bevy::time::Stopwatch;
 
 #[derive(Component)]
 struct JumpDuration {
@@ -2220,7 +2222,7 @@ of cameras (<a href="https://docs.rs/bevy/0.7.0/bevy/render/camera/struct.Camera
     for (parent, child_transform) in q_child.iter() {
         // `parent` contains the Entity ID we can use
         // to query components from the parent:
-        let parent_global_transform = q_parent.get(parent.0);
+        let parent_global_transform = q_parent.get(parent.get());
 
         // do something with the components
     }
@@ -2263,7 +2265,7 @@ provides an alternative implementation that does not suffer from the
 is Physics updates), you can add the respective <a href="features//programming/systems.html">systems</a> to
 your <a href="features//programming/app-builder.html">app</a> using Bevy's <a href="https://docs.rs/bevy/0.7.0/bevy/core/struct.FixedTimestep.html"><code>FixedTimestep</code></a>
 <a href="features//programming/run-criteria.html">Run Criteria</a>.</p>
-<pre><code class="language-rust no_run noplayground">use bevy::core::FixedTimestep;
+<pre><code class="language-rust no_run noplayground">use bevy::time::FixedTimestep;
 
 // The timestep says how many times to run the SystemSet every second
 // For TIMESTEP_1, it's once every second
@@ -2345,12 +2347,14 @@ features and re-enable the ones you need. <a href="features//setup/bevy-config.h
 formats (such as the default <code>vorbis</code>). Enable the file formats you care
 about on <code>bevy_kira_audio</code> instead of Bevy.</p>
 <pre><code class="language-toml">[dependencies.bevy]
-version = &quot;0.7&quot;
+version = &quot;0.8&quot;
 default-features = false
-# These are the remaining default features other than `bevy_audio` and `mp3`
+# These are the remaining default features other than `bevy_audio` and `vorbis`
 features = [
   &quot;render&quot;,
   &quot;animation&quot;,
+  &quot;bevy_asset&quot;,
+  &quot;bevy_scene&quot;,
   &quot;bevy_winit&quot;,
   &quot;bevy_gilrs&quot;,
   &quot;png&quot;,
@@ -2360,7 +2364,7 @@ features = [
 ]
 
 [dependencies.bevy_kira_audio]
-version = &quot;0.9.0&quot;
+version = &quot;0.11&quot;
 # `ogg` format support is enabled by default, disable if you don't want it
 default-features = false
 # enable the features you care about
@@ -2497,7 +2501,10 @@ after a <code>#</code> symbol.</p>
 
     // spawn a whole scene
     let my_scene: Handle&lt;Scene&gt; = server.load(&quot;my_scene.gltf#Scene0&quot;);
-    commands.spawn_scene(my_scene);
+    commands.spawn_bundle(SceneBundle {
+        scene: my_scene,
+        ..Default::default()
+    });
 }
 </code></pre>
 <p>See the <a href="assets//features/gltf.html">GLTF page</a> for more info about working with 3D models.</p>
@@ -2540,11 +2547,6 @@ fn use_sprites(
     // Could be `None` if the asset isn't loaded yet
     if let Some(atlas) = atlases.get(&amp;handles.map_tiles) {
         // do something with the texture atlas
-    }
-
-    // Can use a path instead of a handle
-    if let Some(map_tex) = images.get(&quot;map.png&quot;) {
-        // if &quot;map.png&quot; was loaded, we can use it!
     }
 }
 </code></pre>
@@ -2789,14 +2791,14 @@ using the <code>Input&lt;KeyCode&gt;</code> (<a href="https://docs.rs/bevy/0.7.0
 <pre><code class="language-rust no_run noplayground">fn keyboard_events(
     mut key_evr: EventReader&lt;KeyboardInput&gt;,
 ) {
-    use bevy::input::ElementState;
+    use bevy::input::ButtonState;
 
     for ev in key_evr.iter() {
         match ev.state {
-            ElementState::Pressed =&gt; {
+            ButtonState::Pressed =&gt; {
                 println!(&quot;Key press: {:?} ({})&quot;, ev.key_code, ev.scan_code);
             }
-            ElementState::Released =&gt; {
+            ButtonState::Released =&gt; {
                 println!(&quot;Key release: {:?} ({})&quot;, ev.key_code, ev.scan_code);
             }
         }
@@ -2865,14 +2867,14 @@ as an <a href="https://docs.rs/bevy/0.7.0/bevy/input/struct.Input.html"><code>In
 <pre><code class="language-rust no_run noplayground">fn mouse_button_events(
     mut mousebtn_evr: EventReader&lt;MouseButtonInput&gt;,
 ) {
-    use bevy::input::ElementState;
+    use bevy::input::ButtonState;
 
     for ev in mousebtn_evr.iter() {
         match ev.state {
-            ElementState::Pressed =&gt; {
+            ButtonState::Pressed =&gt; {
                 println!(&quot;Mouse button press: {:?}&quot;, ev.button);
             }
-            ElementState::Released =&gt; {
+            ButtonState::Released =&gt; {
                 println!(&quot;Mouse button release: {:?}&quot;, ev.button);
             }
         }
@@ -3018,14 +3020,16 @@ fn gamepad_connections(
     my_gamepad: Option&lt;Res&lt;MyGamepad&gt;&gt;,
     mut gamepad_evr: EventReader&lt;GamepadEvent&gt;,
 ) {
-    for GamepadEvent(id, kind) in gamepad_evr.iter() {
-        match kind {
+    for ev in gamepad_evr.iter() {
+        // the ID of the gamepad
+        let id = ev.gamepad;
+        match ev.event_type {
             GamepadEventType::Connected =&gt; {
                 println!(&quot;New gamepad connected with ID: {:?}&quot;, id);
 
                 // if we don't have any gamepad yet, use this one
                 if my_gamepad.is_none() {
-                    commands.insert_resource(MyGamepad(*id));
+                    commands.insert_resource(MyGamepad(id));
                 }
             }
             GamepadEventType::Disconnected =&gt; {
@@ -3034,7 +3038,7 @@ fn gamepad_connections(
                 // if it's the one we previously associated with the player,
                 // disassociate it:
                 if let Some(MyGamepad(old_id)) = my_gamepad.as_deref() {
-                    if old_id == id {
+                    if *old_id == id {
                         commands.remove_resource::&lt;MyGamepad&gt;();
                     }
                 }
@@ -3067,9 +3071,12 @@ are vendor-neutral (like <code>South</code> and <code>East</code> instead of X/O
     };
 
     // The joysticks are represented using a separate axis for X and Y
-
-    let axis_lx = GamepadAxis(gamepad, GamepadAxisType::LeftStickX);
-    let axis_ly = GamepadAxis(gamepad, GamepadAxisType::LeftStickY);
+    let axis_lx = GamepadAxis {
+        gamepad, axis_type: GamepadAxisType::LeftStickX
+    };
+    let axis_ly = GamepadAxis {
+        gamepad, axis_type: GamepadAxisType::LeftStickY
+    };
 
     if let (Some(x), Some(y)) = (axes.get(axis_lx), axes.get(axis_ly)) {
         // combine X and Y into one vector
@@ -3082,8 +3089,12 @@ are vendor-neutral (like <code>South</code> and <code>East</code> instead of X/O
     }
 
     // In a real game, the buttons would be configurable, but here we hardcode them
-    let jump_button = GamepadButton(gamepad, GamepadButtonType::South);
-    let heal_button = GamepadButton(gamepad, GamepadButtonType::East);
+    let jump_button = GamepadButton {
+        gamepad, button_type: GamepadButtonType::South
+    };
+    let heal_button = GamepadButton {
+        gamepad, button_type: GamepadButtonType::East
+    };
 
     if buttons.just_pressed(jump_button) {
         // button just pressed: make the player jump
@@ -3107,15 +3118,15 @@ are vendor-neutral (like <code>South</code> and <code>East</code> instead of X/O
         return;
     };
 
-    for GamepadEvent(id, kind) in gamepad_evr.iter() {
-        if id.0 != gamepad.0 {
+    for ev in gamepad_evr.iter() {
+        if ev.gamepad != gamepad {
             // event not from our gamepad
             continue;
         }
 
         use GamepadEventType::{AxisChanged, ButtonChanged};
 
-        match kind {
+        match ev.event_type {
             AxisChanged(GamepadAxisType::RightStickX, x) =&gt; {
                 // Right Stick moved (X)
             }
@@ -3124,7 +3135,7 @@ are vendor-neutral (like <code>South</code> and <code>East</code> instead of X/O
             }
             ButtonChanged(GamepadButtonType::DPadDown, val) =&gt; {
                 // buttons are also reported as analog, so use a threshold
-                if *val &gt; 0.5 {
+                if val &gt; 0.5 {
                     // button pressed
                 }
             }
@@ -3182,19 +3193,19 @@ fn configure_gamepads(
 
     // set these settings for the gamepad we use for our player
     settings.axis_settings.insert(
-        GamepadAxis(gamepad, GamepadAxisType::RightStickX),
+        GamepadAxis { gamepad, axis_type: GamepadAxisType::RightStickX },
         right_stick_settings.clone()
     );
     settings.axis_settings.insert(
-        GamepadAxis(gamepad, GamepadAxisType::RightStickY),
+        GamepadAxis { gamepad, axis_type: GamepadAxisType::RightStickY },
         right_stick_settings.clone()
     );
     settings.axis_settings.insert(
-        GamepadAxis(gamepad, GamepadAxisType::LeftZ),
+        GamepadAxis { gamepad, axis_type: GamepadAxisType::LeftZ },
         trigger_settings.clone()
     );
     settings.axis_settings.insert(
-        GamepadAxis(gamepad, GamepadAxisType::RightZ),
+        GamepadAxis { gamepad, axis_type: GamepadAxisType::RightZ },
         trigger_settings.clone()
     );
 
@@ -3408,8 +3419,8 @@ fn main() {
 resource</a>.</p>
 <p>Note: you need to add <code>winit</code> to your project's dependencies, and it must
 be the same version as the one used by Bevy. You can use <code>cargo tree</code> or
-check <code>Cargo.lock</code> to see which is the correct version. As of Bevy 0.7,
-that should be <code>winit = &quot;0.26&quot;</code>.</p>
+check <code>Cargo.lock</code> to see which is the correct version. As of Bevy 0.8,
+that should be <code>winit = &quot;0.26.1&quot;</code>.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="bevy-2d"><a class="header" href="#bevy-2d">Bevy 2D</a></h1>
 <p>This chapter covers topics relevant to making 2D games with Bevy.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="2d-camera-setup"><a class="header" href="#2d-camera-setup">2D Camera Setup</a></h1>
@@ -3449,14 +3460,12 @@ and use its <a href="3d//features/transforms.html">transform</a>.</p>
     // note that we have to include the `Scene0` label
     let my_gltf = ass.load(&quot;my.glb#Scene0&quot;);
 
-    // to be able to position our 3d model:
-    // spawn a parent entity with a TransformBundle
-    // and spawn our gltf as a scene under it
-    commands.spawn_bundle(TransformBundle {
-        local: Transform::from_xyz(2.0, 0.0, -5.0),
-        global: GlobalTransform::identity(),
-    }).with_children(|parent| {
-        parent.spawn_scene(my_gltf);
+    // to position our 3d model, simply use the Transform
+    // in the SceneBundle
+    commands.spawn_bundle(SceneBundle {
+        scene: my_gltf,
+        transform: Transform::from_xyz(2.0, 0.0, -5.0),
+        ..Default::default()
     });
 }
 </code></pre>
@@ -3590,15 +3599,16 @@ fn spawn_gltf_objects(
     // if the GLTF has loaded, we can navigate its contents
     if let Some(gltf) = assets_gltf.get(&amp;my.0) {
         // spawn the first scene in the file
-        commands.spawn_scene(gltf.scenes[0].clone());
+        commands.spawn_bundle(SceneBundle {
+            scene: gltf.scenes[0].clone(),
+            ..Default::default()
+        });
 
         // spawn the scene named &quot;YellowCar&quot;
-        // do it under a parent entity, to position it in the world
-        commands.spawn_bundle(TransformBundle {
-            local: Transform::from_xyz(1.0, 2.0, 3.0),
-            global: GlobalTransform::identity(),
-        }).with_children(|parent| {
-            parent.spawn_scene(gltf.named_scenes[&quot;YellowCar&quot;].clone());
+        commands.spawn_bundle(SceneBundle {
+            scene: gltf.named_scenes[&quot;YellowCar&quot;].clone(),
+            transform: Transform::from_xyz(1.0, 2.0, 3.0),
+            ..Default::default()
         });
 
         // PERF: the `.clone()`s are just for asset handles, don't worry :)
@@ -3648,16 +3658,17 @@ numerial index is supported. You cannot address sub-assets by name.</p>
 ) {
     // spawn the first scene in the file
     let scene0 = ass.load(&quot;my_asset_pack.glb#Scene0&quot;);
-    commands.spawn_scene(scene0);
+    commands.spawn_bundle(SceneBundle {
+        scene: scene0,
+        ..Default::default()
+    });
 
-    // spawn the second scene under a parent entity
-    // (to move it)
+    // spawn the second scene
     let scene1 = ass.load(&quot;my_asset_pack.glb#Scene1&quot;);
-    commands.spawn_bundle(TransformBundle {
-        local: Transform::from_xyz(1.0, 2.0, 3.0),
-        global: GlobalTransform::identity(),
-    }).with_children(|parent| {
-        parent.spawn_scene(scene1);
+    commands.spawn_bundle(SceneBundle {
+        scene: scene1,
+        transform: Transform::from_xyz(1.0, 2.0, 3.0),
+        ..Default::default()
     });
 }
 </code></pre>
@@ -4247,12 +4258,13 @@ fn exit_system(mut exit: EventWriter&lt;AppExit&gt;) {
     exit.send(AppExit);
 }
 </code></pre>
-<p>For prototyping, bevy provides a system you can <a href="programming//programming/app-builder.html">add to your
-<code>App</code></a>, to exit on pressing the <code>Esc</code> key:</p>
+<p>For prototyping, bevy provides a system you can <a href="programming//programming/app-builder.html">add to your <code>App</code></a>,
+to close the focused window on pressing the <code>Esc</code> key. When all windows are
+closed, Bevy will quit automatically.</p>
 <pre><code class="language-rust no_run noplayground">fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
-        .add_system(bevy::input::system::exit_on_esc_system)
+        .add_system(bevy::window::close_on_esc)
         .run();
 }
 </code></pre>
@@ -5880,7 +5892,7 @@ is structured in a sequence of &quot;render stages&quot;:</p>
 <li><code>Cleanup</code>: clear any data from the render World that should not persist to the next frame</li>
 </ul>
 <h2 id="timings"><a class="header" href="#timings">Timings</a></h2>
-<p>Note: Pipelined rendering is not yet actually enabled in Bevy 0.7. This section
+<p>Note: Pipelined rendering is not yet actually enabled in Bevy 0.8. This section
 explains the intended behavior, which will land in a future Bevy version. You
 have to understand it, because any custom rendering code you write will have to
 work with it in mind.</p>
@@ -6054,7 +6066,7 @@ struct MainCamera;
 
 fn setup(mut commands: Commands) {
     commands.spawn()
-        .insert_bundle(OrthographicCameraBundle::new_2d())
+        .insert_bundle(Camera2dBundle::default())
         .insert(MainCamera);
 }
 
@@ -6084,7 +6096,7 @@ fn my_cursor_system(
         let ndc = (screen_pos / window_size) * 2.0 - Vec2::ONE;
 
         // matrix for undoing the projection and camera transform
-        let ndc_to_world = camera_transform.compute_matrix() * camera.projection_matrix.inverse();
+        let ndc_to_world = camera_transform.compute_matrix() * camera.projection_matrix().inverse();
 
         // use it to convert ndc to world-space coordinates
         let world_pos = ndc_to_world.project_point3(ndc.extend(-1.0));
@@ -6099,6 +6111,8 @@ fn my_cursor_system(
 <div style="break-before: page; page-break-before: always;"></div><h1 id="custom-camera-projection"><a class="header" href="#custom-camera-projection">Custom Camera Projection</a></h1>
 <p><a href="cookbook//code/examples/custom-projection.rs">Click here for the full example code.</a></p>
 <hr />
+<p><strong>Note</strong>: this example is showing you how to do something not officially
+supported/endorsed by Bevy. Do at your own risk.</p>
 <p>Camera with a custom projection (not using one of Bevy's standard perspective
 or orthographic projections).</p>
 <p>You could also use this to change the coordinate system, if you insist on
@@ -6107,15 +6121,18 @@ for whatever reason.</p>
 <p>Here we implement a simple orthographic projection that maps <code>-1.0</code> to <code>1.0</code>
 to the vertical axis of the window, and respects the window's aspect ratio
 for the horizontal axis:</p>
-<p>See how Bevy constructs its camera bundles, for reference:
-<a href="https://docs.rs/bevy_render/0.7.0/src/bevy_render/camera/bundle.rs.html#73-167">orthographic</a>,
-<a href="https://docs.rs/bevy_render/0.7.0/src/bevy_render/camera/bundle.rs.html#21-71">perspective</a>.</p>
+<p>See how Bevy constructs its camera bundles, for reference:</p>
+<ul>
+<li><a href="https://github.com/bevyengine/bevy/blob/v0.8.0/crates/bevy_core_pipeline/src/core_2d/camera_2d.rs#L47">2d</a></li>
+<li><a href="https://github.com/bevyengine/bevy/blob/v0.8.0/crates/bevy_core_pipeline/src/core_3d/camera_3d.rs#L72">3d</a></li>
+</ul>
 <p>This example is based on the setup for a 2D camera:</p>
 <pre><code class="language-rust no_run noplayground">use bevy::render::primitives::Frustum;
-use bevy::render::camera::{Camera, Camera2d, CameraProjection, DepthCalculation};
+use bevy::render::camera::{Camera, CameraProjection, DepthCalculation};
 use bevy::render::view::VisibleEntities;
 
-#[derive(Component)]
+#[derive(Component, Debug, Clone, Reflect)]
+#[reflect(Component, Default)]
 struct SimpleOrthoProjection {
     near: f32,
     far: f32,
@@ -6155,15 +6172,15 @@ impl Default for SimpleOrthoProjection {
 
 fn setup(mut commands: Commands) {
     // We need all the components that Bevy's built-in camera bundles would add
+    // Refer to the Bevy source code to make sure you do it correctly:
+
+    // here we show a 2d example
 
     let projection = SimpleOrthoProjection::default();
-    let camera = Camera {
-        near: projection.near,
-        far: projection.far,
-        ..default()
-    };
+
     // position the camera like bevy would do by default for 2D:
     let transform = Transform::from_xyz(0.0, 0.0, projection.far - 0.1);
+
     // frustum construction code copied from Bevy
     let view_projection =
         projection.get_projection_matrix() * transform.compute_matrix().inverse();
@@ -6175,29 +6192,26 @@ fn setup(mut commands: Commands) {
     );
 
     commands.spawn_bundle((
-        camera,
+        bevy::render::camera::CameraRenderGraph::new(bevy::core_pipeline::core_2d::graph::NAME),
         projection,
         frustum,
-        VisibleEntities::default(),
         transform,
         GlobalTransform::default(),
-        Camera2d,
+        VisibleEntities::default(),
+        Camera::default(),
+        Camera2d::default(),
     ));
 }
 
 fn main() {
-    // need to add a bevy-internal camera system to update
-    // the projection on window resizing
-
-    use bevy::render::camera::camera_system;
+    // need to add bevy-internal camera projection management functionality
+    // for our custom projection type
+    use bevy::render::camera::CameraProjectionPlugin;
 
     App::new()
         .add_plugins(DefaultPlugins)
         .add_startup_system(setup)
-        .add_system_to_stage(
-            CoreStage::PostUpdate,
-            camera_system::&lt;SimpleOrthoProjection&gt;,
-        )
+        .add_plugin(CameraProjectionPlugin::&lt;SimpleOrthoProjection&gt;::default())
         .run();
 }
 </code></pre>
@@ -6327,7 +6341,7 @@ fn spawn_camera(mut commands: Commands) {
     let translation = Vec3::new(-2.0, 2.5, 5.0);
     let radius = translation.length();
 
-    commands.spawn_bundle(PerspectiveCameraBundle {
+    commands.spawn_bundle(Camera3dBundle {
         transform: Transform::from_translation(translation)
             .looking_at(Vec3::ZERO, Vec3::Y),
         ..Default::default()
@@ -6343,15 +6357,11 @@ fn spawn_camera(mut commands: Commands) {
 <p>This example shows how to print a list of all types that have been added as
 <a href="cookbook//programming/res.html">resources</a>.</p>
 <pre><code class="language-rust no_run noplayground">fn print_resources(archetypes: &amp;Archetypes, components: &amp;Components) {
-    let mut r: Vec&lt;String&gt; = archetypes
+    let mut r: Vec&lt;_&gt; = archetypes
         .resource()
         .components()
         .map(|id| components.get_info(id).unwrap())
-        // get_short_name removes the path information
-        // i.e. `bevy_audio::audio::Audio` -&gt; `Audio`
-        // if you want to see the path info replace
-        // `TypeRegistration::get_short_name` with `String::from`
-        .map(|info| TypeRegistration::get_short_name(info.name()))
+        .map(|info| info.name())
         .collect();
 
     // sort list alphebetically
@@ -6422,7 +6432,7 @@ running a Wayland-based desktop, this means your Bevy app will run in the
 XWayland compatibility layer.</p>
 <p>To enable native Wayland support for Bevy, enable the <code>wayland</code> cargo feature:</p>
 <pre><code class="language-toml">[dependencies]
-bevy = { version = &quot;0.7&quot;, features = [&quot;wayland&quot;] }
+bevy = { version = &quot;0.8&quot;, features = [&quot;wayland&quot;] }
 </code></pre>
 <p>Now your app will be built with support for both X11 and Wayland.</p>
 <p>If you want to remove X11 support for whatever reason, disable the <code>x11</code>

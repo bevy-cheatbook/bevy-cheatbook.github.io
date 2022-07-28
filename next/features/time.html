@@ -268,7 +268,7 @@ features: a maximum duration and optional auto-reset.</p>
 since a certain point.</p>
 <p>It will just keep accumulating time, which you can check with
 <code>.elapsed()</code>/<code>.elapsed_secs()</code>. You can manually reset it at any time.</p>
-<pre><code class="language-rust no_run noplayground">use bevy::core::Stopwatch;
+<pre><code class="language-rust no_run noplayground">use bevy::time::Stopwatch;
 
 #[derive(Component)]
 struct JumpDuration {

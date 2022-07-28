@@ -144,15 +144,11 @@
 <p>This example shows how to print a list of all types that have been added as
 <a href="/programming/res.html">resources</a>.</p>
 <pre><code class="language-rust no_run noplayground">fn print_resources(archetypes: &amp;Archetypes, components: &amp;Components) {
-    let mut r: Vec&lt;String&gt; = archetypes
+    let mut r: Vec&lt;_&gt; = archetypes
         .resource()
         .components()
         .map(|id| components.get_info(id).unwrap())
-        // get_short_name removes the path information
-        // i.e. `bevy_audio::audio::Audio` -&gt; `Audio`
-        // if you want to see the path info replace
-        // `TypeRegistration::get_short_name` with `String::from`
-        .map(|info| TypeRegistration::get_short_name(info.name()))
+        .map(|info| info.name())
         .collect();
 
     // sort list alphebetically

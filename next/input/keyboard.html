@@ -177,14 +177,14 @@ using the <code>Input&lt;KeyCode&gt;</code> (<a href="https://docs.rs/bevy/0.7.0
 <pre><code class="language-rust no_run noplayground">fn keyboard_events(
     mut key_evr: EventReader&lt;KeyboardInput&gt;,
 ) {
-    use bevy::input::ElementState;
+    use bevy::input::ButtonState;
 
     for ev in key_evr.iter() {
         match ev.state {
-            ElementState::Pressed =&gt; {
+            ButtonState::Pressed =&gt; {
                 println!(&quot;Key press: {:?} ({})&quot;, ev.key_code, ev.scan_code);
             }
-            ElementState::Released =&gt; {
+            ButtonState::Released =&gt; {
                 println!(&quot;Key release: {:?} ({})&quot;, ev.key_code, ev.scan_code);
             }
         }
