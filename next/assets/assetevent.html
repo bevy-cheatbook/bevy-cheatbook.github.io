@@ -141,7 +141,7 @@
                         <h1 id="react-to-changes-with-asset-events"><a class="header" href="#react-to-changes-with-asset-events">React to Changes with Asset Events</a></h1>
 <p>If you need to perform specific actions when an asset is created,
 modified, or removed, you can make a <a href="/programming/systems.html">system</a> that reacts to
-<a href="https://docs.rs/bevy/0.7.0/bevy/asset/enum.AssetEvent.html"><code>AssetEvent</code></a> <a href="/programming/events.html">events</a>.</p>
+<a href="https://docs.rs/bevy/0.8.0/bevy/asset/enum.AssetEvent.html"><code>AssetEvent</code></a> <a href="/programming/events.html">events</a>.</p>
 <pre><code class="language-rust no_run noplayground">struct MyMapImage {
     handle: Handle&lt;Image&gt;,
 }
@@ -153,10 +153,11 @@ fn fixup_images(
 ) {
     for ev in ev_asset.iter() {
         match ev {
-            AssetEvent::Created { handle } |
-            AssetEvent::Modified { handle } =&gt; {
+            AssetEvent::Created { handle } =&gt; {
                 // a texture was just loaded or changed!
 
+                // WARNING: this mutable access will cause another
+                // AssetEvent (Modified) to be emitted!
                 let texture = assets.get_mut(handle).unwrap();
                 // ^ unwrap is OK, because we know it is loaded now
 
@@ -166,6 +167,9 @@ fn fixup_images(
                     // it is some other image
                 }
             }
+            AssetEvent::Modified { handle } =&gt; {
+                // an image was modified
+            }
             AssetEvent::Removed { handle } =&gt; {
                 // an image was unloaded
             }
@@ -173,6 +177,10 @@ fn fixup_images(
     }
 }
 </code></pre>
+<p><strong>Note:</strong> If you are handling <code>Modified</code> events and doing a mutable access to
+the data, the <code>.get_mut</code> will trigger another <code>Modified</code> event for the same
+asset. If you are not careful, this could result in an infinite loop! (from
+events caused by your own system)</p>
 
                     </main>
 

@@ -142,9 +142,9 @@
 <p>This page will list some common issues that you may encounter, if you are
 trying to spawn a 3D object, but cannot see it on the screen.</p>
 <h2 id="missing-vertex-attributes"><a class="header" href="#missing-vertex-attributes">Missing Vertex Attributes</a></h2>
-<p>Make sure your <a href="https://docs.rs/bevy/0.7.0/bevy/render/mesh/struct.Mesh.html"><code>Mesh</code></a> includes all vertex attributes required
+<p>Make sure your <a href="https://docs.rs/bevy/0.8.0/bevy/render/mesh/struct.Mesh.html"><code>Mesh</code></a> includes all vertex attributes required
 by your shader/material.</p>
-<p>Bevy's default PBR <a href="https://docs.rs/bevy/0.7.0/bevy/pbr/struct.StandardMaterial.html"><code>StandardMaterial</code></a>
+<p>Bevy's default PBR <a href="https://docs.rs/bevy/0.8.0/bevy/pbr/struct.StandardMaterial.html"><code>StandardMaterial</code></a>
 requires <em>all</em> meshes to have:</p>
 <ul>
 <li>Positions</li>
@@ -168,12 +168,12 @@ use GLTF with Bevy.</p>
 <p>GLTF files are complex. They contain many sub-assets, represented by
 different Bevy types. Make sure you are using the correct thing.</p>
 <p>Make sure you are spawning a GLTF Scene, or using the correct
-<a href="https://docs.rs/bevy/0.7.0/bevy/render/mesh/struct.Mesh.html"><code>Mesh</code></a> and <a href="https://docs.rs/bevy/0.7.0/bevy/pbr/struct.StandardMaterial.html"><code>StandardMaterial</code></a>
+<a href="https://docs.rs/bevy/0.8.0/bevy/render/mesh/struct.Mesh.html"><code>Mesh</code></a> and <a href="https://docs.rs/bevy/0.8.0/bevy/pbr/struct.StandardMaterial.html"><code>StandardMaterial</code></a>
 associated with the correct GLTF Primitive.</p>
 <p>If you are using an asset path, be sure to include a label for the sub-asset you want:</p>
 <pre><code class="language-rust no_run noplayground">asset_server.load(&quot;my.gltf#Scene0&quot;);
 </code></pre>
-<p>If you are spawning the top-level <a href="https://docs.rs/bevy/0.7.0/bevy/gltf/struct.Gltf.html"><code>Gltf</code></a> <a href="/features/gltf.html#gltf-master-asset">master asset</a>, it won't work.</p>
+<p>If you are spawning the top-level <a href="https://docs.rs/bevy/0.8.0/bevy/gltf/struct.Gltf.html"><code>Gltf</code></a> <a href="/features/gltf.html#gltf-master-asset">master asset</a>, it won't work.</p>
 <p>If you are spawning a GLTF Mesh, it won't work.</p>
 <h2 id="unsupported-gltf"><a class="header" href="#unsupported-gltf">Unsupported GLTF</a></h2>
 <p>Bevy does not fully support all features of the GLTF format and has some
@@ -198,7 +198,7 @@ would be almost instant in optimized builds. <a href="/pitfalls/performance.html
 <h2 id="vertex-order-and-culling"><a class="header" href="#vertex-order-and-culling">Vertex Order and Culling</a></h2>
 <p>By default, the Bevy renderer assumes Counter-Clockwise vertex order and has
 back-face culling enabled.</p>
-<p>If you are generating your <a href="https://docs.rs/bevy/0.7.0/bevy/render/mesh/struct.Mesh.html"><code>Mesh</code></a> from code, make sure your
+<p>If you are generating your <a href="https://docs.rs/bevy/0.8.0/bevy/render/mesh/struct.Mesh.html"><code>Mesh</code></a> from code, make sure your
 vertices are in the correct order.</p>
 
                     </main>

@@ -141,12 +141,12 @@
                         <h1 id="component-storage-tablesparse-set"><a class="header" href="#component-storage-tablesparse-set">Component Storage (Table/Sparse-Set)</a></h1>
 <p>Bevy ECS provides two different ways of storing data: tables and sparse sets.
 The two storage kinds offer different performance characteristics.</p>
-<p>The kind of storage to be used can be chosen per <a href="/programming/ec.html#components">component</a> type.
-When you derive the <a href="https://docs.rs/bevy/0.7.0/bevy/ecs/component/trait.Component.html"><code>Component</code></a> trait, you can specify it.
-The default, if unspecified, is table storage.</p>
-<p>You can have components with a mixture of different storage kinds on the same entity.</p>
-<p>The rest of this page is dedicated to explaining the performance trade-offs and why
-you might want to choose one storage kind vs. the other.</p>
+<p>The kind of storage to be used can be chosen per <a href="/programming/ec.html#components">component</a>
+type.  When you derive the <a href="https://docs.rs/bevy/0.8.0/bevy/ecs/component/trait.Component.html"><code>Component</code></a> trait, you can
+specify it. The default, if unspecified, is table storage. You can have
+components with a mixture of different storage kinds on the same entity.</p>
+<p>The rest of this page is dedicated to explaining the performance trade-offs
+and why you might want to choose one storage kind vs. the other.</p>
 <pre><code class="language-rust no_run noplayground">/// Component for entities that can cast magic spells
 #[derive(Component)] // Use the default table storage
 struct Mana {
@@ -171,46 +171,59 @@ struct Bleeding {
 }
 </code></pre>
 <h2 id="table-storage"><a class="header" href="#table-storage">Table Storage</a></h2>
-<p>Table storage is optimized for fast <a href="/programming/queries.html">query</a> iteration. If the way you usually use a
-specific component type is to access its data across many entities, this will offer the best
-performance.</p>
-<p>However, adding/removing table components to existing entities is a relatively slow operation. It
-requires copying the data of all the other table components for the entity, to a different
-location in memory.</p>
-<p>It's OK if you have to do this sometimes, but if you are likely to add/remove a component very
-frequently, you might want to switch that component type to sparse-set storage.</p>
-<p>You can see why table storage was chosen as Bevy's default. Most component types are rarely
-added/removed in practice. You typically spawn entities with all the components they should have,
-and then access the data via queries, usually every frame. Sometimes you might add or remove
-a component to change an entity's behavior, but probably not nearly as often, or every frame.</p>
+<p>Table storage is optimized for fast <a href="/programming/queries.html">query</a> iteration. If the
+way you usually use a specific component type is to iterate over its data
+across many entities, this will offer the best performance.</p>
+<p>However, adding/removing table components to existing entities is a relatively
+slow operation. It requires copying the data of all table components for
+the entity to a different location in memory.</p>
+<p>It's OK if you have to do this sometimes, but if you are likely to add/remove
+a component very frequently, you might want to switch that component type
+to sparse-set storage.</p>
+<p>You can see why table storage was chosen as Bevy's default. Most component
+types are rarely added/removed in practice. You typically spawn entities with
+all the components they should have, and then access the data via queries,
+usually every frame. Sometimes you might add or remove a component to change
+an entity's behavior, but probably not nearly as often, or every frame.</p>
 <h2 id="sparse-set-storage"><a class="header" href="#sparse-set-storage">Sparse-Set Storage</a></h2>
-<p>Sparse-Set storage is optimized for fast adding/removing of a component to existing entities, at
-the cost of slower querying. It can be more efficient for components that you would like to add/remove very frequently.</p>
-<p>An example of this might be a <a href="/programming/ec.html#components">marker component</a> indicating whether an enemy can
-currently see the player. You might want to have such a component type, so that you can easily
-use a <a href="/programming/queries.html#query-filters">query filter</a> to find all the enemies that are currently tracking the
-player. However, this is something that can change every frame, as enemies or the player move
-around the game level. If you add/remove this component every time the visibility status changed,
-that's a lot of additions and removals.</p>
-<p>You can see that situations like these are more niche and do not apply to most component types. Treat
-sparse-set storage as a potential optimization you could try in specific circumstances.</p>
+<p>Sparse-Set storage is optimized for fast adding/removing of a component to
+existing entities, at the cost of slower querying. It can be more efficient
+for components that you would like to add/remove very frequently.</p>
+<p>An example of this might be a <a href="/programming/ec.html#components">marker component</a>
+indicating whether an enemy is currently aware of the player. You might
+want to have such a component type, so that you can easily use a <a href="/programming/queries.html#query-filters">query
+filter</a> to find all the enemies that are currently
+tracking the player. However, this is something that can change every frame,
+as enemies or the player move around the game level. If you add/remove this
+component every time the visibility status changed, that's a lot of additions
+and removals.</p>
+<p>You can see that situations like these are more niche and do not apply
+to most typical component types. Treat sparse-set storage as a potential
+optimization you could try in specific circumstances.</p>
+<p>Even in situations like the example above, it might not be a performance win.
+Everything depends on your application's unique usage patterns. You have to
+measure and try.</p>
 <h2 id="table-fragmentation"><a class="header" href="#table-fragmentation">Table Fragmentation</a></h2>
-<p>Furthermore, the actual memory layout of the &quot;tables&quot; depends on the set of all table components
-that each of your entities has.</p>
-<p>ECS queries perform best when many of the entities they match have the same overall set of components.</p>
-<p>Having a large number of entities, that all have the same component types, is very efficient
-in terms of data access performance. Having diverse entities with a varied mixture of different
-component types, means that their data will be fragmented in memory and be less efficient to access.</p>
-<p>Sparse-Set components do not affect the memory layout of tables. Hence, components that are only
-used on a few entities or as a &quot;temporary effect&quot;, might also be good candidates for sparse-set
-storage. That way they don't fragment the memory of the other (table) components.</p>
+<p>Furthermore, the actual memory layout of the &quot;tables&quot; depends on the set of
+all table components that each of your entities has.</p>
+<p>ECS queries perform best when many of the entities they match have the same
+overall set of components.</p>
+<p>Having a large number of entities, that all have the same component types, is
+very efficient in terms of data access performance. Having diverse entities
+with a varied mixture of different component types, means that their data
+will be fragmented in memory and be less efficient to access.</p>
+<p>Sparse-Set components do not affect the memory layout of tables. Hence,
+components that are only used on a few entities or as a &quot;temporary effect&quot;,
+might also be good candidates for sparse-set storage. That way they don't
+fragment the memory of the other (table) components. Systems that do not
+care about these components will be completely unaffected by them existing.</p>
 <h2 id="overall-advice"><a class="header" href="#overall-advice">Overall Advice</a></h2>
-<p>While this page describes the general performance characteristics and gives some guidelines, you
-often cannot know if something improves performance without benchmarking.</p>
-<p>You could use sparse-set storage just in obvious situations like the &quot;visibility marker&quot; example
-given earlier, and otherwise leave the default table storage.</p>
-<p>When your game grows complex enough and you have something to benchmark, you could try to apply
-it in more places and see how it affects your results.</p>
+<p>While this page describes the general performance characteristics and gives
+some guidelines, you often cannot know if something improves performance
+without benchmarking.</p>
+<p>When your game grows complex enough and you have something to benchmark,
+you could try to apply sparse-set storage to situations where it might make
+sense, as described above, and see how it affects your results.</p>
 
                     </main>
 

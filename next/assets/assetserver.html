@@ -142,7 +142,7 @@
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.7.0/examples/asset/asset_loading.rs"><code>asset_loading</code></a>.</p>
 <hr />
-<p>To load assets from files, use the <a href="https://docs.rs/bevy/0.7.0/bevy/asset/struct.AssetServer.html"><code>AssetServer</code></a>
+<p>To load assets from files, use the <a href="https://docs.rs/bevy/0.8.0/bevy/asset/struct.AssetServer.html"><code>AssetServer</code></a>
 <a href="/programming/res.html">resource</a>.</p>
 <pre><code class="language-rust no_run noplayground">struct UiFont(Handle&lt;Font&gt;);
 
@@ -175,9 +175,12 @@ is selected based on the file extension.</p>
 <h2 id="untyped-loading"><a class="header" href="#untyped-loading">Untyped Loading</a></h2>
 <p>If you want an <a href="/assets/handles.html#untyped-handles">untyped handle</a>, you can use
 <code>asset_server.load_untyped(…)</code> instead.</p>
+<p>Untyped loading is possible, because Bevy always detects the file type from
+the file extension anyway.</p>
+<h3 id="loading-folders"><a class="header" href="#loading-folders">Loading Folders</a></h3>
 <p>You can also load an entire folder of assets, regardless of how many
 files are inside, using <code>asset_server.load_folder(…)</code>. This gives you a
-<code>Vec&lt;HandleUntyped&gt;</code> with all the untyped handles.</p>
+<code>Vec&lt;HandleUntyped&gt;</code> with all the <a href="/assets/handles.html#untyped-handles">untyped handles</a>.</p>
 <pre><code class="language-rust no_run noplayground">struct ExtraAssets(Vec&lt;HandleUntyped&gt;);
 
 fn load_extra_assets(
@@ -189,11 +192,11 @@ fn load_extra_assets(
     }
 }
 </code></pre>
-<p>Untyped loading is possible, because Bevy always detects the file type from
-the file extension anyway.</p>
+<p>Loading folders is not supported by all I/O backends. Notably, it does not
+work on WASM/Web.</p>
 <h2 id="assetpath-and-labels"><a class="header" href="#assetpath-and-labels">AssetPath and Labels</a></h2>
 <p>The asset path you use to identify an asset from the filesystem is actually
-a special <a href="https://docs.rs/bevy/0.7.0/bevy/asset/struct.AssetPath.html"><code>AssetPath</code></a>, which consists of the file path +
+a special <a href="https://docs.rs/bevy/0.8.0/bevy/asset/struct.AssetPath.html"><code>AssetPath</code></a>, which consists of the file path +
 a label. Labels are used in situations where multiple assets are contained
 in the same file. An example of this are <a href="/features/gltf.html">GLTF files</a>, which can
 contain meshes, scenes, textures, materials, etc.</p>
@@ -217,10 +220,10 @@ after a <code>#</code> symbol.</p>
 <p>See the <a href="/features/gltf.html">GLTF page</a> for more info about working with 3D models.</p>
 <h2 id="where-are-assets-loaded-from"><a class="header" href="#where-are-assets-loaded-from">Where are assets loaded from?</a></h2>
 <p>The asset server internally relies on an implementation of the
-<a href="https://docs.rs/bevy/0.7.0/bevy/asset/trait.AssetIo.html"><code>AssetIo</code></a> Rust trait, which is Bevy's way of providing
+<a href="https://docs.rs/bevy/0.8.0/bevy/asset/trait.AssetIo.html"><code>AssetIo</code></a> Rust trait, which is Bevy's way of providing
 &quot;backends&quot; for fetching data from different types of storage.</p>
-<p>Bevy provides its own default built-in I/O backend for desktop platforms
-and for WebAssembly.</p>
+<p>Bevy provides its own default built-in I/O backends for each <a href="/platforms.html">supported
+platform</a>.</p>
 <p>On desktop platforms, it treats asset paths as relative to a folder called
 <code>assets</code>, that must be placed at one of the following locations:</p>
 <ul>
@@ -233,9 +236,10 @@ and for WebAssembly.</p>
 </ul>
 <p>On the web, it fetches assets using HTTP URLs pointing within an <code>assets</code>
 folder located alongside the game's <code>.wasm</code> file.</p>
-<p>There are <a href="/setup/unofficial-plugins.html">unofficial plugins</a> available that provide additional
+<p>There are <a href="/setup/unofficial-plugins.html">unofficial plugins</a> available that provide alternative
 I/O backend implementations, such as for loading assets from inside archive
-files.</p>
+files (<code>.zip</code>), embedded inside the game executable, using a network protocol,
+… many other possibilities.</p>
 
                     </main>
 

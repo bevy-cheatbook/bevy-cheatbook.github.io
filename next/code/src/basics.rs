@@ -699,10 +699,11 @@ fn fixup_images(
 ) {
     for ev in ev_asset.iter() {
         match ev {
-            AssetEvent::Created { handle } |
-            AssetEvent::Modified { handle } => {
+            AssetEvent::Created { handle } => {
                 // a texture was just loaded or changed!
 
+                // WARNING: this mutable access will cause another
+                // AssetEvent (Modified) to be emitted!
                 let texture = assets.get_mut(handle).unwrap();
                 // ^ unwrap is OK, because we know it is loaded now
 
@@ -711,6 +712,9 @@ fn fixup_images(
                 } else {
                     // it is some other image
                 }
+            }
+            AssetEvent::Modified { handle } => {
+                // an image was modified
             }
             AssetEvent::Removed { handle } => {
                 // an image was unloaded
@@ -1527,31 +1531,40 @@ use bevy::prelude::*;
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 #[derive(SystemLabel)]
 enum MyLabel {
+    /// everything that handles input
     Input,
+    /// everything that updates player state
     Player,
+    /// everything that moves things (works with transforms)
+    Movement,
+    /// systems that update the world map
+    Map,
 }
 
 fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
 
-        // create labels, because we want to have multiple affected systems
+        // use labels, because we want to have multiple affected systems
         .add_system(input_joystick.label(MyLabel::Input))
         .add_system(input_keyboard.label(MyLabel::Input))
         .add_system(input_touch.label(MyLabel::Input))
 
-        // this will always run before anything labeled "input"
         .add_system(input_parameters.before(MyLabel::Input))
 
-        // this will always run after anything labeled "input" and "map"
-        // also give it a few labels it just in case
         .add_system(
             player_movement
-                // can also just use strings
-                .label("player_movement")
-                .label(MyLabel::Player)
+                .before(MyLabel::Map)
                 .after(MyLabel::Input)
+                // we can have multiple labels on this system
+                .label(MyLabel::Player)
+                .label(MyLabel::Movement)
+                // can also use loose strings as labels
+                .label("player_movement")
         )
+
+        // … and so on …
+
         .run();
 }
 // ANCHOR_END: system-labels

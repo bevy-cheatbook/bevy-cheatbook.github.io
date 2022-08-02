@@ -152,15 +152,15 @@ thread-pool, making use of many CPU cores.  However, you might need to ensure
 that some code always runs on the &quot;main thread&quot;, or access data that is not
 safe to access in a multithreaded way.</p>
 <h2 id="non-send-systems-and-data-access"><a class="header" href="#non-send-systems-and-data-access">Non-Send Systems and Data Access</a></h2>
-<p>To do this, you can use a <a href="https://docs.rs/bevy/0.7.0/bevy/ecs/system/struct.NonSend.html"><code>NonSend&lt;T&gt;</code></a> /
-<a href="https://docs.rs/bevy/0.7.0/bevy/ecs/system/struct.NonSendMut.html"><code>NonSendMut&lt;T&gt;</code></a> system parameter. This behaves just like
-<a href="https://docs.rs/bevy/0.7.0/bevy/ecs/system/struct.Res.html"><code>Res&lt;T&gt;</code></a> / <a href="https://docs.rs/bevy/0.7.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a>, letting you access an
+<p>To do this, you can use a <a href="https://docs.rs/bevy/0.8.0/bevy/ecs/system/struct.NonSend.html"><code>NonSend&lt;T&gt;</code></a> /
+<a href="https://docs.rs/bevy/0.8.0/bevy/ecs/system/struct.NonSendMut.html"><code>NonSendMut&lt;T&gt;</code></a> system parameter. This behaves just like
+<a href="https://docs.rs/bevy/0.8.0/bevy/ecs/system/struct.Res.html"><code>Res&lt;T&gt;</code></a> / <a href="https://docs.rs/bevy/0.8.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a>, letting you access an
 ECS <a href="/programming/res.html">resource</a> (single global instance of some data), except that
 the presence of such a parameter forces the Bevy scheduler to always run the
 <a href="/programming/systems.html">system</a> on the main thread. This ensures that data never has
 to be sent between threads or accessed from different threads.</p>
-<p>One example of such a resource is <a href="https://docs.rs/bevy/0.7.0/bevy/winit/struct.WinitWindows.html"><code>WinitWindows</code></a>
-in Bevy. This is the low-level version of <a href="https://docs.rs/bevy/0.7.0/bevy/window/struct.Windows.html"><code>Windows</code></a> that
+<p>One example of such a resource is <a href="https://docs.rs/bevy/0.8.0/bevy/winit/struct.WinitWindows.html"><code>WinitWindows</code></a>
+in Bevy. This is the low-level version of <a href="https://docs.rs/bevy/0.8.0/bevy/window/struct.Windows.html"><code>Windows</code></a> that
 gives you more direct access to OS window management functionality.</p>
 <pre><code class="language-rust no_run noplayground">fn setup_raw_window(mut windows: NonSend&lt;WinitWindows&gt;) {
     let raw_window = windows.get_window(WindowId::primary()).unwrap();
@@ -181,12 +181,12 @@ fn main() {
 <p>Normally, to insert <a href="/programming/res.html">resources</a>, their types must be
 <a href="https://doc.rust-lang.org/stable/std/marker/trait.Send.html"><code>Send</code></a>.</p>
 <p>Bevy tracks non-Send resources separately, to ensure that they
-can only be accessed using <a href="https://docs.rs/bevy/0.7.0/bevy/ecs/system/struct.NonSend.html"><code>NonSend&lt;T&gt;</code></a> /
-<a href="https://docs.rs/bevy/0.7.0/bevy/ecs/system/struct.NonSendMut.html"><code>NonSendMut&lt;T&gt;</code></a>.</p>
+can only be accessed using <a href="https://docs.rs/bevy/0.8.0/bevy/ecs/system/struct.NonSend.html"><code>NonSend&lt;T&gt;</code></a> /
+<a href="https://docs.rs/bevy/0.8.0/bevy/ecs/system/struct.NonSendMut.html"><code>NonSendMut&lt;T&gt;</code></a>.</p>
 <p>It is not possible to insert non-send resources using
 <a href="/programming/commands.html"><code>Commands</code></a>, only using <a href="/programming/world.html">direct World access</a>.
 This means that you have to initialize them in an <a href="/programming/exclusive.html">exclusive
-system</a>, <a href="https://docs.rs/bevy/0.7.0/bevy/ecs/world/trait.FromWorld.html"><code>FromWorld</code></a> impl,
+system</a>, <a href="https://docs.rs/bevy/0.8.0/bevy/ecs/world/trait.FromWorld.html"><code>FromWorld</code></a> impl,
 or custom stage.</p>
 <pre><code class="language-rust no_run noplayground">fn setup_platform_audio(world: &amp;mut World) {
     // assuming `OSAudioMagic` is some primitive that is not thread-safe

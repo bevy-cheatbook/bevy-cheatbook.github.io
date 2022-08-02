@@ -144,28 +144,31 @@
 <a href="https://github.com/bevyengine/bevy/blob/v0.7.0/examples/games/alien_cake_addict.rs"><code>alien_cake_addict</code></a>,
 <a href="https://github.com/bevyengine/bevy/blob/v0.7.0/examples/games/breakout.rs"><code>breakout</code></a>.</p>
 <hr />
-<p>To enter the bevy runtime, you need to configure an <a href="https://docs.rs/bevy/0.7.0/bevy/app/struct.App.html"><code>App</code></a>. The app is how you
-define the structure of all the things that make up your project: <a href="/programming/plugins.html">plugins</a>,
-<a href="/programming/systems.html">systems</a>, <a href="/programming/events.html">event</a> types, <a href="/programming/states.html">states</a>, <a href="/programming/stages.html">stages</a>…</p>
-<p>Technically, the <a href="https://docs.rs/bevy/0.7.0/bevy/app/struct.App.html"><code>App</code></a> contains the ECS World(s) (where all the data is stored)
-and Schedule(s) (where all the <a href="/programming/systems.html">systems</a> to run are stored). For advanced use-cases,
-<a href="/programming/sub-apps.html">Sub-apps</a> are a way to have more than one ECS World and Schedule.</p>
+<p>To enter the bevy runtime, you need to configure an <a href="https://docs.rs/bevy/0.8.0/bevy/app/struct.App.html"><code>App</code></a>. The app
+is how you define the structure of all the things that make up your project:
+<a href="/programming/plugins.html">plugins</a>, <a href="/programming/systems.html">systems</a>, <a href="/programming/events.html">event</a> types,
+<a href="/programming/states.html">states</a>, <a href="/programming/stages.html">stages</a>…</p>
+<p>Technically, the <a href="https://docs.rs/bevy/0.8.0/bevy/app/struct.App.html"><code>App</code></a> contains the ECS World(s) (where all
+the data is stored) and Schedule(s) (where all the <a href="/programming/systems.html">systems</a>
+to run are stored). For advanced use-cases, <a href="/programming/sub-apps.html">Sub-apps</a> are a
+way to have more than one ECS World and Schedule.</p>
 <p><a href="/programming/local.html">Local resources</a> do not need to be registered. They are part of
 their respective <a href="/programming/systems.html">systems</a>.</p>
 <p><a href="/programming/ec.html#components">Component</a> types do not need to be registered.</p>
 <hr />
 <p>Schedules cannot (yet) be modified at runtime; all <a href="/programming/systems.html">systems</a> you
-want to run must be added/configured in the <a href="https://docs.rs/bevy/0.7.0/bevy/app/struct.App.html"><code>App</code></a> ahead of time.</p>
+want to run must be added/configured in the <a href="https://docs.rs/bevy/0.8.0/bevy/app/struct.App.html"><code>App</code></a> ahead of time.</p>
 <p>The data in the ECS World can be modified at any time; create/destroy your
 <a href="/programming/ec.html">entities</a> and <a href="/programming/res.html">resources</a>, from <a href="/programming/systems.html">systems</a>
 using <a href="/programming/commands.html">Commands</a>, or <a href="/programming/exclusive.html">exclusive systems</a> using
 <a href="/programming/world.html">direct World access</a>.</p>
 <p><a href="/programming/res.html">Resources</a> can also be initialized ahead of time, here in the
-<a href="https://docs.rs/bevy/0.7.0/bevy/app/struct.App.html"><code>App</code></a> builder.</p>
+<a href="https://docs.rs/bevy/0.8.0/bevy/app/struct.App.html"><code>App</code></a> builder.</p>
 <hr />
-<p>You also need to add the <a href="/programming/plugins.html#plugin-groups">plugin group</a> with Bevy's built-in functionality: either
-<a href="https://docs.rs/bevy/0.7.0/bevy/struct.DefaultPlugins.html"><code>DefaultPlugins</code></a> if you are making a full game/app, or
-<a href="https://docs.rs/bevy/0.7.0/bevy/struct.MinimalPlugins.html"><code>MinimalPlugins</code></a> for something like a headless server.</p>
+<p>You also need to add the <a href="/programming/plugins.html#plugin-groups">plugin group</a> with Bevy's built-in
+functionality: either
+<a href="https://docs.rs/bevy/0.8.0/bevy/struct.DefaultPlugins.html"><code>DefaultPlugins</code></a> if you are making a full game/app, or
+<a href="https://docs.rs/bevy/0.8.0/bevy/struct.MinimalPlugins.html"><code>MinimalPlugins</code></a> for something like a headless server.</p>
 <p>Note that there are some special <a href="/builtins.html#configuration-resources">configuration resources</a>
 that must be added first, if you would like to use them, to take effect.</p>
 <hr />

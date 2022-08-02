@@ -146,7 +146,7 @@
 <p>Multi-touch touchscreens are supported. You can track multiple fingers on
 the screen, with position and pressure/force information. Bevy does not
 offer gesture recognition.</p>
-<p>The <a href="https://docs.rs/bevy/0.7.0/bevy/input/touch/struct.Touches.html"><code>Touches</code></a> <a href="/programming/res.html">resource</a> allows you to track any
+<p>The <a href="https://docs.rs/bevy/0.8.0/bevy/input/touch/struct.Touches.html"><code>Touches</code></a> <a href="/programming/res.html">resource</a> allows you to track any
 fingers currently on the screen:</p>
 <pre><code class="language-rust no_run noplayground">fn touches(
     touches: Res&lt;Touches&gt;,
@@ -169,7 +169,7 @@ fingers currently on the screen:</p>
     }
 }
 </code></pre>
-<p>Alternatively, you can use <a href="https://docs.rs/bevy/0.7.0/bevy/input/touch/struct.TouchInput.html"><code>TouchInput</code></a> <a href="/programming/events.html">events</a>:</p>
+<p>Alternatively, you can use <a href="https://docs.rs/bevy/0.8.0/bevy/input/touch/struct.TouchInput.html"><code>TouchInput</code></a> <a href="/programming/events.html">events</a>:</p>
 <pre><code class="language-rust no_run noplayground">fn touch_events(
     mut touch_evr: EventReader&lt;TouchInput&gt;,
 ) {

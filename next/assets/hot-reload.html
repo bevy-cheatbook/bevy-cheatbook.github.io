@@ -142,18 +142,18 @@
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.7.0/examples/asset/hot_asset_reloading.rs"><code>hot_asset_reloading</code></a>.</p>
 <hr />
-<p>At runtime, if you modify the file of an <a href="/assets.html">asset</a> that is loaded
-into the game (via the <a href="https://docs.rs/bevy/0.7.0/bevy/asset/struct.AssetServer.html"><code>AssetServer</code></a>), Bevy can detect
-that and reload the asset automatically. This is very useful for quick
-iteration. You can edit your assets while the game is running and see the
-changes instantly in-game.</p>
+<p>At runtime, if you modify the file of an <a href="/assets.html">asset</a>
+that is <a href="/assets/assetserver.html">loaded</a> into the game (via the
+<a href="https://docs.rs/bevy/0.8.0/bevy/asset/struct.AssetServer.html"><code>AssetServer</code></a>), Bevy can detect that and reload the
+asset automatically. This is very useful for quick iteration. You can edit
+your assets while the game is running and see the changes instantly in-game.</p>
 <p>Not all <a href="/builtins.html#file-formats">file formats</a> and use cases are supported
 equally well. Typical asset types like textures / images should work without
 issues, but complex GLTF or scene files, or assets involving custom logic,
 might not.</p>
 <p>If you need to run custom logic as part of your hot-reloading
 workflow, you could implement it in a <a href="/programming/systems.html">system</a>, using
-<a href="https://docs.rs/bevy/0.7.0/bevy/asset/enum.AssetEvent.html"><code>AssetEvent</code></a> (<a href="/assets/assetevent.html">learn more</a>).</p>
+<a href="https://docs.rs/bevy/0.8.0/bevy/asset/enum.AssetEvent.html"><code>AssetEvent</code></a> (<a href="/assets/assetevent.html">learn more</a>).</p>
 <p>Hot reloading is opt-in and has to be enabled in order to work. You can do
 this in a <a href="/programming/app-builder.html">startup system</a>:</p>
 <pre><code class="language-rust no_run noplayground">    asset_server.watch_for_changes().unwrap();
@@ -162,12 +162,14 @@ this in a <a href="/programming/app-builder.html">startup system</a>:</p>
 feature</a>. It is enabled by default, but if you have disabled
 default features to customize Bevy, be sure to include it if you need it.</p>
 <h2 id="shaders"><a class="header" href="#shaders">Shaders</a></h2>
-<p>Bevy also supports hot-reloading for shaders. You can edit your
-custom shader code and see the changes immediately.</p>
-<p>This only works if you are loading your shaders through the bevy asset
-system (via the <a href="https://docs.rs/bevy/0.7.0/bevy/asset/struct.AssetServer.html"><code>AssetServer</code></a>).</p>
-<p>Shader code that does not come from asset files, such as if you include
-it as a static string in your source code, cannot be hot-reloaded.</p>
+<p>Bevy also supports hot-reloading for shaders. You can edit your custom shader
+code and see the changes immediately.</p>
+<p>This works for any shader loaded from a file path, such as shaders specified
+in your Materials definitions, or shaders <a href="/assets/assetserver.html">loaded</a> via the
+<a href="https://docs.rs/bevy/0.8.0/bevy/asset/struct.AssetServer.html"><code>AssetServer</code></a>.</p>
+<p>Shader code that does not come from asset files, such as if you include it
+as a static string in your source code, cannot be hot-reloaded (for obvious
+reasons).</p>
 
                     </main>
 

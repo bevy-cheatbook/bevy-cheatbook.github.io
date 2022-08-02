@@ -150,7 +150,7 @@
 <p>Conceptually, you can think of it by analogy with tables, like in a database
 or spreadsheet. Your different data types (Components) are like the &quot;columns&quot;
 of a table, and there can be arbitrarily many &quot;rows&quot; (Entities) containing
-values / instances of each component.</p>
+values / instances of various components.</p>
 <p>For example, you could create a <code>Health</code> component for your game. You could
 then have many entities representing different things in your game, such
 as the player, NPCs, or monsters, all of which can have a <code>Health</code> value
@@ -188,11 +188,11 @@ be accessed independently.</p>
 <p>For example, represent the Player in your game as an entity, composed
 of separate component types (separate <code>struct</code>s) for things like the
 health, XP, or whatever is relevant to your game. You can also attach
-standard Bevy components like <a href="https://docs.rs/bevy/0.7.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> (<a href="/features/transforms.html">transforms
+standard Bevy components like <a href="https://docs.rs/bevy/0.8.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> (<a href="/features/transforms.html">transforms
 explained</a>) to it.</p>
 <p>This will make it easier for you to develop your systems (game logic /
 behaviors), as well as make your game's runtime performance better.</p>
-<p>However, something like a <a href="https://docs.rs/bevy/0.7.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>, or a set of
+<p>However, something like a <a href="https://docs.rs/bevy/0.8.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>, or a set of
 coordinates, still makes sense as a single <code>struct</code>, because its fields are
 not likely to be useful independently.</p>
 

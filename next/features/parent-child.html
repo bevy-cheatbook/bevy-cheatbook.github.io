@@ -147,10 +147,10 @@
 hierarchy (the <a href="/programming/ecs-intro.html">ECS</a> is a flat data structure). However,
 logical hierarchies are a common pattern in games.</p>
 <p>Bevy supports creating such a logical link between entities, to form
-a virtual &quot;hierarchy&quot;, by simply adding <a href="https://docs.rs/bevy/0.7.0/bevy/hierarchy/struct.Parent.html"><code>Parent</code></a> and
-<a href="https://docs.rs/bevy/0.7.0/bevy/hierarchy/struct.Children.html"><code>Children</code></a> components on the respective entities.</p>
+a virtual &quot;hierarchy&quot;, by simply adding <a href="https://docs.rs/bevy/0.8.0/bevy/hierarchy/struct.Parent.html"><code>Parent</code></a> and
+<a href="https://docs.rs/bevy/0.8.0/bevy/hierarchy/struct.Children.html"><code>Children</code></a> components on the respective entities.</p>
 <p>When using <a href="/programming/commands.html">Commands</a> to spawn entities,
-<a href="https://docs.rs/bevy/0.7.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a> has methods for adding children to entities,
+<a href="https://docs.rs/bevy/0.8.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a> has methods for adding children to entities,
 which automatically add the correct components:</p>
 <pre><code class="language-rust no_run noplayground">// spawn the parent and get its Entity id
 let parent = commands.spawn_bundle(MyParentBundle::default())
@@ -189,14 +189,14 @@ commands.spawn_bundle(MyParentBundle::default())
 <p>One of the two queries should include the appropriate component, to obtain the
 entity ids to use with the other one:</p>
 <ul>
-<li><a href="https://docs.rs/bevy/0.7.0/bevy/hierarchy/struct.Parent.html"><code>Parent</code></a> in the child query, if you want to iterate entities
+<li><a href="https://docs.rs/bevy/0.8.0/bevy/hierarchy/struct.Parent.html"><code>Parent</code></a> in the child query, if you want to iterate entities
 and look up their parents, or</li>
-<li><a href="https://docs.rs/bevy/0.7.0/bevy/hierarchy/struct.Children.html"><code>Children</code></a> in the parent query, if you want to iterate entities
+<li><a href="https://docs.rs/bevy/0.8.0/bevy/hierarchy/struct.Children.html"><code>Children</code></a> in the parent query, if you want to iterate entities
 and look up their children</li>
 </ul>
-<p>For example, if we want to get the <a href="https://docs.rs/bevy/0.7.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>
-of cameras (<a href="https://docs.rs/bevy/0.7.0/bevy/render/camera/struct.Camera.html"><code>Camera</code></a>) that have a parent, and the
-<a href="https://docs.rs/bevy/0.7.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> of their parent:</p>
+<p>For example, if we want to get the <a href="https://docs.rs/bevy/0.8.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>
+of cameras (<a href="https://docs.rs/bevy/0.8.0/bevy/render/camera/struct.Camera.html"><code>Camera</code></a>) that have a parent, and the
+<a href="https://docs.rs/bevy/0.8.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> of their parent:</p>
 <pre><code class="language-rust no_run noplayground">fn camera_with_parent(
     q_child: Query&lt;(&amp;Parent, &amp;Transform), With&lt;Camera&gt;&gt;,
     q_parent: Query&lt;&amp;GlobalTransform&gt;,
@@ -229,13 +229,17 @@ each Squad, and it needs some information about the children:</p>
     }
 }
 </code></pre>
-<h2 id="relative-transforms"><a class="header" href="#relative-transforms">Relative Transforms</a></h2>
+<h2 id="transform-and-visibility-propagation"><a class="header" href="#transform-and-visibility-propagation">Transform and Visibility Propagation</a></h2>
 <p>If your entities represent &quot;objects in the game world&quot;, you probably expect
-the child to be positioned relative to the parent and move with it.</p>
+the children to be affected by the parent.</p>
+<p><a href="/features/transforms.html">Transform</a> propagation allows children to be positioned
+relative to their parent and move with it.</p>
+<p><a href="/features/visibility.html">Visibility</a> propagation allows children to be hidden if
+you manually hide their parent.</p>
 <p>All <a href="/builtins.html#bundles">Bundles that come with Bevy</a> provide
-this behavior automatically. You should at least use the basic
-<a href="https://docs.rs/bevy/0.7.0/bevy/transform/struct.TransformBundle.html"><code>TransformBundle</code></a> if you don't need anything else.</p>
-<p>For more info, see the <a href="/features/transforms.html">dedicated page about transforms</a>.</p>
+this behavior automatically.</p>
+<p>Otherwise, you can use <a href="https://docs.rs/bevy/0.8.0/bevy/transform/struct.TransformBundle.html"><code>SpatialBundle</code></a> to make sure
+your entities have all the necessary components.</p>
 
                     </main>
 

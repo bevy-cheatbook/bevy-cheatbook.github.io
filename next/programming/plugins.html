@@ -179,8 +179,8 @@ different places, like separate Rust files / modules.</p>
 </ul>
 <h2 id="plugin-groups"><a class="header" href="#plugin-groups">Plugin groups</a></h2>
 <p>Plugin groups register multiple plugins at once.
-Bevy's <a href="https://docs.rs/bevy/0.7.0/bevy/struct.DefaultPlugins.html"><code>DefaultPlugins</code></a> and
-<a href="https://docs.rs/bevy/0.7.0/bevy/struct.MinimalPlugins.html"><code>MinimalPlugins</code></a> are examples of this.
+Bevy's <a href="https://docs.rs/bevy/0.8.0/bevy/struct.DefaultPlugins.html"><code>DefaultPlugins</code></a> and
+<a href="https://docs.rs/bevy/0.8.0/bevy/struct.MinimalPlugins.html"><code>MinimalPlugins</code></a> are examples of this.
 To create your own plugin group:</p>
 <pre><code class="language-rust no_run noplayground">struct MyPluginGroup;
 
@@ -202,7 +202,7 @@ fn main() {
 <p>When adding a plugin group to the <a href="/programming/app-builder.html">app</a>, you can disable some
 plugins while keeping the rest.</p>
 <p>For example, if you want to manually set up logging (with your own <code>tracing</code>
-subscriber), you can disable Bevy's <a href="https://docs.rs/bevy/0.7.0/bevy/log/struct.LogPlugin.html"><code>LogPlugin</code></a>:</p>
+subscriber), you can disable Bevy's <a href="https://docs.rs/bevy/0.8.0/bevy/log/struct.LogPlugin.html"><code>LogPlugin</code></a>:</p>
 <pre><code class="language-rust no_run noplayground">App::new()
     .add_plugins_with(DefaultPlugins, |plugins| {
         plugins.disable::&lt;LogPlugin&gt;()

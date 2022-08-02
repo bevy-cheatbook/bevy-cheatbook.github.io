@@ -179,9 +179,11 @@ your game will behave like the &quot;Render-bound&quot; scenario shown above.</p
 <p>The final render (the framebuffer with the pixels to show in the
 <a href="/window/props.html">window</a>) is <em>presented</em> to the OS/driver at the end of the
 <a href="#render">Render</a> stage.</p>
-<p>Currently Bevy updates its <a href="/features/time.html">timing information</a> (in <a href="https://docs.rs/bevy/0.7.0/bevy/core/struct.Time.html"><code>Res&lt;Time&gt;</code></a>)
-at the start of the First stage in the main App schedule. Note that this is not linked
-to rendering in any way. This is a <a href="https://github.com/bevyengine/bevy/issues/4669">known issue</a>.</p>
+<p>Bevy updates its <a href="/features/time.html">timing information</a> (in <a href="https://docs.rs/bevy/0.8.0/bevy/time/struct.Time.html"><code>Res&lt;Time&gt;</code></a>)
+at the start of the First stage in the main App schedule. The value to
+use is measured at &quot;presentation time&quot;, in the render world, and the
+<a href="https://doc.rust-lang.org/stable/std/time/struct.Instant.html"><code>Instant</code></a> is sent over a channel, to be applied on the
+next frame.</p>
 <h2 id="adding-systems-to-render-stages"><a class="header" href="#adding-systems-to-render-stages">Adding Systems to Render Stages</a></h2>
 <p>If you are implementing custom rendering functionality in Bevy, you will likely
 need to add some of your own systems to at least some of the render stages:</p>
@@ -189,7 +191,8 @@ need to add some of your own systems to at least some of the render stages:</p>
 <li>
 <p>Anything that needs data from your main App World will need a system in
 <a href="#extract">Extract</a> to copy that data. In practice, this is almost everything,
-unless it is fully contained on the GPU / in VRAM.</p>
+unless it is fully contained on the GPU, or only uses renderer-internal
+generated data.</p>
 </li>
 <li>
 <p>Most use cases will need to do some setup of GPU resources
@@ -224,7 +227,7 @@ possible. Just copy data.</p>
 <p>It is recommended that you only copy the data you actually need for rendering.
 Create new <a href="/programming/ec.html#components">component types</a> and <a href="/programming/res.html">resources</a> just
 for use within the render World, with only the data you need.</p>
-<p>For example, Bevy's 2D sprites uses a <a href="https://docs.rs/bevy/0.7.0/bevy/sprite/struct.ExtractedSprite.html"><code>struct ExtractedSprite</code></a>, where it copies the relevant data
+<p>For example, Bevy's 2D sprites uses a <a href="https://docs.rs/bevy/0.8.0/bevy/sprite/struct.ExtractedSprite.html"><code>struct ExtractedSprite</code></a>, where it copies the relevant data
 from the &quot;user-facing&quot; components of sprite and spritesheet entities in the
 main World.</p>
 <p>Bevy <strong>reserves Entity IDs</strong> in the render World, matching all the Entities
@@ -259,6 +262,9 @@ stage, before rendering in the <a href="#render">Render</a> stage.</p>
 of use cases. <a href="/contact.html">Let me know</a> if you know of any.</p>
 <h2 id="render"><a class="header" href="#render">Render</a></h2>
 <p>Render is the stage where Bevy executes the <a href="/TODO.html">Render Graph</a>.</p>
+<p>The built-in behavior is configured using Cameras. For each active Camera,
+Bevy will execute its associated render graph, configured to output to its
+associated render target.</p>
 <p>If you are using any of the <a href="/TODO.html">standard render phases</a>,
 you don't need to do anything. Your custom <a href="/TODO.html">phase items</a>
 will be rendered automatically as part of the Main Pass built-in render graph

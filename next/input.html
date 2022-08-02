@@ -162,13 +162,13 @@ to the console.</p>
 <p>For most input types (where it makes sense), Bevy provides two ways of
 dealing with them:</p>
 <ul>
-<li>by checking the current state via <a href="https://docs.rs/bevy/0.7.0/bevy/ecs/system/struct.Res.html">resources</a> (<a href="/builtins.html#input-handling-resources">input resources</a>),</li>
+<li>by checking the current state via <a href="https://docs.rs/bevy/0.8.0/bevy/ecs/system/struct.Res.html">resources</a> (<a href="/builtins.html#input-handling-resources">input resources</a>),</li>
 <li>or via <a href="/programming/events.html">events</a> (<a href="/builtins.html#input-events">input events</a>).</li>
 </ul>
 <p>Some inputs are only provided as events.</p>
 <p>Checking state is done using <a href="/programming/res.html">resources</a> such as
-<a href="https://docs.rs/bevy/0.7.0/bevy/input/struct.Input.html"><code>Input</code></a> (for binary inputs like keys or buttons),
-<a href="https://docs.rs/bevy/0.7.0/bevy/input/struct.Axis.html"><code>Axis</code></a> (for analog inputs), <a href="https://docs.rs/bevy/0.7.0/bevy/input/touch/struct.Touches.html"><code>Touches</code></a>
+<a href="https://docs.rs/bevy/0.8.0/bevy/input/struct.Input.html"><code>Input</code></a> (for binary inputs like keys or buttons),
+<a href="https://docs.rs/bevy/0.8.0/bevy/input/struct.Axis.html"><code>Axis</code></a> (for analog inputs), <a href="https://docs.rs/bevy/0.8.0/bevy/input/touch/struct.Touches.html"><code>Touches</code></a>
 (for fingers on a touchscreen), etc. This way of handling input is very
 convenient for implementing game logic. In these scenarios, you typically
 only care about the specific inputs mapped to actions in your game. You can
