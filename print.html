@@ -6565,7 +6565,7 @@ fn pan_orbit_camera(
     mut ev_motion: EventReader&lt;MouseMotion&gt;,
     mut ev_scroll: EventReader&lt;MouseWheel&gt;,
     input_mouse: Res&lt;Input&lt;MouseButton&gt;&gt;,
-    mut query: Query&lt;(&amp;mut PanOrbitCamera, &amp;mut Transform, &amp;PerspectiveProjection)&gt;,
+    mut query: Query&lt;(&amp;mut PanOrbitCamera, &amp;mut Transform, &amp;Projection)&gt;,
 ) {
     // change input mapping for orbit and panning here
     let orbit_button = MouseButton::Right;
@@ -6618,7 +6618,9 @@ fn pan_orbit_camera(
             any = true;
             // make panning distance independent of resolution and FOV,
             let window = get_primary_window_size(&amp;windows);
-            pan *= Vec2::new(projection.fov * projection.aspect_ratio, projection.fov) / window;
+            if let Projection::Perspective(projection) = projection {
+                pan *= Vec2::new(projection.fov * projection.aspect_ratio, projection.fov) / window;
+            }
             // translate by local axes
             let right = transform.rotation * Vec3::X * -pan.x;
             let up = transform.rotation * Vec3::Y * pan.y;
