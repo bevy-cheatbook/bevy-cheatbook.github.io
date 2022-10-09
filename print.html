@@ -3596,14 +3596,60 @@ plugin</a> available: <a href="https://github.com/BlackPhlox/bevy_midi"><code>be
 <p><a href="window//code/examples/clear-color.rs">Click here for the full example code.</a></p>
 <hr />
 <p>Use the <a href="https://docs.rs/bevy/0.8.0/bevy/core_pipeline/clear_color/struct.ClearColor.html"><code>ClearColor</code></a> <a href="window//programming/res.html">resource</a> to choose the
-background color.</p>
-<pre><code class="language-rust no_run noplayground">fn main() {
+default background color. This color will be used as the default for all
+cameras, unless overriden.</p>
+<p>Note that the window will be black if no cameras exist. You must spawn at
+least one camera.</p>
+<pre><code class="language-rust no_run noplayground">fn setup(
+    mut commands: Commands,
+) {
+    commands.spawn_bundle(Camera2dBundle::default());
+}
+
+fn main() {
     App::new()
+        // set the global default
         .insert_resource(ClearColor(Color::rgb(0.4, 0.4, 0.4)))
         .add_plugins(DefaultPlugins)
+        .add_startup_system(setup)
         .run();
 }
 </code></pre>
+<p>To override the default and use a different color for a specific
+camera, you can set it using the <a href="https://docs.rs/bevy/0.8.0/bevy/core_pipeline/core_2d/struct.Camera2d.html"><code>Camera2d</code></a> or
+<a href="https://docs.rs/bevy/0.8.0/bevy/core_pipeline/core_3d/struct.Camera3d.html"><code>Camera3d</code></a> components.</p>
+<pre><code class="language-rust no_run noplayground">use bevy::core_pipeline::clear_color::ClearColorConfig;
+
+fn setup_camera_2d(
+    mut commands: Commands,
+) {
+    // set the color for a specific camera (2D)
+    commands.spawn_bundle(Camera2dBundle {
+        camera_2d: Camera2d {
+            clear_color: ClearColorConfig::Custom(Color::rgb(0.8, 0.4, 0.2)),
+        },
+        ..Default::default()
+    });
+}
+
+fn setup_camera_3d(
+    mut commands: Commands,
+) {
+    // set the color for a specific camera (3D)
+    commands.spawn_bundle(Camera3dBundle {
+        camera_3d: Camera3d {
+            clear_color: ClearColorConfig::Custom(Color::rgb(0.8, 0.4, 0.2)),
+            ..Default::default()
+        },
+        ..Default::default()
+    });
+}
+</code></pre>
+<p>All of these locations (the components on specific cameras, the global
+default resource) can be mutated at runtime, and bevy will use your new color.
+Changing the default color using the resource will apply the new color to all
+existing cameras that do not specify a custom color, not just newly-spawned
+cameras.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="grabbing-the-mouse"><a class="header" href="#grabbing-the-mouse">Grabbing the Mouse</a></h1>
 <p><a href="window//code/examples/mouse-grab.rs">Click here for the full example code.</a></p>
 <p>Relevant official examples:
