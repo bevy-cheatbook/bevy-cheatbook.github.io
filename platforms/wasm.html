@@ -181,6 +181,9 @@ or globally in your user home folder):</p>
 <pre><code class="language-toml">[target.wasm32-unknown-unknown]
 runner = &quot;wasm-server-runner&quot;
 </code></pre>
+<p>Alternatively, you can also set the runner using an environment variable:</p>
+<pre><code>export CARGO_TARGET_WASM32_UNKNOWN_UNKNOWN_RUNNER=wasm-server-runner
+</code></pre>
 <p>Now you can just run your game with:</p>
 <pre><code class="language-sh">cargo run --target wasm32-unknown-unknown
 </code></pre>
