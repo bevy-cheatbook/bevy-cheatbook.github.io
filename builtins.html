@@ -591,7 +591,9 @@ Text to be displayed</li>
 <h2 id="stages"><a class="header" href="#stages">Stages</a></h2>
 <p>Internally, Bevy has at least these built-in <a href="/programming/stages.html">stages</a>:</p>
 <ul>
-<li>In the <a href="/programming/app-builder.html">main app</a> (<a href="https://docs.rs/bevy/0.8.0/bevy/app/enum.CoreStage.html"><code>CoreStage</code></a>):
+<li>In the <a href="/programming/app-builder.html">main_app</a> (<a href="https://docs.rs/bevy/0.8.0/bevy/app/enum.StartupStage.html"><code>StartupStage</code></a>, run once at app startup):
+<code>PreStartup</code>, <code>Startup</code>, <code>PostStartup</code></li>
+<li>In the <a href="/programming/app-builder.html">main app</a> (<a href="https://docs.rs/bevy/0.8.0/bevy/app/enum.CoreStage.html"><code>CoreStage</code></a>, run every frame update):
 <code>First</code>, <code>PreUpdate</code>, <code>Update</code>, <code>PostUpdate</code>, <code>Last</code></li>
 <li>In the render <a href="/programming/sub-apps.html">sub-app</a> (<a href="https://docs.rs/bevy/0.8.0/bevy/render/enum.RenderStage.html"><code>RenderStage</code></a>):
 <code>Extract</code>, <code>Prepare</code>, <code>Queue</code>, <code>PhaseSort</code>, <code>Render</code>, <code>Cleanup</code></li>
