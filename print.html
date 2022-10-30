@@ -2506,6 +2506,18 @@ you manually hide their parent.</p>
 this behavior automatically.</p>
 <p>Otherwise, you can use <a href="https://docs.rs/bevy/0.8.0/bevy/transform/struct.TransformBundle.html"><code>SpatialBundle</code></a> to make sure
 your entities have all the necessary components.</p>
+<h2 id="known-pitfalls"><a class="header" href="#known-pitfalls">Known Pitfalls</a></h2>
+<h3 id="despawning-child-entities"><a class="header" href="#despawning-child-entities">Despawning Child Entities</a></h3>
+<p>If you despawn an entity that has a parent, Bevy does not remove it from the
+parent's <a href="https://docs.rs/bevy/0.8.0/bevy/hierarchy/struct.Children.html"><code>Children</code></a>.</p>
+<p>If you then query for that parent entity's children, you will get an invaild
+entity, and any attempt to manipulate it will likely lead to this error:</p>
+<pre><code>thread 'main' panicked at 'Attempting to create an EntityCommands for entity 7v0, which doesn't exist.'
+</code></pre>
+<p>The workaround is to manually call <code>remove_children</code> alongside the <code>despawn</code>:</p>
+<pre><code class="language-rust no_run noplayground">    commands.entity(parent_entity).remove_children(&amp;[child_entity]);
+    commands.entity(child_entity).despawn();
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="fixed-timestep"><a class="header" href="#fixed-timestep">Fixed Timestep</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.8.1/examples/ecs/fixed_timestep.rs"><code>fixed_timestep</code></a>.</p>
@@ -5316,7 +5328,7 @@ fn main() {
         .run();
 }
 </code></pre>
-<h2 id="known-pitfalls"><a class="header" href="#known-pitfalls">Known Pitfalls</a></h2>
+<h2 id="known-pitfalls-1"><a class="header" href="#known-pitfalls-1">Known Pitfalls</a></h2>
 <h3 id="combining-multiple-run-criteria"><a class="header" href="#combining-multiple-run-criteria">Combining Multiple Run Criteria</a></h3>
 <p>It is not possible to make a system that is conditional on multiple run
 criteria. Bevy has a <code>.pipe</code> method that allows you to &quot;chain&quot; run criteria,
@@ -6846,7 +6858,7 @@ using an environment variable:</p>
 please help improve this page!</p>
 <p>Create Issues or PRs on <a href="https://github.com/bevy-cheatbook/bevy-cheatbook">GitHub</a>.</p>
 <hr />
-<h2 id="known-pitfalls-1"><a class="header" href="#known-pitfalls-1">Known Pitfalls</a></h2>
+<h2 id="known-pitfalls-2"><a class="header" href="#known-pitfalls-2">Known Pitfalls</a></h2>
 <h3 id="window-management-apps-compatability"><a class="header" href="#window-management-apps-compatability">Window Management Apps Compatability</a></h3>
 <p>Bevy apps can encounter performance issues (such as lag when dragging the window
 around the screen) when window management apps like &quot;Magnet&quot; are used. This is a
