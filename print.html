@@ -6840,7 +6840,14 @@ using an environment variable:</p>
 please help improve this page!</p>
 <p>Create Issues or PRs on <a href="https://github.com/bevy-cheatbook/bevy-cheatbook">GitHub</a>.</p>
 <hr />
-<p>(this page is currently empty; please help!)</p>
+<h2 id="known-pitfalls-1"><a class="header" href="#known-pitfalls-1">Known Pitfalls</a></h2>
+<h3 id="window-management-apps-compatability"><a class="header" href="#window-management-apps-compatability">Window Management Apps Compatability</a></h3>
+<p>Bevy apps can encounter performance issues (such as lag when dragging the window
+around the screen) when window management apps like &quot;Magnet&quot; are used. This is a
+bug in <code>winit</code> (the OS window management library that Bevy uses). This issue can
+be tracked <a href="https://github.com/rust-windowing/winit/issues/1737">here</a>.</p>
+<p>Until that bug is fixed, advise closing the window management apps, if
+encountering performance issues.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="windows-desktop"><a class="header" href="#windows-desktop">Windows Desktop</a></h1>
 <p>If you have any additional Windows-specific knowledge,
 please help improve this page!</p>

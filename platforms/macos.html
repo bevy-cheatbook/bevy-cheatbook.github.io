@@ -142,7 +142,14 @@
 please help improve this page!</p>
 <p>Create Issues or PRs on <a href="https://github.com/bevy-cheatbook/bevy-cheatbook">GitHub</a>.</p>
 <hr />
-<p>(this page is currently empty; please help!)</p>
+<h2 id="known-pitfalls"><a class="header" href="#known-pitfalls">Known Pitfalls</a></h2>
+<h3 id="window-management-apps-compatability"><a class="header" href="#window-management-apps-compatability">Window Management Apps Compatability</a></h3>
+<p>Bevy apps can encounter performance issues (such as lag when dragging the window
+around the screen) when window management apps like &quot;Magnet&quot; are used. This is a
+bug in <code>winit</code> (the OS window management library that Bevy uses). This issue can
+be tracked <a href="https://github.com/rust-windowing/winit/issues/1737">here</a>.</p>
+<p>Until that bug is fixed, advise closing the window management apps, if
+encountering performance issues.</p>
 
                     </main>
 
