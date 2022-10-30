@@ -200,7 +200,7 @@ that bundle that you care about.</p>
 <p>Use <a href="https://docs.rs/bevy/0.8.0/bevy/ecs/query/struct.With.html"><code>With</code></a>/<a href="https://docs.rs/bevy/0.8.0/bevy/ecs/query/struct.Without.html"><code>Without</code></a> to only get entities
 that have specific components.</p>
 <pre><code class="language-rust no_run noplayground">fn debug_player_hp(
-    // access the health, only for friendly players, optionally with name
+    // access the health (and optionally the PlayerName, if present), only for friendly players
     query: Query&lt;(&amp;Health, Option&lt;&amp;PlayerName&gt;), (With&lt;Player&gt;, Without&lt;Enemy&gt;)&gt;,
 ) {
     // get all matching entities
