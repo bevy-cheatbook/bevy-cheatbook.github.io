@@ -1142,6 +1142,14 @@ find the <code>assets</code>.</p>
     }
 }
 </code></pre>
+<h2 id="intellij"><a class="header" href="#intellij">IntelliJ</a></h2>
+<p>When using <a href="setup//programming/queries.html">queries</a>, type information gets lost due to Bevy relying
+on procedural macros. You can fix this by enabling <a href="https://github.com/intellij-rust/intellij-rust/issues/6908">procedural macro
+support</a> in the IDE.</p>
+<ol>
+<li>type <code>Experimental feature</code> in the dialog of the <code>Help | Find Action</code> action</li>
+<li>enable the features <code>org.rust.cargo.evaluate.build.scripts</code> and <code>org.rust.macros.proc</code></li>
+</ol>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="dev-tools-and-editors-for-bevy"><a class="header" href="#dev-tools-and-editors-for-bevy">Dev Tools and Editors for Bevy</a></h1>
 <p>Bevy does not yet have an official editor or other such tools. An official
 editor is planned as a long-term future goal. In the meantime, here are
