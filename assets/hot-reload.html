@@ -143,7 +143,7 @@
 <hr />
 <p>At runtime, if you modify the file of an <a href="/assets.html">asset</a>
 that is <a href="/assets/assetserver.html">loaded</a> into the game (via the
-<a href="https://docs.rs/bevy/0.8.0/bevy/asset/struct.AssetServer.html"><code>AssetServer</code></a>), Bevy can detect that and reload the
+<a href="https://docs.rs/bevy/0.9.0/bevy/asset/struct.AssetServer.html"><code>AssetServer</code></a>), Bevy can detect that and reload the
 asset automatically. This is very useful for quick iteration. You can edit
 your assets while the game is running and see the changes instantly in-game.</p>
 <p>Not all <a href="/builtins.html#file-formats">file formats</a> and use cases are supported
@@ -152,7 +152,7 @@ issues, but complex GLTF or scene files, or assets involving custom logic,
 might not.</p>
 <p>If you need to run custom logic as part of your hot-reloading
 workflow, you could implement it in a <a href="/programming/systems.html">system</a>, using
-<a href="https://docs.rs/bevy/0.8.0/bevy/asset/enum.AssetEvent.html"><code>AssetEvent</code></a> (<a href="/assets/assetevent.html">learn more</a>).</p>
+<a href="https://docs.rs/bevy/0.9.0/bevy/asset/enum.AssetEvent.html"><code>AssetEvent</code></a> (<a href="/assets/assetevent.html">learn more</a>).</p>
 <p>Hot reloading is opt-in and has to be enabled in order to work. You can do
 this in a <a href="/programming/app-builder.html">startup system</a>:</p>
 <pre><code class="language-rust no_run noplayground">
@@ -165,7 +165,7 @@ default features to customize Bevy, be sure to include it if you need it.</p>
 code and see the changes immediately.</p>
 <p>This works for any shader loaded from a file path, such as shaders specified
 in your Materials definitions, or shaders <a href="/assets/assetserver.html">loaded</a> via the
-<a href="https://docs.rs/bevy/0.8.0/bevy/asset/struct.AssetServer.html"><code>AssetServer</code></a>.</p>
+<a href="https://docs.rs/bevy/0.9.0/bevy/asset/struct.AssetServer.html"><code>AssetServer</code></a>.</p>
 <p>Shader code that does not come from asset files, such as if you include it
 as a static string in your source code, cannot be hot-reloaded (for obvious
 reasons).</p>

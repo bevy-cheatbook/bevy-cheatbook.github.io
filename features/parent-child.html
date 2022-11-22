@@ -146,10 +146,10 @@
 hierarchy (the <a href="/programming/ecs-intro.html">ECS</a> is a flat data structure). However,
 logical hierarchies are a common pattern in games.</p>
 <p>Bevy supports creating such a logical link between entities, to form
-a virtual &quot;hierarchy&quot;, by simply adding <a href="https://docs.rs/bevy/0.8.0/bevy/hierarchy/struct.Parent.html"><code>Parent</code></a> and
-<a href="https://docs.rs/bevy/0.8.0/bevy/hierarchy/struct.Children.html"><code>Children</code></a> components on the respective entities.</p>
+a virtual &quot;hierarchy&quot;, by simply adding <a href="https://docs.rs/bevy/0.9.0/bevy/hierarchy/struct.Parent.html"><code>Parent</code></a> and
+<a href="https://docs.rs/bevy/0.9.0/bevy/hierarchy/struct.Children.html"><code>Children</code></a> components on the respective entities.</p>
 <p>When using <a href="/programming/commands.html">Commands</a> to spawn entities,
-<a href="https://docs.rs/bevy/0.8.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a> has methods for adding children to entities,
+<a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a> has methods for adding children to entities,
 which automatically add the correct components:</p>
 <pre><code class="language-rust no_run noplayground">// spawn the parent and get its Entity id
 let parent = commands.spawn(MyParentBundle::default()).id();
@@ -186,14 +186,14 @@ commands.spawn(MyParentBundle::default())
 <p>One of the two queries should include the appropriate component, to obtain the
 entity ids to use with the other one:</p>
 <ul>
-<li><a href="https://docs.rs/bevy/0.8.0/bevy/hierarchy/struct.Parent.html"><code>Parent</code></a> in the child query, if you want to iterate entities
+<li><a href="https://docs.rs/bevy/0.9.0/bevy/hierarchy/struct.Parent.html"><code>Parent</code></a> in the child query, if you want to iterate entities
 and look up their parents, or</li>
-<li><a href="https://docs.rs/bevy/0.8.0/bevy/hierarchy/struct.Children.html"><code>Children</code></a> in the parent query, if you want to iterate entities
+<li><a href="https://docs.rs/bevy/0.9.0/bevy/hierarchy/struct.Children.html"><code>Children</code></a> in the parent query, if you want to iterate entities
 and look up their children</li>
 </ul>
-<p>For example, if we want to get the <a href="https://docs.rs/bevy/0.8.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>
-of cameras (<a href="https://docs.rs/bevy/0.8.0/bevy/render/camera/struct.Camera.html"><code>Camera</code></a>) that have a parent, and the
-<a href="https://docs.rs/bevy/0.8.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> of their parent:</p>
+<p>For example, if we want to get the <a href="https://docs.rs/bevy/0.9.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>
+of cameras (<a href="https://docs.rs/bevy/0.9.0/bevy/render/camera/struct.Camera.html"><code>Camera</code></a>) that have a parent, and the
+<a href="https://docs.rs/bevy/0.9.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> of their parent:</p>
 <pre><code class="language-rust no_run noplayground">fn camera_with_parent(
     q_child: Query&lt;(&amp;Parent, &amp;Transform), With&lt;Camera&gt;&gt;,
     q_parent: Query&lt;&amp;GlobalTransform&gt;,
@@ -235,12 +235,12 @@ relative to their parent and move with it.</p>
 you manually hide their parent.</p>
 <p>All <a href="/builtins.html#bundles">Bundles that come with Bevy</a> provide
 this behavior automatically.</p>
-<p>Otherwise, you can use <a href="https://docs.rs/bevy/0.8.0/bevy/transform/struct.TransformBundle.html"><code>SpatialBundle</code></a> to make sure
+<p>Otherwise, you can use <a href="https://docs.rs/bevy/0.9.0/bevy/transform/struct.TransformBundle.html"><code>SpatialBundle</code></a> to make sure
 your entities have all the necessary components.</p>
 <h2 id="known-pitfalls"><a class="header" href="#known-pitfalls">Known Pitfalls</a></h2>
 <h3 id="despawning-child-entities"><a class="header" href="#despawning-child-entities">Despawning Child Entities</a></h3>
 <p>If you despawn an entity that has a parent, Bevy does not remove it from the
-parent's <a href="https://docs.rs/bevy/0.8.0/bevy/hierarchy/struct.Children.html"><code>Children</code></a>.</p>
+parent's <a href="https://docs.rs/bevy/0.9.0/bevy/hierarchy/struct.Children.html"><code>Children</code></a>.</p>
 <p>If you then query for that parent entity's children, you will get an invaild
 entity, and any attempt to manipulate it will likely lead to this error:</p>
 <pre><code>thread 'main' panicked at 'Attempting to create an EntityCommands for entity 7v0, which doesn't exist.'

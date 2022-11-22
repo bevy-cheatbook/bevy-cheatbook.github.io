@@ -142,7 +142,7 @@
 to use your assets, for example to <a href="/programming/commands.html">spawn entities</a> like
 <a href="/2d/sprites.html">2D sprites</a> or <a href="/features/gltf.html">3D models</a>, or to <a href="/assets/data.html">access the data
 of the assets</a>.</p>
-<p>Handles have the Rust type <a href="https://docs.rs/bevy/0.8.0/bevy/asset/struct.Handle.html"><code>Handle&lt;T&gt;</code></a>, where <code>T</code> is the
+<p>Handles have the Rust type <a href="https://docs.rs/bevy/0.9.0/bevy/asset/struct.Handle.html"><code>Handle&lt;T&gt;</code></a>, where <code>T</code> is the
 <a href="/builtins.html#assets">asset type</a>.</p>
 <p>You can store handles in your <a href="/programming/ec.html#components">entity components</a> or
 <a href="/programming/res.html">resources</a>.</p>
@@ -169,7 +169,7 @@ to create a weak handle, use <code>.clone_weak()</code> (instead of <code>.clone
 existing handle. Bevy can unload the asset after all strong handles are gone,
 even if you are still holding some weak handles.</p>
 <h2 id="untyped-handles"><a class="header" href="#untyped-handles">Untyped Handles</a></h2>
-<p>Bevy also has a <a href="https://docs.rs/bevy/0.8.0/bevy/asset/struct.HandleUntyped.html"><code>HandleUntyped</code></a> type. Use this type
+<p>Bevy also has a <a href="https://docs.rs/bevy/0.9.0/bevy/asset/struct.HandleUntyped.html"><code>HandleUntyped</code></a> type. Use this type
 of handle if you need to be able to refer to any asset, regardless of the
 asset type.</p>
 <p>This allows you to store a collection (such as <a href="https://doc.rust-lang.org/stable/std/vec/struct.Vec.html"><code>Vec</code></a> or

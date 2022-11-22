@@ -161,7 +161,7 @@ your systems</li>
 <p>To be able to reliably manage events in such circumstances, you might want
 to have manual control over how long the events are held in memory.</p>
 <p>You can replace Bevy's default cleanup strategy with your own.</p>
-<p>To do this, simply add your event type (wrapped as <a href="https://docs.rs/bevy/0.8.0/bevy/ecs/event/struct.Events.html"><code>Events&lt;T&gt;</code></a>)
+<p>To do this, simply add your event type (wrapped as <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/event/struct.Events.html"><code>Events&lt;T&gt;</code></a>)
 to the <a href="/programming/app-builder.html">app builder</a> using <code>.init_resource</code>, instead of <code>.add_event</code>.</p>
 <p>(<code>.add_event</code> is actually just a convenience method that initializes the
 <a href="/programming/res.html">resource</a> and adds Bevy's built-in system (<a href="/patterns/generic-systems.html">generic</a>
@@ -171,7 +171,7 @@ enough, your events might pile up and waste memory.</p>
 <h2 id="example"><a class="header" href="#example">Example</a></h2>
 <p>We can create <a href="/patterns/generic-systems.html">generic systems</a> for this. Implement
 the custom cleanup strategy, and then add that <a href="/programming/systems.html">system</a> to your
-<a href="https://docs.rs/bevy/0.8.0/bevy/app/struct.App.html"><code>App</code></a> as many times as you need, for each <a href="/programming/events.html">event</a> type
+<a href="https://docs.rs/bevy/0.9.0/bevy/app/struct.App.html"><code>App</code></a> as many times as you need, for each <a href="/programming/events.html">event</a> type
 where you want to use your custom behavior.</p>
 <pre><code class="language-rust no_run noplayground">use bevy::ecs::event::Events;
 

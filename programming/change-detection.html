@@ -153,16 +153,16 @@ the data somewhere.</p>
 <a href="/programming/ec.html#components">components</a> on them have been modified.</p>
 <p>Use <a href="/programming/queries.html#query-filters">query filters</a>:</p>
 <ul>
-<li><a href="https://docs.rs/bevy/0.8.0/bevy/ecs/query/struct.Added.html"><code>Added&lt;T&gt;</code></a>: detect new component instances
+<li><a href="https://docs.rs/bevy/0.9.0/bevy/ecs/query/struct.Added.html"><code>Added&lt;T&gt;</code></a>: detect new component instances
 <ul>
 <li>if the component was added to an existing entity</li>
 <li>if a new entity with the component was spawned</li>
 </ul>
 </li>
-<li><a href="https://docs.rs/bevy/0.8.0/bevy/ecs/query/struct.Changed.html"><code>Changed&lt;T&gt;</code></a>: detect component instances that have been changed
+<li><a href="https://docs.rs/bevy/0.9.0/bevy/ecs/query/struct.Changed.html"><code>Changed&lt;T&gt;</code></a>: detect component instances that have been changed
 <ul>
 <li>triggers when the component is accessed mutably</li>
-<li>also triggers if the component is newly-added (as per <a href="https://docs.rs/bevy/0.8.0/bevy/ecs/query/struct.Added.html"><code>Added</code></a>)</li>
+<li>also triggers if the component is newly-added (as per <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/query/struct.Added.html"><code>Added</code></a>)</li>
 </ul>
 </li>
 </ul>
@@ -198,7 +198,7 @@ fn debug_new_hostiles(
 <h3 id="checking"><a class="header" href="#checking">Checking</a></h3>
 <p>If you want to access all the entities, as normal, regardless of if they have
 been modified, but you just want to check the status, you can use the special
-<a href="https://docs.rs/bevy/0.8.0/bevy/ecs/query/struct.ChangeTrackers.html"><code>ChangeTrackers&lt;T&gt;</code></a> query parameter.</p>
+<a href="https://docs.rs/bevy/0.9.0/bevy/ecs/query/struct.ChangeTrackers.html"><code>ChangeTrackers&lt;T&gt;</code></a> query parameter.</p>
 <pre><code class="language-rust no_run noplayground">/// Make sprites flash red on frames when the Health changes
 fn debug_damage(
     mut query: Query&lt;(&amp;mut Sprite, ChangeTrackers&lt;Health&gt;)&gt;,
@@ -220,7 +220,7 @@ fn debug_damage(
 depending on if they have been modified.</p>
 <h2 id="resources"><a class="header" href="#resources">Resources</a></h2>
 <p>For <a href="/programming/res.html">resources</a>, change detection is provided via methods on the
-<a href="https://docs.rs/bevy/0.8.0/bevy/ecs/system/struct.Res.html"><code>Res</code></a>/<a href="https://docs.rs/bevy/0.8.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut</code></a> system parameters.</p>
+<a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.Res.html"><code>Res</code></a>/<a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut</code></a> system parameters.</p>
 <pre><code class="language-rust no_run noplayground">fn check_res_changed(
     my_res: Res&lt;MyResource&gt;,
 ) {
@@ -244,10 +244,10 @@ fn check_res_added(
 }
 </code></pre>
 <p>Note that change detection cannot currently be used to detect
-<a href="/programming/states.html">states</a> changes (via the <a href="https://docs.rs/bevy/0.8.0/bevy/ecs/schedule/struct.State.html"><code>State</code></a>
+<a href="/programming/states.html">states</a> changes (via the <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/schedule/struct.State.html"><code>State</code></a>
 <a href="/programming/res.html">resource</a>) (<a href="https://github.com/bevyengine/bevy/issues/2343">bug</a>).</p>
 <h2 id="what-gets-detected"><a class="header" href="#what-gets-detected">What gets detected?</a></h2>
-<p><a href="https://docs.rs/bevy/0.8.0/bevy/ecs/query/struct.Changed.html"><code>Changed</code></a> detection is triggered by
+<p><a href="https://docs.rs/bevy/0.9.0/bevy/ecs/query/struct.Changed.html"><code>Changed</code></a> detection is triggered by
 <a href="https://doc.rust-lang.org/stable/std/ops/trait.DerefMut.html"><code>DerefMut</code></a>. Simply accessing components via a mutable query,
 without actually performing a <code>&amp;mut</code> access, will <em>not</em> trigger it.</p>
 <p>This makes change detection quite accurate. You can rely on it to optimize
@@ -280,7 +280,7 @@ system before the changing system. The detecting system will see the change
 the next time it runs, typically on the next frame update.</p>
 <p>If you need to ensure that changes are handled immediately / during the same
 frame, you can use <a href="/programming/system-order.html">explicit system ordering</a>.</p>
-<p>However, when detecting component additions with <a href="https://docs.rs/bevy/0.8.0/bevy/ecs/query/struct.Added.html"><code>Added&lt;T&gt;</code></a>
+<p>However, when detecting component additions with <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/query/struct.Added.html"><code>Added&lt;T&gt;</code></a>
 (which are typically done using <a href="/programming/commands.html"><code>Commands</code></a>), this is not
 enough; you need <a href="/programming/stages.html">stages</a>.</p>
 

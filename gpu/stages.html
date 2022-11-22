@@ -178,7 +178,7 @@ your game will behave like the &quot;Render-bound&quot; scenario shown above.</p
 <p>The final render (the framebuffer with the pixels to show in the
 <a href="/window/props.html">window</a>) is <em>presented</em> to the OS/driver at the end of the
 <a href="#render">Render</a> stage.</p>
-<p>Bevy updates its <a href="/features/time.html">timing information</a> (in <a href="https://docs.rs/bevy/0.8.0/bevy/time/struct.Time.html"><code>Res&lt;Time&gt;</code></a>)
+<p>Bevy updates its <a href="/features/time.html">timing information</a> (in <a href="https://docs.rs/bevy/0.9.0/bevy/time/struct.Time.html"><code>Res&lt;Time&gt;</code></a>)
 at the start of the First stage in the main App schedule. The value to
 use is measured at &quot;presentation time&quot;, in the render world, and the
 <a href="https://doc.rust-lang.org/stable/std/time/struct.Instant.html"><code>Instant</code></a> is sent over a channel, to be applied on the
@@ -226,7 +226,7 @@ possible. Just copy data.</p>
 <p>It is recommended that you only copy the data you actually need for rendering.
 Create new <a href="/programming/ec.html#components">component types</a> and <a href="/programming/res.html">resources</a> just
 for use within the render World, with only the data you need.</p>
-<p>For example, Bevy's 2D sprites uses a <a href="https://docs.rs/bevy/0.8.0/bevy/sprite/struct.ExtractedSprite.html"><code>struct ExtractedSprite</code></a>, where it copies the relevant data
+<p>For example, Bevy's 2D sprites uses a <a href="https://docs.rs/bevy/0.9.0/bevy/sprite/struct.ExtractedSprite.html"><code>struct ExtractedSprite</code></a>, where it copies the relevant data
 from the &quot;user-facing&quot; components of sprite and spritesheet entities in the
 main World.</p>
 <p>Bevy <strong>reserves Entity IDs</strong> in the render World, matching all the Entities

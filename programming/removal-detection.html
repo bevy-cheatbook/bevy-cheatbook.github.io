@@ -152,12 +152,12 @@ the current frame. The data is cleared at the end of every frame update. Note
 that this makes this feature tricky to use, and requires you to use multiple
 <a href="/programming/stages.html">stages</a>.</p>
 <p>When you remove a component (using <a href="/programming/commands.html">Commands</a>
-(<a href="https://docs.rs/bevy/0.8.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>)), the operation is applied at the end of the
+(<a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>)), the operation is applied at the end of the
 <a href="/programming/stages.html">stage</a>. The <a href="/programming/systems.html">system</a> that checks for the removal
 must run in a later stage during the same frame update. Otherwise, it will
 not detect the removal.</p>
-<p>Use the <a href="https://docs.rs/bevy/0.8.0/bevy/ecs/system/struct.RemovedComponents.html"><code>RemovedComponents&lt;T&gt;</code></a> special system
-parameter type, to get an iterator for the <a href="https://docs.rs/bevy/0.8.0/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> IDs of
+<p>Use the <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.RemovedComponents.html"><code>RemovedComponents&lt;T&gt;</code></a> special system
+parameter type, to get an iterator for the <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> IDs of
 all the entities that had a component of type <code>T</code> that was removed earlier
 this frame.</p>
 <pre><code class="language-rust no_run noplayground">/// Some component type for the sake of this example.

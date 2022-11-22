@@ -204,7 +204,7 @@ These special system set constructors are really just helpers to automatically
 add the state management run criteria.</p>
 <h2 id="controlling-states"><a class="header" href="#controlling-states">Controlling States</a></h2>
 <p>Inside of systems, you can check and control the state using the
-<a href="https://docs.rs/bevy/0.8.0/bevy/ecs/schedule/struct.State.html"><code>State&lt;T&gt;</code></a> resource:</p>
+<a href="https://docs.rs/bevy/0.9.0/bevy/ecs/schedule/struct.State.html"><code>State&lt;T&gt;</code></a> resource:</p>
 <pre><code class="language-rust no_run noplayground">fn play_music(
     app_state: Res&lt;State&lt;AppState&gt;&gt;,
     // ...
@@ -309,7 +309,7 @@ same frame, among other important use cases.</p>
 <p>Consider using <a href="https://github.com/IyesGames/iyes_loopless"><code>iyes_loopless</code></a>, which does not
 have such limitations.</p>
 <h3 id="with-input"><a class="header" href="#with-input">With Input</a></h3>
-<p>If you want to use <a href="https://docs.rs/bevy/0.8.0/bevy/input/struct.Input.html"><code>Input&lt;T&gt;</code></a> to trigger state transitions using
+<p>If you want to use <a href="https://docs.rs/bevy/0.9.0/bevy/input/struct.Input.html"><code>Input&lt;T&gt;</code></a> to trigger state transitions using
 a button/key press, you need to clear the input manually by calling <code>.reset</code>:</p>
 <pre><code class="language-rust no_run noplayground">fn esc_to_menu(
     mut keys: ResMut&lt;Input&lt;KeyCode&gt;&gt;,
@@ -321,7 +321,7 @@ a button/key press, you need to clear the input manually by calling <code>.reset
     }
 }
 </code></pre>
-<p>(note that this requires <a href="https://docs.rs/bevy/0.8.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut</code></a>)</p>
+<p>(note that this requires <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut</code></a>)</p>
 <p>Not doing this can cause <a href="https://github.com/bevyengine/bevy/issues/1700">issues</a>.</p>
 <p><a href="https://github.com/IyesGames/iyes_loopless"><code>iyes_loopless</code></a> does not have this issue.</p>
 <h3 id="events"><a class="header" href="#events">Events</a></h3>

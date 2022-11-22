@@ -169,15 +169,15 @@ fn reveal_map(
 </code></pre>
 <h2 id="visibility-components"><a class="header" href="#visibility-components">Visibility Components</a></h2>
 <p>In Bevy, visibility is represented by <strong>two</strong> <a href="/programming/ec.html#components">components</a>:
-<a href="https://docs.rs/bevy/0.8.0/bevy/render/view/visibility/struct.Visibility.html"><code>Visibility</code></a> and <a href="https://docs.rs/bevy/0.8.0/bevy/render/view/visibility/struct.ComputedVisibility.html"><code>ComputedVisibility</code></a>.</p>
+<a href="https://docs.rs/bevy/0.9.0/bevy/render/view/visibility/struct.Visibility.html"><code>Visibility</code></a> and <a href="https://docs.rs/bevy/0.9.0/bevy/render/view/visibility/struct.ComputedVisibility.html"><code>ComputedVisibility</code></a>.</p>
 <p>Any <a href="/programming/ecs-intro.html">Entity</a> that represents an object in the game world
 needs to have both. All of Bevy's <a href="/builtins.html#bundles">built-in bundle types</a>
 include them.</p>
 <p>If you are creating a custom entity without using those <a href="/programming/ec.html#component-bundles">bundles</a>,
 you can use one of the following to ensure you don't miss them:</p>
 <ul>
-<li><a href="https://docs.rs/bevy/0.8.0/bevy/render/prelude/struct.SpatialBundle.html"><code>SpatialBundle</code></a> for <a href="/features/transforms.html">transforms</a> + visibility</li>
-<li><a href="https://docs.rs/bevy/0.8.0/bevy/render/view/visibility/struct.VisibilityBundle.html"><code>VisibilityBundle</code></a> for just visibility</li>
+<li><a href="https://docs.rs/bevy/0.9.0/bevy/render/prelude/struct.SpatialBundle.html"><code>SpatialBundle</code></a> for <a href="/features/transforms.html">transforms</a> + visibility</li>
+<li><a href="https://docs.rs/bevy/0.9.0/bevy/render/view/visibility/struct.VisibilityBundle.html"><code>VisibilityBundle</code></a> for just visibility</li>
 </ul>
 <pre><code class="language-rust no_run noplayground">fn spawn_special_entity(
     mut commands: Commands,
@@ -198,27 +198,27 @@ you can use one of the following to ensure you don't miss them:</p>
 }
 </code></pre>
 <h3 id="visibility-1"><a class="header" href="#visibility-1"><code>Visibility</code></a></h3>
-<p><a href="https://docs.rs/bevy/0.8.0/bevy/render/view/visibility/struct.Visibility.html"><code>Visibility</code></a> is the &quot;user-facing toggle&quot;. This is where
+<p><a href="https://docs.rs/bevy/0.9.0/bevy/render/view/visibility/struct.Visibility.html"><code>Visibility</code></a> is the &quot;user-facing toggle&quot;. This is where
 you specify if you want this entity to be visible or not.</p>
 <p>If you hide an entity that has <a href="/features/parent-child.html">children</a>, they will also be
-hidden, regardless of what their individual <a href="https://docs.rs/bevy/0.8.0/bevy/render/view/visibility/struct.Visibility.html"><code>Visibility</code></a>
+hidden, regardless of what their individual <a href="https://docs.rs/bevy/0.9.0/bevy/render/view/visibility/struct.Visibility.html"><code>Visibility</code></a>
 value is set to.</p>
 <h3 id="computedvisibility"><a class="header" href="#computedvisibility"><code>ComputedVisibility</code></a></h3>
-<p><a href="https://docs.rs/bevy/0.8.0/bevy/render/view/visibility/struct.ComputedVisibility.html"><code>ComputedVisibility</code></a> represents the actual final
+<p><a href="https://docs.rs/bevy/0.9.0/bevy/render/view/visibility/struct.ComputedVisibility.html"><code>ComputedVisibility</code></a> represents the actual final
 decision made by Bevy about whether this entity needs to be displayed.</p>
-<p>The value of <a href="https://docs.rs/bevy/0.8.0/bevy/render/view/visibility/struct.ComputedVisibility.html"><code>ComputedVisibility</code></a> is read-only. It
+<p>The value of <a href="https://docs.rs/bevy/0.9.0/bevy/render/view/visibility/struct.ComputedVisibility.html"><code>ComputedVisibility</code></a> is read-only. It
 is managed internally by Bevy.</p>
 <p>It can be affected by the visibility of <a href="/features/parent-child.html">parent</a> entities, if any.</p>
 <p>It is also affected by &quot;culling&quot; systems. If the entity is not in the range of
 any Camera or Light, it does not need to be rendered, so Bevy will hide it.</p>
 <h2 id="checking-actual-visibility"><a class="header" href="#checking-actual-visibility">Checking Actual Visibility</a></h2>
-<p>You can use <a href="https://docs.rs/bevy/0.8.0/bevy/render/view/visibility/struct.ComputedVisibility.html"><code>ComputedVisibility</code></a> to check if
+<p>You can use <a href="https://docs.rs/bevy/0.9.0/bevy/render/view/visibility/struct.ComputedVisibility.html"><code>ComputedVisibility</code></a> to check if
 the entity is actually visible.</p>
 <p>Bevy's internal visibility computations are done in the
-<a href="https://docs.rs/bevy/0.8.0/bevy/app/enum.CoreStage.html"><code>PostUpdate</code></a> <a href="/programming/stages.html">stage</a>. To get the up-to-date
+<a href="https://docs.rs/bevy/0.9.0/bevy/app/enum.CoreStage.html"><code>PostUpdate</code></a> <a href="/programming/stages.html">stage</a>. To get the up-to-date
 values for the current frame, your <a href="/programming/systems.html">system</a> must be <a href="/programming/system-order.html">ordered
 after</a> these bevy-internal systems. You can use the
-<a href="https://docs.rs/bevy/0.8.0/bevy/render/view/visibility/enum.VisibilitySystems.html"><code>VisibilitySystems</code></a> <a href="/programming/labels.html">labels</a>.</p>
+<a href="https://docs.rs/bevy/0.9.0/bevy/render/view/visibility/enum.VisibilitySystems.html"><code>VisibilitySystems</code></a> <a href="/programming/labels.html">labels</a>.</p>
 <pre><code class="language-rust no_run noplayground">/// Check if the Player was hidden manually
 fn debug_player_visibility(
     query: Query&lt;&amp;ComputedVisibility, With&lt;Player&gt;&gt;,
