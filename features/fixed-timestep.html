@@ -139,7 +139,7 @@
                     <main>
                         <h1 id="fixed-timestep"><a class="header" href="#fixed-timestep">Fixed Timestep</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.8.1/examples/ecs/fixed_timestep.rs"><code>fixed_timestep</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.9.0/examples/ecs/fixed_timestep.rs"><code>fixed_timestep</code></a>.</p>
 <p>Consider using the <a href="https://github.com/IyesGames/iyes_loopless"><code>iyes_loopless</code></a> crate, which
 provides an alternative implementation that does not suffer from the
 <a href="#caveats">usability issues</a> of the one in Bevy.</p>
@@ -188,7 +188,7 @@ fn fast_timestep() {
 the <a href="https://docs.rs/bevy/0.9.0/bevy/time/struct.FixedTimesteps.html"><code>FixedTimesteps</code></a> <a href="/programming/res.html">resource</a>. This lets
 you know how much time remains until the next time it triggers, or how much
 it has overstepped. You need to label your fixed timesteps.</p>
-<p>See the <a href="https://github.com/bevyengine/bevy/blob/v0.8.1/examples/ecs/fixed_timestep.rs">official example</a>, which illustrates this.</p>
+<p>See the <a href="https://github.com/bevyengine/bevy/blob/v0.9.0/examples/ecs/fixed_timestep.rs">official example</a>, which illustrates this.</p>
 <h2 id="caveats"><a class="header" href="#caveats">Caveats</a></h2>
 <p>The major problem with Bevy's fixed timestep comes from the fact that
 it is implemented using <a href="/programming/run-criteria.html">Run Criteria</a>. It cannot be
