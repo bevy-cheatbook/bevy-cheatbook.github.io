@@ -6,7 +6,6 @@
         <title>Mouse - Unofficial Bevy Cheat Book</title>
         <!-- Custom HTML head -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
-        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
@@ -31,13 +30,13 @@
     </head>
     <body>
         <!-- Provide site root to javascript -->
-        <script type="text/javascript">
+        <script>
             var path_to_root = "../";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
-        <script type="text/javascript">
+        <script>
             try {
                 var theme = localStorage.getItem('mdbook-theme');
                 var sidebar = localStorage.getItem('mdbook-sidebar');
@@ -53,7 +52,7 @@
         </script>
 
         <!-- Set the theme before any content is loaded, prevents flash -->
-        <script type="text/javascript">
+        <script>
             var theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
@@ -65,7 +64,7 @@
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
-        <script type="text/javascript">
+        <script>
             var html = document.querySelector('html');
             var sidebar = 'hidden';
             if (document.body.clientWidth >= 1080) {
@@ -96,7 +95,7 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
@@ -127,7 +126,7 @@
                     </div>
                 </div>
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
-                <script type="text/javascript">
+                <script>
                     document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
                     document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
                     Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
@@ -164,8 +163,7 @@ as an <a href="https://docs.rs/bevy/0.9.0/bevy/input/struct.Input.html"><code>In
     if buttons.any_just_pressed([MouseButton::Left, MouseButton::Right]) {
         // Either the left or the right button was just pressed
     }
-}
-</code></pre>
+}</code></pre>
 <p>To get all press/release activity, use
 <a href="https://docs.rs/bevy/0.9.0/bevy/input/mouse/struct.MouseButtonInput.html"><code>MouseButtonInput</code></a> <a href="/programming/events.html">events</a>:</p>
 <pre><code class="language-rust no_run noplayground">fn mouse_button_events(
@@ -183,8 +181,7 @@ as an <a href="https://docs.rs/bevy/0.9.0/bevy/input/struct.Input.html"><code>In
             }
         }
     }
-}
-</code></pre>
+}</code></pre>
 <h2 id="mouse-scrolling--wheel"><a class="header" href="#mouse-scrolling--wheel">Mouse Scrolling / Wheel</a></h2>
 <p>To detect scrolling input, use <a href="https://docs.rs/bevy/0.9.0/bevy/input/mouse/struct.MouseWheel.html"><code>MouseWheel</code></a> <a href="/programming/events.html">events</a>:</p>
 <pre><code class="language-rust no_run noplayground">fn scroll_events(
@@ -201,8 +198,7 @@ as an <a href="https://docs.rs/bevy/0.9.0/bevy/input/struct.Input.html"><code>In
             }
         }
     }
-}
-</code></pre>
+}</code></pre>
 <p>The <a href="https://docs.rs/bevy/0.9.0/bevy/input/mouse/enum.MouseScrollUnit.html"><code>MouseScrollUnit</code></a> enum is important: it tells
 you the type of scroll input. <code>Line</code> is for hardware with fixed steps, like
 the wheel on desktop mice. <code>Pixel</code> is for hardware with smooth (fine-grained)
@@ -221,8 +217,7 @@ mouse is moved, you will get an event with the delta.</p>
     for ev in motion_evr.iter() {
         println!(&quot;Mouse moved: X: {} px, Y: {} px&quot;, ev.delta.x, ev.delta.y);
     }
-}
-</code></pre>
+}</code></pre>
 <p>You might want to <a href="/window/mouse-grab.html">grab/lock the mouse inside the game
 window</a>.</p>
 <h2 id="mouse-cursor-position"><a class="header" href="#mouse-cursor-position">Mouse Cursor Position</a></h2>
@@ -242,8 +237,7 @@ useful for things like clicking and hovering over objects in your game or UI.</p
     } else {
         // cursor is not inside the window
     }
-}
-</code></pre>
+}</code></pre>
 <p>To detect when the pointer is moved, use <a href="https://docs.rs/bevy/0.9.0/bevy/window/struct.CursorMoved.html"><code>CursorMoved</code></a>
 <a href="/programming/events.html">events</a> to get the updated coordinates:</p>
 <pre><code class="language-rust no_run noplayground">fn cursor_events(
@@ -255,8 +249,7 @@ useful for things like clicking and hovering over objects in your game or UI.</p
             ev.position.x, ev.position.y, ev.id
         );
     }
-}
-</code></pre>
+}</code></pre>
 <p>Note that you can only get the position of the mouse inside a window;
 you cannot get the global position of the mouse in the whole OS Desktop /
 on the screen as a whole.</p>
@@ -295,17 +288,17 @@ into world-space coordinates.</p>
 
         </div>
 
-        <script type="text/javascript">
+        <script>
             window.playground_copyable = true;
         </script>
-        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
 
         <!-- Custom JS scripts -->
-        <script type="text/javascript" src="../nagbar.js"></script>
+        <script src="../nagbar.js"></script>
     </body>
 </html>

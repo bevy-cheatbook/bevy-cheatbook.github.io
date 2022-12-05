@@ -7,7 +7,6 @@
         <meta name="robots" content="noindex" />
         <!-- Custom HTML head -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
-        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
@@ -32,13 +31,13 @@
     </head>
     <body>
         <!-- Provide site root to javascript -->
-        <script type="text/javascript">
+        <script>
             var path_to_root = "";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
-        <script type="text/javascript">
+        <script>
             try {
                 var theme = localStorage.getItem('mdbook-theme');
                 var sidebar = localStorage.getItem('mdbook-sidebar');
@@ -54,7 +53,7 @@
         </script>
 
         <!-- Set the theme before any content is loaded, prevents flash -->
-        <script type="text/javascript">
+        <script>
             var theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
@@ -66,7 +65,7 @@
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
-        <script type="text/javascript">
+        <script>
             var html = document.querySelector('html');
             var sidebar = 'hidden';
             if (document.body.clientWidth >= 1080) {
@@ -97,7 +96,7 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
@@ -128,7 +127,7 @@
                     </div>
                 </div>
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
-                <script type="text/javascript">
+                <script>
                     document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
                     document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
                     Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
@@ -921,8 +920,7 @@ fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
         .run();
-}
-</code></pre>
+}</code></pre>
 <p>You can now compile and run your project. The first time, this will take a
 while, as it needs to build the whole Bevy engine and dependencies. Subsequent
 runs should be fast. You can do this from your IDE/editor, or the commandline:</p>
@@ -1710,8 +1708,7 @@ different Bevy types. Make sure you are using the correct thing.</p>
 <a href="https://docs.rs/bevy/0.9.0/bevy/render/mesh/struct.Mesh.html"><code>Mesh</code></a> and <a href="https://docs.rs/bevy/0.9.0/bevy/pbr/struct.StandardMaterial.html"><code>StandardMaterial</code></a>
 associated with the correct GLTF Primitive.</p>
 <p>If you are using an asset path, be sure to include a label for the sub-asset you want:</p>
-<pre><code class="language-rust no_run noplayground">asset_server.load(&quot;my.gltf#Scene0&quot;);
-</code></pre>
+<pre><code class="language-rust no_run noplayground">asset_server.load(&quot;my.gltf#Scene0&quot;);</code></pre>
 <p>If you are spawning the top-level <a href="https://docs.rs/bevy/0.9.0/bevy/gltf/struct.Gltf.html"><code>Gltf</code></a> <a href="pitfalls//features/gltf.html#gltf-master-asset">master asset</a>, it won't work.</p>
 <p>If you are spawning a GLTF Mesh, it won't work.</p>
 <h2 id="unsupported-gltf"><a class="header" href="#unsupported-gltf">Unsupported GLTF</a></h2>
@@ -1748,8 +1745,7 @@ parent entities are not supposed to render anything.</p>
 </span><span class="boring">fn main() {
 </span>    commands.entity(parent)
         .insert(VisibilityBundle::default());
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <p>Or better, make sure to spawn the parent entities correctly in the first place.
 You can use a <a href="https://docs.rs/bevy/0.9.0/bevy/render/view/visibility/struct.VisibilityBundle.html"><code>VisibilityBundle</code></a> or
 <a href="https://docs.rs/bevy/0.9.0/bevy/render/prelude/struct.SpatialBundle.html"><code>SpatialBundle</code></a> (with <a href="pitfalls//features/transforms.html">transforms</a>) if you
@@ -1771,8 +1767,7 @@ fn my_system(mut q: Query&lt;&amp;mut MyThing&gt;) {
 
 fn helper_func(foo: &amp;Foo, bar: &amp;mut Bar) {
     // do something
-}
-</code></pre>
+}</code></pre>
 <p>This can result in a compiler error about conflicting borrows:</p>
 <pre><code>error[E0502]: cannot borrow `thing` as mutable because it is also borrowed as immutable
     |
@@ -1784,8 +1779,7 @@ fn helper_func(foo: &amp;Foo, bar: &amp;mut Bar) {
 </code></pre>
 <p>The solution is to use the &quot;reborrow&quot; idiom, a common but non-obvious trick in Rust programming:</p>
 <pre><code class="language-rust no_run noplayground">        // add this at the start of the for loop, before using `thing`:
-        let thing = &amp;mut *thing;
-</code></pre>
+        let thing = &amp;mut *thing;</code></pre>
 <p>Note that this line triggers <a href="pitfalls//programming/change-detection.html">change detection</a>. Even if
 you don't modify the data afterwards, the component gets marked as changed.</p>
 <h2 id="explanation"><a class="header" href="#explanation">Explanation</a></h2>
@@ -1842,8 +1836,7 @@ correct that using Bevy's sprite-flipping feature:</p>
         ..Default::default()
     },
     ..Default::default()
-});
-</code></pre>
+});</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="general-game-engine-features"><a class="header" href="#general-game-engine-features">General Game Engine Features</a></h1>
 <p>This chapter covers various general features of Bevy, important to using it
 as a game engine.</p>
@@ -1936,8 +1929,7 @@ let xf_rot2d = Transform::from_rotation(Quat::from_euler(
 // Everything:
 let xf = Transform::from_xyz(1.0, 2.0, 3.0)
     .with_scale(Vec3::new(0.5, 0.5, 1.0))
-    .with_rotation(Quat::from_rotation_y(0.125 * std::f32::consts::PI));
-</code></pre>
+    .with_rotation(Quat::from_rotation_y(0.125 * std::f32::consts::PI));</code></pre>
 <h2 id="transform-components"><a class="header" href="#transform-components">Transform Components</a></h2>
 <p>In Bevy, transforms are represented by <strong>two</strong> <a href="features//programming/ec.html#components">components</a>:
 <a href="https://docs.rs/bevy/0.9.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> and <a href="https://docs.rs/bevy/0.9.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a>.</p>
@@ -1966,8 +1958,7 @@ you can use one of the following to ensure you don't miss them:</p>
             ..Default::default()
         },
     ));
-}
-</code></pre>
+}</code></pre>
 <h3 id="transform"><a class="header" href="#transform"><code>Transform</code></a></h3>
 <p><a href="https://docs.rs/bevy/0.9.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> is what you typically work with. It is
 a <code>struct</code> containing the translation, rotation, and scale. To read or
@@ -1987,8 +1978,7 @@ move/rotate/scale along with the parent.</p>
             transform.scale *= 1.25;
         }
     }
-}
-</code></pre>
+}</code></pre>
 <h3 id="globaltransform"><a class="header" href="#globaltransform"><code>GlobalTransform</code></a></h3>
 <p><a href="https://docs.rs/bevy/0.9.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> represents the absolute global
 position in the world.</p>
@@ -2028,8 +2018,7 @@ fn main() {
                 .after(TransformSystem::TransformPropagate)
         )
         .run();
-}
-</code></pre>
+}</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="visibility"><a class="header" href="#visibility">Visibility</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.0/examples/3d/parenting.rs"><code>parenting</code></a>.</p>
@@ -2058,8 +2047,7 @@ fn reveal_map(
 ) {
     let mut vis_map = query.single_mut();
     vis_map.is_visible = true;
-}
-</code></pre>
+}</code></pre>
 <h2 id="visibility-components"><a class="header" href="#visibility-components">Visibility Components</a></h2>
 <p>In Bevy, visibility is represented by <strong>two</strong> <a href="features//programming/ec.html#components">components</a>:
 <a href="https://docs.rs/bevy/0.9.0/bevy/render/view/visibility/struct.Visibility.html"><code>Visibility</code></a> and <a href="https://docs.rs/bevy/0.9.0/bevy/render/view/visibility/struct.ComputedVisibility.html"><code>ComputedVisibility</code></a>.</p>
@@ -2088,8 +2076,7 @@ you can use one of the following to ensure you don't miss them:</p>
             ..Default::default()
         },
     ));
-}
-</code></pre>
+}</code></pre>
 <h3 id="visibility-1"><a class="header" href="#visibility-1"><code>Visibility</code></a></h3>
 <p><a href="https://docs.rs/bevy/0.9.0/bevy/render/view/visibility/struct.Visibility.html"><code>Visibility</code></a> is the &quot;user-facing toggle&quot;. This is where
 you specify if you want this entity to be visible or not.</p>
@@ -2155,8 +2142,7 @@ fn main() {
                 .after(VisibilitySystems::VisibilityPropagate)
         )
         .run();
-}
-</code></pre>
+}</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="time-and-timers"><a class="header" href="#time-and-timers">Time and Timers</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.0/examples/ecs/timers.rs"><code>timers</code></a>,
@@ -2183,8 +2169,7 @@ the game's frame rate.</p>
         // at a speed of 10.0 units per second
         transform.translation.x += 10.0 * time.delta_seconds();
     }
-}
-</code></pre>
+}</code></pre>
 <h3 id="ongoing-time"><a class="header" href="#ongoing-time">Ongoing Time</a></h3>
 <p><a href="https://docs.rs/bevy/0.9.0/bevy/time/struct.Time.html"><code>Time</code></a> can also give you the total running time since startup.
 Use this if you need a cumulative, increasing, measurement of time.</p>
@@ -2204,8 +2189,7 @@ fn spawn_my_stuff(
         .insert(SpawnedTime(time.startup() + time.elapsed()))
         // or just the time of last update
         .insert(SpawnedTime(time.last_update().unwrap()));
-}
-</code></pre>
+}</code></pre>
 <h2 id="timers-and-stopwatches"><a class="header" href="#timers-and-stopwatches">Timers and Stopwatches</a></h2>
 <p>There are also facilities to help you track specific intervals or timings:
 <a href="https://docs.rs/bevy/0.9.0/bevy/time/struct.Timer.html"><code>Timer</code></a> and <a href="https://docs.rs/bevy/0.9.0/bevy/time/struct.Stopwatch.html"><code>Stopwatch</code></a>. You can create
@@ -2283,8 +2267,7 @@ fn setup_bomb_spawning(
         // create the repeating timer
         timer: Timer::new(Duration::from_secs(10), TimerMode::Repeating),
     })
-}
-</code></pre>
+}</code></pre>
 <p>Note that Bevy's timers do <em>not</em> work like typical real-life timers (which
 count downwards toward zero). Bevy's timers start from zero and count <em>up</em>
 towards their set duration. They are basically like stopwatches with extra
@@ -2318,8 +2301,7 @@ fn jump_duration(
         // stopwatch has to be ticked to progress
         jump.time.tick(time.delta());
     }
-}
-</code></pre>
+}</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="logging-console-messages"><a class="header" href="#logging-console-messages">Logging, Console Messages</a></h1>
 <p>You may have noticed how, when you run your Bevy project, you get messages
 in your console window. For example:</p>
@@ -2355,8 +2337,7 @@ warn!(&quot;Something unusual happened!&quot;);
 info!(&quot;Entered game level: {}&quot;, level_id);
 debug!(&quot;x: {}, state: {:?}&quot;, x, state);
 trace!(&quot;entity transform: {:?}&quot;, transform);
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <h2 id="filtering-messages"><a class="header" href="#filtering-messages">Filtering messages</a></h2>
 <p>To control what messages you would like to see, you can configure Bevy's
 <a href="https://docs.rs/bevy/0.9.0/bevy/log/struct.LogPlugin.html"><code>LogPlugin</code></a>:</p>
@@ -2368,8 +2349,7 @@ app.add_plugins(DefaultPlugins.set(LogPlugin {
     filter: &quot;info,wgpu_core=warn,wgpu_hal=warn,mygame=debug&quot;.into(),
     level: bevy::log::Level::DEBUG,
 }));
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <p>The <code>filter</code> field is a string specifying a list of rules for what level to
 enable for different Rust modules/crates. In the example above, the string
 means: show up to <code>info</code> by default, limit <code>wgpu_core</code> and <code>wgpu_hal</code>
@@ -2410,8 +2390,7 @@ app.add_plugins(DefaultPlugins.set(LogPlugin {
     level: bevy::log::Level::INFO,
     filter: &quot;info,wgpu_core=warn,wgpu_hal=warn&quot;.into(),
 }));
-<span class="boring">}
-</span></code></pre></pre>
+<span class="boring">}</span></code></pre></pre>
 <p>This is a good reason why <a href="features//pitfalls/performance.html">you should not use release mode during development
 just for performance reasons</a>.</p>
 <p>On Microsoft Windows, your game EXE will also launch with a console window for
@@ -2450,8 +2429,7 @@ commands.entity(parent).push_children(&amp;[child]);
 commands.spawn(MyParentBundle::default())
     .with_children(|parent| {
         parent.spawn(MyChildBundle::default());
-    });
-</code></pre>
+    });</code></pre>
 <p>You can despawn an entire hierarchy with a single <a href="features//programming/commands.html">command</a>:</p>
 <pre><code class="language-rust no_run noplayground">fn close_menu(
     mut commands: Commands,
@@ -2461,8 +2439,7 @@ commands.spawn(MyParentBundle::default())
         // despawn the entity and its children
         commands.entity(entity).despawn_recursive();
     }
-}
-</code></pre>
+}</code></pre>
 <h2 id="accessing-the-parent-or-children"><a class="header" href="#accessing-the-parent-or-children">Accessing the Parent or Children</a></h2>
 <p>To make a system that works with the hierarchy, you typically need two <a href="features//programming/queries.html">queries</a>:</p>
 <ul>
@@ -2491,8 +2468,7 @@ of cameras (<a href="https://docs.rs/bevy/0.9.0/bevy/render/camera/struct.Camera
 
         // do something with the components
     }
-}
-</code></pre>
+}</code></pre>
 <p>As another example, say we are making a strategy game, and we have Units
 that are children of a Squad. Say we need to make a system that works on
 each Squad, and it needs some information about the children:</p>
@@ -2510,8 +2486,7 @@ each Squad, and it needs some information about the children:</p>
             // do something
         }
     }
-}
-</code></pre>
+}</code></pre>
 <h2 id="transform-and-visibility-propagation"><a class="header" href="#transform-and-visibility-propagation">Transform and Visibility Propagation</a></h2>
 <p>If your entities represent &quot;objects in the game world&quot;, you probably expect
 the children to be affected by the parent.</p>
@@ -2533,8 +2508,7 @@ entity, and any attempt to manipulate it will likely lead to this error:</p>
 </code></pre>
 <p>The workaround is to manually call <code>remove_children</code> alongside the <code>despawn</code>:</p>
 <pre><code class="language-rust no_run noplayground">    commands.entity(parent_entity).remove_children(&amp;[child_entity]);
-    commands.entity(child_entity).despawn();
-</code></pre>
+    commands.entity(child_entity).despawn();</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="fixed-timestep"><a class="header" href="#fixed-timestep">Fixed Timestep</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.0/examples/ecs/fixed_timestep.rs"><code>fixed_timestep</code></a>.</p>
@@ -2579,8 +2553,7 @@ fn slow_timestep() {
 
 fn fast_timestep() {
     println!(&quot;goodbye world&quot;);
-}
-</code></pre>
+}</code></pre>
 <h2 id="state"><a class="header" href="#state">State</a></h2>
 <p>You can check the current state of the fixed timestep trackers, by accessing
 the <a href="https://docs.rs/bevy/0.9.0/bevy/time/struct.FixedTimesteps.html"><code>FixedTimesteps</code></a> <a href="features//programming/res.html">resource</a>. This lets
@@ -2732,8 +2705,7 @@ fn load_ui_font(
     //  - to prevent the asset from being unloaded
     //  - if we want to use it to access the asset later
     commands.insert_resource(UiFont(handle));
-}
-</code></pre>
+}</code></pre>
 <p>This queues the asset loading to happen in the background, and return a
 <a href="assets//assets/handles.html">handle</a>. The asset will take some time to become available. You
 cannot access the actual data immediately in the same <a href="assets//programming/systems.html">system</a>,
@@ -2767,8 +2739,7 @@ fn load_extra_assets(
     if let Ok(handles) = server.load_folder(&quot;extra&quot;) {
         commands.insert_resource(ExtraAssets(handles));
     }
-}
-</code></pre>
+}</code></pre>
 <p>Loading folders is not supported by all I/O backends. Notably, it does not
 work on WASM/Web.</p>
 <h2 id="assetpath-and-labels"><a class="header" href="#assetpath-and-labels">AssetPath and Labels</a></h2>
@@ -2792,8 +2763,7 @@ after a <code>#</code> symbol.</p>
         scene: my_scene,
         ..Default::default()
     });
-}
-</code></pre>
+}</code></pre>
 <p>See the <a href="assets//features/gltf.html">GLTF page</a> for more info about working with 3D models.</p>
 <h2 id="where-are-assets-loaded-from"><a class="header" href="#where-are-assets-loaded-from">Where are assets loaded from?</a></h2>
 <p>The asset server internally relies on an implementation of the
@@ -2836,8 +2806,7 @@ fn use_sprites(
     if let Some(atlas) = atlases.get(&amp;handles.map_tiles) {
         // do something with the texture atlas
     }
-}
-</code></pre>
+}</code></pre>
 <h2 id="creating-assets-from-code"><a class="header" href="#creating-assets-from-code">Creating Assets from Code</a></h2>
 <p>You can also add assets to <a href="https://docs.rs/bevy/0.9.0/bevy/asset/struct.Assets.html"><code>Assets&lt;T&gt;</code></a> manually.</p>
 <p>Sometimes you need to create assets from code, rather than <a href="assets//assets/assetserver.html">loading them
@@ -2864,8 +2833,7 @@ any other asset.</p>
     let handle = materials.add(new_mat);
 
     // do something with the handle
-}
-</code></pre>
+}</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="react-to-changes-with-asset-events"><a class="header" href="#react-to-changes-with-asset-events">React to Changes with Asset Events</a></h1>
 <p>If you need to perform specific actions when an asset is created,
 modified, or removed, you can make a <a href="assets//programming/systems.html">system</a> that reacts to
@@ -2904,8 +2872,7 @@ fn fixup_images(
             }
         }
     }
-}
-</code></pre>
+}</code></pre>
 <p><strong>Note:</strong> If you are handling <code>Modified</code> events and doing a mutable access to
 the data, the <code>.get_mut</code> will trigger another <code>Modified</code> event for the same
 asset. If you are not careful, this could result in an infinite loop! (from
@@ -2966,8 +2933,7 @@ fn check_assets_ready(
             // NotLoaded/Loading: not fully ready yet
         }
     }
-}
-</code></pre>
+}</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="hot-reloading-assets"><a class="header" href="#hot-reloading-assets">Hot-Reloading Assets</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.0/examples/asset/hot_asset_reloading.rs"><code>hot_asset_reloading</code></a>.</p>
@@ -2986,8 +2952,7 @@ workflow, you could implement it in a <a href="assets//programming/systems.html"
 <a href="https://docs.rs/bevy/0.9.0/bevy/asset/enum.AssetEvent.html"><code>AssetEvent</code></a> (<a href="assets//assets/assetevent.html">learn more</a>).</p>
 <p>Hot reloading is opt-in and has to be enabled in order to work. You can do
 this in a <a href="assets//programming/app-builder.html">startup system</a>:</p>
-<pre><code class="language-rust no_run noplayground">
-</code></pre>
+<pre><code class="language-rust no_run noplayground"></code></pre>
 <p>Note that this requires the <code>filesystem_watcher</code> <a href="assets//setup/bevy-config.html">Bevy cargo
 feature</a>. It is enabled by default, but if you have disabled
 default features to customize Bevy, be sure to include it if you need it.</p>
@@ -3083,8 +3048,7 @@ using the <code>Input&lt;KeyCode&gt;</code> (<a href="https://docs.rs/bevy/0.9.0
     if keys.any_just_pressed([KeyCode::Delete, KeyCode::Back]) {
         // Either delete or backspace was just pressed
     }
-}
-</code></pre>
+}</code></pre>
 <h2 id="keyboard-events"><a class="header" href="#keyboard-events">Keyboard Events</a></h2>
 <p>To get all keyboard activity, you can use
 <a href="https://docs.rs/bevy/0.9.0/bevy/input/keyboard/struct.KeyboardInput.html"><code>KeyboardInput</code></a> <a href="input//programming/events.html">events</a>:</p>
@@ -3103,8 +3067,7 @@ using the <code>Input&lt;KeyCode&gt;</code> (<a href="https://docs.rs/bevy/0.9.0
             }
         }
     }
-}
-</code></pre>
+}</code></pre>
 <p>These events give you both the Key Code and Scan Code.
 The Scan Code is represented as an arbitrary <code>u32</code> integer ID.</p>
 <h2 id="key-codes-and-scan-codes"><a class="header" href="#key-codes-and-scan-codes">Key Codes and Scan Codes</a></h2>
@@ -3160,8 +3123,7 @@ as an <a href="https://docs.rs/bevy/0.9.0/bevy/input/struct.Input.html"><code>In
     if buttons.any_just_pressed([MouseButton::Left, MouseButton::Right]) {
         // Either the left or the right button was just pressed
     }
-}
-</code></pre>
+}</code></pre>
 <p>To get all press/release activity, use
 <a href="https://docs.rs/bevy/0.9.0/bevy/input/mouse/struct.MouseButtonInput.html"><code>MouseButtonInput</code></a> <a href="input//programming/events.html">events</a>:</p>
 <pre><code class="language-rust no_run noplayground">fn mouse_button_events(
@@ -3179,8 +3141,7 @@ as an <a href="https://docs.rs/bevy/0.9.0/bevy/input/struct.Input.html"><code>In
             }
         }
     }
-}
-</code></pre>
+}</code></pre>
 <h2 id="mouse-scrolling--wheel"><a class="header" href="#mouse-scrolling--wheel">Mouse Scrolling / Wheel</a></h2>
 <p>To detect scrolling input, use <a href="https://docs.rs/bevy/0.9.0/bevy/input/mouse/struct.MouseWheel.html"><code>MouseWheel</code></a> <a href="input//programming/events.html">events</a>:</p>
 <pre><code class="language-rust no_run noplayground">fn scroll_events(
@@ -3197,8 +3158,7 @@ as an <a href="https://docs.rs/bevy/0.9.0/bevy/input/struct.Input.html"><code>In
             }
         }
     }
-}
-</code></pre>
+}</code></pre>
 <p>The <a href="https://docs.rs/bevy/0.9.0/bevy/input/mouse/enum.MouseScrollUnit.html"><code>MouseScrollUnit</code></a> enum is important: it tells
 you the type of scroll input. <code>Line</code> is for hardware with fixed steps, like
 the wheel on desktop mice. <code>Pixel</code> is for hardware with smooth (fine-grained)
@@ -3217,8 +3177,7 @@ mouse is moved, you will get an event with the delta.</p>
     for ev in motion_evr.iter() {
         println!(&quot;Mouse moved: X: {} px, Y: {} px&quot;, ev.delta.x, ev.delta.y);
     }
-}
-</code></pre>
+}</code></pre>
 <p>You might want to <a href="input//window/mouse-grab.html">grab/lock the mouse inside the game
 window</a>.</p>
 <h2 id="mouse-cursor-position"><a class="header" href="#mouse-cursor-position">Mouse Cursor Position</a></h2>
@@ -3238,8 +3197,7 @@ useful for things like clicking and hovering over objects in your game or UI.</p
     } else {
         // cursor is not inside the window
     }
-}
-</code></pre>
+}</code></pre>
 <p>To detect when the pointer is moved, use <a href="https://docs.rs/bevy/0.9.0/bevy/window/struct.CursorMoved.html"><code>CursorMoved</code></a>
 <a href="input//programming/events.html">events</a> to get the updated coordinates:</p>
 <pre><code class="language-rust no_run noplayground">fn cursor_events(
@@ -3251,8 +3209,7 @@ useful for things like clicking and hovering over objects in your game or UI.</p
             ev.position.x, ev.position.y, ev.id
         );
     }
-}
-</code></pre>
+}</code></pre>
 <p>Note that you can only get the position of the mouse inside a window;
 you cannot get the global position of the mouse in the whole OS Desktop /
 on the screen as a whole.</p>
@@ -3290,8 +3247,7 @@ fn text_input(
         println!(&quot;Text input: {}&quot;, *string);
         string.clear();
     }
-}
-</code></pre>
+}</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="gamepad-controller-joystick"><a class="header" href="#gamepad-controller-joystick">Gamepad (Controller, Joystick)</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.0/examples/input/gamepad_input.rs"><code>gamepad_input</code></a>,
@@ -3348,8 +3304,7 @@ fn gamepad_connections(
             _ =&gt; {}
         }
     }
-}
-</code></pre>
+}</code></pre>
 <h2 id="handling-gamepad-inputs"><a class="header" href="#handling-gamepad-inputs">Handling Gamepad Inputs</a></h2>
 <p>You can handle the analog sticks and triggers with <code>Axis&lt;GamepadAxis&gt;</code>
 (<a href="https://docs.rs/bevy/0.9.0/bevy/input/struct.Axis.html"><code>Axis</code></a>, <a href="https://docs.rs/bevy/0.9.0/bevy/input/gamepad/struct.GamepadAxis.html"><code>GamepadAxis</code></a>). Buttons
@@ -3404,8 +3359,7 @@ are vendor-neutral (like <code>South</code> and <code>East</code> instead of X/O
     if buttons.pressed(heal_button) {
         // button being held down: heal the player
     }
-}
-</code></pre>
+}</code></pre>
 <p>You can also handle gamepad inputs using <a href="https://docs.rs/bevy/0.9.0/bevy/input/gamepad/struct.GamepadEvent.html"><code>GamepadEvent</code></a> <a href="input//programming/events.html">events</a>:</p>
 <pre><code class="language-rust no_run noplayground">fn gamepad_input_events(
     my_gamepad: Option&lt;Res&lt;MyGamepad&gt;&gt;,
@@ -3443,8 +3397,7 @@ are vendor-neutral (like <code>South</code> and <code>East</code> instead of X/O
             _ =&gt; {} // don't care about other inputs
         }
     }
-}
-</code></pre>
+}</code></pre>
 <h2 id="gamepad-settings"><a class="header" href="#gamepad-settings">Gamepad Settings</a></h2>
 <p>You can use the <a href="https://docs.rs/bevy/0.9.0/bevy/input/gamepad/struct.GamepadSettings.html"><code>GamepadSettings</code></a> <a href="input//programming/res.html">resource</a>
 to configure dead-zones and other parameters of the various axes and
@@ -3511,8 +3464,7 @@ fn configure_gamepads(
     button_settings.set_release_threshold(0.1);
 
     settings.default_button_settings = button_settings;
-}
-</code></pre>
+}</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="touchscreen"><a class="header" href="#touchscreen">Touchscreen</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.0/examples/input/touch_input.rs"><code>touch_input</code></a>,
@@ -3542,8 +3494,7 @@ fingers currently on the screen:</p>
             finger.start_position().y,
         );
     }
-}
-</code></pre>
+}</code></pre>
 <p>Alternatively, you can use <a href="https://docs.rs/bevy/0.9.0/bevy/input/touch/struct.TouchInput.html"><code>TouchInput</code></a> <a href="input//programming/events.html">events</a>:</p>
 <pre><code class="language-rust no_run noplayground">fn touch_events(
     mut touch_evr: EventReader&lt;TouchInput&gt;,
@@ -3566,8 +3517,7 @@ fingers currently on the screen:</p>
             }
         }
     }
-}
-</code></pre>
+}</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="drag-and-drop-files"><a class="header" href="#drag-and-drop-files">Drag-and-Drop (Files)</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.0/examples/app/drag_and_drop.rs"><code>drag_and_drop</code></a>.</p>
@@ -3607,8 +3557,7 @@ fn file_drop(
             }
         }
     }
-}
-</code></pre>
+}</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="midi-musical-instrument"><a class="header" href="#midi-musical-instrument">MIDI (Musical Instrument)</a></h1>
 <p>Bevy does not yet have this built-in, but there is a <a href="input//setup/unofficial-plugins.html">3rd-party
 plugin</a> available: <a href="https://github.com/BlackPhlox/bevy_midi"><code>bevy_midi</code></a>.</p>
@@ -3642,8 +3591,7 @@ fn main() {
         .add_plugins(DefaultPlugins)
         .add_startup_system(setup)
         .run();
-}
-</code></pre>
+}</code></pre>
 <p>To override the default and use a different color for a specific
 camera, you can set it using the <a href="https://docs.rs/bevy/0.9.0/bevy/core_pipeline/core_2d/struct.Camera2d.html"><code>Camera2d</code></a> or
 <a href="https://docs.rs/bevy/0.9.0/bevy/core_pipeline/core_3d/struct.Camera3d.html"><code>Camera3d</code></a> components.</p>
@@ -3672,8 +3620,7 @@ fn setup_camera_3d(
         },
         ..Default::default()
     });
-}
-</code></pre>
+}</code></pre>
 <p>All of these locations (the components on specific cameras, the global
 default resource) can be mutated at runtime, and bevy will use your new color.
 Changing the default color using the resource will apply the new color to all
@@ -3714,8 +3661,7 @@ fn cursor_grab_system(
         window.set_cursor_grab_mode(CursorGrabMode::None);
         window.set_cursor_visibility(true);
     }
-}
-</code></pre>
+}</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="setting-the-window-icon"><a class="header" href="#setting-the-window-icon">Setting the Window Icon</a></h1>
 <p><a href="window//code/examples/window-icon.rs">Click here for the full example code.</a></p>
 <hr />
@@ -3761,8 +3707,7 @@ fn main() {
         .add_plugins(DefaultPlugins)
         .add_startup_system(set_window_icon)
         .run();
-}
-</code></pre>
+}</code></pre>
 <p>Note: that <a href="https://docs.rs/bevy/0.9.0/bevy/winit/struct.WinitWindows.html"><code>WinitWindows</code></a> is a <a href="window//programming/non-send.html">non-send
 resource</a>.</p>
 <p>Note: you need to add <code>winit</code> to your project's dependencies, and it must
@@ -3812,8 +3757,7 @@ all the relevant <a href="3d//features/parent-child.html">child entities</a> and
         transform: Transform::from_xyz(2.0, 0.0, -5.0),
         ..Default::default()
     });
-}
-</code></pre>
+}</code></pre>
 <p>You could also use GLTF files to load an entire map/level. It works the same way.</p>
 <p>The above example assumes that you have a simple GLTF file containing only
 one &quot;default scene&quot;. GLTF is a very flexible file format. A single file can
@@ -3981,8 +3925,7 @@ fn spawn_gltf_objects(
 
         // PERF: the `.clone()`s are just for asset handles, don't worry :)
     }
-}
-</code></pre>
+}</code></pre>
 <p>For a more convoluted example, say we want to directly create a 3D PBR
 entity, for whatever reason. (This is not recommended; you should probably
 just use scenes)</p>
@@ -4007,8 +3950,7 @@ fn gltf_manual_entity(
             ..Default::default()
         });
     }
-}
-</code></pre>
+}</code></pre>
 <h3 id="assetpath-with-labels"><a class="header" href="#assetpath-with-labels">AssetPath with Labels</a></h3>
 <p>This is another way to access specific sub-assets. It is less reliable,
 but may be easier to use in some cases.</p>
@@ -4038,8 +3980,7 @@ numerial index is supported. You cannot address sub-assets by name.</p>
         transform: Transform::from_xyz(1.0, 2.0, 3.0),
         ..Default::default()
     });
-}
-</code></pre>
+}</code></pre>
 <p>The following asset labels are supported (<code>{}</code> is the numerical index):</p>
 <ul>
 <li><code>Scene{}</code>: GLTF Scene as Bevy <a href="https://docs.rs/bevy/0.9.0/bevy/scene/struct.Scene.html"><code>Scene</code></a></li>
@@ -4159,16 +4100,14 @@ derive the <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/component/trait.Componen
 struct Health {
     hp: f32,
     extra: f32,
-}
-</code></pre>
+}</code></pre>
 <p>Types must be unique -- an entity can only have one component per Rust type.</p>
 <p>Use wrapper (newtype) structs to make unique components out of simpler types:</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Component)]
 struct PlayerXp(u32);
 
 #[derive(Component)]
-struct PlayerName(String);
-</code></pre>
+struct PlayerName(String);</code></pre>
 <p>You can use empty structs to help you identify specific entities. These are
 known as &quot;marker components&quot;. Useful with <a href="programming//programming/queries.html#query-filters">query filters</a>.</p>
 <pre><code class="language-rust no_run noplayground">/// Add this to all menu ui entities to help identify them
@@ -4185,8 +4124,7 @@ struct Player;
 
 /// Tag all creatures that are currently friendly towards the player
 #[derive(Component)]
-struct Friendly;
-</code></pre>
+struct Friendly;</code></pre>
 <p>Components can be accessed from <a href="programming//programming/systems.html">systems</a>, using <a href="programming//programming/queries.html">queries</a>.</p>
 <p>You can add/remove components on existing entities, using <a href="programming//programming/commands.html"><code>Commands</code></a>.</p>
 <h1 id="component-bundles"><a class="header" href="#component-bundles">Component Bundles</a></h1>
@@ -4203,8 +4141,7 @@ struct PlayerBundle {
     // Add the components for a standard Bevy Sprite:
     #[bundle]
     sprite: SpriteSheetBundle,
-}
-</code></pre>
+}</code></pre>
 <p>Bevy also considers arbitrary tuples of components as bundles:</p>
 <pre><code>(ComponentA, ComponentB, ComponentC)
 </code></pre>
@@ -4219,22 +4156,20 @@ that your <a href="programming//programming/systems.html">system</a> needs to ac
 independently of entities.</p>
 <p>Use them for data that is truly global for your app, such as configuration
 / settings.</p>
-<p>Any Rust type (<code>struct</code> or <code>enum</code>) can be used as a resource. Currently,
-no special trait or derive is required, but that may change in future Bevy
-versions (similar to how <a href="programming//programming/ec.html#components">Components</a> require it).</p>
+<p>To create a new resource type, simply define a Rust <code>struct</code> or <code>enum</code>, and
+derive the <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/trait.Resource.html"><code>Resource</code></a> trait, similar to
+<a href="programming//programming/ec.html#components">components</a>.</p>
 <p>Types must be unique; there can only be one instance of a given type.</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Resource)]
 struct GoalsReached {
     main_goal: bool,
     bonus: bool,
-}
-</code></pre>
+}</code></pre>
 <p>Resources can be accessed from <a href="programming//programming/systems.html">systems</a>, using <code>Res</code>/<code>ResMut</code>.</p>
 <h2 id="resource-initialization"><a class="header" href="#resource-initialization">Resource Initialization</a></h2>
 <p>Implement <code>Default</code> for simple resources:</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Resource, Default, Debug)]
-struct StartingLevel(usize);
-</code></pre>
+struct StartingLevel(usize);</code></pre>
 <p>For resources that need complex initialization, implement <code>FromWorld</code>:</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Resource)]
 struct MyFancyResource { /* stuff */ }
@@ -4248,8 +4183,7 @@ impl FromWorld for MyFancyResource {
 
         MyFancyResource { /* stuff */ }
     }
-}
-</code></pre>
+}</code></pre>
 <p>You can initialize your resources at <a href="programming//programming/app-builder.html"><code>App</code> creation</a>:</p>
 <pre><code class="language-rust no_run noplayground">fn main() {
     App::new()
@@ -4262,13 +4196,11 @@ impl FromWorld for MyFancyResource {
 
         // ...
         .run();
-}
-</code></pre>
+}</code></pre>
 <p><a href="programming//programming/commands.html"><code>Commands</code></a> can be used to create/remove resources from
 inside a system:</p>
 <pre><code class="language-rust no_run noplayground">commands.insert_resource(GoalsReached { main_goal: false, bonus: false });
-commands.remove_resource::&lt;MyResource&gt;();
-</code></pre>
+commands.remove_resource::&lt;MyResource&gt;();</code></pre>
 <p>If you insert a resource of a type that already exists, it will be overwritten.</p>
 <h2 id="usage-advice"><a class="header" href="#usage-advice">Usage Advice</a></h2>
 <p>The choice of when to use entities/components vs. resources is typically
@@ -4303,8 +4235,7 @@ in your function, you will get confusing compiler errors!</a></p>
     start: Res&lt;StartingLevel&gt;
 ) {
     eprintln!(&quot;Starting on level {:?}&quot;, *start);
-}
-</code></pre>
+}</code></pre>
 <p>System parameters can be grouped into tuples (which can be nested). This is
 useful for organization.</p>
 <pre><code class="language-rust no_run noplayground">fn complex_system(
@@ -4315,8 +4246,7 @@ useful for organization.</p>
     if let Some(mut c) = c {
         // do something
     }
-}
-</code></pre>
+}</code></pre>
 <p>Your function can have a maximum of 16 total parameters. If you need more,
 group them into tuples to work around the limit. Tuples can contain up to
 16 members, but can be nested indefinitely.</p>
@@ -4336,8 +4266,7 @@ group them into tuples to work around the limit. Tuples can contain up to
 
         // ...
         .run();
-}
-</code></pre>
+}</code></pre>
 <p>The above is enough for simple projects.</p>
 <p>As your project grows more complex, you might want to enhance your app builder
 with some of the powerful tools that Bevy offers for managing when/how
@@ -4369,16 +4298,14 @@ your systems run, such as: <a href="programming//programming/system-order.html">
             // do something special!
         }
     }
-}
-</code></pre>
+}</code></pre>
 <p>Get the <a href="programming//programming/ec.html#components">components</a> associated with a specific
 <a href="programming//programming/ec.html#entities">entity</a>:</p>
 <pre><code class="language-rust no_run noplayground">    if let Ok((health, mut transform)) = query.get_mut(entity) {
         // do something with the components
     } else {
         // the entity does not have the components from the query
-    }
-</code></pre>
+    }</code></pre>
 <p>Get the IDs (<a href="https://docs.rs/bevy/0.9.0/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a>) of the entities you access with
 your queries:</p>
 <pre><code class="language-rust no_run noplayground">// add `Entity` to `Query` to get Entity IDs
@@ -4386,16 +4313,14 @@ fn query_entities(q: Query&lt;(Entity, /* ... */)&gt;) {
     for (e, /* ... */) in q.iter() {
         // `e` is the Entity ID of the entity we are accessing
     }
-}
-</code></pre>
+}</code></pre>
 <p>If you know that the query should only ever match a single entity, you can
 use <code>single</code>/<code>single_mut</code>, instead of iterating:</p>
 <pre><code class="language-rust no_run noplayground">fn query_player(mut q: Query&lt;(&amp;Player, &amp;mut Transform)&gt;) {
     let (player, mut transform) = q.single_mut();
 
     // do something with the player and its transform
-}
-</code></pre>
+}</code></pre>
 <p>(this will panic if the query matches more than one entity)</p>
 <h2 id="bundles-1"><a class="header" href="#bundles-1">Bundles</a></h2>
 <p>Queries work with individual components. If you created an entity using a
@@ -4418,8 +4343,7 @@ that have specific components.</p>
             eprintln!(&quot;Unknown player has {} HP.&quot;, health.hp);
         }
     }
-}
-</code></pre>
+}</code></pre>
 <p>Multiple filters can be combined:</p>
 <ul>
 <li>in a tuple to apply all of them (AND logic)</li>
@@ -4500,7 +4424,6 @@ fn despawn_all_enemies(
         commands.entity(entity).despawn();
     }
 }
-
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="events-1"><a class="header" href="#events-1">Events</a></h1>
 <p>Relevant official examples:
@@ -4532,8 +4455,7 @@ fn debug_levelups(
     for ev in ev_levelup.iter() {
         eprintln!(&quot;Entity {:?} leveled up!&quot;, ev.0);
     }
-}
-</code></pre>
+}</code></pre>
 <p>You need to add your custom event types via the <a href="programming//programming/app-builder.html">app builder</a>:</p>
 <pre><code class="language-rust no_run noplayground">fn main() {
     App::new()
@@ -4543,8 +4465,7 @@ fn debug_levelups(
         .add_system(debug_levelups)
         // ...
         .run();
-}
-</code></pre>
+}</code></pre>
 <p>Events should be your go-to data flow tool. As events can be sent from any
 system and received by multiple systems, they are <em>extremely</em> versatile.</p>
 <h2 id="possible-pitfalls"><a class="header" href="#possible-pitfalls">Possible Pitfalls</a></h2>
@@ -4619,8 +4540,7 @@ that must be added first, if you would like to use them, to take effect.</p>
 
         // launch the app!
         .run();
-}
-</code></pre>
+}</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="quitting-the-app"><a class="header" href="#quitting-the-app">Quitting the App</a></h1>
 <p>To cleanly shut down bevy, send an <a href="https://docs.rs/bevy/0.9.0/bevy/app/struct.AppExit.html"><code>AppExit</code></a>
 <a href="programming//programming/events.html">event</a> from any <a href="programming//programming/systems.html">system</a>:</p>
@@ -4628,8 +4548,7 @@ that must be added first, if you would like to use them, to take effect.</p>
 
 fn exit_system(mut exit: EventWriter&lt;AppExit&gt;) {
     exit.send(AppExit);
-}
-</code></pre>
+}</code></pre>
 <p>For prototyping, bevy provides a system you can <a href="programming//programming/app-builder.html">add to your <code>App</code></a>,
 to close the focused window on pressing the <code>Esc</code> key. When all windows are
 closed, Bevy will quit automatically.</p>
@@ -4638,8 +4557,7 @@ closed, Bevy will quit automatically.</p>
         .add_plugins(DefaultPlugins)
         .add_system(bevy::window::close_on_esc)
         .run();
-}
-</code></pre>
+}</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="local-resources"><a class="header" href="#local-resources">Local Resources</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.0/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
@@ -4661,8 +4579,7 @@ fn my_system1(mut local: Local&lt;MyState&gt;) {
 
 fn my_system2(mut local: Local&lt;MyState&gt;) {
     // the local in this system is a different instance
-}
-</code></pre>
+}</code></pre>
 <p>The type must implement <a href="https://doc.rust-lang.org/stable/std/default/trait.Default.html"><code>Default</code></a> or
 <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/world/trait.FromWorld.html"><code>FromWorld</code></a>. It is automatically initialized.</p>
 <p>A system can have multiple <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.Local.html"><code>Local</code></a>s of the same type.</p>
@@ -4701,8 +4618,7 @@ fn main() {
             my_system(cmd, res, &amp;config);
         })
         .run();
-}
-</code></pre>
+}</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugins"><a class="header" href="#plugins">Plugins</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.0/examples/app/plugin.rs"><code>plugin</code></a>,
@@ -4729,8 +4645,7 @@ fn main() {
         .add_plugins(DefaultPlugins)
         .add_plugin(MyPlugin)
         .run();
-}
-</code></pre>
+}</code></pre>
 <p>For internal organization in your own project, the main value of plugins
 comes from not having to declare all your Rust types and functions as
 <code>pub</code>, just so they can be accessible from <code>fn main</code> to be added to the
@@ -4762,8 +4677,7 @@ fn main() {
         .add_plugins(DefaultPlugins)
         .add_plugins(MyPluginGroup)
         .run();
-}
-</code></pre>
+}</code></pre>
 <p>When adding a plugin group to the <a href="programming//programming/app-builder.html">app</a>, you can disable some
 plugins while keeping the rest.</p>
 <p>For example, if you want to manually set up logging (with your own <code>tracing</code>
@@ -4773,8 +4687,7 @@ subscriber), you can disable Bevy's <a href="https://docs.rs/bevy/0.9.0/bevy/log
         DefaultPlugins.build()
             .disable::&lt;LogPlugin&gt;()
     )
-    .run();
-</code></pre>
+    .run();</code></pre>
 <p>Note that this simply disables the functionality, but it cannot actually
 remove the code to avoid binary bloat. The disabled plugins still have to
 be compiled into your program.</p>
@@ -4845,8 +4758,7 @@ you can add ordering constraints:</p>
                 .after(input_handling)
         )
         .run();
-}
-</code></pre>
+}</code></pre>
 <p><code>.before</code>/<code>.after</code> may be used as many times as you need on one system.</p>
 <h2 id="labels"><a class="header" href="#labels">Labels</a></h2>
 <p>For more advanced use cases, you can use <a href="programming//programming/labels.html">labels</a>. Labels can
@@ -4894,8 +4806,7 @@ fn main() {
         // … and so on …
 
         .run();
-}
-</code></pre>
+}</code></pre>
 <p>When you have multiple systems with common labels or ordering, it may be
 convenient to use <a href="programming//programming/system-sets.html">system sets</a>.</p>
 <h2 id="circular-dependencies"><a class="header" href="#circular-dependencies">Circular Dependencies</a></h2>
@@ -4937,8 +4848,7 @@ for purposes such as <a href="programming//programming/labels.html">labeling</a>
         .add_system(smoke_particles)
 
         .run();
-}
-</code></pre>
+}</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="change-detection"><a class="header" href="#change-detection">Change Detection</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.0/examples/ecs/component_change_detection.rs"><code>component_change_detection</code></a>.</p>
@@ -4995,8 +4905,7 @@ fn debug_new_hostiles(
     for (entity, health) in query.iter() {
         eprintln!(&quot;Entity {:?} is now an enemy! HP: {}&quot;, entity, health.hp);
     }
-}
-</code></pre>
+}</code></pre>
 <h3 id="checking"><a class="header" href="#checking">Checking</a></h3>
 <p>If you want to access all the entities, as normal, regardless of if they have
 been modified, but you just want to check the status, you can use the special
@@ -5016,8 +4925,7 @@ fn debug_damage(
             }
         }
     }
-}
-</code></pre>
+}</code></pre>
 <p>This is useful for processing all entities, but doing different things
 depending on if they have been modified.</p>
 <h2 id="resources-2"><a class="header" href="#resources-2">Resources</a></h2>
@@ -5043,8 +4951,7 @@ fn check_res_added(
             // do something
         }
     }
-}
-</code></pre>
+}</code></pre>
 <p>Note that change detection cannot currently be used to detect
 <a href="programming//programming/states.html">states</a> changes (via the <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/schedule/struct.State.html"><code>State</code></a>
 <a href="programming//programming/res.html">resource</a>) (<a href="https://github.com/bevyengine/bevy/issues/2343">bug</a>).</p>
@@ -5068,8 +4975,7 @@ change detection. If you want to avoid that, simply check it yourself:</p>
             *xp = new_xp;
         }
     }
-}
-</code></pre>
+}</code></pre>
 <p>Change detection works on a per-<a href="programming//programming/systems.html">system</a> granularity, and is
 reliable. A system will not detect changes that it made itself, only those
 done by other systems, and only if it has not seen them before (the changes
@@ -5140,8 +5046,7 @@ fn main() {
                 .with_system(close_menu)
         )
         .run();
-}
-</code></pre>
+}</code></pre>
 <p>It is OK to have multiple system sets for the same state.</p>
 <p>This is useful when you want to place <a href="programming//programming/labels.html">labels</a> and use <a href="programming//programming/system-order.html">explicit
 system ordering</a>.</p>
@@ -5168,15 +5073,13 @@ add the state management run criteria.</p>
             // TODO: play pause screen music
         }
     }
-}
-</code></pre>
+}</code></pre>
 <p>To change to another state:</p>
 <pre><code class="language-rust no_run noplayground">fn enter_game(mut app_state: ResMut&lt;State&lt;AppState&gt;&gt;) {
     app_state.set(AppState::InGame).unwrap();
     // ^ this can fail if we are already in the target state
     // or if another state change is already queued
-}
-</code></pre>
+}</code></pre>
 <p>After the systems of the current state complete, Bevy will transition to
 the next state you set.</p>
 <p>You can do arbitrarily many state transitions in a single frame update. Bevy
@@ -5228,14 +5131,12 @@ can also add one-shot systems to run when &quot;pausing&quot; or &quot;resuming&
             SystemSet::on_exit(AppState::InGame)
                 .with_system(despawn_player)
                 .with_system(despawn_map)
-        )
-</code></pre>
+        )</code></pre>
 <p>To manage states like this, use <code>push</code>/<code>pop</code>:</p>
 <pre><code class="language-rust no_run noplayground">    // to go into the pause screen
     app_state.push(AppState::Paused).unwrap();
     // to go back into the game
-    app_state.pop().unwrap();
-</code></pre>
+    app_state.pop().unwrap();</code></pre>
 <p>(using <code>.set</code> as shown before replaces the active state at the top of the stack)</p>
 <h2 id="known-pitfalls-and-limitations"><a class="header" href="#known-pitfalls-and-limitations">Known Pitfalls and Limitations</a></h2>
 <h3 id="combining-with-other-run-criteria"><a class="header" href="#combining-with-other-run-criteria">Combining with Other Run Criteria</a></h3>
@@ -5267,8 +5168,7 @@ a button/key press, you need to clear the input manually by calling <code>.reset
         app_state.set(AppState::MainMenu).unwrap();
         keys.reset(KeyCode::Escape);
     }
-}
-</code></pre>
+}</code></pre>
 <p>(note that this requires <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut</code></a>)</p>
 <p>Not doing this can cause <a href="https://github.com/bevyengine/bevy/issues/1700">issues</a>.</p>
 <p><a href="https://github.com/IyesGames/iyes_loopless"><code>iyes_loopless</code></a> does not have this issue.</p>
@@ -5361,8 +5261,7 @@ fn main() {
                 .with_system(gamepad_input)
         )
         .run();
-}
-</code></pre>
+}</code></pre>
 <h2 id="known-pitfalls-1"><a class="header" href="#known-pitfalls-1">Known Pitfalls</a></h2>
 <h3 id="combining-multiple-run-criteria"><a class="header" href="#combining-multiple-run-criteria">Combining Multiple Run Criteria</a></h3>
 <p>It is not possible to make a system that is conditional on multiple run
@@ -5443,8 +5342,7 @@ fn main() {
         .add_stage_before(CoreStage::PostUpdate, &quot;temp-debug-hack&quot;, SystemStage::parallel())
 
         .run();
-}
-</code></pre>
+}</code></pre>
 <p>However, by defining your labels as custom types, the Rust compiler can check
 them for you, and your IDE can auto-complete them. It is the recommended way,
 as it prevents mistakes, and helps you stay organized in larger projects.</p>
@@ -5501,8 +5399,7 @@ systems to run after our game logic:</p>
         .add_system_to_stage(DEBUG, debug_new_hostiles)
 
         .run();
-}
-</code></pre>
+}</code></pre>
 <p>If you need to manage when your systems run, relative to one another, it
 is generally preferable to avoid using stages, and to use <a href="programming//programming/system-order.html">explicit system
 ordering</a> instead. Stages limit parallel execution and
@@ -5573,8 +5470,7 @@ fn detect_removals(
     for entity in removals.iter() {
         // do something with the entity
     }
-}
-</code></pre>
+}</code></pre>
 <p>(To do things with these entities, you can just use the <code>Entity</code> IDs with
 <a href="programming//programming/commands.html"><code>Commands::entity()</code></a> or <a href="programming//programming/queries.html"><code>Query::get()</code></a>.)</p>
 <h2 id="resources-3"><a class="header" href="#resources-3">Resources</a></h2>
@@ -5602,8 +5498,7 @@ detection.</p>
 
         // ... do something now that it is gone ...
     }
-}
-</code></pre>
+}</code></pre>
 <p>Note that, since this detection is local to your system, it does not have
 to happen during the same frame update.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="param-sets"><a class="header" href="#param-sets">Param Sets</a></h1>
@@ -5642,8 +5537,7 @@ same data.</p>
 
     // since we only used the conflicting system params one at a time,
     // everything is safe and our code can compile; ParamSet guarantees this
-}
-</code></pre>
+}</code></pre>
 <p>This ensures only one of the conflicting parameters can be used at the same time.</p>
 <p>The maximum number of parameters in a param set is 8.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="system-piping"><a class="header" href="#system-piping">System Piping</a></h1>
@@ -5672,8 +5566,7 @@ fn handle_io_errors(In(result): In&lt;std::io::Result&lt;()&gt;&gt;) {
     if let Err(e) = result {
         eprintln!(&quot;I/O error occurred: {}&quot;, e);
     }
-}
-</code></pre>
+}</code></pre>
 <p>Such functions cannot be <a href="programming//programming/app-builder.html">registered</a> individually as systems (Bevy
 doesn't know what to do with the input/output). By &quot;piping&quot; them together, we
 create a valid system that we can add:</p>
@@ -5683,8 +5576,7 @@ create a valid system that we can add:</p>
         .add_system(net_receive.pipe(handle_io_errors))
         // ...
         .run();
-}
-</code></pre>
+}</code></pre>
 <h2 id="performance-warning"><a class="header" href="#performance-warning">Performance Warning</a></h2>
 <p>Beware that Bevy treats the whole chain as if it was a single big system, with
 all the combined system parameters and their respective data access
@@ -5746,21 +5638,18 @@ of a system.</p>
 <p>If you are using <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>, you can choose when you
 want to apply them to the world. You need to manually call <code>.apply(world)</code>
 on the <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.SystemState.html"><code>SystemState</code></a>, to apply them.</p>
-<pre><code class="language-rust no_run noplayground">// TODO: write code example
-</code></pre>
+<pre><code class="language-rust no_run noplayground">// TODO: write code example</code></pre>
 <h3 id="running-a-stage"><a class="header" href="#running-a-stage">Running a Stage</a></h3>
 <p>If you want to run some systems (a common use-case is
 <a href="programming//programming/system-tests.html">testing</a>), the easiest way is to construct an impromptu
 <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/schedule/struct.SystemStage.html"><code>SystemStage</code></a> (<a href="programming//programming/stages.html">stages</a>). This way you reuse
 all the scheduling logic that Bevy normally does when running systems.</p>
-<pre><code class="language-rust no_run noplayground">// TODO: write code example
-</code></pre>
+<pre><code class="language-rust no_run noplayground">// TODO: write code example</code></pre>
 <h3 id="navigating-by-metadata"><a class="header" href="#navigating-by-metadata">Navigating by Metadata</a></h3>
 <p>The world contains a lot of metadata that allows navigating all the data
 efficiently, such as information about all the stored components, entities,
 archeypes.</p>
-<pre><code class="language-rust no_run noplayground">// TODO: write code example
-</code></pre>
+<pre><code class="language-rust no_run noplayground">// TODO: write code example</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="exclusive-systems"><a class="header" href="#exclusive-systems">Exclusive Systems</a></h1>
 <p>Exclusive systems are <a href="programming//programming/systems.html">systems</a> that Bevy will not run in parallel
 with any other system. They can have <a href="programming//programming/world.html">full unrestricted access</a>
@@ -5783,8 +5672,7 @@ from a regular system)</li>
 such things.</p>
 <pre><code class="language-rust no_run noplayground">fn do_crazy_things(world: &amp;mut World) {
     // we can do anything with any data in the Bevy ECS here!
-}
-</code></pre>
+}</code></pre>
 <p>You need to add exclusive systems to the <a href="programming//programming/app-builder.html">App</a>, just like
 regular systems, but you must call <code>.exclusive_system()</code> on them.</p>
 <p>They cannot be ordered in-between regular parallel systems. Exclusive systems
@@ -5812,8 +5700,7 @@ but before <a href="programming//programming/commands.html">commands</a> are app
         )
 
         .run();
-}
-</code></pre>
+}</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="sub-apps"><a class="header" href="#sub-apps">Sub-Apps</a></h1>
 <p>This page has not been written yet…</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="non-send-resources"><a class="header" href="#non-send-resources">Non-Send Resources</a></h1>
@@ -5853,8 +5740,7 @@ fn main() {
         // and ensure it runs on the main thread
         .add_startup_system(setup_raw_window)
         .run();
-}
-</code></pre>
+}</code></pre>
 <h2 id="custom-non-send-resources"><a class="header" href="#custom-non-send-resources">Custom Non-Send Resources</a></h2>
 <p>Normally, to insert <a href="programming//programming/res.html">resources</a>, their types must be
 <a href="https://doc.rust-lang.org/stable/std/marker/trait.Send.html"><code>Send</code></a>.</p>
@@ -5878,8 +5764,7 @@ fn main() {
         .add_plugins(DefaultPlugins)
         .add_startup_system(setup_platform_audio)
         .run();
-}
-</code></pre>
+}</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="writing-tests-for-systems"><a class="header" href="#writing-tests-for-systems">Writing Tests for Systems</a></h1>
 <p>You might want to write and run automated tests for your <a href="programming//programming/systems.html">systems</a>.</p>
 <p>You can use the regular Rust testing features (<code>cargo test</code>) with Bevy.</p>
@@ -5919,8 +5804,7 @@ fn cleanup_system&lt;T: Component&gt;(
     for e in q.iter() {
         commands.entity(e).despawn_recursive();
     }
-}
-</code></pre>
+}</code></pre>
 <p>Menu entities can be tagged with <code>cleanup::MenuExit</code>, entities from the game
 map can be tagged with <code>cleanup::LevelUnload</code>.</p>
 <p>We can add the generic cleanup system to our state transitions, to take care
@@ -5950,8 +5834,7 @@ fn main() {
         .add_system_set(SystemSet::on_exit(AppState::InGame)
             .with_system(cleanup_system::&lt;cleanup::LevelUnload&gt;))
         .run();
-}
-</code></pre>
+}</code></pre>
 <h2 id="using-traits"><a class="header" href="#using-traits">Using Traits</a></h2>
 <p>You can use this in combination with Traits, for when you need some sort of
 varying implementation/functionality for each type.</p>
@@ -5982,8 +5865,7 @@ fn main() {
         .add_system(process_layer::&lt;2&gt;)
         .add_system(process_layer::&lt;3&gt;)
         .run();
-}
-</code></pre>
+}</code></pre>
 <p>Note that these values are static / constant at compile-time. This can be
 a severe limitation. In some cases, when you might suspect that you could
 use const generics, you might realize that you actually want a runtime value.</p>
@@ -5993,8 +5875,7 @@ instead, use a <a href="patterns//programming/res.html">Resource</a> or <a href=
 not yet stable. To use <code>enum</code>s, you need Rust Nightly, and to enable the
 experimental/unstable feature (put this at the top of your <code>main.rs</code> or
 <code>lib.rs</code>):</p>
-<pre><code class="language-rust no_run noplayground">#![feature(adt_const_params)]
-</code></pre>
+<pre><code class="language-rust no_run noplayground">#![feature(adt_const_params)]</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="component-storage-tablesparse-set"><a class="header" href="#component-storage-tablesparse-set">Component Storage (Table/Sparse-Set)</a></h1>
 <p>Bevy ECS provides two different ways of storing data: tables and sparse sets.
 The two storage kinds offer different performance characteristics.</p>
@@ -6025,8 +5906,7 @@ struct CanSeePlayer;
 #[component(storage = &quot;SparseSet&quot;)]
 struct Bleeding {
     damage_rate: f32,
-}
-</code></pre>
+}</code></pre>
 <h2 id="table-storage"><a class="header" href="#table-storage">Table Storage</a></h2>
 <p>Table storage is optimized for fast <a href="patterns//programming/queries.html">query</a> iteration. If the
 way you usually use a specific component type is to iterate over its data
@@ -6156,8 +6036,7 @@ fn my_event_manager&lt;T: 'static + Send + Sync&gt;(
     for event in events.drain() {
         // TODO: do something with each event
     }
-}
-</code></pre>
+}</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="bevy-render-gpu-framework"><a class="header" href="#bevy-render-gpu-framework">Bevy Render (GPU) Framework</a></h1>
 <p><strong>NOTE:</strong> This chapter of the book is an early <em>Work in Progress</em>!
 Many links are still broken!</p>
@@ -6452,8 +6331,7 @@ fn main() {
         .add_plugin(LogDiagnosticsPlugin::default())
         .add_plugin(FrameTimeDiagnosticsPlugin::default())
         .run();
-}
-</code></pre>
+}</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="convert-cursor-to-world-coordinates"><a class="header" href="#convert-cursor-to-world-coordinates">Convert cursor to world coordinates</a></h1>
 <p><a href="cookbook//code/examples/cursor2world.rs">Click here for the full example code.</a></p>
 <hr />
@@ -6515,8 +6393,7 @@ fn my_cursor_system(
 
         eprintln!(&quot;World coords: {}/{}&quot;, world_pos.x, world_pos.y);
     }
-}
-</code></pre>
+}</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="custom-camera-projection"><a class="header" href="#custom-camera-projection">Custom Camera Projection</a></h1>
 <p><a href="cookbook//code/examples/custom-projection.rs">Click here for the full example code.</a></p>
 <hr />
@@ -6616,8 +6493,7 @@ fn main() {
         .add_startup_system(setup)
         .add_plugin(CameraProjectionPlugin::&lt;SimpleOrthoProjection&gt;::default())
         .run();
-}
-</code></pre>
+}</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="pan--orbit-camera"><a class="header" href="#pan--orbit-camera">Pan + Orbit Camera</a></h1>
 <p><a href="cookbook//code/examples/pan-orbit-camera.rs">Click here for the full example code.</a></p>
 <hr />
@@ -6757,8 +6633,7 @@ fn spawn_camera(mut commands: Commands) {
             ..Default::default()
         },
     ));
-}
-</code></pre>
+}</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="list-all-resource-types"><a class="header" href="#list-all-resource-types">List All Resource Types</a></h1>
 <p><a href="cookbook//code/examples/print-resources.rs">Click here for the full example code.</a></p>
 <hr />
@@ -6777,8 +6652,7 @@ fn spawn_camera(mut commands: Commands) {
     // // sort list alphebetically
     // r.sort();
     // r.iter().for_each(|name| println!(&quot;{}&quot;, name));
-}
-</code></pre>
+}</code></pre>
 <p>Note that this does <em>not</em> give you a comprehensive list of every Bevy-provided
 type that is useful as a resource. It lists the types of all the resources
 <em>currently added</em> to the app (by all registered plugins, your own, etc.).</p>
@@ -6919,15 +6793,13 @@ Runtime Redistributables installed.</p>
 <p>By default, when you run a Bevy app (or any Rust program for that matter)
 on Windows, a Console window also shows up. To disable this,
 place this Rust attribute at the top of your <code>main.rs</code>:</p>
-<pre><code class="language-rust no_run noplayground">#![windows_subsystem = &quot;windows&quot;]
-</code></pre>
+<pre><code class="language-rust no_run noplayground">#![windows_subsystem = &quot;windows&quot;]</code></pre>
 <p>This tells Windows that your executable is a graphical application, not a
 command-line program. Windows will know not display a console.</p>
 <p>However, the console can be useful for development, to see log messages.
 You can disable it only for release builds, and leave it enabled in debug
 builds, like this:</p>
-<pre><code class="language-rust no_run noplayground">#![cfg_attr(not(debug_assertions), windows_subsystem = &quot;windows&quot;)]
-</code></pre>
+<pre><code class="language-rust no_run noplayground">#![cfg_attr(not(debug_assertions), windows_subsystem = &quot;windows&quot;)]</code></pre>
 <h2 id="creating-an-icon-for-your-app"><a class="header" href="#creating-an-icon-for-your-app">Creating an icon for your app</a></h2>
 <p>There are two places where you might want to put your application icon:</p>
 <ul>
@@ -6949,8 +6821,7 @@ fn main() {
     if target.contains(&quot;windows&quot;) {
         embed_resource::compile(&quot;icon.rc&quot;);
     }
-}
-</code></pre>
+}</code></pre>
 <p>Create a <code>icon.rc</code> file in your project folder:</p>
 <pre><code>app_icon ICON &quot;icon.ico&quot;
 </code></pre>
@@ -7109,8 +6980,7 @@ console_error_panic_hook = &quot;0.1&quot;
 <p>At the start of your main function, before doing anything else, add this:</p>
 <pre><code class="language-rust no_run noplayground">    // When building for WASM, print panics to the browser console
     #[cfg(target_arch = &quot;wasm32&quot;)]
-    console_error_panic_hook::set_once();
-</code></pre>
+    console_error_panic_hook::set_once();</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="optimize-for-size"><a class="header" href="#optimize-for-size">Optimize for Size</a></h1>
 <p>When serving a WASM binary, the smaller it is, the faster the browser can
 download it. Faster downloads means faster page load times and less data
@@ -7323,19 +7193,19 @@ so is preferable.</p>
 
         </div>
 
-        <script type="text/javascript">
+        <script>
             window.playground_copyable = true;
         </script>
-        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
-        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
 
         <!-- Custom JS scripts -->
-        <script type="text/javascript" src="nagbar.js"></script>
-        <script type="text/javascript">
+        <script src="nagbar.js"></script>
+        <script>
         window.addEventListener('load', function() {
             window.setTimeout(window.print, 100);
         });

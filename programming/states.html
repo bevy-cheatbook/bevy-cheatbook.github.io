@@ -6,7 +6,6 @@
         <title>States - Unofficial Bevy Cheat Book</title>
         <!-- Custom HTML head -->
 <script async defer src="https://buttons.github.io/buttons.js"></script>
-        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
@@ -31,13 +30,13 @@
     </head>
     <body>
         <!-- Provide site root to javascript -->
-        <script type="text/javascript">
+        <script>
             var path_to_root = "../";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
-        <script type="text/javascript">
+        <script>
             try {
                 var theme = localStorage.getItem('mdbook-theme');
                 var sidebar = localStorage.getItem('mdbook-sidebar');
@@ -53,7 +52,7 @@
         </script>
 
         <!-- Set the theme before any content is loaded, prevents flash -->
-        <script type="text/javascript">
+        <script>
             var theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
@@ -65,7 +64,7 @@
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
-        <script type="text/javascript">
+        <script>
             var html = document.querySelector('html');
             var sidebar = 'hidden';
             if (document.body.clientWidth >= 1080) {
@@ -96,7 +95,7 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
-                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
@@ -127,7 +126,7 @@
                     </div>
                 </div>
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
-                <script type="text/javascript">
+                <script>
                     document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
                     document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
                     Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
@@ -192,8 +191,7 @@ fn main() {
                 .with_system(close_menu)
         )
         .run();
-}
-</code></pre>
+}</code></pre>
 <p>It is OK to have multiple system sets for the same state.</p>
 <p>This is useful when you want to place <a href="/programming/labels.html">labels</a> and use <a href="/programming/system-order.html">explicit
 system ordering</a>.</p>
@@ -220,15 +218,13 @@ add the state management run criteria.</p>
             // TODO: play pause screen music
         }
     }
-}
-</code></pre>
+}</code></pre>
 <p>To change to another state:</p>
 <pre><code class="language-rust no_run noplayground">fn enter_game(mut app_state: ResMut&lt;State&lt;AppState&gt;&gt;) {
     app_state.set(AppState::InGame).unwrap();
     // ^ this can fail if we are already in the target state
     // or if another state change is already queued
-}
-</code></pre>
+}</code></pre>
 <p>After the systems of the current state complete, Bevy will transition to
 the next state you set.</p>
 <p>You can do arbitrarily many state transitions in a single frame update. Bevy
@@ -280,14 +276,12 @@ can also add one-shot systems to run when &quot;pausing&quot; or &quot;resuming&
             SystemSet::on_exit(AppState::InGame)
                 .with_system(despawn_player)
                 .with_system(despawn_map)
-        )
-</code></pre>
+        )</code></pre>
 <p>To manage states like this, use <code>push</code>/<code>pop</code>:</p>
 <pre><code class="language-rust no_run noplayground">    // to go into the pause screen
     app_state.push(AppState::Paused).unwrap();
     // to go back into the game
-    app_state.pop().unwrap();
-</code></pre>
+    app_state.pop().unwrap();</code></pre>
 <p>(using <code>.set</code> as shown before replaces the active state at the top of the stack)</p>
 <h2 id="known-pitfalls-and-limitations"><a class="header" href="#known-pitfalls-and-limitations">Known Pitfalls and Limitations</a></h2>
 <h3 id="combining-with-other-run-criteria"><a class="header" href="#combining-with-other-run-criteria">Combining with Other Run Criteria</a></h3>
@@ -319,8 +313,7 @@ a button/key press, you need to clear the input manually by calling <code>.reset
         app_state.set(AppState::MainMenu).unwrap();
         keys.reset(KeyCode::Escape);
     }
-}
-</code></pre>
+}</code></pre>
 <p>(note that this requires <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut</code></a>)</p>
 <p>Not doing this can cause <a href="https://github.com/bevyengine/bevy/issues/1700">issues</a>.</p>
 <p><a href="https://github.com/IyesGames/iyes_loopless"><code>iyes_loopless</code></a> does not have this issue.</p>
@@ -358,17 +351,17 @@ event types.</p>
 
         </div>
 
-        <script type="text/javascript">
+        <script>
             window.playground_copyable = true;
         </script>
-        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
 
         <!-- Custom JS scripts -->
-        <script type="text/javascript" src="../nagbar.js"></script>
+        <script src="../nagbar.js"></script>
     </body>
 </html>
