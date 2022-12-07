@@ -138,7 +138,7 @@
                     <main>
                         <h1 id="queries"><a class="header" href="#queries">Queries</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.0/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
 <hr />
 <p>Queries let you access <a href="/programming/ecs-intro.html">components of entities</a>.</p>
 <pre><code class="language-rust no_run noplayground">fn check_zero_health(
@@ -169,7 +169,7 @@
     } else {
         // the entity does not have the components from the query
     }</code></pre>
-<p>Get the IDs (<a href="https://docs.rs/bevy/0.9.0/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a>) of the entities you access with
+<p>Get the IDs (<a href="https://docs.rs/bevy/0.9.1/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a>) of the entities you access with
 your queries:</p>
 <pre><code class="language-rust no_run noplayground">// add `Entity` to `Query` to get Entity IDs
 fn query_entities(q: Query&lt;(Entity, /* ... */)&gt;) {
@@ -192,7 +192,7 @@ that bundle that you care about.</p>
 <p>A common beginner mistake is to query for the bundle type!</p>
 <h2 id="query-filters"><a class="header" href="#query-filters">Query Filters</a></h2>
 <p>Add query filters to narrow down the entities you get from the query.</p>
-<p>Use <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/query/struct.With.html"><code>With</code></a>/<a href="https://docs.rs/bevy/0.9.0/bevy/ecs/query/struct.Without.html"><code>Without</code></a> to only get entities
+<p>Use <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/query/struct.With.html"><code>With</code></a>/<a href="https://docs.rs/bevy/0.9.1/bevy/ecs/query/struct.Without.html"><code>Without</code></a> to only get entities
 that have specific components.</p>
 <pre><code class="language-rust no_run noplayground">fn debug_player_hp(
     // access the health (and optionally the PlayerName, if present), only for friendly players

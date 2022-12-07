@@ -138,9 +138,9 @@
                     <main>
                         <h1 id="systems"><a class="header" href="#systems">Systems</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.0/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.0/examples/ecs/startup_system.rs"><code>startup_system</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.0/examples/ecs/system_param.rs"><code>system_param</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/startup_system.rs"><code>startup_system</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/system_param.rs"><code>system_param</code></a>.</p>
 <hr />
 <p>Systems are functions you write, which are run by Bevy.</p>
 <p>This is where you implement all your game logic.</p>
@@ -149,10 +149,10 @@ to specify what you need access to. <a href="/pitfalls/into-system.html">If you 
 in your function, you will get confusing compiler errors!</a></p>
 <p>Some of the options are:</p>
 <ul>
-<li>accessing <a href="/programming/res.html">resources</a> using <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.Res.html"><code>Res</code></a>/<a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut</code></a></li>
-<li>accessing <a href="/programming/ec.html#components">components of entities</a> using <a href="/programming/queries.html">queries</a> (<a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.Query.html"><code>Query</code></a>)</li>
-<li>creating/destroying entities, components, and resources using <a href="/programming/commands.html">Commands</a> (<a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>)</li>
-<li>sending/receiving <a href="/programming/events.html">events</a> using <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/event/struct.EventWriter.html"><code>EventWriter</code></a>/<a href="https://docs.rs/bevy/0.9.0/bevy/ecs/event/struct.EventReader.html"><code>EventReader</code></a></li>
+<li>accessing <a href="/programming/res.html">resources</a> using <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Res.html"><code>Res</code></a>/<a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.ResMut.html"><code>ResMut</code></a></li>
+<li>accessing <a href="/programming/ec.html#components">components of entities</a> using <a href="/programming/queries.html">queries</a> (<a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Query.html"><code>Query</code></a>)</li>
+<li>creating/destroying entities, components, and resources using <a href="/programming/commands.html">Commands</a> (<a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>)</li>
+<li>sending/receiving <a href="/programming/events.html">events</a> using <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/event/struct.EventWriter.html"><code>EventWriter</code></a>/<a href="https://docs.rs/bevy/0.9.1/bevy/ecs/event/struct.EventReader.html"><code>EventReader</code></a></li>
 </ul>
 <pre><code class="language-rust no_run noplayground">fn debug_start(
     // access resource

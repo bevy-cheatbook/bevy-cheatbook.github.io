@@ -138,14 +138,14 @@
                     <main>
                         <h1 id="fixed-timestep"><a class="header" href="#fixed-timestep">Fixed Timestep</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.0/examples/ecs/fixed_timestep.rs"><code>fixed_timestep</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/fixed_timestep.rs"><code>fixed_timestep</code></a>.</p>
 <p>Consider using the <a href="https://github.com/IyesGames/iyes_loopless"><code>iyes_loopless</code></a> crate, which
 provides an alternative implementation that does not suffer from the
 <a href="#caveats">usability issues</a> of the one in Bevy.</p>
 <hr />
 <p>If you need something to happen at fixed time intervals (a common use case
 is Physics updates), you can add the respective <a href="/programming/systems.html">systems</a> to
-your <a href="/programming/app-builder.html">app</a> using Bevy's <a href="https://docs.rs/bevy/0.9.0/bevy/time/struct.FixedTimestep.html"><code>FixedTimestep</code></a>
+your <a href="/programming/app-builder.html">app</a> using Bevy's <a href="https://docs.rs/bevy/0.9.1/bevy/time/struct.FixedTimestep.html"><code>FixedTimestep</code></a>
 <a href="/programming/run-criteria.html">Run Criteria</a>.</p>
 <pre><code class="language-rust no_run noplayground">use bevy::time::FixedTimestep;
 
@@ -183,10 +183,10 @@ fn fast_timestep() {
 }</code></pre>
 <h2 id="state"><a class="header" href="#state">State</a></h2>
 <p>You can check the current state of the fixed timestep trackers, by accessing
-the <a href="https://docs.rs/bevy/0.9.0/bevy/time/struct.FixedTimesteps.html"><code>FixedTimesteps</code></a> <a href="/programming/res.html">resource</a>. This lets
+the <a href="https://docs.rs/bevy/0.9.1/bevy/time/struct.FixedTimesteps.html"><code>FixedTimesteps</code></a> <a href="/programming/res.html">resource</a>. This lets
 you know how much time remains until the next time it triggers, or how much
 it has overstepped. You need to label your fixed timesteps.</p>
-<p>See the <a href="https://github.com/bevyengine/bevy/blob/v0.9.0/examples/ecs/fixed_timestep.rs">official example</a>, which illustrates this.</p>
+<p>See the <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/fixed_timestep.rs">official example</a>, which illustrates this.</p>
 <h2 id="caveats"><a class="header" href="#caveats">Caveats</a></h2>
 <p>The major problem with Bevy's fixed timestep comes from the fact that
 it is implemented using <a href="/programming/run-criteria.html">Run Criteria</a>. It cannot be
@@ -197,7 +197,7 @@ like implementing the main menu / loading screen / etc. Consider using
 <p>Also, note that your <a href="/programming/systems.html">systems</a> are still called as part of the
 regular frame-update cycle, along with all of the normal systems. So, the
 timing is not exact.</p>
-<p>The <a href="https://docs.rs/bevy/0.9.0/bevy/time/struct.FixedTimestep.html"><code>FixedTimestep</code></a> run criteria simply checks how much
+<p>The <a href="https://docs.rs/bevy/0.9.1/bevy/time/struct.FixedTimestep.html"><code>FixedTimestep</code></a> run criteria simply checks how much
 time passed since the last time your systems were ran, and decides whether
 to run them during the current frame, or not, or run them multiple times,
 as needed.</p>

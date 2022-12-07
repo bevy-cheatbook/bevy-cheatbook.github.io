@@ -138,16 +138,16 @@
                     <main>
                         <h1 id="drag-and-drop-files"><a class="header" href="#drag-and-drop-files">Drag-and-Drop (Files)</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.0/examples/app/drag_and_drop.rs"><code>drag_and_drop</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/app/drag_and_drop.rs"><code>drag_and_drop</code></a>.</p>
 <hr />
 <p>Bevy supports the Drag-and-Drop gesture common on most desktop operating
 systems, but only for files, not arbitrary data / objects.</p>
 <p>If you drag a file (say, from the file manager app) into a Bevy app, Bevy
-will produce a <a href="https://docs.rs/bevy/0.9.0/bevy/window/enum.FileDragAndDrop.html"><code>FileDragAndDrop</code></a> <a href="/programming/events.html">event</a>,
+will produce a <a href="https://docs.rs/bevy/0.9.1/bevy/window/enum.FileDragAndDrop.html"><code>FileDragAndDrop</code></a> <a href="/programming/events.html">event</a>,
 containing the path of the file that was dropped in.</p>
 <p>Usually, in a graphical app, you may want to do different things depending
 on where it was dropped. For this, you can <a href="/input/mouse.html">check the mouse cursor
-position</a>, or use a Bevy UI <a href="https://docs.rs/bevy/0.9.0/bevy/ui/enum.Interaction.html"><code>Interaction</code></a>.</p>
+position</a>, or use a Bevy UI <a href="https://docs.rs/bevy/0.9.1/bevy/ui/enum.Interaction.html"><code>Interaction</code></a>.</p>
 <p>For example, here is how to detect if a file was dropped onto a
 special UI widget/element (which we identify with a custom marker
 <a href="/programming/ec.html#components">component</a>):</p>

@@ -137,10 +137,10 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="direct-world-access"><a class="header" href="#direct-world-access">Direct World Access</a></h1>
-<p>The <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/world/struct.World.html"><code>World</code></a> is where Bevy ECS stores all data and
+<p>The <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/world/struct.World.html"><code>World</code></a> is where Bevy ECS stores all data and
 associated metadata. It keeps track of <a href="/programming/res.html">resources</a>, <a href="/programming/ec.html">entities and
 components</a>.</p>
-<p>Typically, the <a href="https://docs.rs/bevy/0.9.0/bevy/app/struct.App.html"><code>App</code></a>'s schedule runner will run all
+<p>Typically, the <a href="https://docs.rs/bevy/0.9.1/bevy/app/struct.App.html"><code>App</code></a>'s schedule runner will run all
 <a href="/programming/stages.html">stages</a> (which, in turn, run their <a href="/programming/systems.html">systems</a>)
 on the main world. Regular <a href="/programming/systems.html">systems</a> are limited in
 what data they can access from the world, by their <a href="/builtins.html#systemparams">system parameter
@@ -152,11 +152,11 @@ which gives you full control and freedom to do anything with any data stored
 in the Bevy ECS:</p>
 <ul>
 <li><a href="/programming/exclusive.html">Exclusive systems</a></li>
-<li><a href="https://docs.rs/bevy/0.9.0/bevy/ecs/world/trait.FromWorld.html"><code>FromWorld</code></a> impls</li>
-<li>Via the <a href="https://docs.rs/bevy/0.9.0/bevy/app/struct.App.html"><code>App</code></a> <a href="/programming/app-builder.html">builder</a></li>
-<li>Manually created <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/world/struct.World.html"><code>World</code></a>s for purposes like <a href="/programming/system-tests.html">tests</a> or scenes</li>
+<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/world/trait.FromWorld.html"><code>FromWorld</code></a> impls</li>
+<li>Via the <a href="https://docs.rs/bevy/0.9.1/bevy/app/struct.App.html"><code>App</code></a> <a href="/programming/app-builder.html">builder</a></li>
+<li>Manually created <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/world/struct.World.html"><code>World</code></a>s for purposes like <a href="/programming/system-tests.html">tests</a> or scenes</li>
 <li>Custom Commands</li>
-<li>Custom <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/schedule/trait.Stage.html"><code>Stage</code></a> impls (not recommended, prefer exclusive systems)</li>
+<li>Custom <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/schedule/trait.Stage.html"><code>Stage</code></a> impls (not recommended, prefer exclusive systems)</li>
 </ul>
 <p>Direct world access lets you do things like:</p>
 <ul>
@@ -175,7 +175,7 @@ game saves, …</p>
 <h2 id="working-with-the-world"><a class="header" href="#working-with-the-world">Working with the <code>World</code></a></h2>
 <p>Here are some ways that you can make use of the direct world access APIs.</p>
 <h3 id="systemstate"><a class="header" href="#systemstate"><code>SystemState</code></a></h3>
-<p>The easiest way to do things is using a <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.SystemState.html"><code>SystemState</code></a>.</p>
+<p>The easiest way to do things is using a <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.SystemState.html"><code>SystemState</code></a>.</p>
 <p>This is a type that &quot;imitates a system&quot;, behaving the same way as a
 <a href="/programming/systems.html">system</a> with various parameters would. All the same behaviors
 like <a href="/programming/queries.html">queries</a>, <a href="/programming/change-detection.html">change detection</a>, and
@@ -183,18 +183,18 @@ even <a href="/programming/commands.html"><code>Commands</code></a> are availabl
 params</a>.</p>
 <p>It also tracks any persistent state, used for things like <a href="/programming/change-detection.html">change
 detection</a> or caching to improve performance. Therefore,
-if you plan on reusing the same <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.SystemState.html"><code>SystemState</code></a> multiple
+if you plan on reusing the same <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.SystemState.html"><code>SystemState</code></a> multiple
 times, you should store it somewhere, rather than creating a new one every
 time. Every time you call <code>.get(world)</code>, it behaves like another &quot;run&quot;
 of a system.</p>
-<p>If you are using <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>, you can choose when you
+<p>If you are using <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>, you can choose when you
 want to apply them to the world. You need to manually call <code>.apply(world)</code>
-on the <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.SystemState.html"><code>SystemState</code></a>, to apply them.</p>
+on the <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.SystemState.html"><code>SystemState</code></a>, to apply them.</p>
 <pre><code class="language-rust no_run noplayground">// TODO: write code example</code></pre>
 <h3 id="running-a-stage"><a class="header" href="#running-a-stage">Running a Stage</a></h3>
 <p>If you want to run some systems (a common use-case is
 <a href="/programming/system-tests.html">testing</a>), the easiest way is to construct an impromptu
-<a href="https://docs.rs/bevy/0.9.0/bevy/ecs/schedule/struct.SystemStage.html"><code>SystemStage</code></a> (<a href="/programming/stages.html">stages</a>). This way you reuse
+<a href="https://docs.rs/bevy/0.9.1/bevy/ecs/schedule/struct.SystemStage.html"><code>SystemStage</code></a> (<a href="/programming/stages.html">stages</a>). This way you reuse
 all the scheduling logic that Bevy normally does when running systems.</p>
 <pre><code class="language-rust no_run noplayground">// TODO: write code example</code></pre>
 <h3 id="navigating-by-metadata"><a class="header" href="#navigating-by-metadata">Navigating by Metadata</a></h3>

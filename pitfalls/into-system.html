@@ -153,61 +153,61 @@ the trait `WorldQuery` is not implemented for `Component`
 <p>These errors are caused by a malformed query.</p>
 <h2 id="common-beginner-mistakes"><a class="header" href="#common-beginner-mistakes">Common beginner mistakes</a></h2>
 <ul>
-<li>Using <code>&amp;mut Commands</code> (bevy 0.4 syntax) instead of <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>.</li>
+<li>Using <code>&amp;mut Commands</code> (bevy 0.4 syntax) instead of <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>.</li>
 <li>Using <code>Query&lt;MyStuff&gt;</code> instead of <code>Query&lt;&amp;MyStuff&gt;</code> or <code>Query&lt;&amp;mut MyStuff&gt;</code>.</li>
 <li>Using <code>Query&lt;&amp;ComponentA, &amp;ComponentB&gt;</code> instead of <code>Query&lt;(&amp;ComponentA, &amp;ComponentB)&gt;</code>
 (forgetting the tuple)</li>
-<li>Using your resource types directly without <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.Res.html"><code>Res</code></a> or <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut</code></a>.</li>
-<li>Using your component types directly without putting them in a <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.Query.html"><code>Query</code></a>.</li>
+<li>Using your resource types directly without <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Res.html"><code>Res</code></a> or <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.ResMut.html"><code>ResMut</code></a>.</li>
+<li>Using your component types directly without putting them in a <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Query.html"><code>Query</code></a>.</li>
 <li>Using other arbitrary types in your function.</li>
 </ul>
 <p>Note that <code>Query&lt;Entity&gt;</code> is correct, because the Entity ID is special;
 it is not a component.</p>
 <h2 id="supported-types"><a class="header" href="#supported-types">Supported types</a></h2>
 <p>Only the following types are supported as system parameters:</p>
-<p><a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/trait.SystemParam.html#implementors">(List in API Docs)</a></p>
+<p><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/trait.SystemParam.html#implementors">(List in API Docs)</a></p>
 <ul>
-<li><a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>:
+<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>:
 Manipulate the ECS using <a href="/programming/commands.html">commands</a></li>
-<li><a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.Res.html"><code>Res&lt;T&gt;</code></a>:
+<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Res.html"><code>Res&lt;T&gt;</code></a>:
 Shared access to a <a href="/programming/res.html">resource</a></li>
-<li><a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a>:
+<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a>:
 Exclusive (mutable) access to a <a href="/programming/res.html">resource</a></li>
 <li><code>Option&lt;Res&lt;T&gt;&gt;</code>:
 Shared access to a resource that may not exist</li>
 <li><code>Option&lt;ResMut&lt;T&gt;&gt;</code>:
 Exclusive (mutable) access to a resource that may not exist</li>
-<li><a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.Query.html"><code>Query&lt;T, F = ()&gt;</code></a> (can contain tuples of up to 15 types):
+<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Query.html"><code>Query&lt;T, F = ()&gt;</code></a> (can contain tuples of up to 15 types):
 Access to <a href="/programming/ec.html">entities and components</a></li>
-<li><a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.ParamSet.html"><code>ParamSet</code></a> (with up to 8 params):
+<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.ParamSet.html"><code>ParamSet</code></a> (with up to 8 params):
 Resolve <a href="/programming/paramset.html">conflicts between incompatible system parameters</a></li>
-<li><a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a>:
+<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a>:
 Data <a href="/programming/local.html">local</a> to the system</li>
-<li><a href="https://docs.rs/bevy/0.9.0/bevy/ecs/event/struct.EventReader.html"><code>EventReader&lt;T&gt;</code></a>:
+<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/event/struct.EventReader.html"><code>EventReader&lt;T&gt;</code></a>:
 Receive <a href="/programming/events.html">events</a></li>
-<li><a href="https://docs.rs/bevy/0.9.0/bevy/ecs/event/struct.EventWriter.html"><code>EventWriter&lt;T&gt;</code></a>:
+<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/event/struct.EventWriter.html"><code>EventWriter&lt;T&gt;</code></a>:
 Send <a href="/programming/events.html">events</a></li>
-<li><a href="https://docs.rs/bevy/0.9.0/bevy/render/struct.Extract.html"><code>Extract&lt;T&gt;</code></a>:
+<li><a href="https://docs.rs/bevy/0.9.1/bevy/render/struct.Extract.html"><code>Extract&lt;T&gt;</code></a>:
 <a href="/gpu/stages.html">Extract stage</a> only! <code>T</code> is a system parameter type to access from the main World</li>
-<li><a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.RemovedComponents.html"><code>RemovedComponents&lt;T&gt;</code></a>:
+<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.RemovedComponents.html"><code>RemovedComponents&lt;T&gt;</code></a>:
 <a href="/programming/removal-detection.html">Removal detection</a></li>
-<li><a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.NonSend.html"><code>NonSend&lt;T&gt;</code></a>:
+<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.NonSend.html"><code>NonSend&lt;T&gt;</code></a>:
 Shared access to <a href="/programming/non-send.html">Non-<code>Send</code></a> (main thread only) data</li>
-<li><a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.NonSendMut.html"><code>NonSendMut&lt;T&gt;</code></a>:
+<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.NonSendMut.html"><code>NonSendMut&lt;T&gt;</code></a>:
 Mut access to <a href="/programming/non-send.html">Non-<code>Send</code></a> (main thread only) data</li>
-<li><a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.ParallelCommands.html"><code>ParallelCommands</code></a>:
+<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.ParallelCommands.html"><code>ParallelCommands</code></a>:
 Abstraction to help use <code>Commands</code> when you will do your own parallelism</li>
-<li><a href="https://docs.rs/bevy/0.9.0/bevy/ecs/world/struct.World.html"><code>&amp;World</code></a>:
+<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/world/struct.World.html"><code>&amp;World</code></a>:
 Read-only <a href="/programming/world.html">direct access to the ECS World</a></li>
-<li><a href="https://docs.rs/bevy/0.9.0/bevy/ecs/entity/struct.Entities.html"><code>Entities</code></a>:
+<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/entity/struct.Entities.html"><code>Entities</code></a>:
 Low-level ECS metadata: All entities</li>
-<li><a href="https://docs.rs/bevy/0.9.0/bevy/ecs/component/struct.Components.html"><code>Components</code></a>:
+<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/component/struct.Components.html"><code>Components</code></a>:
 Low-level ECS metadata: All components</li>
-<li><a href="https://docs.rs/bevy/0.9.0/bevy/ecs/bundle/struct.Bundles.html"><code>Bundles</code></a>:
+<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/bundle/struct.Bundles.html"><code>Bundles</code></a>:
 Low-level ECS metadata: All bundles</li>
-<li><a href="https://docs.rs/bevy/0.9.0/bevy/ecs/archetype/struct.Archetypes.html"><code>Archetypes</code></a>:
+<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/archetype/struct.Archetypes.html"><code>Archetypes</code></a>:
 Low-level ECS metadata: All archetypes</li>
-<li><a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.SystemChangeTick.html"><code>SystemChangeTick</code></a>:
+<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.SystemChangeTick.html"><code>SystemChangeTick</code></a>:
 Low-level ECS metadata: Tick used for change detection</li>
 <li>tuples containing any of these types, with up to 16 members</li>
 </ul>

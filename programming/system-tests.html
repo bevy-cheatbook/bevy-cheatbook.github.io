@@ -139,11 +139,11 @@
                         <h1 id="writing-tests-for-systems"><a class="header" href="#writing-tests-for-systems">Writing Tests for Systems</a></h1>
 <p>You might want to write and run automated tests for your <a href="/programming/systems.html">systems</a>.</p>
 <p>You can use the regular Rust testing features (<code>cargo test</code>) with Bevy.</p>
-<p>To do this, you can create an empty ECS <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/world/struct.World.html"><code>World</code></a> in your
+<p>To do this, you can create an empty ECS <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/world/struct.World.html"><code>World</code></a> in your
 tests, and then, using <a href="/programming/world.html">direct World access</a>, insert whatever
 <a href="/programming/ec.html#entities">entities</a> and <a href="/programming/res.html">resources</a> you need for testing. Create
 a standalone <a href="/programming/stages.html">stage</a> with the <a href="/programming/systems.html">systems</a> you want to
-run, and manually run it on the <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/world/struct.World.html"><code>World</code></a>.</p>
+run, and manually run it on the <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/world/struct.World.html"><code>World</code></a>.</p>
 <p>Bevy's official repository has a fantastic <a href="https://github.com/bevyengine/bevy/blob/main/tests/how_to_test_systems.rs">example of how to do
 this</a>.</p>
 

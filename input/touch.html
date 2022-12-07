@@ -138,13 +138,13 @@
                     <main>
                         <h1 id="touchscreen"><a class="header" href="#touchscreen">Touchscreen</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.0/examples/input/touch_input.rs"><code>touch_input</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.0/examples/input/touch_input_events.rs"><code>touch_input_events</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/input/touch_input.rs"><code>touch_input</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/input/touch_input_events.rs"><code>touch_input_events</code></a>.</p>
 <hr />
 <p>Multi-touch touchscreens are supported. You can track multiple fingers on
 the screen, with position and pressure/force information. Bevy does not
 offer gesture recognition.</p>
-<p>The <a href="https://docs.rs/bevy/0.9.0/bevy/input/touch/struct.Touches.html"><code>Touches</code></a> <a href="/programming/res.html">resource</a> allows you to track any
+<p>The <a href="https://docs.rs/bevy/0.9.1/bevy/input/touch/struct.Touches.html"><code>Touches</code></a> <a href="/programming/res.html">resource</a> allows you to track any
 fingers currently on the screen:</p>
 <pre><code class="language-rust no_run noplayground">fn touches(
     touches: Res&lt;Touches&gt;,
@@ -166,7 +166,7 @@ fingers currently on the screen:</p>
         );
     }
 }</code></pre>
-<p>Alternatively, you can use <a href="https://docs.rs/bevy/0.9.0/bevy/input/touch/struct.TouchInput.html"><code>TouchInput</code></a> <a href="/programming/events.html">events</a>:</p>
+<p>Alternatively, you can use <a href="https://docs.rs/bevy/0.9.1/bevy/input/touch/struct.TouchInput.html"><code>TouchInput</code></a> <a href="/programming/events.html">events</a>:</p>
 <pre><code class="language-rust no_run noplayground">fn touch_events(
     mut touch_evr: EventReader&lt;TouchInput&gt;,
 ) {

@@ -138,22 +138,22 @@
                     <main>
                         <h1 id="gamepad-controller-joystick"><a class="header" href="#gamepad-controller-joystick">Gamepad (Controller, Joystick)</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.0/examples/input/gamepad_input.rs"><code>gamepad_input</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.0/examples/input/gamepad_input_events.rs"><code>gamepad_input_events</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/input/gamepad_input.rs"><code>gamepad_input</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/input/gamepad_input_events.rs"><code>gamepad_input_events</code></a>.</p>
 <hr />
 <p>Bevy has support for gamepad input hardware: console controllers,
 joysticks, etc. Many different kinds of hardware should work, but
 if your device is not supported, you should file an issue with the
 <a href="https://gitlab.com/gilrs-project/gilrs">gilrs</a> project.</p>
 <h2 id="gamepad-ids"><a class="header" href="#gamepad-ids">Gamepad IDs</a></h2>
-<p>Bevy assigns a unique ID (<a href="https://docs.rs/bevy/0.9.0/bevy/input/gamepad/struct.Gamepad.html"><code>Gamepad</code></a>) to each connected
+<p>Bevy assigns a unique ID (<a href="https://docs.rs/bevy/0.9.1/bevy/input/gamepad/struct.Gamepad.html"><code>Gamepad</code></a>) to each connected
 gamepad. This lets you associate the device with a specific player and
 distinguish which one your inputs are coming from.</p>
-<p>You can use the <a href="https://docs.rs/bevy/0.9.0/bevy/input/gamepad/struct.Gamepads.html"><code>Gamepads</code></a> <a href="/programming/res.html">resource</a> to list
+<p>You can use the <a href="https://docs.rs/bevy/0.9.1/bevy/input/gamepad/struct.Gamepads.html"><code>Gamepads</code></a> <a href="/programming/res.html">resource</a> to list
 the IDs of all the currently connected gamepad devices, or to check the
 status of a specific one.</p>
 <p>To detect when gamepads are connected or disconnected, you can use
-<a href="https://docs.rs/bevy/0.9.0/bevy/input/gamepad/struct.GamepadEvent.html"><code>GamepadEvent</code></a> <a href="/programming/events.html">events</a>.</p>
+<a href="https://docs.rs/bevy/0.9.1/bevy/input/gamepad/struct.GamepadEvent.html"><code>GamepadEvent</code></a> <a href="/programming/events.html">events</a>.</p>
 <p>Example showing how to remember the first connected gamepad ID:</p>
 <pre><code class="language-rust no_run noplayground">/// Simple resource to store the ID of the connected gamepad.
 /// We need to know which gamepad to use for player input.
@@ -195,11 +195,11 @@ fn gamepad_connections(
 }</code></pre>
 <h2 id="handling-gamepad-inputs"><a class="header" href="#handling-gamepad-inputs">Handling Gamepad Inputs</a></h2>
 <p>You can handle the analog sticks and triggers with <code>Axis&lt;GamepadAxis&gt;</code>
-(<a href="https://docs.rs/bevy/0.9.0/bevy/input/struct.Axis.html"><code>Axis</code></a>, <a href="https://docs.rs/bevy/0.9.0/bevy/input/gamepad/struct.GamepadAxis.html"><code>GamepadAxis</code></a>). Buttons
-can be handled with <code>Input&lt;GamepadButton&gt;</code> (<a href="https://docs.rs/bevy/0.9.0/bevy/input/struct.Input.html"><code>Input</code></a>,
-<a href="https://docs.rs/bevy/0.9.0/bevy/input/gamepad/struct.GamepadButton.html"><code>GamepadButton</code></a>), similar to <a href="/input/mouse.html">mouse
+(<a href="https://docs.rs/bevy/0.9.1/bevy/input/struct.Axis.html"><code>Axis</code></a>, <a href="https://docs.rs/bevy/0.9.1/bevy/input/gamepad/struct.GamepadAxis.html"><code>GamepadAxis</code></a>). Buttons
+can be handled with <code>Input&lt;GamepadButton&gt;</code> (<a href="https://docs.rs/bevy/0.9.1/bevy/input/struct.Input.html"><code>Input</code></a>,
+<a href="https://docs.rs/bevy/0.9.1/bevy/input/gamepad/struct.GamepadButton.html"><code>GamepadButton</code></a>), similar to <a href="/input/mouse.html">mouse
 buttons</a> or <a href="/input/keyboard.html">keyboard keys</a>.</p>
-<p>Notice that the names of buttons in the <a href="https://docs.rs/bevy/0.9.0/bevy/input/gamepad/struct.GamepadButton.html"><code>GamepadButton</code></a>
+<p>Notice that the names of buttons in the <a href="https://docs.rs/bevy/0.9.1/bevy/input/gamepad/struct.GamepadButton.html"><code>GamepadButton</code></a>
 are vendor-neutral (like <code>South</code> and <code>East</code> instead of X/O or A/B).</p>
 <pre><code class="language-rust no_run noplayground">fn gamepad_input(
     axes: Res&lt;Axis&lt;GamepadAxis&gt;&gt;,
@@ -248,7 +248,7 @@ are vendor-neutral (like <code>South</code> and <code>East</code> instead of X/O
         // button being held down: heal the player
     }
 }</code></pre>
-<p>You can also handle gamepad inputs using <a href="https://docs.rs/bevy/0.9.0/bevy/input/gamepad/struct.GamepadEvent.html"><code>GamepadEvent</code></a> <a href="/programming/events.html">events</a>:</p>
+<p>You can also handle gamepad inputs using <a href="https://docs.rs/bevy/0.9.1/bevy/input/gamepad/struct.GamepadEvent.html"><code>GamepadEvent</code></a> <a href="/programming/events.html">events</a>:</p>
 <pre><code class="language-rust no_run noplayground">fn gamepad_input_events(
     my_gamepad: Option&lt;Res&lt;MyGamepad&gt;&gt;,
     mut gamepad_evr: EventReader&lt;GamepadEvent&gt;,
@@ -287,7 +287,7 @@ are vendor-neutral (like <code>South</code> and <code>East</code> instead of X/O
     }
 }</code></pre>
 <h2 id="gamepad-settings"><a class="header" href="#gamepad-settings">Gamepad Settings</a></h2>
-<p>You can use the <a href="https://docs.rs/bevy/0.9.0/bevy/input/gamepad/struct.GamepadSettings.html"><code>GamepadSettings</code></a> <a href="/programming/res.html">resource</a>
+<p>You can use the <a href="https://docs.rs/bevy/0.9.1/bevy/input/gamepad/struct.GamepadSettings.html"><code>GamepadSettings</code></a> <a href="/programming/res.html">resource</a>
 to configure dead-zones and other parameters of the various axes and
 buttons. You can set the global defaults, as well as individually
 per-axis/button.</p>

@@ -195,9 +195,9 @@ fn main() {
 varying implementation/functionality for each type.</p>
 <h3 id="example-bevys-camera-projections"><a class="header" href="#example-bevys-camera-projections">Example: Bevy's Camera Projections</a></h3>
 <p>(this is a use-case within Bevy itself)</p>
-<p>Bevy has a <a href="https://docs.rs/bevy/0.9.0/bevy/render/camera/trait.CameraProjection.html"><code>CameraProjection</code></a> trait. Different
-projection types like <a href="https://docs.rs/bevy/0.9.0/bevy/render/camera/struct.PerspectiveProjection.html"><code>PerspectiveProjection</code></a>
-and <a href="https://docs.rs/bevy/0.9.0/bevy/render/camera/struct.OrthographicProjection.html"><code>OrthographicProjection</code></a> implement that
+<p>Bevy has a <a href="https://docs.rs/bevy/0.9.1/bevy/render/camera/trait.CameraProjection.html"><code>CameraProjection</code></a> trait. Different
+projection types like <a href="https://docs.rs/bevy/0.9.1/bevy/render/camera/struct.PerspectiveProjection.html"><code>PerspectiveProjection</code></a>
+and <a href="https://docs.rs/bevy/0.9.1/bevy/render/camera/struct.OrthographicProjection.html"><code>OrthographicProjection</code></a> implement that
 trait, providing the correct logic for how to respond to resizing the window,
 calculating the projection matrix, etc.</p>
 <p>There is a generic system <code>fn camera_system::&lt;T: CameraProjection + Component&gt;</code>, which handles all the cameras with a given projection type. It

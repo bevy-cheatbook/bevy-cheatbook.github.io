@@ -143,10 +143,10 @@ same data.</p>
 <p>Some examples:</p>
 <ul>
 <li>Multiple incompatible <a href="/programming/queries.html">queries</a>.</li>
-<li>Using <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/world/struct.World.html"><code>&amp;World</code></a> while also having other system parameters to access specific data.</li>
+<li>Using <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/world/struct.World.html"><code>&amp;World</code></a> while also having other system parameters to access specific data.</li>
 <li>…</li>
 </ul>
-<p>Bevy provides a solution: wrap them in a <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/system/struct.ParamSet.html"><code>ParamSet</code></a>:</p>
+<p>Bevy provides a solution: wrap them in a <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.ParamSet.html"><code>ParamSet</code></a>:</p>
 <pre><code class="language-rust no_run noplayground">fn reset_health(
     // access the health of enemies and the health of players
     // (note: some entities could be both!)

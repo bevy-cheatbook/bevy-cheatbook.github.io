@@ -137,16 +137,16 @@
                 <div id="content" class="content">
                     <main>
                         <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.0/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
 <hr />
 <h1 id="entities"><a class="header" href="#entities">Entities</a></h1>
-<p>Entities are just a <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/entity/struct.Entity.html">simple integer ID</a>, that identifies a particular set of
+<p>Entities are just a <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/entity/struct.Entity.html">simple integer ID</a>, that identifies a particular set of
 component values.</p>
 <p>To create (&quot;spawn&quot;) new entities, use <a href="/programming/commands.html"><code>Commands</code></a>.</p>
 <h1 id="components"><a class="header" href="#components">Components</a></h1>
 <p>Components are the data associated with entities.</p>
 <p>To create a new component type, simply define a Rust <code>struct</code> or <code>enum</code>, and
-derive the <a href="https://docs.rs/bevy/0.9.0/bevy/ecs/component/trait.Component.html"><code>Component</code></a> trait.</p>
+derive the <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/component/trait.Component.html"><code>Component</code></a> trait.</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Component)]
 struct Health {
     hp: f32,
