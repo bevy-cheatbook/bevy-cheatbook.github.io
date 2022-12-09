@@ -166,6 +166,7 @@ it is not a component.</p>
 <h2 id="supported-types"><a class="header" href="#supported-types">Supported types</a></h2>
 <p>Only the following types are supported as system parameters:</p>
 <p><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/trait.SystemParam.html#implementors">(List in API Docs)</a></p>
+<p>In regular <a href="/programming/systems.html">systems</a>:</p>
 <ul>
 <li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>:
 Manipulate the ECS using <a href="/programming/commands.html">commands</a></li>
@@ -187,8 +188,6 @@ Data <a href="/programming/local.html">local</a> to the system</li>
 Receive <a href="/programming/events.html">events</a></li>
 <li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/event/struct.EventWriter.html"><code>EventWriter&lt;T&gt;</code></a>:
 Send <a href="/programming/events.html">events</a></li>
-<li><a href="https://docs.rs/bevy/0.9.1/bevy/render/struct.Extract.html"><code>Extract&lt;T&gt;</code></a>:
-<a href="/gpu/stages.html">Extract stage</a> only! <code>T</code> is a system parameter type to access from the main World</li>
 <li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.RemovedComponents.html"><code>RemovedComponents&lt;T&gt;</code></a>:
 <a href="/programming/removal-detection.html">Removal detection</a></li>
 <li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.NonSend.html"><code>NonSend&lt;T&gt;</code></a>:
@@ -197,6 +196,8 @@ Shared access to <a href="/programming/non-send.html">Non-<code>Send</code></a> 
 Mut access to <a href="/programming/non-send.html">Non-<code>Send</code></a> (main thread only) data</li>
 <li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.ParallelCommands.html"><code>ParallelCommands</code></a>:
 Abstraction to help use <code>Commands</code> when you will do your own parallelism</li>
+<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.SystemName.html"><code>SystemName</code></a>:
+The name (string) of the system, may be useful for debugging</li>
 <li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/world/struct.World.html"><code>&amp;World</code></a>:
 Read-only <a href="/programming/world.html">direct access to the ECS World</a></li>
 <li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/entity/struct.Entities.html"><code>Entities</code></a>:
@@ -209,11 +210,29 @@ Low-level ECS metadata: All bundles</li>
 Low-level ECS metadata: All archetypes</li>
 <li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.SystemChangeTick.html"><code>SystemChangeTick</code></a>:
 Low-level ECS metadata: Tick used for change detection</li>
+<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.StaticSystemParam.html"><code>StaticSystemParam</code></a>:
+Helper for generic system abstractions, to avoid lifetime annotations</li>
 <li>tuples containing any of these types, with up to 16 members</li>
+</ul>
+<p>In <a href="/programming/exclusive.html">exclusive systems</a>:</p>
+<ul>
+<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/world/struct.World.html"><code>&amp;mut World</code></a>:
+Full <a href="/programming/world.html">direct access to the ECS World</a></li>
+<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a>:
+Data <a href="/programming/local.html">local</a> to the system</li>
+<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.SystemState.html"><code>SystemState&lt;P&gt;</code></a>:
+Emulates a regular system, allowing you to easily access data from the World.
+<code>P</code> are the system parameters.</li>
+<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/query/struct.QueryState.html"><code>QueryState&lt;Q, F = ()&gt;</code></a>:
+Allows you to perform queries on the World, similar to a <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Query.html"><code>Query</code></a>
+in regular systems.</li>
 </ul>
 <p>Your function can have a maximum of 16 total parameters. If you need more,
 group them into tuples to work around the limit. Tuples can contain up to
 16 members, but can be nested indefinitely.</p>
+<p>Systems running during the [Extract stage][cb::render-stages] can also use
+<a href="https://docs.rs/bevy/0.9.1/bevy/render/struct.Extract.html"><code>Extract&lt;T&gt;</code></a>, to access data from the Main World instead of the
+Render World. <code>T</code> can be any other system parameter type.</p>
 
                     </main>
 

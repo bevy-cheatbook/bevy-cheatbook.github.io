@@ -141,19 +141,20 @@
 <hr />
 <p>This example shows how to print a list of all types that have been added as
 <a href="/programming/res.html">resources</a>.</p>
-<pre><code class="language-rust no_run noplayground">fn print_resources(archetypes: &amp;Archetypes, components: &amp;Components) {
-    // TODO FIX THIS WHEN BEVY 0.9.1 IS RELEASED
+<pre><code class="language-rust no_run noplayground">fn print_resources(world: &amp;World) {
+    let components = world.components();
 
-    // let mut r: Vec&lt;_&gt; = archetypes
-    //     .resource()
-    //     .components()
-    //     .map(|id| components.get_info(id).unwrap())
-    //     .map(|info| info.name())
-    //     .collect();
+    let mut r: Vec&lt;_&gt; = world
+        .storages()
+        .resources
+        .iter()
+        .map(|(id, _)| components.get_info(id).unwrap())
+        .map(|info| info.name())
+        .collect();
 
-    // // sort list alphebetically
-    // r.sort();
-    // r.iter().for_each(|name| println!(&quot;{}&quot;, name));
+    // sort list alphebetically
+    r.sort();
+    r.iter().for_each(|name| println!(&quot;{}&quot;, name));
 }</code></pre>
 <p>Note that this does <em>not</em> give you a comprehensive list of every Bevy-provided
 type that is useful as a resource. It lists the types of all the resources
