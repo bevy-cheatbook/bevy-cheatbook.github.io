@@ -164,7 +164,7 @@ also check the <a href="https://bevyengine.org/assets">Bevy Assets</a> page to f
 <p><a href="/setup/bevy-tools.html">These are listed on a separate page.</a></p>
 <h3 id="code-helpers"><a class="header" href="#code-helpers">Code Helpers</a></h3>
 <p><a href="https://github.com/NiklasEi/bevy_asset_loader"><code>bevy_asset_loader</code></a> is a more flexible and
-opinionated helper for managing and loading [assets][cb::assets]. Uses custom
+opinionated helper for managing and loading <a href="/assets.html">assets</a>. Uses custom
 syntax to let you declare your assets more conveniently. It can track loading
 progress and perform a state transition for you.</p>
 <p><a href="https://github.com/Toqozz/bevy_debug_lines"><code>bevy_debug_lines</code></a> allows you to quickly draw
@@ -189,30 +189,32 @@ playing sounds with volume control. Kira provides advanced mixing, playback
 controls, some simple effects, streaming functionality…</p>
 <p>See <a href="/features/audio.html">this page</a> for help on how to set it up.</p>
 <h3 id="camera"><a class="header" href="#camera">Camera</a></h3>
-<p><a href="https://github.com/BlackPhlox/bevy_config_cam"><code>bevy_config_cam</code></a> is a nice plugin for easily
-adding camera controls to your Bevy 3D project. It gives you a a choice
-of various common camera behaviors (like follow, top-view, FPS-style,
-free-roaming).</p>
-<p>Cameras are something that can be very game-specific. As you progress with
-your project, you would probably want to implement your own custom camera
-control logic for your game. However, this plugin is amazing when you are
-starting out on a new project.</p>
+<p><a href="https://github.com/bonsairobo/smooth-bevy-cameras"><code>smooth-bevy-cameras</code></a> is a nice plugin for easily
+adding camera controls to your Bevy 3D project.</p>
+<p>Cameras are something that can be very game-specific. As you progress with your
+project, you would probably want to implement your own custom camera control
+logic for your game. However, this plugin can be useful when you are starting
+out on a new project.</p>
+<h2 id="graphics"><a class="header" href="#graphics">Graphics</a></h2>
+<p>If you need particle effects, try <a href="https://github.com/djeedai/bevy_hanabi"><code>bevy_hanabi</code></a>.</p>
+<p>Experimental 3D Path Traced Global Illumination: <a href="https://github.com/cryscan/bevy-hikari"><code>bevy_hikari</code></a>.</p>
 <h3 id="tilemap"><a class="header" href="#tilemap">Tilemap</a></h3>
-<p>If you are making a 2D game based on a tile-map, there are plugins to
-help do it efficiently with high performance. It is better to use one
-of these plugins, instead of just spawning lots of individual Bevy
-sprites for each tile.</p>
+<p>If you are making a 2D game based on a tile-map, there are plugins to help do it
+efficiently with high performance. It is much better than just spawning lots of
+individual Bevy sprites for each tile.</p>
 <p><a href="https://github.com/StarArawn/bevy_ecs_tilemap"><code>bevy_ecs_tilemap</code></a>:</p>
 <ul>
 <li>Uses one ECS Entity per tile, lets you work with the tilemap in an ECS-idiomatic way.</li>
 <li>Efficient rendering, using techniques like texture arrays, chunks, morton encoding, …</li>
 <li>Lots of features: Square/Hexagon/Isometric grids, animation, layers, chunks, …</li>
 </ul>
+<h3 id="2d-maps--levels"><a class="header" href="#2d-maps--levels">2D Maps / Levels</a></h3>
 <p><a href="https://github.com/Trouv/bevy_ecs_ldtk"><code>bevy_ecs_ldtk</code></a> implements loading of entire
 maps/levels created with the <a href="https://ldtk.io">LDTK editor</a>, into Bevy. Based on
 <code>bevy_ecs_tilemap</code> internally, for efficient performance.</p>
 <h3 id="shapes--vector-graphics--canvas"><a class="header" href="#shapes--vector-graphics--canvas">Shapes / Vector Graphics / Canvas</a></h3>
 <p>If you want to draw 2D shapes, use the <a href="https://github.com/Nilirad/bevy_prototype_lyon"><code>bevy_prototype_lyon</code></a> plugin.</p>
+<p>For SDFs (signed-distance-functions), see <a href="https://github.com/johanhelsing/bevy_smud"><code>bevy_smud</code></a>.</p>
 <h3 id="game-ai"><a class="header" href="#game-ai">Game AI</a></h3>
 <p><a href="https://github.com/zkat/big-brain"><code>big-brain</code></a> is a plugin for game AI behaviors (Utility AI).</p>
 <h3 id="gui"><a class="header" href="#gui">GUI</a></h3>

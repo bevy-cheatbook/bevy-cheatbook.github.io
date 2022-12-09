@@ -147,16 +147,6 @@ project. You can install Rust using <a href="https://rustup.rs">Rustup</a>. See
 <a href="https://github.com/bevyengine/bevy/blob/main/docs/linux_dependencies.md">official Bevy Linux dependencies page</a>.</p>
 <p>Also see the <a href="https://bevyengine.org/learn/book/getting-started/setup/">Setup page in the official Bevy Book</a>
 and the <a href="https://github.com/bevyengine/bevy/blob/main/README.md">official Bevy Readme</a>.</p>
-<h2 id="gpu-drivers"><a class="header" href="#gpu-drivers">GPU Drivers</a></h2>
-<p>On Linux, Bevy currently requires Vulkan for graphics.</p>
-<p>On Windows, either Vulkan or DirectX 12 can be used.</p>
-<p>Make sure you have compatible hardware and drivers installed on your system.
-Your users will also need to satisfy this requirement.</p>
-<p>If Bevy is not working, install the latest drivers, or check with your Linux
-distribution whether Vulkan needs additional packages to be installed.</p>
-<p>OpenGL and DirectX 11 support for legacy systems is planned, but not available yet.</p>
-<p>macOS should work without any special driver setup, using Metal.</p>
-<p>Web games are supported and should work in any modern browser, using WebGL2.</p>
 <h2 id="creating-a-new-project"><a class="header" href="#creating-a-new-project">Creating a New Project</a></h2>
 <p>You can simply create a new Rust project, either from your IDE/editor, or the commandline:</p>
 <pre><code class="language-sh">cargo new --bin my_game
@@ -211,6 +201,18 @@ help you. Solutions to some of the most common issues that Bevy community
 members have encountered are documented there.</p>
 <p>If you need help, use <a href="https://github.com/bevyengine/bevy/discussions">GitHub Discussions</a>, or feel
 welcome to come chat and ask for help in <a href="https://discord.gg/bevy">Discord</a>.</p>
+<h2 id="gpu-drivers"><a class="header" href="#gpu-drivers">GPU Drivers</a></h2>
+<p>On Linux, Bevy currently requires Vulkan for graphics.</p>
+<p>On Windows, either Vulkan or DirectX 12 can be used.</p>
+<p>Make sure you have compatible hardware and drivers installed on your system.
+Your users will also need to satisfy this requirement.</p>
+<p>If Bevy is not working, install the latest drivers, or check with your Linux
+distribution whether Vulkan needs additional packages to be installed.</p>
+<p>OpenGL should work as a fallback, for systems that do not support other APIs,
+but might not be in such a good state as other APIs. DirectX 11 support for
+legacy systems is planned, but not available yet.</p>
+<p>macOS/iOS should work without any special driver setup, using Metal.</p>
+<p>Web games are supported and should work in any modern browser, using WebGL2.</p>
 
                     </main>
 
