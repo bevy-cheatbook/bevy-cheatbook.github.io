@@ -152,9 +152,15 @@ might not.</p>
 <p>If you need to run custom logic as part of your hot-reloading
 workflow, you could implement it in a <a href="/programming/systems.html">system</a>, using
 <a href="https://docs.rs/bevy/0.9.1/bevy/asset/enum.AssetEvent.html"><code>AssetEvent</code></a> (<a href="/assets/assetevent.html">learn more</a>).</p>
-<p>Hot reloading is opt-in and has to be enabled in order to work. You can do
-this in a <a href="/programming/app-builder.html">startup system</a>:</p>
-<pre><code class="language-rust no_run noplayground"></code></pre>
+<p>Hot reloading is opt-in and has to be enabled in order to work:</p>
+<pre><code class="language-rust no_run noplayground">fn main() {
+    App::new()
+        .add_plugins(DefaultPlugins.set(AssetPlugin {
+            watch_for_changes: true,
+            ..Default::default()
+        }))
+        .run();
+}</code></pre>
 <p>Note that this requires the <code>filesystem_watcher</code> <a href="/setup/bevy-config.html">Bevy cargo
 feature</a>. It is enabled by default, but if you have disabled
 default features to customize Bevy, be sure to include it if you need it.</p>
