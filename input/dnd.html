@@ -145,37 +145,37 @@ systems, but only for files, not arbitrary data / objects.</p>
 <p>If you drag a file (say, from the file manager app) into a Bevy app, Bevy
 will produce a <a href="https://docs.rs/bevy/0.9.1/bevy/window/enum.FileDragAndDrop.html"><code>FileDragAndDrop</code></a> <a href="/programming/events.html">event</a>,
 containing the path of the file that was dropped in.</p>
-<p>Usually, in a graphical app, you may want to do different things depending
-on where it was dropped. For this, you can <a href="/input/mouse.html">check the mouse cursor
-position</a>, or use a Bevy UI <a href="https://docs.rs/bevy/0.9.1/bevy/ui/enum.Interaction.html"><code>Interaction</code></a>.</p>
-<p>For example, here is how to detect if a file was dropped onto a
-special UI widget/element (which we identify with a custom marker
-<a href="/programming/ec.html#components">component</a>):</p>
-<pre><code class="language-rust no_run noplayground">#[derive(Component)]
-struct MyDropTarget;
-
-fn file_drop(
+<pre><code class="language-rust no_run noplayground">fn file_drop(
     mut dnd_evr: EventReader&lt;FileDragAndDrop&gt;,
-    query_ui_droptarget: Query&lt;&amp;Interaction, With&lt;MyDropTarget&gt;&gt;,
 ) {
     for ev in dnd_evr.iter() {
         println!(&quot;{:?}&quot;, ev);
         if let FileDragAndDrop::DroppedFile { id, path_buf } = ev {
-            println!(&quot;Dropped file with path: {:?}&quot;, path_buf);
-
-            if id.is_primary() {
-                // it was dropped over the main window
-            }
-
-            for interaction in query_ui_droptarget.iter() {
-                if *interaction == Interaction::Hovered {
-                    // it was dropped over our UI element
-                    // (our UI element is being hovered over)
-                }
-            }
+            println!(&quot;Dropped file with path: {:?}, in window id: {:?}&quot;, path_buf, id);
         }
     }
 }</code></pre>
+<h2 id="detecting-the-position-of-the-drop"><a class="header" href="#detecting-the-position-of-the-drop">Detecting the Position of the Drop</a></h2>
+<p>You may want to do different things depending on where the cursor was when the
+drop gesture ended. For example, add the file to some collection, if it was
+dropped over a specific UI element/panel.</p>
+<p>Unfortunately, this is currently somewhat tricky to implement, due to <a href="https://github.com/rust-windowing/winit/issues/1550"><code>winit</code>
+bug #1550</a>. Bevy does not get <a href="https://docs.rs/bevy/0.9.1/bevy/window/struct.CursorMoved.html"><code>CursorMoved</code></a>
+<a href="/programming/events.html">events</a> while the drag gesture is ongoing, and therefore does not
+respond to the mouse cursor. Bevy completely loses track of the cursor position.</p>
+<p>Checking the cursor position from the <a href="https://docs.rs/bevy/0.9.1/bevy/window/struct.Window.html"><code>Window</code></a> will also not work.</p>
+<p>Systems that use cursor events to respond to cursor movements will not work
+during a drag gesture. This includes Bevy UI's <a href="https://docs.rs/bevy/0.9.1/bevy/ui/enum.Interaction.html"><code>Interaction</code></a>
+detection, which is the usual way of detecting when a UI element is hovered over.</p>
+<h3 id="workaround"><a class="header" href="#workaround">Workaround</a></h3>
+<p>The only way to workaround this issue is to store the file path somewhere
+temporarily after receiving the drop event. Then, wait until the next
+<a href="https://docs.rs/bevy/0.9.1/bevy/window/struct.CursorMoved.html"><code>CursorMoved</code></a> event, and then process the file.</p>
+<p>Note that this might not even be on the next frame update. The next cursor
+update will happen whenever the user moves the cursor. If the user does not
+immediately move the mouse after dropping the file and leaves the cursor in the
+same place for a while, there will be no events and your app will have no way of
+knowing the cursor position.</p>
 
                     </main>
 
