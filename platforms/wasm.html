@@ -164,6 +164,8 @@ so that your game can load fast and not waste data bandwidth.</p>
 <ul>
 <li><a href="/platforms/wasm/panic-console.html">See Rust panic messages</a></li>
 </ul>
+<p>Note: the <code>dynamic</code> <a href="/setup/bevy-config.html">feature flag</a> is not supported for
+WASM builds. You cannot use it.</p>
 <h2 id="quick-start"><a class="header" href="#quick-start">Quick Start</a></h2>
 <p>First, add WASM support to your Rust installation. Using Rustup:</p>
 <pre><code class="language-sh">rustup target install wasm32-unknown-unknown

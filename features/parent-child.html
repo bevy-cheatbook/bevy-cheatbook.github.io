@@ -233,9 +233,10 @@ the children to be affected by the parent.</p>
 relative to their parent and move with it.</p>
 <p><a href="/features/visibility.html">Visibility</a> propagation allows children to be hidden if
 you manually hide their parent.</p>
-<p>All <a href="/builtins.html#bundles">Bundles that come with Bevy</a> provide
-this behavior automatically.</p>
-<p>Otherwise, you can use <a href="https://docs.rs/bevy/0.9.1/bevy/transform/struct.TransformBundle.html"><code>SpatialBundle</code></a> to make sure
+<p>Most <a href="/builtins.html#bundles">Bundles that come with Bevy</a> provide these behaviors
+automatically. Check the docs for the bundles you are using.  Camera bundles,
+for example, have transforms, but not visibility.</p>
+<p>Otherwise, you can use <a href="https://docs.rs/bevy/0.9.1/bevy/render/prelude/struct.SpatialBundle.html"><code>SpatialBundle</code></a> to make sure
 your entities have all the necessary components.</p>
 <h2 id="known-pitfalls"><a class="header" href="#known-pitfalls">Known Pitfalls</a></h2>
 <h3 id="despawning-child-entities"><a class="header" href="#despawning-child-entities">Despawning Child Entities</a></h3>
