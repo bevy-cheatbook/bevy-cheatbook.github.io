@@ -4406,6 +4406,18 @@ your systems run, such as: <a href="programming//programming/system-order.html">
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
 <hr />
 <p>Queries let you access <a href="programming//programming/ecs-intro.html">components of entities</a>.</p>
+<p>Use the <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Query.html"><code>Query</code></a> <a href="programming//programming/systems.html">system parameter</a>, where you can
+specify the data you want to access, and optionally additional
+<a href="programming//programming/queries.html#query-filters">filters</a> for selecting entities.</p>
+<p>Think of the types you put in your <code>Query</code> as a &quot;specification&quot; for selecting
+what entities you want to access. Queries will match only those entities in the
+ECS World that fit your specification. You are then able to access the relevant
+data from individual such entities (using an <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> ID), or
+iterate to access all entities that qualify.</p>
+<p>The first type parameter for a query is the data you want to access. Use <code>&amp;</code> for
+shared/readonly access and <code>&amp;mut</code> for exclusive/mutable access. Use <code>Option</code> if
+the component is not required (you want to find entities with or without that
+component. If you want multiple components, put them in a tuple.</p>
 <pre><code class="language-rust no_run noplayground">fn check_zero_health(
     // access entities that have `Health` and `Transform` components
     // get read-only access to `Health` and mutable access to `Transform`
@@ -4427,29 +4439,33 @@ your systems run, such as: <a href="programming//programming/system-order.html">
         }
     }
 }</code></pre>
-<p>Get the <a href="programming//programming/ec.html#components">components</a> associated with a specific
-<a href="programming//programming/ec.html#entities">entity</a>:</p>
+<p>The above example used iteration to access all entities that the query could find.</p>
+<p>To access the <a href="programming//programming/ec.html#components">components</a> from specific <a href="programming//programming/ec.html#entities">entity</a>
+only:</p>
 <pre><code class="language-rust no_run noplayground">    if let Ok((health, mut transform)) = query.get_mut(entity) {
         // do something with the components
     } else {
         // the entity does not have the components from the query
     }</code></pre>
-<p>Get the IDs (<a href="https://docs.rs/bevy/0.9.1/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a>) of the entities you access with
-your queries:</p>
+<p>If you want to know the entity IDs of the entities you are accessing, you can
+put the special <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> type in your query. This is useful
+together with iteration, so you can identify the entities that the query found:</p>
 <pre><code class="language-rust no_run noplayground">// add `Entity` to `Query` to get Entity IDs
 fn query_entities(q: Query&lt;(Entity, /* ... */)&gt;) {
     for (e, /* ... */) in q.iter() {
         // `e` is the Entity ID of the entity we are accessing
     }
 }</code></pre>
-<p>If you know that the query should only ever match a single entity, you can
-use <code>single</code>/<code>single_mut</code>, instead of iterating:</p>
+<p>If you know that the query is expected to only ever match a single entity, you
+can use <code>single</code>/<code>single_mut</code> (panic on error) or <code>get_single</code>/<code>get_single_mut</code>
+(return <a href="https://doc.rust-lang.org/stable/std/result/enum.Result.html"><code>Result</code></a>). These methods ensure that there exists exactly
+one candidate entity that can match your query, and will produce an error
+otherwise.</p>
 <pre><code class="language-rust no_run noplayground">fn query_player(mut q: Query&lt;(&amp;Player, &amp;mut Transform)&gt;) {
     let (player, mut transform) = q.single_mut();
 
     // do something with the player and its transform
 }</code></pre>
-<p>(this will panic if the query matches more than one entity)</p>
 <h2 id="bundles-1"><a class="header" href="#bundles-1">Bundles</a></h2>
 <p>Queries work with individual components. If you created an entity using a
 <a href="programming//programming/ec.html#component-bundles">bundle</a>, you need to query for the specific components from
@@ -4457,6 +4473,11 @@ that bundle that you care about.</p>
 <p>A common beginner mistake is to query for the bundle type!</p>
 <h2 id="query-filters"><a class="header" href="#query-filters">Query Filters</a></h2>
 <p>Add query filters to narrow down the entities you get from the query.</p>
+<p>This is done using the second (optional) generic type parameter of the
+<a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Query.html"><code>Query</code></a> type.</p>
+<p>Note the syntax of the query: first you specify the data you want to access
+(using a tuple to access multiple things), and then you add any additional
+filters (can also be a tuple, to add multiple).</p>
 <p>Use <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/query/struct.With.html"><code>With</code></a>/<a href="https://docs.rs/bevy/0.9.1/bevy/ecs/query/struct.Without.html"><code>Without</code></a> to only get entities
 that have specific components.</p>
 <pre><code class="language-rust no_run noplayground">fn debug_player_hp(
@@ -4472,6 +4493,10 @@ that have specific components.</p>
         }
     }
 }</code></pre>
+<p>This is useful if you don't actually care about the data stored inside these
+components, but you want to make sure that your query only looks for entities
+that have (or not have) them. If you want the data, then put the component in
+the first part of the query (as shown previously), instead of using a filter.</p>
 <p>Multiple filters can be combined:</p>
 <ul>
 <li>in a tuple to apply all of them (AND logic)</li>
@@ -4620,30 +4645,6 @@ forget to clear them).</p>
 is how you define the structure of all the things that make up your project:
 <a href="programming//programming/plugins.html">plugins</a>, <a href="programming//programming/systems.html">systems</a>, <a href="programming//programming/events.html">event</a> types,
 <a href="programming//programming/states.html">states</a>, <a href="programming//programming/stages.html">stages</a>…</p>
-<p>Technically, the <a href="https://docs.rs/bevy/0.9.1/bevy/app/struct.App.html"><code>App</code></a> contains the ECS World(s) (where all
-the data is stored) and Schedule(s) (where all the <a href="programming//programming/systems.html">systems</a>
-to run are stored). For advanced use-cases, <a href="programming//programming/sub-apps.html">Sub-apps</a> are a
-way to have more than one ECS World and Schedule.</p>
-<p><a href="programming//programming/local.html">Local resources</a> do not need to be registered. They are part of
-their respective <a href="programming//programming/systems.html">systems</a>.</p>
-<p><a href="programming//programming/ec.html#components">Component</a> types do not need to be registered.</p>
-<hr />
-<p>Schedules cannot (yet) be modified at runtime; all <a href="programming//programming/systems.html">systems</a> you
-want to run must be added/configured in the <a href="https://docs.rs/bevy/0.9.1/bevy/app/struct.App.html"><code>App</code></a> ahead of time.</p>
-<p>The data in the ECS World can be modified at any time; create/destroy your
-<a href="programming//programming/ec.html">entities</a> and <a href="programming//programming/res.html">resources</a>, from <a href="programming//programming/systems.html">systems</a>
-using <a href="programming//programming/commands.html">Commands</a>, or <a href="programming//programming/exclusive.html">exclusive systems</a> using
-<a href="programming//programming/world.html">direct World access</a>.</p>
-<p><a href="programming//programming/res.html">Resources</a> can also be initialized ahead of time, here in the
-<a href="https://docs.rs/bevy/0.9.1/bevy/app/struct.App.html"><code>App</code></a> builder.</p>
-<hr />
-<p>You also need to add the <a href="programming//programming/plugins.html#plugin-groups">plugin group</a> with Bevy's built-in
-functionality: either
-<a href="https://docs.rs/bevy/0.9.1/bevy/struct.DefaultPlugins.html"><code>DefaultPlugins</code></a> if you are making a full game/app, or
-<a href="https://docs.rs/bevy/0.9.1/bevy/struct.MinimalPlugins.html"><code>MinimalPlugins</code></a> for something like a headless server.</p>
-<p>Note that there are some special <a href="programming//builtins.html#configuration-resources">configuration resources</a>
-that must be added first, if you would like to use them, to take effect.</p>
-<hr />
 <pre><code class="language-rust no_run noplayground">fn main() {
     App::new()
         // Bevy itself:
@@ -4669,6 +4670,29 @@ that must be added first, if you would like to use them, to take effect.</p>
         // launch the app!
         .run();
 }</code></pre>
+<p>Technically, the <a href="https://docs.rs/bevy/0.9.1/bevy/app/struct.App.html"><code>App</code></a> contains the ECS World(s) (where all
+the data is stored) and Schedule(s) (where all the <a href="programming//programming/systems.html">systems</a>
+to run are stored). For advanced use-cases, <a href="programming//programming/sub-apps.html">Sub-apps</a> are a
+way to have more than one ECS World and Schedule.</p>
+<p><a href="programming//programming/local.html">Local resources</a> do not need to be registered. They are part of
+their respective <a href="programming//programming/systems.html">systems</a>.</p>
+<p><a href="programming//programming/ec.html#components">Component</a> types do not need to be registered.</p>
+<hr />
+<p>Schedules cannot (yet) be modified at runtime; all <a href="programming//programming/systems.html">systems</a> you
+want to run must be added/configured in the <a href="https://docs.rs/bevy/0.9.1/bevy/app/struct.App.html"><code>App</code></a> ahead of time.</p>
+<p>The data in the ECS World can be modified at any time; create/destroy your
+<a href="programming//programming/ec.html">entities</a> and <a href="programming//programming/res.html">resources</a>, from <a href="programming//programming/systems.html">systems</a>
+using <a href="programming//programming/commands.html">Commands</a>, or <a href="programming//programming/exclusive.html">exclusive systems</a> using
+<a href="programming//programming/world.html">direct World access</a>.</p>
+<p><a href="programming//programming/res.html">Resources</a> can also be initialized ahead of time, here in the
+<a href="https://docs.rs/bevy/0.9.1/bevy/app/struct.App.html"><code>App</code></a> builder.</p>
+<h2 id="builtin-bevy-functionality"><a class="header" href="#builtin-bevy-functionality">Builtin Bevy Functionality</a></h2>
+<p>The Bevy game engine's own functionality is represented as a <a href="programming//programming/plugins.html#plugin-groups">plugin group</a>.
+Every typical Bevy app must first add it, using either:</p>
+<ul>
+<li><a href="https://docs.rs/bevy/0.9.1/bevy/struct.DefaultPlugins.html"><code>DefaultPlugins</code></a> if you are making a full game/app</li>
+<li><a href="https://docs.rs/bevy/0.9.1/bevy/struct.MinimalPlugins.html"><code>MinimalPlugins</code></a> for something like a headless server.</li>
+</ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="quitting-the-app"><a class="header" href="#quitting-the-app">Quitting the App</a></h1>
 <p>To cleanly shut down bevy, send an <a href="https://docs.rs/bevy/0.9.1/bevy/app/struct.AppExit.html"><code>AppExit</code></a>
 <a href="programming//programming/events.html">event</a> from any <a href="programming//programming/systems.html">system</a>:</p>
@@ -4690,7 +4714,8 @@ closed, Bevy will quit automatically.</p>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
 <hr />
-<p>Local resources allow you to have per-<a href="programming//programming/systems.html">system</a> data.</p>
+<p>Local resources allow you to have per-<a href="programming//programming/systems.html">system</a> data. This data
+is not stored in the ECS World, but rather together with your system.</p>
 <p><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a> is a system parameter similar to
 <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a>, which gives you full mutable access to an
 instance of some data type, that is independent from entities and components.</p>
@@ -4739,12 +4764,44 @@ fn main() {
     };
 
     App::new()
+        .add_plugins(DefaultPlugins)
         // create a &quot;move closure&quot;, so we can use the `config`
         // variable that we created above
         .add_system(move |cmd: Commands, res: Res&lt;MyStuff&gt;| {
             // call our function from inside the closure
             my_system(cmd, res, &amp;config);
         })
+        .run();
+}</code></pre>
+<p>Another way to accomplish the same thing is to &quot;return&quot; the system
+from &quot;constructor&quot; helper, that creates it:</p>
+<pre><code class="language-rust no_run noplayground">#[derive(Default)]
+struct MyConfig {
+    magic: usize,
+}
+
+fn main() {
+    // create a &quot;constructor&quot; closure, which can initialize
+    // our data and move it into a closure that bevy can run as a system
+    let constructor = || {
+        // create the `MyConfig`
+        let config = MyConfig {
+            magic: 420,
+        };
+
+        // this is the actual system that bevy will run
+        move |mut commands: Commands, res: Res&lt;MyStuff&gt;| {
+            // we can use `config` here, the value from above will be &quot;moved in&quot;
+            // we can also use our system params: `commands`, `res`
+        }
+    };
+
+    App::new()
+        .add_plugins(DefaultPlugins)
+        // note the parentheses `()`
+        // we are calling the &quot;constructor&quot; we made above,
+        // which will return the actual system that gets added to bevy
+        .add_system(constructor())
         .run();
 }</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="plugins"><a class="header" href="#plugins">Plugins</a></h1>
@@ -4755,7 +4812,8 @@ fn main() {
 <p>As your project grows, it can be useful to make it more modular. You can
 split it into &quot;plugins&quot;.</p>
 <p>Plugins are simply collections of things to be added to the <a href="programming//programming/app-builder.html">App
-Builder</a>.</p>
+Builder</a>. Think of this as a way to add things to the app from
+multiple places, like different Rust files/modules or crates.</p>
 <pre><code class="language-rust no_run noplayground">struct MyPlugin;
 
 impl Plugin for MyPlugin {
@@ -4774,6 +4832,8 @@ fn main() {
         .add_plugin(MyPlugin)
         .run();
 }</code></pre>
+<p>Note how you get <code>&amp;mut</code> access to the <a href="https://docs.rs/bevy/0.9.1/bevy/app/struct.App.html"><code>App</code></a>, so you can
+add whatever you want to it, just like you can do from your <code>fn main</code>.</p>
 <p>For internal organization in your own project, the main value of plugins
 comes from not having to declare all your Rust types and functions as
 <code>pub</code>, just so they can be accessible from <code>fn main</code> to be added to the
@@ -4822,6 +4882,56 @@ be compiled into your program.</p>
 <p>If you want to slim down your build, you should look at disabling Bevy's
 default <a href="programming//setup/bevy-config.html">cargo features</a>, or depending on the various Bevy
 sub-crates individually.</p>
+<h2 id="plugin-configuration"><a class="header" href="#plugin-configuration">Plugin Configuration</a></h2>
+<p>Plugins are also a convenient place to store settings/configuration that are
+used during initialization/startup. For settings that can be changed at runtime,
+it is recommended that you put them in <a href="programming//programming/res.html">resources</a> instead.</p>
+<pre><code class="language-rust no_run noplayground">
+struct MyGameplayPlugin {
+    /// Should we enable dev hacks?
+    enable_dev_hacks: bool,
+}
+
+impl Plugin for MyGameplayPlugin {
+    fn build(&amp;self, app: &amp;mut App) {
+        // add our gameplay systems
+        app.add_system(health_system);
+        app.add_system(movement_system);
+        // ...
+
+        // if &quot;dev mode&quot; is enabled, add some hacks
+        if self.enable_dev_hacks {
+            app.add_system(player_invincibility);
+            app.add_system(free_camera);
+        }
+    }
+}
+
+fn main() {
+    App::new()
+        .add_plugins(DefaultPlugins)
+        .add_plugin(MyGameplayPlugin {
+            enable_dev_hacks: false, // change to true for dev testing builds
+        })
+        .run();
+}</code></pre>
+<p>Plugins that are added using <a href="programming//programming/plugins.html#plugin-groups">Plugin Groups</a> can also be
+configured. Many of Bevy's <a href="https://docs.rs/bevy/0.9.1/bevy/struct.DefaultPlugins.html"><code>DefaultPlugins</code></a> work
+this way.</p>
+<pre><code class="language-rust no_run noplayground">App::new()
+    .add_plugins(DefaultPlugins.set(
+        // here we configure the main window
+        WindowPlugin {
+            window: WindowDescriptor {
+                width: 800.0,
+                height: 600.0,
+                // ...
+                ..Default::default()
+            },
+            ..Default::default()
+        }
+    ))
+    .run();</code></pre>
 <h2 id="publishing-crates"><a class="header" href="#publishing-crates">Publishing Crates</a></h2>
 <p>Plugins give you a nice way to publish Bevy-based libraries for other people
 to easily include into their projects.</p>
@@ -5737,7 +5847,7 @@ in the Bevy ECS:</p>
 <p>Direct world access lets you do things like:</p>
 <ul>
 <li>Freely spawn/despawn entities, insert/remove resources, etc., taking effect immediately
-(no delay like when using [<code>Commands</code>] from a regular <a href="programming//programming/systems.html">system</a>)</li>
+(no delay like when using <a href="programming//programming/commands.html"><code>Commands</code></a> from a regular <a href="programming//programming/systems.html">system</a>)</li>
 <li>Access any component, entities, and resources you want</li>
 <li>Manually run arbitrary systems or stages</li>
 </ul>
@@ -5999,7 +6109,7 @@ a severe limitation. In some cases, when you might suspect that you could
 use const generics, you might realize that you actually want a runtime value.</p>
 <p>If you need to &quot;configure&quot; your system by passing in some data, you could,
 instead, use a <a href="patterns//programming/res.html">Resource</a> or <a href="patterns//programming/local.html">Local</a>.</p>
-<p>Note: As of Rust 1.59, support for using <code>enum</code> values as const generics is
+<p>Note: As of Rust 1.65, support for using <code>enum</code> values as const generics is
 not yet stable. To use <code>enum</code>s, you need Rust Nightly, and to enable the
 experimental/unstable feature (put this at the top of your <code>main.rs</code> or
 <code>lib.rs</code>):</p>

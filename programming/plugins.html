@@ -144,7 +144,8 @@
 <p>As your project grows, it can be useful to make it more modular. You can
 split it into &quot;plugins&quot;.</p>
 <p>Plugins are simply collections of things to be added to the <a href="/programming/app-builder.html">App
-Builder</a>.</p>
+Builder</a>. Think of this as a way to add things to the app from
+multiple places, like different Rust files/modules or crates.</p>
 <pre><code class="language-rust no_run noplayground">struct MyPlugin;
 
 impl Plugin for MyPlugin {
@@ -163,6 +164,8 @@ fn main() {
         .add_plugin(MyPlugin)
         .run();
 }</code></pre>
+<p>Note how you get <code>&amp;mut</code> access to the <a href="https://docs.rs/bevy/0.9.1/bevy/app/struct.App.html"><code>App</code></a>, so you can
+add whatever you want to it, just like you can do from your <code>fn main</code>.</p>
 <p>For internal organization in your own project, the main value of plugins
 comes from not having to declare all your Rust types and functions as
 <code>pub</code>, just so they can be accessible from <code>fn main</code> to be added to the
@@ -211,6 +214,56 @@ be compiled into your program.</p>
 <p>If you want to slim down your build, you should look at disabling Bevy's
 default <a href="/setup/bevy-config.html">cargo features</a>, or depending on the various Bevy
 sub-crates individually.</p>
+<h2 id="plugin-configuration"><a class="header" href="#plugin-configuration">Plugin Configuration</a></h2>
+<p>Plugins are also a convenient place to store settings/configuration that are
+used during initialization/startup. For settings that can be changed at runtime,
+it is recommended that you put them in <a href="/programming/res.html">resources</a> instead.</p>
+<pre><code class="language-rust no_run noplayground">
+struct MyGameplayPlugin {
+    /// Should we enable dev hacks?
+    enable_dev_hacks: bool,
+}
+
+impl Plugin for MyGameplayPlugin {
+    fn build(&amp;self, app: &amp;mut App) {
+        // add our gameplay systems
+        app.add_system(health_system);
+        app.add_system(movement_system);
+        // ...
+
+        // if &quot;dev mode&quot; is enabled, add some hacks
+        if self.enable_dev_hacks {
+            app.add_system(player_invincibility);
+            app.add_system(free_camera);
+        }
+    }
+}
+
+fn main() {
+    App::new()
+        .add_plugins(DefaultPlugins)
+        .add_plugin(MyGameplayPlugin {
+            enable_dev_hacks: false, // change to true for dev testing builds
+        })
+        .run();
+}</code></pre>
+<p>Plugins that are added using <a href="/programming/plugins.html#plugin-groups">Plugin Groups</a> can also be
+configured. Many of Bevy's <a href="https://docs.rs/bevy/0.9.1/bevy/struct.DefaultPlugins.html"><code>DefaultPlugins</code></a> work
+this way.</p>
+<pre><code class="language-rust no_run noplayground">App::new()
+    .add_plugins(DefaultPlugins.set(
+        // here we configure the main window
+        WindowPlugin {
+            window: WindowDescriptor {
+                width: 800.0,
+                height: 600.0,
+                // ...
+                ..Default::default()
+            },
+            ..Default::default()
+        }
+    ))
+    .run();</code></pre>
 <h2 id="publishing-crates"><a class="header" href="#publishing-crates">Publishing Crates</a></h2>
 <p>Plugins give you a nice way to publish Bevy-based libraries for other people
 to easily include into their projects.</p>

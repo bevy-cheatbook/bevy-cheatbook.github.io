@@ -140,7 +140,8 @@
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
 <hr />
-<p>Local resources allow you to have per-<a href="/programming/systems.html">system</a> data.</p>
+<p>Local resources allow you to have per-<a href="/programming/systems.html">system</a> data. This data
+is not stored in the ECS World, but rather together with your system.</p>
 <p><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a> is a system parameter similar to
 <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a>, which gives you full mutable access to an
 instance of some data type, that is independent from entities and components.</p>
@@ -189,12 +190,44 @@ fn main() {
     };
 
     App::new()
+        .add_plugins(DefaultPlugins)
         // create a &quot;move closure&quot;, so we can use the `config`
         // variable that we created above
         .add_system(move |cmd: Commands, res: Res&lt;MyStuff&gt;| {
             // call our function from inside the closure
             my_system(cmd, res, &amp;config);
         })
+        .run();
+}</code></pre>
+<p>Another way to accomplish the same thing is to &quot;return&quot; the system
+from &quot;constructor&quot; helper, that creates it:</p>
+<pre><code class="language-rust no_run noplayground">#[derive(Default)]
+struct MyConfig {
+    magic: usize,
+}
+
+fn main() {
+    // create a &quot;constructor&quot; closure, which can initialize
+    // our data and move it into a closure that bevy can run as a system
+    let constructor = || {
+        // create the `MyConfig`
+        let config = MyConfig {
+            magic: 420,
+        };
+
+        // this is the actual system that bevy will run
+        move |mut commands: Commands, res: Res&lt;MyStuff&gt;| {
+            // we can use `config` here, the value from above will be &quot;moved in&quot;
+            // we can also use our system params: `commands`, `res`
+        }
+    };
+
+    App::new()
+        .add_plugins(DefaultPlugins)
+        // note the parentheses `()`
+        // we are calling the &quot;constructor&quot; we made above,
+        // which will return the actual system that gets added to bevy
+        .add_system(constructor())
         .run();
 }</code></pre>
 
