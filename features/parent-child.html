@@ -164,6 +164,11 @@ commands.spawn(MyParentBundle::default())
     .with_children(|parent| {
         parent.spawn(MyChildBundle::default());
     });</code></pre>
+<p>Note that this only sets up the <a href="https://docs.rs/bevy/0.9.1/bevy/hierarchy/struct.Parent.html"><code>Parent</code></a> and
+<a href="https://docs.rs/bevy/0.9.1/bevy/hierarchy/struct.Children.html"><code>Children</code></a> components, and nothing else. Notably, it does not
+add <a href="/features/transforms.html">transforms</a> or <a href="/features/visibility.html">visibility</a> for you.  If you
+need that functionality, you need to add those components yourself, using
+something like <a href="https://docs.rs/bevy/0.9.1/bevy/render/prelude/struct.SpatialBundle.html"><code>SpatialBundle</code></a>.</p>
 <p>You can despawn an entire hierarchy with a single <a href="/programming/commands.html">command</a>:</p>
 <pre><code class="language-rust no_run noplayground">fn close_menu(
     mut commands: Commands,
