@@ -163,8 +163,8 @@ need to accept Microsoft's proprietary license.</p>
 </code></pre>
 <p>Now, use <code>xwin</code> to accept the Microsoft license, download all the files
 from Microsoft servers, and install them to a directory of your choosing.</p>
-<p>For example, to install to <code>/opt/xwin/</code>:</p>
-<pre><code class="language-sh">xwin --accept-license 1 splat --output /opt/xwin
+<p>For example, to install to <code>~/.xwin/</code>:</p>
+<pre><code class="language-sh">xwin --accept-license splat --output ~/.xwin
 </code></pre>
 <h3 id="linking-msvc"><a class="header" href="#linking-msvc">Linking (MSVC)</a></h3>
 <p>Rust needs to know how to link the final EXE file.</p>
@@ -177,9 +177,9 @@ Windows anyway). Just install the <code>lld</code> package from your Linux distr
 <pre><code class="language-toml">[target.x86_64-pc-windows-msvc]
 linker = &quot;lld&quot;
 rustflags = [
-  &quot;-Lnative=/opt/xwin/crt/lib/x86_64&quot;,
-  &quot;-Lnative=/opt/xwin/sdk/lib/um/x86_64&quot;,
-  &quot;-Lnative=/opt/xwin/sdk/lib/ucrt/x86_64&quot;
+  &quot;-Lnative=/home/me/.xwin/crt/lib/x86_64&quot;,
+  &quot;-Lnative=/home/me/.xwin/sdk/lib/um/x86_64&quot;,
+  &quot;-Lnative=/home/me/.xwin/sdk/lib/ucrt/x86_64&quot;
 ]
 </code></pre>
 <h2 id="first-time-setup-gnu"><a class="header" href="#first-time-setup-gnu">First-Time Setup (GNU)</a></h2>
@@ -198,8 +198,10 @@ provides a package for it. Search your distro for a cross-compilation mingw pack
 <h2 id="building-your-project"><a class="header" href="#building-your-project">Building Your Project</a></h2>
 <p>Finally, with all the setup done, you can just build your Rust/Bevy projects
 for Windows:</p>
+<p>MSVC:</p>
 <pre><code class="language-sh">cargo build --target=x86_64-pc-windows-msvc --release
 </code></pre>
+<p>MinGW:</p>
 <pre><code class="language-sh">cargo build --target=x86_64-pc-windows-gnu --release
 </code></pre>
 
