@@ -148,13 +148,15 @@
                         <h1 id="convert-cursor-to-world-coordinates"><a class="header" href="#convert-cursor-to-world-coordinates">Convert cursor to world coordinates</a></h1>
 <p><a href="/code/examples/cursor2world.rs">Click here for the full example code.</a></p>
 <hr />
-<p>Bevy does not yet provide built-in functions to help with finding out what
-the cursor is pointing at.</p>
 <h2 id="3d-games"><a class="header" href="#3d-games">3D games</a></h2>
 <p>There is a good (unofficial) plugin:
 <a href="https://github.com/aevyrie/bevy_mod_picking"><code>bevy_mod_picking</code></a>.</p>
 <h2 id="2d-games"><a class="header" href="#2d-games">2D games</a></h2>
-<p>This code will only work on version 0.9 and higher, for previous versions, see <a href="https://github.com/bevy-cheatbook/bevy-cheatbook/blob/5baa8f74860068e9d0714cd2864d4c026acccdc7/src/code/examples/cursor2world.rs">here</a>!</p>
+<p>Starting from Bevy 0.9, there are camera methods to help you convert between
+screen-space (viewport) and world-space coordinates. We can use this to easily
+find the position of the mouse cursor.</p>
+<p>This code will work regardless of the [camera's projection][cb::camera-projection]
+settings and <a href="/features/transforms.html">transform</a>.</p>
 <p>(there will likely be <em>slight</em> inaccuracy from floating-point calculations)</p>
 <pre><code class="language-rust no_run noplayground">/// Used to help identify our main camera
 #[derive(Component)]
@@ -182,16 +184,18 @@ fn my_cursor_system(
     };
 
     // check if the cursor is inside the window and get its position
-    if let Some(screen_position) = window.cursor_position() {
-        // check if it is possible to create a ray from screen coordinates to world coordinates
-        if let Some(ray) = camera.viewport_to_world(camera_transform, screen_position) {
-            // get 2d world mouse coordinates from the ray
-            let world_position: Vec2 = ray.origin.truncate();
-
-            eprintln!(&quot;World coords: {}/{}&quot;, world_position.x, world_position.y);
-        }
+    // then, ask bevy to convert into world coordinates, and truncate to discard Z
+    if let Some(world_position) = window.cursor_position()
+        .and_then(|cursor| camera.viewport_to_world(camera_transform, cursor))
+        .map(|ray| ray.origin.truncate())
+    {
+        eprintln!(&quot;World coords: {}/{}&quot;, world_position.x, world_position.y);
     }
 }</code></pre>
+<p>In older versions of Bevy, there were no such coordinate conversion methods, and
+the math had to be done manually. If you are interested in how that works, see
+the example from an old version of the book,
+<a href="https://github.com/bevy-cheatbook/bevy-cheatbook/blob/5baa8f74860068e9d0714cd2864d4c026acccdc7/src/code/examples/cursor2world.rs">here</a>.</p>
 
                     </main>
 
