@@ -306,6 +306,50 @@ before a camera renders anything.</p>
 <p>You can also disable clearing on a camera, if you want to preserve all the
 pixels as they were before.</p>
 <p><a href="/window/clear-color.html">See this page for more info.</a></p>
+<h2 id="render-layers"><a class="header" href="#render-layers">Render Layers</a></h2>
+<p><a href="https://docs.rs/bevy/0.9.1/bevy/render/view/visibility/struct.RenderLayers.html"><code>RenderLayers</code></a> is a way to filter what entities should be
+drawn by what cameras. Insert this <a href="/programming/ec.html#components">component</a> onto your entities
+to place them in specific &quot;layers&quot;. The layers are integers from 0 to 31 (32
+total available).</p>
+<p>Inserting this component onto a camera entity selects what layers that camera
+should render. Inserting this component onto renderable entities selects what
+cameras should render those entities. An entity will be rendered if there is any
+overlap between the camera's layers and the entity's layers (they have at least
+one layer in common).</p>
+<p>If an entity does not have the <a href="https://docs.rs/bevy/0.9.1/bevy/render/view/visibility/struct.RenderLayers.html"><code>RenderLayers</code></a> component,
+it is assumed to belong to layer 0 (only).</p>
+<pre><code class="language-rust no_run noplayground">use bevy::render::view::visibility::RenderLayers;
+// This camera renders everything in layers 0, 1
+commands.spawn((
+    Camera2dBundle::default(),
+    RenderLayers::from_layers(&amp;[0, 1])
+));
+// This camera renders everything in layers 1, 2
+commands.spawn((
+    Camera2dBundle::default(),
+    RenderLayers::from_layers(&amp;[1, 2])
+));
+// This sprite will only be seen by the first camera
+commands.spawn((
+    SpriteBundle::default(),
+    RenderLayers::layer(0),
+));
+// This sprite will be seen by both cameras
+commands.spawn((
+    SpriteBundle::default(),
+    RenderLayers::layer(1),
+));
+// This sprite will only be seen by the second camera
+commands.spawn((
+    SpriteBundle::default(),
+    RenderLayers::layer(2),
+));
+// This sprite will also be seen by both cameras
+commands.spawn((
+    SpriteBundle::default(),
+    RenderLayers::from_layers(&amp;[0, 2]),
+));</code></pre>
+<p>You can also modify the render layers of entities after they are spawned.</p>
 <h2 id="camera-ordering"><a class="header" href="#camera-ordering">Camera Ordering</a></h2>
 <p>A camera's priority is a simple integer value that controls the order relative
 to any other cameras with the same render target.</p>
