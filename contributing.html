@@ -73,10 +73,12 @@
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -167,7 +169,7 @@ to be credited, or if you would like to be credited in another way (but no
 commercial self-promotion allowed).</p>
 <h2 id="contributing-book-text"><a class="header" href="#contributing-book-text">Contributing Book Text</a></h2>
 <p>I do not directly merge book text written by other people. This is because
-I want the book to follow a consistent editorial style.</p>
+I want the book to follow my own editorial style.</p>
 <p>If you would like to write new content for the book, feel free to make a
 PR with the content to be included, but note that it will likely not be
 preserved exactly as you wrote it.</p>
@@ -183,10 +185,7 @@ copyright.</p>
 own derivative work based on your contributions. I will license it consistently
 with the rest of the book; see: <a href="./introduction.html#license">License</a>.</p>
 <h2 id="bevy-version"><a class="header" href="#bevy-version">Bevy version</a></h2>
-<p>Content written for the current Bevy release, is accepted for the <code>main</code>
-branch of the book.</p>
-<p>Content written for new developments in Bevy's main branch, is accepted for the
-<code>next</code> branch of the book, in preparation for the next upcoming Bevy release.</p>
+<p>Content must be written only for the current latest release of Bevy.</p>
 <h2 id="style-guidelines"><a class="header" href="#style-guidelines">Style Guidelines</a></h2>
 <p>Aim for simplicity and minimalism. Do not include things irrelevant to
 getting the point across.</p>
@@ -200,11 +199,12 @@ easy to find. Don't come up with new/extra terminology of your own.</p>
 it instead.</p>
 <h3 id="code-style"><a class="header" href="#code-style">Code Style</a></h3>
 <p>Avoid long lines of code, to keep it readable on small screens.</p>
-<p>Use reasonable formatting that does not deviate much from the common
-conventions used by the Rust language community. I don't enforce it strictly;
-there is no need to use <code>rustfmt</code>. If deviating from those standards allows
-for the code to be presented better in the context of the book, then doing
-so is preferable.</p>
+<p>Use reasonable formatting that does not deviate much from the common conventions
+used by the Rust language community. If deviating from those standards allows
+for the code to be presented better in the context of the book, then doing so is
+preferable.</p>
+<p>Please do <em>not</em> use <code>rustfmt</code>. Code should be manually formatted for best
+presentation in the book.</p>
 <h3 id="text-style"><a class="header" href="#text-style">Text Style</a></h3>
 <p>Make it easy to read.</p>
 <ul>

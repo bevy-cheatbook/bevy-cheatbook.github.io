@@ -73,10 +73,12 @@
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -145,7 +147,8 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="bevy-setup-tips"><a class="header" href="#bevy-setup-tips">Bevy Setup Tips</a></h1>
+                        <p>Warning: this chapter has not been fully updated for Bevy 0.10 yet!</p>
+<h1 id="bevy-setup-tips"><a class="header" href="#bevy-setup-tips">Bevy Setup Tips</a></h1>
 <p>This chapter is a collection of additional tips for configuring
 your project or development tools, collected from the Bevy
 community, beyond what is covered in Bevy's <a href="https://bevyengine.org/learn/book/getting-started/setup/">official setup

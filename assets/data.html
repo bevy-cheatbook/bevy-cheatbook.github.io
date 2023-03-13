@@ -73,10 +73,12 @@
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -145,7 +147,8 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="access-the-asset-data"><a class="header" href="#access-the-asset-data">Access the Asset Data</a></h1>
+                        <p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<h1 id="access-the-asset-data"><a class="header" href="#access-the-asset-data">Access the Asset Data</a></h1>
 <p>To access the actual asset data from systems, use the
 <a href="https://docs.rs/bevy/0.9.1/bevy/asset/struct.Assets.html"><code>Assets&lt;T&gt;</code></a> <a href="/programming/res.html">resource</a>.</p>
 <p>You can identify your desired asset using the <a href="/assets/handles.html">handle</a>.</p>

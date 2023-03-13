@@ -73,10 +73,12 @@
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -145,7 +147,8 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="borrow-multiple-fields-from-struct"><a class="header" href="#borrow-multiple-fields-from-struct">Borrow multiple fields from struct</a></h1>
+                        <p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<h1 id="borrow-multiple-fields-from-struct"><a class="header" href="#borrow-multiple-fields-from-struct">Borrow multiple fields from struct</a></h1>
 <p>When you have a <a href="/programming/ec.html#components">component</a> or <a href="/programming/res.html">resource</a>, that is
 larger struct with multiple fields, sometimes you want to borrow several of
 the fields at the same time, possibly mutably.</p>

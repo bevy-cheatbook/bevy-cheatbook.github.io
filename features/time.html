@@ -73,10 +73,12 @@
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -145,7 +147,8 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="time-and-timers"><a class="header" href="#time-and-timers">Time and Timers</a></h1>
+                        <p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<h1 id="time-and-timers"><a class="header" href="#time-and-timers">Time and Timers</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/timers.rs"><code>timers</code></a>,
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/2d/move_sprite.rs"><code>move_sprite</code></a>.</p>

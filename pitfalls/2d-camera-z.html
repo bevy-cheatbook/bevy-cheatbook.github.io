@@ -73,10 +73,12 @@
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -145,7 +147,8 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="2d-objects-not-displaying"><a class="header" href="#2d-objects-not-displaying">2D objects not displaying</a></h1>
+                        <p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<h1 id="2d-objects-not-displaying"><a class="header" href="#2d-objects-not-displaying">2D objects not displaying</a></h1>
 <p>Bevy's 2D <a href="/features/coords.html">coordinate space</a> is set up so that your background can
 be at Z=0.0, and other 2D objects can be layered at positive +Z coordinates
 above that.</p>

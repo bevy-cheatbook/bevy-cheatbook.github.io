@@ -73,10 +73,12 @@
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -145,7 +147,8 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="cameras"><a class="header" href="#cameras">Cameras</a></h1>
+                        <p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<h1 id="cameras"><a class="header" href="#cameras">Cameras</a></h1>
 <p>Cameras drive all rendering in Bevy. They are responsible for configuring what
 to draw, how to draw it, and where to draw it.</p>
 <p>You must have at least one camera entity, in order for anything to be displayed

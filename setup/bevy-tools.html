@@ -73,10 +73,12 @@
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -145,7 +147,8 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="dev-tools-and-editors-for-bevy"><a class="header" href="#dev-tools-and-editors-for-bevy">Dev Tools and Editors for Bevy</a></h1>
+                        <p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<h1 id="dev-tools-and-editors-for-bevy"><a class="header" href="#dev-tools-and-editors-for-bevy">Dev Tools and Editors for Bevy</a></h1>
 <p>Bevy does not yet have an official editor or other such tools. An official
 editor is planned as a long-term future goal. In the meantime, here are
 some community-made tools to help you.</p>

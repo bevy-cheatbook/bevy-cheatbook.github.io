@@ -73,10 +73,12 @@
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -145,7 +147,8 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="generic-systems"><a class="header" href="#generic-systems">Generic Systems</a></h1>
+                        <p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<h1 id="generic-systems"><a class="header" href="#generic-systems">Generic Systems</a></h1>
 <p>Bevy <a href="/programming/systems.html">systems</a> are just plain rust functions, which means they
 can be generic. You can add the same system multiple times, parametrized to
 work on different Rust types or values.</p>

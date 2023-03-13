@@ -73,10 +73,12 @@
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -146,18 +148,16 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="credits"><a class="header" href="#credits">Credits</a></h1>
-<p>While the majority of this book was authored by me, Ida Iyes (<code>@inodentry</code>),
-a number of folks have made significant contributions to help! Thank you
-all so much! ❤️</p>
+<p>While the majority of this book was authored by me, Ida Iyes (<code>@inodentry</code>), a
+number of folks have made large contributions to help! Thank you all so much! ❤️</p>
 <hr />
 <ul>
 <li>Alice I. Cecile <code>@alice-i-cecile</code>: review, advice, reporting lots of good suggestions</li>
 <li>nile <code>@TheRawMeatball</code>: review, useful issue reports</li>
 <li><code>@Zaszi</code>: writing the initial draft of the WASM chapter</li>
 <li><code>@skairunner</code> and <code>@mirenbharta</code>: developing the Pan+Orbit camera example</li>
-<li><code>@billyb2</code>: the Fixed Timestep example</li>
 </ul>
-<p>Thanks to everyone who has submitted <a href="https://github.com/bevy-cheatbook/bevy-cheatbook/issues">GitHub issues</a> with suggestions!</p>
+<p>Thanks to everyone who has submitted <a href="https://github.com/bevy-cheatbook/bevy-cheatbook/issues">GitHub issues</a>!</p>
 <hr />
 <p>Big thanks to all <a href="https://github.com/sponsors/inodentry">sponsors</a>! ❤️ </p>
 <p>Thanks to you, I can actually keep working on this book, improving and maintaining it!</p>

@@ -73,10 +73,12 @@
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -145,7 +147,8 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="hdr-tonemapping-bloom"><a class="header" href="#hdr-tonemapping-bloom">HDR, Tonemapping, Bloom</a></h1>
+                        <p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<h1 id="hdr-tonemapping-bloom"><a class="header" href="#hdr-tonemapping-bloom">HDR, Tonemapping, Bloom</a></h1>
 <p>HDR (High Dynamic Range) refers to the ability of the game engine to handle very
 bright lights or colors. Bevy's rendering is HDR. This means you can have
 objects with colors that go above <code>1.0</code>, very bright lights, or bright emissive

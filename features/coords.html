@@ -73,10 +73,12 @@
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -145,7 +147,8 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="coordinate-system"><a class="header" href="#coordinate-system">Coordinate System</a></h1>
+                        <p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<h1 id="coordinate-system"><a class="header" href="#coordinate-system">Coordinate System</a></h1>
 <h2 id="2d-and-3d-scenes-and-cameras"><a class="header" href="#2d-and-3d-scenes-and-cameras">2D and 3D scenes and cameras</a></h2>
 <p>Bevy uses a right-handed Y-up coordinate system.</p>
 <p>Bevy uses the same coordinate system for 3D and 2D, for consistency.</p>

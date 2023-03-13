@@ -73,10 +73,12 @@
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -145,7 +147,8 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="bevy-asset-management"><a class="header" href="#bevy-asset-management">Bevy Asset Management</a></h1>
+                        <p>Warning: this chapter has not been fully updated for Bevy 0.10 yet!</p>
+<h1 id="bevy-asset-management"><a class="header" href="#bevy-asset-management">Bevy Asset Management</a></h1>
 <p>Assets are the data that the game engine is working with: all of your images,
 3D models, sounds, scenes, game-specific things like item descriptions,
 and more!</p>

@@ -73,10 +73,12 @@
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -145,7 +147,8 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="text-editor--ide"><a class="header" href="#text-editor--ide">Text Editor / IDE</a></h1>
+                        <p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<h1 id="text-editor--ide"><a class="header" href="#text-editor--ide">Text Editor / IDE</a></h1>
 <p>This page contains tips for different text editors and IDEs.</p>
 <p>Bevy is, for the most part, like any other Rust project. If your editor/IDE
 is set up for Rust, that might be all you need. This page contains additional

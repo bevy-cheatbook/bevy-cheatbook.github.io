@@ -73,10 +73,12 @@
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
             var html = document.querySelector('html');
-            var sidebar = 'hidden';
+            var sidebar = null;
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
             }
             html.classList.remove('sidebar-visible');
             html.classList.add("sidebar-" + sidebar);
@@ -145,7 +147,8 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="common-pitfalls"><a class="header" href="#common-pitfalls">Common Pitfalls</a></h1>
+                        <p>Warning: this chapter has not been fully updated for Bevy 0.10 yet!</p>
+<h1 id="common-pitfalls"><a class="header" href="#common-pitfalls">Common Pitfalls</a></h1>
 <p>This chapter covers some common issues or surprises that you might be
 likely to encounter when working with Bevy, with specific advice about how
 to address them.</p>
