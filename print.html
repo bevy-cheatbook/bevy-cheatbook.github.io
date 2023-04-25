@@ -188,14 +188,6 @@ examples</a>.</p>
 Discord</a> to chat, ask questions, or get involved in the project!</p>
 <p>If you want to see some games made with Bevy, see <a href="https://itch.io/games/tag-bevy">itch.io</a>
 or <a href="https://bevyengine.org/assets/#input">Bevy Assets</a>.</p>
-<h2 id="maintenance"><a class="header" href="#maintenance">Maintenance</a></h2>
-<p>The book is currently in the process of being updated for Bevy 0.10.</p>
-<p>Some parts of it are already up to date, while others have not been updated yet.
-The pages that might contain outdated information have a warning at the top.
-When I have verified and updated the contents of a page, I will remove the warning
-from that page. Pages without a warning at the top are up-to-date with Bevy 0.10.</p>
-<p>I intend to keep this book up-to-date and relevant with every new Bevy release.
-I also try to regularly make improvements to it, when I can manage it.</p>
 <h2 id="support-me"><a class="header" href="#support-me">Support Me</a></h2>
 <p><a class="github-button" href="https://github.com/sponsors/inodentry" data-icon="octicon-heart" data-size="large" aria-label="Sponsor @inodentry on GitHub">GitHub Sponsors</a></p>
 <p>I'd like to keep improving and maintaining this book, to provide a high-quality
@@ -204,6 +196,29 @@ independent learning resource for the Bevy community.</p>
 <h2 id="support-bevy"><a class="header" href="#support-bevy">Support Bevy</a></h2>
 <p><a class="github-button" href="https://github.com/sponsors/cart" data-icon="octicon-heart" data-size="large" aria-label="Sponsor @cart on GitHub">GitHub Sponsors</a></p>
 <p>If you like the Bevy Game Engine, you should consider donating to the project.</p>
+<h2 id="maintenance-policy"><a class="header" href="#maintenance-policy">Maintenance Policy</a></h2>
+<p>To ease the maintenance burden, the policy of the project is that the book may
+contain a mixture of content for different versions of Bevy. However, mixing
+outdated and updated content on the same page is not allowed.</p>
+<p>Every page in the book must clearly state what version of Bevy it was written
+for, at the top of the page, above the main heading. All content on that page
+must be relevant for the stated Bevy version.</p>
+<h3 id="current-bevy-version"><a class="header" href="#current-bevy-version">Current Bevy Version</a></h3>
+<p>The current Bevy release is 0.10.</p>
+<p>The aim is to try to maintain the book up to date with the current latest
+release of Bevy. New content should be written for this version. Outdated pages
+will be updated on a best-effort basis.</p>
+<h3 id="old-bevy-version"><a class="header" href="#old-bevy-version">Old Bevy Version</a></h3>
+<p>Content for old releases of Bevy is only allowed in the book if it already
+exists from before and has not been updated yet.</p>
+<h3 id="unreleased-bevys-git-main-branch"><a class="header" href="#unreleased-bevys-git-main-branch">Unreleased (Bevy's git main branch)</a></h3>
+<p>Pages that cover new yet-unreleased features of Bevy are allowed. If there is an
+exciting new feature, and I want to document it, I will write a page, without
+waiting for the next release of Bevy to come out. :)</p>
+<p>For functionality that exists in the current release in some form, but has
+changed for the next release, the current version is the one that should be
+documented. The page can be updated in the future. I might sometimes make
+exceptions to this rule.</p>
 <h2 id="license"><a class="header" href="#license">License</a></h2>
 <p>Copyright © 2021-2023 Ida (IyesGames)</p>
 <p>All code in the book is provided under the
@@ -274,7 +289,9 @@ information about types and features provided by Bevy.</p>
 <li><a href="/2d.html">Working with 2D</a>: Bevy's features for 2D games</li>
 <li><a href="/3d.html">Working with 3D</a>: Bevy's features for 3D games</li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="new-to-bevy-guided-tutorial"><a class="header" href="#new-to-bevy-guided-tutorial">New to Bevy? Guided Tutorial!</a></h1>
 <p>Welcome to Bevy! :) We are glad to have you in our community!</p>
 <p>Make sure to also look at <a href="https://github.com/bevyengine/bevy/tree/latest/examples#examples">the official Bevy examples</a>. If
@@ -418,7 +435,9 @@ encounter in your project.</p>
 <li><a href="/input/dnd.html">Drag-and-Drop files</a></li>
 <li><a href="/cookbook/cursor2world.html">Custom Camera Projection</a></li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="list-of-bevy-builtins"><a class="header" href="#list-of-bevy-builtins">List of Bevy Builtins</a></h1>
 <p>This page is a quick condensed listing of all the important things provided
 by Bevy.</p>
@@ -972,8 +991,7 @@ Text to be displayed</li>
 <li><code>Render</code>: execute the <a href="/TODO.html">render graph</a> to produce actual GPU commands and do the work</li>
 <li><code>Cleanup</code>: clear any data from the render World that should not persist to the next frame</li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this chapter has not been fully updated for Bevy 0.10 yet!</p>
-<h1 id="bevy-setup-tips"><a class="header" href="#bevy-setup-tips">Bevy Setup Tips</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="bevy-setup-tips"><a class="header" href="#bevy-setup-tips">Bevy Setup Tips</a></h1>
 <p>This chapter is a collection of additional tips for configuring
 your project or development tools, collected from the Bevy
 community, beyond what is covered in Bevy's <a href="https://bevyengine.org/learn/book/getting-started/setup/">official setup
@@ -985,7 +1003,9 @@ documentation</a>.</p>
 <li><a href="/platforms.html">Platform-specific information</a></li>
 <li><a href="/pitfalls/performance.html">Configuration to fix slow performance</a></li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="setup//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h1>
 <p>This page covers the basic setup needed for Bevy development.</p>
 <hr />
@@ -1063,7 +1083,9 @@ but might not be in such a good state as other APIs. DirectX 11 support for
 legacy systems is planned, but not available yet.</p>
 <p>macOS/iOS should work without any special driver setup, using Metal.</p>
 <p>Web games are supported and should work in any modern browser, using WebGL2.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="setup//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://github.com/bevyengine/bevy">main</a></th><th>(development)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="using-bleeding-edge-bevy-bevy-main"><a class="header" href="#using-bleeding-edge-bevy-bevy-main">Using bleeding-edge Bevy (bevy main)</a></h1>
 <p>Bevy development moves very fast, and there are often exciting new things that
 are yet unreleased. This page will give you advice about using development
@@ -1210,7 +1232,9 @@ jobs:
       - name: Check code
         run: cargo update &amp;&amp; cargo check --lib --examples
 </code></pre>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="setup//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="text-editor--ide"><a class="header" href="#text-editor--ide">Text Editor / IDE</a></h1>
 <p>This page contains tips for different text editors and IDEs.</p>
 <p>Bevy is, for the most part, like any other Rust project. If your editor/IDE
@@ -1263,7 +1287,9 @@ support</a> in the IDE.</p>
 <li>type <code>Experimental feature</code> in the dialog of the <code>Help | Find Action</code> action</li>
 <li>enable the features <code>org.rust.cargo.evaluate.build.scripts</code> and <code>org.rust.macros.proc</code></li>
 </ol>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="setup//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="dev-tools-and-editors-for-bevy"><a class="header" href="#dev-tools-and-editors-for-bevy">Dev Tools and Editors for Bevy</a></h1>
 <p>Bevy does not yet have an official editor or other such tools. An official
 editor is planned as a long-term future goal. In the meantime, here are
@@ -1291,7 +1317,9 @@ their <a href="setup/../programming/system-order.html">ordering dependencies</a>
 <a href="https://github.com/jakobhellermann/bevycheck"><code>bevycheck</code></a> is a tool you
 could use to help diagnose them. It tries to provide more user-friendly
 Bevy-specific error messages.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="setup//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="community-plugins-ecosystem"><a class="header" href="#community-plugins-ecosystem">Community Plugins Ecosystem</a></h1>
 <p>There is a growing ecosystem of unofficial community-made plugins for Bevy.
 They provide a lot of functionality that is not officially included with the
@@ -1425,7 +1453,9 @@ your asset files inside of the game executable, instead of having a separate
 the Steam SDK by Valve Software, if you intend to publish on that platform.</p>
 <p><a href="https://github.com/jewlexx/bevy-discord-rpc"><code>bevy_discord_presence</code></a> allows you to
 integrate with the Discord social platform.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="setup//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="configuring-bevy"><a class="header" href="#configuring-bevy">Configuring Bevy</a></h1>
 <p>Bevy is very modular and configurable. It is implemented as many separate
 cargo crates, allowing you to remove the parts you don't need. Higher-level
@@ -1561,12 +1591,13 @@ project like this:</p>
 diagnosing performance issues.</p>
 <p><code>trace_chrome</code> and <code>trace_tracy</code> choose the backend you want to use to
 visualize the traces.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this chapter has not been fully updated for Bevy 0.10 yet!</p>
-<h1 id="common-pitfalls"><a class="header" href="#common-pitfalls">Common Pitfalls</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="common-pitfalls"><a class="header" href="#common-pitfalls">Common Pitfalls</a></h1>
 <p>This chapter covers some common issues or surprises that you might be
 likely to encounter when working with Bevy, with specific advice about how
 to address them.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="pitfalls//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="strange-build-errors"><a class="header" href="#strange-build-errors">Strange Build Errors</a></h1>
 <p>Sometimes, you can get strange and confusing build errors when trying to
 compile your project.</p>
@@ -1652,7 +1683,9 @@ it is because of dependencies not being resolved properly, causing cargo to
 try to link multiple versions of Bevy into your project. This often occurs when
 transitioning your project between the release and the git version of Bevy. Cargo
 remembers the versions it was previously using, and gets confused.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="pitfalls//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="performance"><a class="header" href="#performance">Performance</a></h1>
 <h2 id="unoptimized-debug-builds"><a class="header" href="#unoptimized-debug-builds">Unoptimized debug builds</a></h2>
 <p>You can partially enable compiler optimizations in debug/dev mode!</p>
@@ -1705,7 +1738,9 @@ slow compile times:</p>
 <pre><code class="language-toml">[profile.release]
 lto = &quot;thin&quot;
 </code></pre>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="pitfalls//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="error-adding-function-as-system"><a class="header" href="#error-adding-function-as-system">Error adding function as system</a></h1>
 <p>You can sometimes get confusing arcane compiler errors when you try to add
 systems to your Bevy app.</p>
@@ -1803,7 +1838,9 @@ group them into tuples to work around the limit. Tuples can contain up to
 <p>Systems running during the <a href="pitfalls//gpu/stages.html">Extract stage</a> can also use
 <a href="https://docs.rs/bevy/0.9.1/bevy/render/struct.Extract.html"><code>Extract&lt;T&gt;</code></a>, to access data from the Main World instead of the
 Render World. <code>T</code> can be any other system parameter type.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="pitfalls//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="2d-objects-not-displaying"><a class="header" href="#2d-objects-not-displaying">2D objects not displaying</a></h1>
 <p>Bevy's 2D <a href="pitfalls//features/coords.html">coordinate space</a> is set up so that your background can
 be at Z=0.0, and other 2D objects can be layered at positive +Z coordinates
@@ -1820,7 +1857,9 @@ constructor (<code>Camera2dBundle::default()</code>).</p>
 <p>By default, when you create a 2D camera using Bevy's built-in Bundle
 constructor, Bevy sets the camera <code>Transform</code> to have Z=999.9. This is close to
 the default clipping plane (visible range of Z axis), which is set to 1000.0.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="pitfalls//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="3d-objects-not-displaying"><a class="header" href="#3d-objects-not-displaying">3D objects not displaying</a></h1>
 <p>This page will list some common issues that you may encounter, if you are
 trying to spawn a 3D object, but cannot see it on the screen.</p>
@@ -1896,7 +1935,9 @@ parent entities are not supposed to render anything.</p>
 You can use a <a href="https://docs.rs/bevy/0.9.1/bevy/render/view/visibility/struct.VisibilityBundle.html"><code>VisibilityBundle</code></a> or
 <a href="https://docs.rs/bevy/0.9.1/bevy/render/prelude/struct.SpatialBundle.html"><code>SpatialBundle</code></a> (with <a href="pitfalls//features/transforms.html">transforms</a>) if you
 are not using a bundle that already includes these components.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="pitfalls//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="borrow-multiple-fields-from-struct"><a class="header" href="#borrow-multiple-fields-from-struct">Borrow multiple fields from struct</a></h1>
 <p>When you have a <a href="pitfalls//programming/ec.html#components">component</a> or <a href="pitfalls//programming/res.html">resource</a>, that is
 larger struct with multiple fields, sometimes you want to borrow several of
@@ -1944,22 +1985,26 @@ access to the struct, but this does not work when it is wrapped in another type.
 into a regular Rust reference. <code>*thing</code> dereferences the wrapper via
 <a href="https://doc.rust-lang.org/stable/std/ops/trait.DerefMut.html"><code>DerefMut</code></a>, and then <code>&amp;mut</code> borrows it mutably. You now have
 <code>&amp;mut MyStuff</code> instead of <code>Mut&lt;MyStuff&gt;</code>.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="pitfalls//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-10">0.10</a></th><th>(current)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="bevy-time-vs-rustos-time"><a class="header" href="#bevy-time-vs-rustos-time">Bevy Time vs. Rust/OS time</a></h1>
 <p>Do <em>not</em> use <a href="https://doc.rust-lang.org/stable/std/time/struct.Instant.html"><code>std::time::Instant::now()</code></a> to get the
 current time. <a href="pitfalls//features/time.html">Get your timing information from Bevy</a>, using
-<a href="https://docs.rs/bevy/0.9.1/bevy/time/struct.Time.html"><code>Res&lt;Time&gt;</code></a>.</p>
+<a href="https://docs.rs/bevy/0.10.1/bevy/time/struct.Time.html"><code>Res&lt;Time&gt;</code></a>.</p>
 <p>Rust (and the OS) give you the precise time of the moment you call that
 function. However, that's not what you want.</p>
 <p>Your game systems are run by Bevy's parallel scheduler, which means that they
 could be called at vastly different instants every frame! This will result in
 inconsistent / jittery timings and make your game misbehave or look stuttery.</p>
-<p>Bevy's <a href="https://docs.rs/bevy/0.9.1/bevy/time/struct.Time.html"><code>Time</code></a> gives you timing information that is consistent
+<p>Bevy's <a href="https://docs.rs/bevy/0.10.1/bevy/time/struct.Time.html"><code>Time</code></a> gives you timing information that is consistent
 throughout the frame update cycle. It is intended to be used for game logic.</p>
 <p>This is not Bevy-specific, but applies to game development in general. Always
 get your time from your game engine, not from your programming language or
 operating system.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="pitfalls//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="uv-coordinates-in-bevy"><a class="header" href="#uv-coordinates-in-bevy">UV coordinates in Bevy</a></h1>
 <p>In Bevy, the vertical axis for the pixels of textures / images, and when
 sampling textures in a shader, points <em>downwards</em>, from top to bottom. The
@@ -1986,8 +2031,7 @@ correct that using Bevy's sprite-flipping feature:</p>
     },
     ..Default::default()
 });</code></pre>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this chapter has not been fully updated for Bevy 0.10 yet!</p>
-<h1 id="general-game-engine-features"><a class="header" href="#general-game-engine-features">General Game Engine Features</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="general-game-engine-features"><a class="header" href="#general-game-engine-features">General Game Engine Features</a></h1>
 <p>This chapter covers various general features of Bevy, important to using it
 as a game engine.</p>
 <p>You are expected to be familiar with Bevy programming in general. For that,
@@ -2001,7 +2045,9 @@ see the <a href="/programming.html">Bevy Programming Framework</a> chapter.</p>
 <li><a href="/assets.html">Asset Management</a></li>
 <li><a href="/window.html">Window Management</a></li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="features//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-10">0.10</a></th><th>(current)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="coordinate-system"><a class="header" href="#coordinate-system">Coordinate System</a></h1>
 <h2 id="2d-and-3d-scenes-and-cameras"><a class="header" href="#2d-and-3d-scenes-and-cameras">2D and 3D scenes and cameras</a></h2>
 <p>Bevy uses a right-handed Y-up coordinate system.</p>
@@ -2040,7 +2086,9 @@ be able to see your sprites!</a></p>
 </ul>
 <p>The units represent logical (compensated for DPI scaling) screen pixels.</p>
 <p>UI layout flows from top to bottom, similar to a web page.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="features//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="transforms"><a class="header" href="#transforms">Transforms</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/transforms/transform.rs"><code>transform</code></a>,
@@ -2171,7 +2219,9 @@ fn main() {
         )
         .run();
 }</code></pre>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="features//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="visibility"><a class="header" href="#visibility">Visibility</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/3d/parenting.rs"><code>parenting</code></a>.</p>
@@ -2296,7 +2346,9 @@ fn main() {
         )
         .run();
 }</code></pre>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="features//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="cameras"><a class="header" href="#cameras">Cameras</a></h1>
 <p>Cameras drive all rendering in Bevy. They are responsible for configuring what
 to draw, how to draw it, and where to draw it.</p>
@@ -2595,7 +2647,9 @@ scene to render to the screen. Item previews are a similar use case.</p>
 <p>Another use case is window-less applications that want to generate image files.
 For example, you could use Bevy to render something, and then export it to a PNG
 file.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="features//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="hdr-tonemapping-bloom"><a class="header" href="#hdr-tonemapping-bloom">HDR, Tonemapping, Bloom</a></h1>
 <p>HDR (High Dynamic Range) refers to the ability of the game engine to handle very
 bright lights or colors. Bevy's rendering is HDR. This means you can have
@@ -2689,7 +2743,9 @@ Pay attention to the quality/smoothness of the green color gradient on the
 ground plane. In games with photorealistic graphics, similar situations can
 arise in the sky, in dark rooms, or lights glowing with a bloom effect.</p>
 <p><img src="features//img/dithering.png" alt="Visual comparison of a scene simple cube on a flat green plane, with dithering disabled/enabled." /></p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="features//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="time-and-timers"><a class="header" href="#time-and-timers">Time and Timers</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/timers.rs"><code>timers</code></a>,
@@ -2849,7 +2905,9 @@ fn jump_duration(
         jump.time.tick(time.delta());
     }
 }</code></pre>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="features//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="logging-console-messages"><a class="header" href="#logging-console-messages">Logging, Console Messages</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/app/logs.rs"><code>logs</code></a>.</p>
@@ -2953,7 +3011,9 @@ displaying log messages by default. You might not want that in release builds.
 about it. Just avoid spamming lots of messages from performance-sensitive
 parts of your code like inner loops.</p>
 <p>You can disable log levels like <code>trace</code> and <code>debug</code> in release builds.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="features//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="hierarchical-parentchild-entities"><a class="header" href="#hierarchical-parentchild-entities">Hierarchical (Parent/Child) Entities</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/hierarchy.rs"><code>hierarchy</code></a>,
@@ -3067,13 +3127,12 @@ entity, and any attempt to manipulate it will likely lead to this error:</p>
 <p>The workaround is to manually call <code>remove_children</code> alongside the <code>despawn</code>:</p>
 <pre><code class="language-rust no_run noplayground">    commands.entity(parent_entity).remove_children(&amp;[child_entity]);
     commands.entity(child_entity).despawn();</code></pre>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="features//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="fixed-timestep"><a class="header" href="#fixed-timestep">Fixed Timestep</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/fixed_timestep.rs"><code>fixed_timestep</code></a>.</p>
-<p>Consider using the <a href="https://github.com/IyesGames/iyes_loopless"><code>iyes_loopless</code></a> crate, which
-provides an alternative implementation that does not suffer from the
-<a href="features/fixed-timestep.html#caveats">usability issues</a> of the one in Bevy.</p>
 <hr />
 <p>If you need something to happen at fixed time intervals (a common use case
 is Physics updates), you can add the respective <a href="features//programming/systems.html">systems</a> to
@@ -3141,7 +3200,9 @@ higher than 2x the fixed timestep.</p>
 <p>One way around that is to use <a href="features//patterns/manual-event-clear.html">events with manual
 clearing</a>. This gives you control over how long events
 persist, but can also leak / waste memory if you forget to clear them.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="features//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="audio-2"><a class="header" href="#audio-2">Audio</a></h1>
 <p>Bevy's own built-in audio support is extremely barebones and limited. It
 can play sounds and give some control over its volume and playback.</p>
@@ -3189,7 +3250,9 @@ features = [
   &quot;ogg&quot;,
 ]
 </code></pre>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this chapter has not been fully updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-10">0.10</a></th><th>(current)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="bevy-asset-management"><a class="header" href="#bevy-asset-management">Bevy Asset Management</a></h1>
 <p>Assets are the data that the game engine is working with: all of your images,
 3D models, sounds, scenes, game-specific things like item descriptions,
@@ -3203,13 +3266,15 @@ help you during development, by reloading asset files if they change while the
 game is running.</p>
 <p>If you want to write some code to do something when assets finish loading, get
 modified, or are unloaded, you can use <a href="/assets/assetevent.html">asset events</a>.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="assets//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-10">0.10</a></th><th>(current)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="handles"><a class="header" href="#handles">Handles</a></h1>
 <p>Handles are lightweight IDs that refer to a specific asset. You need them
 to use your assets, for example to <a href="assets//programming/commands.html">spawn entities</a> like
 <a href="assets//2d/sprites.html">2D sprites</a> or <a href="assets//features/gltf.html">3D models</a>, or to <a href="assets//assets/data.html">access the data
 of the assets</a>.</p>
-<p>Handles have the Rust type <a href="https://docs.rs/bevy/0.9.1/bevy/asset/struct.Handle.html"><code>Handle&lt;T&gt;</code></a>, where <code>T</code> is the
+<p>Handles have the Rust type <a href="https://docs.rs/bevy/0.10.1/bevy/asset/struct.Handle.html"><code>Handle&lt;T&gt;</code></a>, where <code>T</code> is the
 <a href="assets//builtins.html#assets">asset type</a>.</p>
 <p>You can store handles in your <a href="assets//programming/ec.html#components">entity components</a> or
 <a href="assets//programming/res.html">resources</a>.</p>
@@ -3236,7 +3301,7 @@ to create a weak handle, use <code>.clone_weak()</code> (instead of <code>.clone
 existing handle. Bevy can unload the asset after all strong handles are gone,
 even if you are still holding some weak handles.</p>
 <h2 id="untyped-handles"><a class="header" href="#untyped-handles">Untyped Handles</a></h2>
-<p>Bevy also has a <a href="https://docs.rs/bevy/0.9.1/bevy/asset/struct.HandleUntyped.html"><code>HandleUntyped</code></a> type. Use this type
+<p>Bevy also has a <a href="https://docs.rs/bevy/0.10.1/bevy/asset/struct.HandleUntyped.html"><code>HandleUntyped</code></a> type. Use this type
 of handle if you need to be able to refer to any asset, regardless of the
 asset type.</p>
 <p>This allows you to store a collection (such as <a href="https://doc.rust-lang.org/stable/std/vec/struct.Vec.html"><code>Vec</code></a> or
@@ -3248,7 +3313,9 @@ handle.</p>
 <p>You can convert an untyped handle into a typed handle with <code>.typed::&lt;T&gt;()</code>,
 specifying the type to use. You need to do this to <a href="assets//assets/data.html">access the asset
 data</a>.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="assets//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="load-assets-from-files-with-assetserver"><a class="header" href="#load-assets-from-files-with-assetserver">Load Assets from Files with AssetServer</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/asset/asset_loading.rs"><code>asset_loading</code></a>.</p>
@@ -3350,7 +3417,9 @@ folder located alongside the game's <code>.wasm</code> file.</p>
 I/O backend implementations, such as for loading assets from inside archive
 files (<code>.zip</code>), embedded inside the game executable, using a network protocol,
 … many other possibilities.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="assets//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="access-the-asset-data"><a class="header" href="#access-the-asset-data">Access the Asset Data</a></h1>
 <p>To access the actual asset data from systems, use the
 <a href="https://docs.rs/bevy/0.9.1/bevy/asset/struct.Assets.html"><code>Assets&lt;T&gt;</code></a> <a href="assets//programming/res.html">resource</a>.</p>
@@ -3398,7 +3467,9 @@ any other asset.</p>
 
     // do something with the handle
 }</code></pre>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="assets//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="react-to-changes-with-asset-events"><a class="header" href="#react-to-changes-with-asset-events">React to Changes with Asset Events</a></h1>
 <p>If you need to perform specific actions when an asset is created,
 modified, or removed, you can make a <a href="assets//programming/systems.html">system</a> that reacts to
@@ -3442,7 +3513,9 @@ fn fixup_images(
 the data, the <code>.get_mut</code> will trigger another <code>Modified</code> event for the same
 asset. If you are not careful, this could result in an infinite loop! (from
 events caused by your own system)</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="assets//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="track-loading-progress"><a class="header" href="#track-loading-progress">Track Loading Progress</a></h1>
 <p>There are good community plugins that can help with this. See <a href="assets//setup/unofficial-plugins.html#code-helpers">my
 recommendations for helper crates</a>. Otherwise,
@@ -3500,7 +3573,9 @@ fn check_assets_ready(
         }
     }
 }</code></pre>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="assets//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="hot-reloading-assets"><a class="header" href="#hot-reloading-assets">Hot-Reloading Assets</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/asset/hot_asset_reloading.rs"><code>hot_asset_reloading</code></a>.</p>
@@ -3538,7 +3613,9 @@ in your Materials definitions, or shaders <a href="assets//assets/assetserver.ht
 <p>Shader code that does not come from asset files, such as if you include it
 as a static string in your source code, cannot be hot-reloaded (for obvious
 reasons).</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this chapter has not been fully updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="input-handling"><a class="header" href="#input-handling">Input Handling</a></h1>
 <p><a href="/code/examples/input.rs">Click here to download example code.</a></p>
 <p>This is a complete example that you can run. It will print all input activity
@@ -3591,7 +3668,9 @@ have a system for reading inputs and converting them to your own internal
 &quot;movement intent/action events&quot;, and then another system acting on those
 internal events, to actually move the player. Make sure to use <a href="/programming/system-order.html">explicit
 system ordering</a> to avoid lag / frame delays.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="input//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="keyboard-input"><a class="header" href="#keyboard-input">Keyboard Input</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/input/keyboard_input.rs"><code>keyboard_input</code></a>,
@@ -3670,7 +3749,9 @@ work as expected.</p>
 Scan Codes for detecting keyboard input during gameplay.</p>
 <p>Key Codes can still be used for UI purposes, like to display the chosen key
 to the user.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="input//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="mouse"><a class="header" href="#mouse">Mouse</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/input/mouse_input.rs"><code>mouse_input</code></a>,
@@ -3800,7 +3881,9 @@ into world-space coordinates.</p>
 <p>To track when the mouse cursor enters and leaves your window(s), use
 <a href="https://docs.rs/bevy/0.9.1/bevy/window/struct.CursorEntered.html"><code>CursorEntered</code></a> and <a href="https://docs.rs/bevy/0.9.1/bevy/window/struct.CursorLeft.html"><code>CursorLeft</code></a>
 <a href="input//programming/events.html">events</a>.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="input//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="text--character-input"><a class="header" href="#text--character-input">Text / Character Input</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/input/char_input_events.rs"><code>char_input_events</code></a>.</p>
@@ -3828,7 +3911,9 @@ fn text_input(
         string.clear();
     }
 }</code></pre>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="input//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="gamepad-controller-joystick"><a class="header" href="#gamepad-controller-joystick">Gamepad (Controller, Joystick)</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/input/gamepad_input.rs"><code>gamepad_input</code></a>,
@@ -4046,7 +4131,9 @@ fn configure_gamepads(
 
     settings.default_button_settings = button_settings;
 }</code></pre>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="input//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="touchscreen"><a class="header" href="#touchscreen">Touchscreen</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/input/touch_input.rs"><code>touch_input</code></a>,
@@ -4100,7 +4187,9 @@ fingers currently on the screen:</p>
         }
     }
 }</code></pre>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="input//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="drag-and-drop-files"><a class="header" href="#drag-and-drop-files">Drag-and-Drop (Files)</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/app/drag_and_drop.rs"><code>drag_and_drop</code></a>.</p>
@@ -4141,19 +4230,24 @@ update will happen whenever the user moves the cursor. If the user does not
 immediately move the mouse after dropping the file and leaves the cursor in the
 same place for a while, there will be no events and your app will have no way of
 knowing the cursor position.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="input//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="midi-musical-instrument"><a class="header" href="#midi-musical-instrument">MIDI (Musical Instrument)</a></h1>
 <p>Bevy does not yet have this built-in, but there is a <a href="input//setup/unofficial-plugins.html">3rd-party
 plugin</a> available: <a href="https://github.com/BlackPhlox/bevy_midi"><code>bevy_midi</code></a>.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this chapter has not been fully updated for Bevy 0.10 yet!</p>
-<h1 id="window-management"><a class="header" href="#window-management">Window Management</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="window-management"><a class="header" href="#window-management">Window Management</a></h1>
 <p>This chapter covers topics related to working with the application's OS window.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="window//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="window-properties"><a class="header" href="#window-properties">Window Properties</a></h1>
 <p>Page coming soon…</p>
 <p>In the meantime, you can learn from Bevy's <a href="https://github.com/bevyengine/bevy/tree/latest/examples#examples">examples</a>.</p>
 <p>See the <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/window/window_settings.rs"><code>window_settings</code></a> example.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="window//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="changing-the-background-color"><a class="header" href="#changing-the-background-color">Changing the Background Color</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/window/clear_color.rs"><code>clear_color</code></a>.</p>
@@ -4208,7 +4302,9 @@ default resource) can be mutated at runtime, and bevy will use your new color.
 Changing the default color using the resource will apply the new color to all
 existing cameras that do not specify a custom color, not just newly-spawned
 cameras.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="window//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="grabbing-the-mouse"><a class="header" href="#grabbing-the-mouse">Grabbing the Mouse</a></h1>
 <p><a href="window//code/examples/mouse-grab.rs">Click here for the full example code.</a></p>
 <p>Relevant official examples:
@@ -4245,7 +4341,9 @@ fn cursor_grab_system(
         window.set_cursor_visibility(true);
     }
 }</code></pre>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="window//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="setting-the-window-icon"><a class="header" href="#setting-the-window-icon">Setting the Window Icon</a></h1>
 <p><a href="window//code/examples/window-icon.rs">Click here for the full example code.</a></p>
 <hr />
@@ -4298,25 +4396,31 @@ resource</a>.</p>
 be the same version as the one used by Bevy. You can use <code>cargo tree</code> or
 check <code>Cargo.lock</code> to see which is the correct version. As of Bevy 0.9,
 that should be <code>winit = &quot;0.27&quot;</code>.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this chapter has not been fully updated for Bevy 0.10 yet!</p>
-<h1 id="bevy-2d"><a class="header" href="#bevy-2d">Bevy 2D</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="bevy-2d"><a class="header" href="#bevy-2d">Bevy 2D</a></h1>
 <p>This chapter covers topics relevant to making 2D games with Bevy.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="2d//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-10">0.10</a></th><th>(current)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="2d-camera-setup"><a class="header" href="#2d-camera-setup">2D Camera Setup</a></h1>
 <p>Page coming soon…</p>
 <p>In the meantime, you can learn from Bevy's <a href="https://github.com/bevyengine/bevy/tree/latest/examples#examples">examples</a>.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="2d//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-10">0.10</a></th><th>(current)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="sprites-and-atlases"><a class="header" href="#sprites-and-atlases">Sprites and Atlases</a></h1>
 <p>Page coming soon…</p>
 <p>In the meantime, you can learn from Bevy's <a href="https://github.com/bevyengine/bevy/tree/latest/examples#examples">examples</a>.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this chapter has not been fully updated for Bevy 0.10 yet!</p>
-<h1 id="bevy-3d"><a class="header" href="#bevy-3d">Bevy 3D</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="bevy-3d"><a class="header" href="#bevy-3d">Bevy 3D</a></h1>
 <p>This chapter covers topics relevant to making 3D games with Bevy.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="3d//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-10">0.10</a></th><th>(current)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="3d-camera-setup"><a class="header" href="#3d-camera-setup">3D Camera Setup</a></h1>
 <p>Page coming soon…</p>
 <p>In the meantime, you can learn from Bevy's <a href="https://github.com/bevyengine/bevy/tree/latest/examples#examples">examples</a>.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="3d//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="3d-models-and-scenes-gltf"><a class="header" href="#3d-models-and-scenes-gltf">3D Models and Scenes (GLTF)</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/3d/load_gltf.rs"><code>load_gltf</code></a>,
@@ -4604,8 +4708,7 @@ does not support this yet. If your assets are missing mipmaps, textures will loo
 </ul>
 <p>This list is not exhaustive. There may be other unsupported scenarios that I
 did not know of or forgot to include here. :)</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this chapter has not been updated for Bevy 0.10 yet!</p>
-<h1 id="bevy-programming-framework"><a class="header" href="#bevy-programming-framework">Bevy Programming Framework</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="bevy-programming-framework"><a class="header" href="#bevy-programming-framework">Bevy Programming Framework</a></h1>
 <p>This chapter presents the features of the Bevy core programming framework. This
 covers the ECS (Entity Component System), App and Scheduling.</p>
 <p>For examples of programming patterns and idioms, see the <a href="/patterns.html">Programming
@@ -4619,13 +4722,15 @@ Engine Features</a> chapter.</p>
 <p>Includes concise explanations of each core concept, with code snippets to show
 how it might be used. Care is taken to point out any important considerations
 for using each feature and to recommend known good practices.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-10">0.10</a></th><th>(current)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="ecs-as-a-data-structure"><a class="header" href="#ecs-as-a-data-structure">ECS as a Data Structure</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.10.1/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
 <p>Also check out the complete game examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/games/alien_cake_addict.rs"><code>alien_cake_addict</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/games/breakout.rs"><code>breakout</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.10.1/examples/games/alien_cake_addict.rs"><code>alien_cake_addict</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.10.1/examples/games/breakout.rs"><code>breakout</code></a>.</p>
 <hr />
 <p>Bevy stores and manages all your data for you, using the Bevy ECS
 (Entity-Component System).</p>
@@ -4670,14 +4775,16 @@ be accessed independently.</p>
 <p>For example, represent the Player in your game as an entity, composed
 of separate component types (separate <code>struct</code>s) for things like the
 health, XP, or whatever is relevant to your game. You can also attach
-standard Bevy components like <a href="https://docs.rs/bevy/0.9.1/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> (<a href="programming//features/transforms.html">transforms
+standard Bevy components like <a href="https://docs.rs/bevy/0.10.1/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> (<a href="programming//features/transforms.html">transforms
 explained</a>) to it.</p>
 <p>This will make it easier for you to develop your systems (game logic /
 behaviors), as well as make your game's runtime performance better.</p>
-<p>However, something like a <a href="https://docs.rs/bevy/0.9.1/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>, or a set of
+<p>However, something like a <a href="https://docs.rs/bevy/0.10.1/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>, or a set of
 coordinates, still makes sense as a single <code>struct</code>, because its fields are
 not likely to be useful independently.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
 <hr />
@@ -4741,7 +4848,9 @@ struct PlayerBundle {
 <p>Note that you cannot <a href="programming//programming/queries.html">query</a> for a whole bundle. Bundles are just a
 convenience when creating the entities. Query for the individual component types
 that your <a href="programming//programming/systems.html">system</a> needs to access.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="resources-1"><a class="header" href="#resources-1">Resources</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
@@ -4806,7 +4915,9 @@ instead of resources, because entities are composed of multiple components,
 some of which can be common with other entities. This can make your game
 logic more flexible. For example, you could have a &quot;health/damage system&quot;
 that works with both the player and enemies.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="systems"><a class="header" href="#systems">Systems</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>,
@@ -4868,7 +4979,9 @@ with some of the powerful tools that Bevy offers for managing when/how
 your systems run, such as: <a href="programming//programming/system-order.html">explicit ordering</a> with
 <a href="programming//programming/labels.html">labels</a>, <a href="programming//programming/system-sets.html">system sets</a>, <a href="programming//programming/states.html">states</a>,
 <a href="programming//programming/run-criteria.html">run criteria</a>, and <a href="programming//programming/stages.html">stages</a>.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="queries"><a class="header" href="#queries">Queries</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
@@ -4974,7 +5087,9 @@ the first part of the query (as shown previously), instead of using a filter.</p
 </ul>
 </li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="commands"><a class="header" href="#commands">Commands</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
@@ -5047,7 +5162,9 @@ fn despawn_all_enemies(
     }
 }
 </code></pre>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="events-1"><a class="header" href="#events-1">Events</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/event.rs"><code>event</code></a>.</p>
@@ -5105,7 +5222,9 @@ memory use from unhandled events.</p>
 <p>If you don't like this, <a href="programming//patterns/manual-event-clear.html">you can have manual control over when events are
 cleared</a> (at the risk of leaking / wasting memory if you
 forget to clear them).</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="app-builder-main-function"><a class="header" href="#app-builder-main-function">App Builder (main function)</a></h1>
 <p>Relevant official examples: All of them ;)</p>
 <p>In particular, check out the complete game examples:
@@ -5164,7 +5283,9 @@ Every typical Bevy app must first add it, using either:</p>
 <li><a href="https://docs.rs/bevy/0.9.1/bevy/struct.DefaultPlugins.html"><code>DefaultPlugins</code></a> if you are making a full game/app</li>
 <li><a href="https://docs.rs/bevy/0.9.1/bevy/struct.MinimalPlugins.html"><code>MinimalPlugins</code></a> for something like a headless server.</li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="quitting-the-app"><a class="header" href="#quitting-the-app">Quitting the App</a></h1>
 <p>To cleanly shut down bevy, send an <a href="https://docs.rs/bevy/0.9.1/bevy/app/struct.AppExit.html"><code>AppExit</code></a>
 <a href="programming//programming/events.html">event</a> from any <a href="programming//programming/systems.html">system</a>:</p>
@@ -5182,7 +5303,9 @@ closed, Bevy will quit automatically.</p>
         .add_system(bevy::window::close_on_esc)
         .run();
 }</code></pre>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="local-resources"><a class="header" href="#local-resources">Local Resources</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
@@ -5277,7 +5400,9 @@ fn main() {
         .add_system(constructor())
         .run();
 }</code></pre>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="plugins"><a class="header" href="#plugins">Plugins</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/app/plugin.rs"><code>plugin</code></a>,
@@ -5416,7 +5541,9 @@ website, so that people can find your plugin more easily. You can do this
 by making a PR in <a href="https://github.com/bevyengine/bevy-assets">the Github repo</a>.</p>
 <p>If you are interested in supporting bleeding-edge Bevy (main), <a href="programming//setup/bevy-git.html#advice-for-plugin-authors">see here
 for advice</a>.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="system-order-of-execution"><a class="header" href="#system-order-of-execution">System Order of Execution</a></h1>
 <p>Bevy's scheduling algorithm is designed to deliver maximum performance
 by running as many systems as possible in parallel across the available
@@ -5528,7 +5655,9 @@ clearly impossible to resolve the situation completely like that.</p>
 <p>You should try to redesign your game to avoid such situations, or just accept
 the consequences. You can at least make it behave predictably, using explicit
 ordering to specify the order you prefer.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="system-sets"><a class="header" href="#system-sets">System Sets</a></h1>
 <p>System Sets allow you to easily apply common properties to multiple systems,
 for purposes such as <a href="programming//programming/labels.html">labeling</a>, <a href="programming//programming/system-order.html">ordering</a>,
@@ -5563,7 +5692,9 @@ for purposes such as <a href="programming//programming/labels.html">labeling</a>
 
         .run();
 }</code></pre>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="change-detection"><a class="header" href="#change-detection">Change Detection</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/component_change_detection.rs"><code>component_change_detection</code></a>.</p>
@@ -5706,13 +5837,12 @@ frame, you can use <a href="programming//programming/system-order.html">explicit
 <p>However, when detecting component additions with <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/query/struct.Added.html"><code>Added&lt;T&gt;</code></a>
 (which are typically done using <a href="programming//programming/commands.html"><code>Commands</code></a>), this is not
 enough; you need <a href="programming//programming/stages.html">stages</a>.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="states"><a class="header" href="#states">States</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/state.rs"><code>state</code></a>.</p>
-<p>Consider using the <a href="https://github.com/IyesGames/iyes_loopless"><code>iyes_loopless</code></a> crate, which
-provides an alternative implementation that does not suffer from the
-<a href="programming/states.html#known-pitfalls-and-limitations">usability issues</a> of the one in Bevy.</p>
 <hr />
 <p>States allow you to structure the runtime &quot;flow&quot; of your app.</p>
 <p>This is how you can implement things like:</p>
@@ -5895,12 +6025,10 @@ when the receiving systems are not running!</p>
 <p>To mitigate this, you could implement a <a href="programming//patterns/manual-event-clear.html">custom cleanup
 strategy</a>, to manually manage the lifetime of the relevant
 event types.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="run-criteria"><a class="header" href="#run-criteria">Run Criteria</a></h1>
-<p>Consider using the <a href="https://github.com/IyesGames/iyes_loopless"><code>iyes_loopless</code></a> crate, which
-provides an alternative implementation that does not suffer from the
-<a href="programming/run-criteria.html#known-pitfalls">usability issues</a> of the one in Bevy.</p>
-<hr />
 <p>Run Criteria are a mechanism for controlling if Bevy should run specific
 <a href="programming//programming/systems.html">systems</a>, at runtime. This is how you can make functionality
 that only runs under certain conditions.</p>
@@ -5995,7 +6123,9 @@ systems are not running!</p>
 <p>To mitigate this, you could implement a <a href="programming//patterns/manual-event-clear.html">custom cleanup
 strategy</a>, to manually manage the lifetime of the relevant
 event types.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="labels-1"><a class="header" href="#labels-1">Labels</a></h1>
 <p>You need labels to name various things in your <a href="programming//programming/app-builder.html">app</a>, such as
 <a href="programming//programming/systems.html">systems</a> (for <a href="programming//programming/system-order.html">order control</a>), <a href="programming//programming/run-criteria.html">run
@@ -6064,7 +6194,9 @@ fn main() {
 <p>However, by defining your labels as custom types, the Rust compiler can check
 them for you, and your IDE can auto-complete them. It is the recommended way,
 as it prevents mistakes, and helps you stay organized in larger projects.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="stages-1"><a class="header" href="#stages-1">Stages</a></h1>
 <p>All <a href="programming//programming/systems.html">systems</a> to be run by Bevy are contained in stages. Every
 frame update, Bevy executes each stage, in order. Within each stage, Bevy's
@@ -6130,7 +6262,9 @@ only way to apply <a href="programming//programming/commands.html">Commands</a>.
 performed by using <a href="programming//programming/commands.html">Commands</a>, and need to do so during the
 same frame, placing those systems into separate stages is the only way to
 accomplish that.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="removal-detection"><a class="header" href="#removal-detection">Removal Detection</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/removal_detection.rs"><code>removal_detection</code></a>.</p>
@@ -6221,7 +6355,9 @@ detection.</p>
 }</code></pre>
 <p>Note that, since this detection is local to your system, it does not have
 to happen during the same frame update.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="param-sets"><a class="header" href="#param-sets">Param Sets</a></h1>
 <p>For safety reasons, a <a href="programming//programming/systems.html">system</a> cannot have multiple parameters
 whose data access might have a chance of mutability conflicts over the
@@ -6261,7 +6397,9 @@ same data.</p>
 }</code></pre>
 <p>This ensures only one of the conflicting parameters can be used at the same time.</p>
 <p>The maximum number of parameters in a param set is 8.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="system-piping"><a class="header" href="#system-piping">System Piping</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/system_piping.rs"><code>system_piping</code></a>.</p>
@@ -6306,7 +6444,9 @@ requirements. This implies that parallelism could be limited, affecting
 performance.</p>
 <p>If you create multiple &quot;piped systems&quot; that all contain a common function which
 contains any mutable access, that prevents all of them from running in parallel!</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="direct-world-access"><a class="header" href="#direct-world-access">Direct World Access</a></h1>
 <p>The <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/world/struct.World.html"><code>World</code></a> is where Bevy ECS stores all data and
 associated metadata. It keeps track of <a href="programming//programming/res.html">resources</a>, <a href="programming//programming/ec.html">entities and
@@ -6373,7 +6513,9 @@ all the scheduling logic that Bevy normally does when running systems.</p>
 efficiently, such as information about all the stored components, entities,
 archeypes.</p>
 <pre><code class="language-rust no_run noplayground">// TODO: write code example</code></pre>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="exclusive-systems"><a class="header" href="#exclusive-systems">Exclusive Systems</a></h1>
 <p>Exclusive systems are <a href="programming//programming/systems.html">systems</a> that Bevy will not run in parallel
 with any other system. They can have <a href="programming//programming/world.html">full unrestricted access</a>
@@ -6425,10 +6567,14 @@ but before <a href="programming//programming/commands.html">commands</a> are app
 
         .run();
 }</code></pre>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="sub-apps"><a class="header" href="#sub-apps">Sub-Apps</a></h1>
 <p>This page has not been written yet…</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="non-send-resources"><a class="header" href="#non-send-resources">Non-Send Resources</a></h1>
 <p>&quot;Non-send&quot; refers to data types that must only be accessed from the &quot;main
 thread&quot; of the application. Such data is marked by Rust as <code>!Send</code> (lacking
@@ -6491,7 +6637,9 @@ fn main() {
         .add_startup_system(setup_platform_audio)
         .run();
 }</code></pre>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="writing-tests-for-systems"><a class="header" href="#writing-tests-for-systems">Writing Tests for Systems</a></h1>
 <p>You might want to write and run automated tests for your <a href="programming//programming/systems.html">systems</a>.</p>
 <p>You can use the regular Rust testing features (<code>cargo test</code>) with Bevy.</p>
@@ -6508,7 +6656,9 @@ patterns and idioms, that may be useful when programming with Bevy.</p>
 <p>These topics are an extension of the topics covered in the <a href="/programming.html">Bevy Programming
 Framework</a> chapter. See that chapter to learn the
 foundational concepts.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="patterns//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="generic-systems"><a class="header" href="#generic-systems">Generic Systems</a></h1>
 <p>Bevy <a href="patterns//programming/systems.html">systems</a> are just plain rust functions, which means they
 can be generic. You can add the same system multiple times, parametrized to
@@ -6604,7 +6754,9 @@ not yet stable. To use <code>enum</code>s, you need Rust Nightly, and to enable 
 experimental/unstable feature (put this at the top of your <code>main.rs</code> or
 <code>lib.rs</code>):</p>
 <pre><code class="language-rust no_run noplayground">#![feature(adt_const_params)]</code></pre>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="patterns//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="component-storage-tablesparse-set"><a class="header" href="#component-storage-tablesparse-set">Component Storage (Table/Sparse-Set)</a></h1>
 <p>Bevy ECS provides two different ways of storing data: tables and sparse sets.
 The two storage kinds offer different performance characteristics.</p>
@@ -6690,7 +6842,9 @@ without benchmarking.</p>
 <p>When your game grows complex enough and you have something to benchmark,
 you could try to apply sparse-set storage to situations where it might make
 sense, as described above, and see how it affects your results.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="patterns//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="manual-event-clearing"><a class="header" href="#manual-event-clearing">Manual Event Clearing</a></h1>
 <p><a href="patterns//code/examples/manual-event-clear.rs">Click here to download a full example file with the code from this page.</a></p>
 <hr />
@@ -6767,8 +6921,7 @@ fn my_event_manager&lt;T: 'static + Send + Sync&gt;(
         // TODO: do something with each event
     }
 }</code></pre>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this chapter has not been updated for Bevy 0.10 yet!</p>
-<h1 id="bevy-render-gpu-framework"><a class="header" href="#bevy-render-gpu-framework">Bevy Render (GPU) Framework</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="bevy-render-gpu-framework"><a class="header" href="#bevy-render-gpu-framework">Bevy Render (GPU) Framework</a></h1>
 <p><strong>NOTE:</strong> This chapter of the book is an early <em>Work in Progress</em>!
 Many links are still broken!</p>
 <hr />
@@ -6778,7 +6931,9 @@ Framework</a>. Everything here builds on top of it.</p>
 <p>Here you will learn how to write custom rendering code. If you are simply
 interested in using the existing graphical features provided by Bevy, check
 out the chapters about <a href="/2d.html">2D</a> and <a href="/3d.html">3D</a>.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="gpu//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="render-architecture-overview"><a class="header" href="#render-architecture-overview">Render Architecture Overview</a></h1>
 <p><strong>NOTE:</strong> This chapter of the book is an early <em>Work in Progress</em>!
 Many links are still broken!</p>
@@ -6893,7 +7048,9 @@ attributes</a>) to be fed into
 your <a href="gpu//TODO.html">shaders</a>. The material specifies what
 <a href="gpu//TODO.html">shaders</a> to use and any other data that needs to be
 fed into it, like <a href="gpu//TODO.html">textures</a>.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="gpu//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="render-stages"><a class="header" href="#render-stages">Render Stages</a></h1>
 <p>Everything on the CPU side (the whole process of driving the GPU workloads)
 is structured in a sequence of &quot;render stages&quot;:</p>
@@ -7042,8 +7199,7 @@ It is expected that fresh data will be obtained in the next frame's
 add a custom system to the Cleanup stage to do it.</p>
 <pre><code>// TODO: code example
 </code></pre>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this chapter has not been updated for Bevy 0.10 yet!</p>
-<h1 id="bevy-cookbook"><a class="header" href="#bevy-cookbook">Bevy Cookbook</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="bevy-cookbook"><a class="header" href="#bevy-cookbook">Bevy Cookbook</a></h1>
 <p>This chapter shows you how to do various practical things using Bevy.</p>
 <p>Indended as a supplement to Bevy's <a href="https://github.com/bevyengine/bevy/tree/latest/examples#examples">official examples</a>.</p>
 <p>The examples are written to only focus on the relevant information for the
@@ -7052,7 +7208,9 @@ task at hand.</p>
 are available and linked on each page.</p>
 <p>It is assumed that you are already familiar with
 <a href="/programming.html">Bevy Programming</a>.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="cookbook//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="show-framerate-in-console"><a class="header" href="#show-framerate-in-console">Show Framerate in Console</a></h1>
 <p><a href="cookbook//code/examples/print-framerate.rs">Click here for the full example code.</a></p>
 <hr />
@@ -7067,7 +7225,9 @@ fn main() {
         .add_plugin(FrameTimeDiagnosticsPlugin::default())
         .run();
 }</code></pre>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="cookbook//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="convert-cursor-to-world-coordinates"><a class="header" href="#convert-cursor-to-world-coordinates">Convert cursor to world coordinates</a></h1>
 <p><a href="cookbook//code/examples/cursor2world.rs">Click here for the full example code.</a></p>
 <hr />
@@ -7119,7 +7279,9 @@ fn my_cursor_system(
 the math had to be done manually. If you are interested in how that works, see
 the example from an old version of the book,
 <a href="https://github.com/bevy-cheatbook/bevy-cheatbook/blob/5baa8f74860068e9d0714cd2864d4c026acccdc7/src/code/examples/cursor2world.rs">here</a>.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="cookbook//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="custom-camera-projection"><a class="header" href="#custom-camera-projection">Custom Camera Projection</a></h1>
 <p><a href="cookbook//code/examples/custom-projection.rs">Click here for the full example code.</a></p>
 <hr />
@@ -7220,7 +7382,9 @@ fn main() {
         .add_plugin(CameraProjectionPlugin::&lt;SimpleOrthoProjection&gt;::default())
         .run();
 }</code></pre>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="cookbook//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="pan--orbit-camera"><a class="header" href="#pan--orbit-camera">Pan + Orbit Camera</a></h1>
 <p><a href="cookbook//code/examples/pan-orbit-camera.rs">Click here for the full example code.</a></p>
 <hr />
@@ -7365,7 +7529,9 @@ fn spawn_camera(mut commands: Commands) {
         },
     ));
 }</code></pre>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="cookbook//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="list-all-resource-types"><a class="header" href="#list-all-resource-types">List All Resource Types</a></h1>
 <p><a href="cookbook//code/examples/print-resources.rs">Click here for the full example code.</a></p>
 <hr />
@@ -7390,7 +7556,9 @@ fn spawn_camera(mut commands: Commands) {
 type that is useful as a resource. It lists the types of all the resources
 <em>currently added</em> to the app (by all registered plugins, your own, etc.).</p>
 <p><a href="cookbook//builtins.html">See here for a more useful list types provided in Bevy.</a></p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this chapter has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="bevy-on-different-platforms"><a class="header" href="#bevy-on-different-platforms">Bevy on Different Platforms</a></h1>
 <p>This chapter is a collection of platform-specific information, about using
 Bevy with different operating systems or environments.</p>
@@ -7448,7 +7616,9 @@ work together.</p>
 but that work is in its early days and has not progressed enough to be useful
 for Bevy yet. It should be possible to work on Nintendo Switch support in
 the open, without NDAs, using emulators.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="platforms//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="linux-desktop"><a class="header" href="#linux-desktop">Linux Desktop</a></h1>
 <p>If you have any additional Linux-specific knowledge,
 please help improve this page!</p>
@@ -7494,7 +7664,9 @@ using an environment variable:</p>
 <pre><code class="language-shell">export WINIT_UNIX_BACKEND=wayland
 </code></pre>
 <p>(to require the use of Wayland)</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="platforms//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="macos-desktop"><a class="header" href="#macos-desktop">macOS Desktop</a></h1>
 <p>If you have any additional macOS-specific knowledge,
 please help improve this page!</p>
@@ -7508,7 +7680,9 @@ bug in <code>winit</code> (the OS window management library that Bevy uses). Thi
 be tracked <a href="https://github.com/rust-windowing/winit/issues/1737">here</a>.</p>
 <p>Until that bug is fixed, advise closing the window management apps, if
 encountering performance issues.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="platforms//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="windows-desktop"><a class="header" href="#windows-desktop">Windows Desktop</a></h1>
 <p>If you have any additional Windows-specific knowledge,
 please help improve this page!</p>
@@ -7565,14 +7739,15 @@ fn main() {
 <p>Create your icon as <code>icon.ico</code> in your project folder.</p>
 <h3 id="setting-the-window-icon-1"><a class="header" href="#setting-the-window-icon-1">Setting the Window Icon</a></h3>
 <p>See <a href="platforms//window/icon.html">Bevy Cookbook: Setting the Window Icon</a>.</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
-<h1 id="cross-compilation"><a class="header" href="#cross-compilation">Cross-Compilation</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="cross-compilation"><a class="header" href="#cross-compilation">Cross-Compilation</a></h1>
 <p>This sub-chapter covers how to make builds of your Bevy apps to run on a
 different Operating System than the one you are working on.</p>
 <ul>
 <li><a href="setup//setup/cross/linux-windows.html">Create Windows EXEs from Linux</a></li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="setup/cross//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="build-windows-exes-from-linux"><a class="header" href="#build-windows-exes-from-linux">Build Windows EXEs from Linux</a></h1>
 <p>(also check out the <a href="setup/cross//platforms/windows.html">Windows Platform page</a> for info
 about developing for Windows generally)</p>
@@ -7641,7 +7816,9 @@ for Windows:</p>
 <p>MinGW:</p>
 <pre><code class="language-sh">cargo build --target=x86_64-pc-windows-gnu --release
 </code></pre>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="platforms//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="browser-webassembly"><a class="header" href="#browser-webassembly">Browser (WebAssembly)</a></h1>
 <h2 id="introduction"><a class="header" href="#introduction">Introduction</a></h2>
 <p>You can make web browser games using Bevy. This chapter will help you with
@@ -7710,7 +7887,9 @@ and automate more of your workflow, but are more opinionated in how they work.</
 <li><a href="https://trunkrs.dev">Trunk</a></li>
 <li><a href="https://github.com/rustwasm/wasm-pack"><code>wasm-pack</code></a></li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="platforms/wasm//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="panic-messages"><a class="header" href="#panic-messages">Panic Messages</a></h1>
 <p>Unless we do something about it, you will not be able to see Rust panic
 messages when running in a web browser. This means that, if your game crashes,
@@ -7726,7 +7905,9 @@ console_error_panic_hook = &quot;0.1&quot;
 <pre><code class="language-rust no_run noplayground">    // When building for WASM, print panics to the browser console
     #[cfg(target_arch = &quot;wasm32&quot;)]
     console_error_panic_hook::set_once();</code></pre>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="platforms/wasm//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="optimize-for-size"><a class="header" href="#optimize-for-size">Optimize for Size</a></h1>
 <p>When serving a WASM binary, the smaller it is, the faster the browser can
 download it. Faster downloads means faster page load times and less data
@@ -7786,7 +7967,9 @@ wasm-opt -O -ol 100 -s 100 -o output.wasm input.wasm
 <hr />
 <p>Do you know of more WASM size-optimization techniques? Post about them in the
 <a href="https://github.com/bevy-cheatbook/bevy-cheatbook">GitHub Issue Tracker</a> so that they can be added to this page!</p>
-<div style="break-before: page; page-break-before: always;"></div><p>Warning: this page has not been updated for Bevy 0.10 yet!</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="platforms/wasm//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
 <h1 id="hosting-on-github-pages"><a class="header" href="#hosting-on-github-pages">Hosting on GitHub Pages</a></h1>
 <p>GitHub Pages is a hosting service that allows you to publish your website
 on GitHub's servers.</p>
@@ -7855,6 +8038,8 @@ on <a href="https://github.com/bevy-cheatbook/bevy-cheatbook/issues">GitHub</a>.
 <p>If you have any suggestions for the book, such as ideas for new content, or
 if you notice anything that is incorrect or misleading, please file issues in
 <a href="https://github.com/bevy-cheatbook/bevy-cheatbook">the GitHub repository</a>!</p>
+<h2 id="bevy-version"><a class="header" href="#bevy-version">Bevy Version</a></h2>
+<p>See the book's <a href="/introduction.html#maintenance-policy">maintenance policy</a>.</p>
 <h2 id="contributing-code"><a class="header" href="#contributing-code">Contributing Code</a></h2>
 <p>If you simply want to contribute code examples to the book, feel free to
 make a PR. I can take care of writing the book text / page that your code
@@ -7887,8 +8072,6 @@ copyright.</p>
 <p>As described previously, the actual published content in the book will be my
 own derivative work based on your contributions. I will license it consistently
 with the rest of the book; see: <a href="./introduction.html#license">License</a>.</p>
-<h2 id="bevy-version"><a class="header" href="#bevy-version">Bevy version</a></h2>
-<p>Content must be written only for the current latest release of Bevy.</p>
 <h2 id="style-guidelines"><a class="header" href="#style-guidelines">Style Guidelines</a></h2>
 <p>Aim for simplicity and minimalism. Do not include things irrelevant to
 getting the point across.</p>
