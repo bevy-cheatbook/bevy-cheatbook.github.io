@@ -1,0 +1,373 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Intro: Your Code - Unofficial Bevy Cheat Book</title>
+
+
+        <!-- Custom HTML head -->
+        <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../nagbar.css">
+        <link rel="stylesheet" href="../sidebar.css">
+
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = null;
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../introduction.html">Introduction</a></li><li class="chapter-item expanded affix "><a href="../overview.html">Chapter Overview</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../tutorial.html">New to Bevy? Guided Tutorial!</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../builtins.html">List of Bevy Builtins</a></li><li class="spacer"></li><li class="chapter-item expanded "><a href="../setup.html"><strong aria-hidden="true">1.</strong> Bevy Setup Tips</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../setup/getting-started.html"><strong aria-hidden="true">1.1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="../setup/bevy-git.html"><strong aria-hidden="true">1.2.</strong> Using bleeding-edge Bevy (main)</a></li><li class="chapter-item expanded "><a href="../setup/editor.html"><strong aria-hidden="true">1.3.</strong> Text Editor / IDE</a></li><li class="chapter-item expanded "><a href="../setup/bevy-tools.html"><strong aria-hidden="true">1.4.</strong> Dev Tools and Editors for Bevy</a></li><li class="chapter-item expanded "><a href="../setup/unofficial-plugins.html"><strong aria-hidden="true">1.5.</strong> Community Plugin Ecosystem</a></li><li class="chapter-item expanded "><a href="../setup/bevy-config.html"><strong aria-hidden="true">1.6.</strong> Customizing Bevy (features, modularity)</a></li></ol></li><li class="chapter-item expanded "><a href="../pitfalls.html"><strong aria-hidden="true">2.</strong> Common Pitfalls</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../pitfalls/build-errors.html"><strong aria-hidden="true">2.1.</strong> Strange compile errors from Bevy or dependencies</a></li><li class="chapter-item expanded "><a href="../pitfalls/performance.html"><strong aria-hidden="true">2.2.</strong> Slow Performance</a></li><li class="chapter-item expanded "><a href="../pitfalls/into-system.html"><strong aria-hidden="true">2.3.</strong> Error adding function as system</a></li><li class="chapter-item expanded "><a href="../pitfalls/2d-camera-z.html"><strong aria-hidden="true">2.4.</strong> 2D objects not displaying</a></li><li class="chapter-item expanded "><a href="../pitfalls/3d-not-rendering.html"><strong aria-hidden="true">2.5.</strong> 3D objects not displaying</a></li><li class="chapter-item expanded "><a href="../pitfalls/split-borrows.html"><strong aria-hidden="true">2.6.</strong> Borrow multiple fields from struct</a></li><li class="chapter-item expanded "><a href="../pitfalls/time.html"><strong aria-hidden="true">2.7.</strong> Jittering Time (choppy movement/animation)</a></li><li class="chapter-item expanded "><a href="../pitfalls/uv-coordinates.html"><strong aria-hidden="true">2.8.</strong> Textures/Images are flipped</a></li></ol></li><li class="chapter-item expanded "><a href="../features.html"><strong aria-hidden="true">3.</strong> General Game Engine Features</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../features/coords.html"><strong aria-hidden="true">3.1.</strong> Coordinate System</a></li><li class="chapter-item expanded "><a href="../features/transforms.html"><strong aria-hidden="true">3.2.</strong> Transforms</a></li><li class="chapter-item expanded "><a href="../features/visibility.html"><strong aria-hidden="true">3.3.</strong> Visibility</a></li><li class="chapter-item expanded "><a href="../features/camera.html"><strong aria-hidden="true">3.4.</strong> Cameras</a></li><li class="chapter-item expanded "><a href="../features/hdr-tonemap.html"><strong aria-hidden="true">3.5.</strong> HDR, Tonemapping, Bloom</a></li><li class="chapter-item expanded "><a href="../features/time.html"><strong aria-hidden="true">3.6.</strong> Time and Timers</a></li><li class="chapter-item expanded "><a href="../features/log.html"><strong aria-hidden="true">3.7.</strong> Logging, Console Messages</a></li><li class="chapter-item expanded "><a href="../features/parent-child.html"><strong aria-hidden="true">3.8.</strong> Parent/Child Hierarchies</a></li><li class="chapter-item expanded "><a href="../features/fixed-timestep.html"><strong aria-hidden="true">3.9.</strong> Fixed Timestep</a></li><li class="chapter-item expanded "><a href="../features/audio.html"><strong aria-hidden="true">3.10.</strong> Audio</a></li></ol></li><li class="chapter-item expanded "><a href="../assets.html"><strong aria-hidden="true">4.</strong> Asset Management</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../assets/handles.html"><strong aria-hidden="true">4.1.</strong> Handles</a></li><li class="chapter-item expanded "><a href="../assets/assetserver.html"><strong aria-hidden="true">4.2.</strong> Load Assets from Files</a></li><li class="chapter-item expanded "><a href="../assets/data.html"><strong aria-hidden="true">4.3.</strong> Access the Asset Data</a></li><li class="chapter-item expanded "><a href="../assets/assetevent.html"><strong aria-hidden="true">4.4.</strong> React to Changes with Asset Events</a></li><li class="chapter-item expanded "><a href="../assets/ready.html"><strong aria-hidden="true">4.5.</strong> Track Loading Progress</a></li><li class="chapter-item expanded "><a href="../assets/hot-reload.html"><strong aria-hidden="true">4.6.</strong> Hot-Reloading Assets</a></li></ol></li><li class="chapter-item expanded "><a href="../input.html"><strong aria-hidden="true">5.</strong> Input Handling</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../input/keyboard.html"><strong aria-hidden="true">5.1.</strong> Keyboard</a></li><li class="chapter-item expanded "><a href="../input/mouse.html"><strong aria-hidden="true">5.2.</strong> Mouse</a></li><li class="chapter-item expanded "><a href="../input/char.html"><strong aria-hidden="true">5.3.</strong> Text / Character</a></li><li class="chapter-item expanded "><a href="../input/gamepad.html"><strong aria-hidden="true">5.4.</strong> Gamepad (Controller, Joystick)</a></li><li class="chapter-item expanded "><a href="../input/touch.html"><strong aria-hidden="true">5.5.</strong> Touchscreen</a></li><li class="chapter-item expanded "><a href="../input/dnd.html"><strong aria-hidden="true">5.6.</strong> Drag-and-Drop (Files)</a></li><li class="chapter-item expanded "><a href="../input/midi.html"><strong aria-hidden="true">5.7.</strong> MIDI (Musical Instrument)</a></li></ol></li><li class="chapter-item expanded "><a href="../window.html"><strong aria-hidden="true">6.</strong> Window Management</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../window/props.html"><strong aria-hidden="true">6.1.</strong> [WIP] Window Properties</a></li><li class="chapter-item expanded "><a href="../window/clear-color.html"><strong aria-hidden="true">6.2.</strong> Change the Background Color</a></li><li class="chapter-item expanded "><a href="../window/mouse-grab.html"><strong aria-hidden="true">6.3.</strong> Grab/Capture the Mouse Cursor</a></li><li class="chapter-item expanded "><a href="../window/icon.html"><strong aria-hidden="true">6.4.</strong> Set the Window Icon</a></li></ol></li><li class="chapter-item expanded "><a href="../2d.html"><strong aria-hidden="true">7.</strong> Working with 2D</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../2d/camera.html"><strong aria-hidden="true">7.1.</strong> [WIP] 2D Camera Setup</a></li><li class="chapter-item expanded "><a href="../2d/sprites.html"><strong aria-hidden="true">7.2.</strong> [WIP] Sprites and Atlases</a></li></ol></li><li class="chapter-item expanded "><a href="../3d.html"><strong aria-hidden="true">8.</strong> Working with 3D</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../3d/camera.html"><strong aria-hidden="true">8.1.</strong> [WIP] 3D Camera Setup</a></li><li class="chapter-item expanded "><a href="../3d/gltf.html"><strong aria-hidden="true">8.2.</strong> 3D Models and Scenes (GLTF)</a></li></ol></li><li class="chapter-item expanded "><a href="../programming.html"><strong aria-hidden="true">9.</strong> Bevy Programming Framework</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../programming/ecs-intro.html"><strong aria-hidden="true">9.1.</strong> Intro to ECS</a></li><li class="chapter-item expanded "><a href="../programming/intro-data.html"><strong aria-hidden="true">9.2.</strong> Intro: Your Data</a></li><li class="chapter-item expanded "><a href="../programming/intro-code.html" class="active"><strong aria-hidden="true">9.3.</strong> Intro: Your Code</a></li><li class="chapter-item expanded "><a href="../programming/ec.html"><strong aria-hidden="true">9.4.</strong> Entities and Components</a></li><li class="chapter-item expanded "><a href="../programming/res.html"><strong aria-hidden="true">9.5.</strong> Resources</a></li><li class="chapter-item expanded "><a href="../programming/systems.html"><strong aria-hidden="true">9.6.</strong> Systems</a></li><li class="chapter-item expanded "><a href="../programming/queries.html"><strong aria-hidden="true">9.7.</strong> Queries</a></li><li class="chapter-item expanded "><a href="../programming/commands.html"><strong aria-hidden="true">9.8.</strong> Commands</a></li><li class="chapter-item expanded "><a href="../programming/events.html"><strong aria-hidden="true">9.9.</strong> Events</a></li><li class="chapter-item expanded "><a href="../programming/app-builder.html"><strong aria-hidden="true">9.10.</strong> App Builder (fn main)</a></li><li class="chapter-item expanded "><a href="../programming/quit.html"><strong aria-hidden="true">9.11.</strong> Quit the App</a></li><li class="chapter-item expanded "><a href="../programming/local.html"><strong aria-hidden="true">9.12.</strong> Local Resources</a></li><li class="chapter-item expanded "><a href="../programming/plugins.html"><strong aria-hidden="true">9.13.</strong> Plugins</a></li><li class="chapter-item expanded "><a href="../programming/system-order.html"><strong aria-hidden="true">9.14.</strong> System Order of Execution</a></li><li class="chapter-item expanded "><a href="../programming/system-sets.html"><strong aria-hidden="true">9.15.</strong> System Sets</a></li><li class="chapter-item expanded "><a href="../programming/change-detection.html"><strong aria-hidden="true">9.16.</strong> Change Detection</a></li><li class="chapter-item expanded "><a href="../programming/states.html"><strong aria-hidden="true">9.17.</strong> States</a></li><li class="chapter-item expanded "><a href="../programming/run-criteria.html"><strong aria-hidden="true">9.18.</strong> Run Criteria</a></li><li class="chapter-item expanded "><a href="../programming/labels.html"><strong aria-hidden="true">9.19.</strong> Labels</a></li><li class="chapter-item expanded "><a href="../programming/stages.html"><strong aria-hidden="true">9.20.</strong> Stages</a></li><li class="chapter-item expanded "><a href="../programming/removal-detection.html"><strong aria-hidden="true">9.21.</strong> Removal Detection</a></li><li class="chapter-item expanded "><a href="../programming/paramset.html"><strong aria-hidden="true">9.22.</strong> ParamSet</a></li><li class="chapter-item expanded "><a href="../programming/system-piping.html"><strong aria-hidden="true">9.23.</strong> System Piping</a></li><li class="chapter-item expanded "><a href="../programming/world.html"><strong aria-hidden="true">9.24.</strong> Direct ECS World Access</a></li><li class="chapter-item expanded "><a href="../programming/exclusive.html"><strong aria-hidden="true">9.25.</strong> Exclusive Systems</a></li><li class="chapter-item expanded "><a href="../programming/sub-apps.html"><strong aria-hidden="true">9.26.</strong> [WIP] Sub-Apps</a></li><li class="chapter-item expanded "><a href="../programming/non-send.html"><strong aria-hidden="true">9.27.</strong> Non-Send</a></li><li class="chapter-item expanded "><a href="../programming/system-tests.html"><strong aria-hidden="true">9.28.</strong> Writing Tests for Systems</a></li></ol></li><li class="chapter-item expanded "><a href="../patterns.html"><strong aria-hidden="true">10.</strong> Programming Patterns</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../patterns/generic-systems.html"><strong aria-hidden="true">10.1.</strong> Generic Systems</a></li><li class="chapter-item expanded "><a href="../patterns/component-storage.html"><strong aria-hidden="true">10.2.</strong> Component Storage (Table/Sparse-Set)</a></li><li class="chapter-item expanded "><a href="../patterns/manual-event-clear.html"><strong aria-hidden="true">10.3.</strong> Manual Event Clearing</a></li></ol></li><li class="chapter-item expanded "><a href="../gpu.html"><strong aria-hidden="true">11.</strong> [WIP] Bevy Render (GPU) Framework</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../gpu/intro.html"><strong aria-hidden="true">11.1.</strong> Render Architecture Overview</a></li><li class="chapter-item expanded "><a href="../gpu/stages.html"><strong aria-hidden="true">11.2.</strong> Render Stages</a></li></ol></li><li class="chapter-item expanded "><a href="../cookbook.html"><strong aria-hidden="true">12.</strong> Bevy Cookbook</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cookbook/print-framerate.html"><strong aria-hidden="true">12.1.</strong> Show Framerate in Console</a></li><li class="chapter-item expanded "><a href="../cookbook/cursor2world.html"><strong aria-hidden="true">12.2.</strong> Convert cursor to world coordinates</a></li><li class="chapter-item expanded "><a href="../cookbook/custom-projection.html"><strong aria-hidden="true">12.3.</strong> Custom Camera Projection</a></li><li class="chapter-item expanded "><a href="../cookbook/pan-orbit-camera.html"><strong aria-hidden="true">12.4.</strong> Pan+Orbit Camera</a></li><li class="chapter-item expanded "><a href="../cookbook/print-resources.html"><strong aria-hidden="true">12.5.</strong> List All Resource Types</a></li></ol></li><li class="chapter-item expanded "><a href="../platforms.html"><strong aria-hidden="true">13.</strong> Bevy on Different Platforms</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../platforms/linux.html"><strong aria-hidden="true">13.1.</strong> Linux Desktop</a></li><li class="chapter-item expanded "><a href="../platforms/macos.html"><strong aria-hidden="true">13.2.</strong> macOS Desktop</a></li><li class="chapter-item expanded "><a href="../platforms/windows.html"><strong aria-hidden="true">13.3.</strong> Windows Desktop</a></li><li class="chapter-item expanded "><a href="../setup/cross.html"><strong aria-hidden="true">13.4.</strong> Cross-Compilation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../setup/cross/linux-windows.html"><strong aria-hidden="true">13.4.1.</strong> From Linux to Windows</a></li></ol></li><li class="chapter-item expanded "><a href="../platforms/wasm.html"><strong aria-hidden="true">13.5.</strong> Browser (WebAssembly)</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../platforms/wasm/panic-console.html"><strong aria-hidden="true">13.5.1.</strong> Panic Messages</a></li><li class="chapter-item expanded "><a href="../platforms/wasm/size-opt.html"><strong aria-hidden="true">13.5.2.</strong> Optimize for Size</a></li><li class="chapter-item expanded "><a href="../platforms/wasm/gh-pages.html"><strong aria-hidden="true">13.5.3.</strong> Hosting on GitHub Pages</a></li><li class="spacer"></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../credits.html">Credits</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../contact.html">Contact Me</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../contributing-bevy.html">Contribute to Bevy</a></li><li class="chapter-item expanded affix "><a href="../contributing.html">Contribute to this Book</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Unofficial Bevy Cheat Book</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-10">0.10</a></th><th>(current)</th></tr></thead><tbody>
+</tbody></table>
+</div>
+<h1 id="intro-your-code"><a class="header" href="#intro-your-code">Intro: Your Code</a></h1>
+<p>This page is an overview, to give you an idea of the big picture of how Bevy
+works. Click on the various links to be taken to dedicated pages where you can
+learn more about each concept.</p>
+<hr />
+<p>As mentioned in <a href="/programming/ecs-intro.html">the ECS Intro</a>, Bevy manages all of your
+functionality/behaviors for you, running them when appropriate and giving them
+access to whatever parts of <a href="/programming/intro-data.html">your data</a> they need.</p>
+<p>Individual pieces of functionality are called <a href="/programming/systems.html">systems</a>. Each system
+is a Rust function (<code>fn</code>) you write, which accepts <a href="/builtins.html#systemparams">special parameter
+types</a> to indicate what <a href="/programming/intro-data.html">data</a> it needs to
+access. Think of the function signature as a &quot;specification&quot; for what to fetch
+from the ECS <a href="https://docs.rs/bevy/0.10.1/bevy/ecs/world/struct.World.html"><code>World</code></a>.</p>
+<p>Here is what a <a href="/programming/systems.html">system</a> might look like. Note how, just by looking
+at the function parameters, we know <em>exactly</em> what <a href="/programming/intro-data.html">data</a>
+can be accessed.</p>
+<pre><code class="language-rust no_run noplayground">fn enemy_detect_player(
+    // access data from resources
+    mut ai_settings: ResMut&lt;EnemyAiSettings&gt;,
+    gamemode: Res&lt;GameModeData&gt;,
+    // access data from entities/components
+    query_player: Query&lt;&amp;Transform, With&lt;Player&gt;&gt;,
+    query_enemies: Query&lt;&amp;mut Transform, (With&lt;Enemy&gt;, Without&lt;Player&gt;)&gt;,
+    // in case we want to spawn/despawn entities, etc.
+    mut commands: Commands,
+) {
+    // ... implement your behavior here ...
+}</code></pre>
+<p>(learn more about: <a href="/programming/systems.html">systems</a>, <a href="/programming/queries.html">queries</a>, <a href="/programming/commands.html">commands</a>, <a href="/programming/res.html">resources</a>, <a href="/programming/ec.html#entities">entities</a>, <a href="/programming/ec.html#components">components</a>)</p>
+<h2 id="parallel-systems"><a class="header" href="#parallel-systems">Parallel Systems</a></h2>
+<p>Based on the <a href="/builtins.html#systemparams">parameter</a> types of the <a href="/programming/systems.html">systems</a>
+you write, Bevy knows what data each system can access and whether it conflicts
+with any other systems.  Systems that do not conflict (don't access any of the
+same data) will be automatically <a href="/programming/system-order.html">run in parallel</a> on
+different CPU threads. This way, you get multithreading, utilizing modern
+multi-core CPU hardware effectively, with no extra effort from you!</p>
+<p>For best parallelism performance, it is recommended that you keep your
+functionality and <a href="/programming/intro-data.html">your data</a> granular. Create many small
+systems, each one with a narrowly-scoped purpose and accessing only the data it
+needs. This gives Bevy more opportunities for parallelism. Putting too much
+functionality in one system, or too much data in a single
+<a href="/programming/ec.html#components">component</a> or <a href="/programming/res.html">resource</a> <code>struct</code>, limits parallelism.</p>
+<p>Bevy's parallelism is non-deterministic by default. Your systems might run in a
+different and unpredictable order relative to one another, unless you add
+<a href="/programming/system-order.html">ordering</a> dependencies to constrain it.</p>
+<h2 id="exclusive-systems"><a class="header" href="#exclusive-systems">Exclusive Systems</a></h2>
+<p><a href="/programming/exclusive.html">Exclusive</a> systems provide you with a way to get <a href="/programming/world.html">full direct
+access</a> to the ECS <a href="/programming/world.html"><code>World</code></a>. They cannot run in parallel
+with other systems, because they can access anything and do anything. Sometimes,
+you might need this additonal power.</p>
+<h2 id="schedules"><a class="header" href="#schedules">Schedules</a></h2>
+<p>Bevy stores systems inside of <a href="/programming/schedules.html">schedules</a>
+(<a href="https://docs.rs/bevy/0.10.1/bevy/ecs/schedule/struct.Schedule.html"><code>Schedule</code></a>). The schedule contains the systems and all
+relevant metadata to organize them, telling Bevy when and how to run them. Bevy
+<a href="/programming/app-builder.html">Apps</a> typically contain many schedules. Each one is a collection of
+systems to be invoked in different scenarios (every frame update, <a href="/features/fixed-timestep.html">fixed
+timestep</a> update, at app startup, on <a href="/programming/states.html">state</a>
+transitions, etc.).</p>
+<p>The metadata stored in schedules allows you to control how systems run:</p>
+<ul>
+<li>Add <a href="/programming/run-criteria.html">run conditions</a> to control if systems should run during an
+invocation of the schedule. You can disable systems if you only need them
+to run sometimes.</li>
+<li>Add <a href="/programming/system-order.html">ordering</a> constraints, if one system depends on
+another system completing before it.</li>
+</ul>
+<p>Within schedules, systems can be grouped into <a href="/programming/system-sets.html">sets</a>. Sets
+allow multiple systems to share common configuration/metadata. Systems
+inherit configuration from all sets they belong to. Sets can also inherit
+configuration from other sets.</p>
+<p>Here is an illustration to help you visualize the logical structure of a
+schedule. Let's look at how a hypothetical &quot;Update&quot; (run every frame) schedule of a
+game might be organized.</p>
+<p>List of <a href="/programming/systems.html">systems</a>:</p>
+<div class="table-wrapper"><table><thead><tr><th><a href="/programming/systems.html">System</a> name</th><th><a href="/programming/system-sets.html">Sets</a> it belongs to</th><th><a href="/programming/run-criteria.html">Run conditions</a></th><th><a href="/programming/system-order.html">Ordering constraints</a></th></tr></thead><tbody>
+<tr><td><code>footstep_sound</code></td><td><code>AudioSet</code> <code>GameplaySet</code></td><td></td><td><code>after(player_movement)</code> <code>after(enemy_movement)</code></td></tr>
+<tr><td><code>player_movement</code></td><td><code>GameplaySet</code></td><td><code>player_alive</code> <code>not(cutscene)</code></td><td><code>after(InputSet)</code></td></tr>
+<tr><td><code>camera_movement</code></td><td><code>GameplaySet</code></td><td></td><td><code>after(InputSet)</code></td></tr>
+<tr><td><code>enemy_movement</code></td><td><code>EnemyAiSet</code></td><td></td><td></td></tr>
+<tr><td><code>enemy_spawn</code></td><td><code>EnemyAiSet</code></td><td></td><td></td></tr>
+<tr><td><code>enemy_despawn</code></td><td><code>EnemyAiSet</code></td><td></td><td><code>before(enemy_spawn)</code></td></tr>
+<tr><td><code>mouse_input</code></td><td><code>InputSet</code></td><td><code>mouse_enabled</code></td><td></td></tr>
+<tr><td><code>controller_input</code></td><td><code>InputSet</code></td><td><code>gamepad_enabled</code></td><td></td></tr>
+<tr><td><code>background_music</code></td><td><code>AudioSet</code></td><td></td><td></td></tr>
+<tr><td><code>ui_button_animate</code></td><td></td><td></td><td></td></tr>
+<tr><td><code>menu_logo_animate</code></td><td><code>MainMenuSet</code></td><td></td><td></td></tr>
+<tr><td><code>menu_button_sound</code></td><td><code>MainMenuSet</code> <code>AudioSet</code></td><td></td><td></td></tr>
+<tr><td>...</td><td></td><td></td><td></td></tr>
+</tbody></table>
+</div>
+<p>List of <a href="/programming/system-sets.html">sets</a>:</p>
+<div class="table-wrapper"><table><thead><tr><th><a href="/programming/system-sets.html">Set</a> name</th><th>Parent Sets</th><th><a href="/programming/run-criteria.html">Run conditions</a></th><th><a href="/programming/system-order.html">Ordering constraints</a></th></tr></thead><tbody>
+<tr><td><code>MainMenuSet</code></td><td></td><td><code>in_state(MainMenu)</code></td><td></td></tr>
+<tr><td><code>GameplaySet</code></td><td></td><td><code>in_state(InGame)</code></td><td></td></tr>
+<tr><td><code>InputSet</code></td><td><code>GameplaySet</code></td><td></td><td></td></tr>
+<tr><td><code>EnemyAiSet</code></td><td><code>GameplaySet</code></td><td><code>not(cutscene)</code></td><td><code>after(player_movement)</code></td></tr>
+<tr><td><code>AudioSet</code></td><td></td><td><code>not(audio_muted)</code></td><td></td></tr>
+</tbody></table>
+</div>
+<p>Note that it doesn't matter how systems are listed in the schedule. Their
+<a href="/programming/system-order.html">order</a> of execution is determined by the metadata. Bevy will
+respect those constraints, but otherwise run systems in parallel as much as it
+can, depending on what CPU threads are available.</p>
+<p>Also note how our hypothetical game is implemented using many individually-small
+systems. For example, instead of playing audio inside of the <code>player_movement</code>
+system, we made a separate <code>play_footstep_sounds</code> system. These two pieces of
+functionality probably need to access different <a href="/programming/intro-data.html">data</a>, so
+putting them in separate systems allows Bevy more opportunities for parallelism.
+By being separate systems, they can also have different configuration. The
+<code>play_footstep_sounds</code> system can be added to an <code>AudioSet</code>
+<a href="/programming/system-sets.html">set</a>, from which it inherits a <code>not(audio_muted)</code> <a href="/programming/run-criteria.html">run
+condition</a>.</p>
+<p>Similarly, we put mouse and controller input in separate systems. The <code>InputSet</code>
+set allows systems like <code>player_movement</code> to share an ordering dependency
+on all of them at once.</p>
+<p>You can see how Bevy's scheduling APIs give you a lot of flexibility to organize
+all the functionality in your game. What will you do with all this power? ;)</p>
+<hr />
+<p>Here is how <a href="/programming/schedules.html">schedule</a> that was illustrated above could be
+created in code:</p>
+<pre><code class="language-rust no_run noplayground">app.configure_set(MainMenuSet
+    .run_if(in_state(MainMenu))
+);
+app.configure_set(GameplaySet
+    .run_if(in_state(InGame))
+);
+app.configure_set(InputSet
+    .in_set(GameplaySet)
+);
+app.configure_set(EnemyAiSet
+    .in_set(GameplaySet)
+    .run_if(not(cutscene))
+    .after(player_movement)
+);
+app.configure_set(AudioSet
+    .run_if(audio_muted)
+);
+app.add_systems(
+    (
+        enemy_movement,
+        enemy_spawn,
+        enemy_despawn.before(enemy_spawn),
+    ).in_set(EnemyAiSet)
+);
+app.add_systems(
+    (
+        mouse_input.run_if(mouse_enabled),
+        controller_input.run_if(gamepad_enabled),
+    ).in_set(InputSet)
+);
+app.add_systems(
+    (
+        footstep_sound.in_set(GameplaySet),
+        menu_button_sound.in_set(MainMenuSet),
+        background_music,
+    ).in_set(AudioSet)
+);
+app.add_systems(
+    (
+        player_movement
+            .run_if(player_alive)
+            .run_if(not(cutscene)),
+        camera_movement,
+    ).in_set(GameplaySet).after(InputSet)
+);
+app.add_system(ui_button_animate);
+app.add_system(menu_logo_animate.in_set(MainMenuSet));</code></pre>
+<p>(learn more about: <a href="/programming/schedules.html">schedules</a>, <a href="/programming/system-sets.html">system sets</a>, <a href="/programming/states.html">states</a>, <a href="/programming/run-criteria.html">run conditions</a>, <a href="/programming/system-order.html">system ordering</a>)</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../programming/intro-data.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../programming/ec.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../programming/intro-data.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../programming/ec.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../nagbar.js"></script>
+
+
+    </div>
+    </body>
+</html>
