@@ -1473,7 +1473,7 @@ visualize the traces.</p>
 <p>This chapter covers some common issues or surprises that you might be
 likely to encounter when working with Bevy, with specific advice about how
 to address them.</p>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="pitfalls//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="pitfalls//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-10">0.10</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="strange-build-errors"><a class="header" href="#strange-build-errors">Strange Build Errors</a></h1>
@@ -1527,41 +1527,7 @@ whole workspace. It will <em>not</em> be enabled by default.</p>
 <pre><code class="language-toml">[workspace]
 resolver = &quot;2&quot;
 </code></pre>
-<hr />
-<h2 id="what-errors"><a class="header" href="#what-errors">What errors?</a></h2>
-<p>One common example is the &quot;failed to select a version&quot; error, which can
-look something like this:</p>
-<pre><code>error: failed to select a version for `web-sys`.
-    ... required by package `wgpu v0.9.0`
-    ... which is depended on by `bevy_wgpu v0.5.0 (https://github.com/bevyengine/bevy#6a8a8c9d)`
-    ... which is depended on by `bevy_internal v0.5.0 (https://github.com/bevyengine/bevy#6a8a8c9d)`
-    ... which is depended on by `bevy v0.5.0 (https://github.com/bevyengine/bevy#6a8a8c9d)`
-    ... which is depended on by `bevy-scratchpad v0.1.0 (C:\Users\Alice\Documentsevy-scratchpad)`
-versions that meet the requirements `=0.3.50` are: 0.3.50
-
-all possible versions conflict with previously selected packages.
-
-  previously selected package `web-sys v0.3.46`
-    ... which is depended on by `bevy_app v0.5.0 (https://github.com/bevyengine/bevy#6a8a8c9d)`
-    ... which is depended on by `bevy_asset v0.5.0 (https://github.com/bevyengine/bevy#6a8a8c9d)`
-    ... which is depended on by `bevy_audio v0.5.0 (https://github.com/bevyengine/bevy#6a8a8c9d)`
-    ... which is depended on by `bevy_internal v0.5.0 (https://github.com/bevyengine/bevy#6a8a8c9d)`
-    ... which is depended on by `bevy v0.5.0 (https://github.com/bevyengine/bevy#6a8a8c9d)`
-    ... which is depended on by `bevy-scratchpad v0.1.0 (C:\Users\Alice\Documentsevy-scratchpad)`
-
-failed to select a version for `web-sys` which could resolve this conflict
-</code></pre>
-<p>(there are many variations, yours might not be identical to the example above)</p>
-<p>Another related error are seemingly-nonsensical compiler messages about
-conflicts with Bevy's internal types (like &quot;expected type <code>Transform</code>,
-found type <code>Transform</code>&quot;).</p>
-<h2 id="why-does-this-happen"><a class="header" href="#why-does-this-happen">Why does this happen?</a></h2>
-<p>Such errors are often caused by <code>cargo</code>'s internal state being broken. Usually,
-it is because of dependencies not being resolved properly, causing cargo to
-try to link multiple versions of Bevy into your project. This often occurs when
-transitioning your project between the release and the git version of Bevy. Cargo
-remembers the versions it was previously using, and gets confused.</p>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="pitfalls//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="pitfalls//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-10">0.10</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="performance"><a class="header" href="#performance">Performance</a></h1>
@@ -1616,107 +1582,84 @@ slow compile times:</p>
 <pre><code class="language-toml">[profile.release]
 lto = &quot;thin&quot;
 </code></pre>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="pitfalls//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="pitfalls//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-10">0.10</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
-<h1 id="error-adding-function-as-system"><a class="header" href="#error-adding-function-as-system">Error adding function as system</a></h1>
-<p>You can sometimes get confusing arcane compiler errors when you try to add
-systems to your Bevy app.</p>
-<p>The errors can look like this:</p>
-<pre><code>the trait bound `for&lt;'r, 's, 't0&gt; fn(bevy::prelude::Query&lt;'r, 's, (&amp;'t0 Param)) {my_system}: IntoSystem&lt;(), (), _&gt;` is not satisfied
-</code></pre>
-<p>This is caused by your function having incompatible parameters. Bevy can
-only accept special types as system parameters.</p>
-<p>You might also errors that look like this:</p>
-<pre><code>the trait bound `Component: WorldQuery` is not satisfied
-the trait `WorldQuery` is not implemented for `Component`
-</code></pre>
-<pre><code>this struct takes at most 2 type arguments but 3 type arguments were supplied
-</code></pre>
-<p>These errors are caused by a malformed query.</p>
+<h1 id="obscure-rust-compiler-errors"><a class="header" href="#obscure-rust-compiler-errors">Obscure Rust compiler errors</a></h1>
+<p>You can get confusing compiler errors when you try to add <a href="pitfalls//programming/systems.html">systems</a>
+to your Bevy <a href="pitfalls//programming/app-builder.html">app</a>.</p>
 <h2 id="common-beginner-mistakes"><a class="header" href="#common-beginner-mistakes">Common beginner mistakes</a></h2>
 <ul>
-<li>Using <code>&amp;mut Commands</code> (bevy 0.4 syntax) instead of <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>.</li>
+<li>Using <code>commands: &amp;mut Commands</code> instead of <code>mut commands: Commands</code>.</li>
 <li>Using <code>Query&lt;MyStuff&gt;</code> instead of <code>Query&lt;&amp;MyStuff&gt;</code> or <code>Query&lt;&amp;mut MyStuff&gt;</code>.</li>
 <li>Using <code>Query&lt;&amp;ComponentA, &amp;ComponentB&gt;</code> instead of <code>Query&lt;(&amp;ComponentA, &amp;ComponentB)&gt;</code>
 (forgetting the tuple)</li>
-<li>Using your resource types directly without <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Res.html"><code>Res</code></a> or <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.ResMut.html"><code>ResMut</code></a>.</li>
-<li>Using your component types directly without putting them in a <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Query.html"><code>Query</code></a>.</li>
+<li>Using your resource types directly without <a href="https://docs.rs/bevy/0.10.1/bevy/ecs/system/struct.Res.html"><code>Res</code></a> or <a href="https://docs.rs/bevy/0.10.1/bevy/ecs/system/struct.ResMut.html"><code>ResMut</code></a>.</li>
+<li>Using your component types directly without putting them in a <a href="https://docs.rs/bevy/0.10.1/bevy/ecs/system/struct.Query.html"><code>Query</code></a>.</li>
 <li>Using other arbitrary types in your function.</li>
 </ul>
 <p>Note that <code>Query&lt;Entity&gt;</code> is correct, because the Entity ID is special;
 it is not a component.</p>
-<h2 id="supported-types"><a class="header" href="#supported-types">Supported types</a></h2>
-<p>Only the following types are supported as system parameters:</p>
-<p><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/trait.SystemParam.html#implementors">(List in API Docs)</a></p>
-<p>In regular <a href="pitfalls//programming/systems.html">systems</a>:</p>
-<ul>
-<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>:
-Manipulate the ECS using <a href="pitfalls//programming/commands.html">commands</a></li>
-<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Res.html"><code>Res&lt;T&gt;</code></a>:
-Shared access to a <a href="pitfalls//programming/res.html">resource</a></li>
-<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a>:
-Exclusive (mutable) access to a <a href="pitfalls//programming/res.html">resource</a></li>
-<li><code>Option&lt;Res&lt;T&gt;&gt;</code>:
-Shared access to a resource that may not exist</li>
-<li><code>Option&lt;ResMut&lt;T&gt;&gt;</code>:
-Exclusive (mutable) access to a resource that may not exist</li>
-<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Query.html"><code>Query&lt;T, F = ()&gt;</code></a> (can contain tuples of up to 15 types):
-Access to <a href="pitfalls//programming/intro-data.html#entities--components">entities and components</a></li>
-<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.ParamSet.html"><code>ParamSet</code></a> (with up to 8 params):
-Resolve <a href="pitfalls//programming/paramset.html">conflicts between incompatible system parameters</a></li>
-<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a>:
-Data <a href="pitfalls//programming/local.html">local</a> to the system</li>
-<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/event/struct.EventReader.html"><code>EventReader&lt;T&gt;</code></a>:
-Receive <a href="pitfalls//programming/events.html">events</a></li>
-<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/event/struct.EventWriter.html"><code>EventWriter&lt;T&gt;</code></a>:
-Send <a href="pitfalls//programming/events.html">events</a></li>
-<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.RemovedComponents.html"><code>RemovedComponents&lt;T&gt;</code></a>:
-<a href="pitfalls//programming/change-detection.html#removal-detection">Removal detection</a></li>
-<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.NonSend.html"><code>NonSend&lt;T&gt;</code></a>:
-Shared access to <a href="pitfalls//programming/non-send.html">Non-<code>Send</code></a> (main thread only) data</li>
-<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.NonSendMut.html"><code>NonSendMut&lt;T&gt;</code></a>:
-Mut access to <a href="pitfalls//programming/non-send.html">Non-<code>Send</code></a> (main thread only) data</li>
-<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.ParallelCommands.html"><code>ParallelCommands</code></a>:
-Abstraction to help use <code>Commands</code> when you will do your own parallelism</li>
-<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.SystemName.html"><code>SystemName</code></a>:
-The name (string) of the system, may be useful for debugging</li>
-<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/world/struct.World.html"><code>&amp;World</code></a>:
-Read-only <a href="pitfalls//programming/world.html">direct access to the ECS World</a></li>
-<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/entity/struct.Entities.html"><code>Entities</code></a>:
-Low-level ECS metadata: All entities</li>
-<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/component/struct.Components.html"><code>Components</code></a>:
-Low-level ECS metadata: All components</li>
-<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/bundle/struct.Bundles.html"><code>Bundles</code></a>:
-Low-level ECS metadata: All bundles</li>
-<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/archetype/struct.Archetypes.html"><code>Archetypes</code></a>:
-Low-level ECS metadata: All archetypes</li>
-<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.SystemChangeTick.html"><code>SystemChangeTick</code></a>:
-Low-level ECS metadata: Tick used for change detection</li>
-<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.StaticSystemParam.html"><code>StaticSystemParam</code></a>:
-Helper for generic system abstractions, to avoid lifetime annotations</li>
-<li>tuples containing any of these types, with up to 16 members</li>
-</ul>
-<p>In <a href="pitfalls//programming/exclusive.html">exclusive systems</a>:</p>
-<ul>
-<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/world/struct.World.html"><code>&amp;mut World</code></a>:
-Full <a href="pitfalls//programming/world.html">direct access to the ECS World</a></li>
-<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a>:
-Data <a href="pitfalls//programming/local.html">local</a> to the system</li>
-<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.SystemState.html"><code>SystemState&lt;P&gt;</code></a>:
-Emulates a regular system, allowing you to easily access data from the World.
-<code>P</code> are the system parameters.</li>
-<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/query/struct.QueryState.html"><code>QueryState&lt;Q, F = ()&gt;</code></a>:
-Allows you to perform queries on the World, similar to a <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Query.html"><code>Query</code></a>
-in regular systems.</li>
-</ul>
-<p>Your function can have a maximum of 16 total parameters. If you need more,
-group them into tuples to work around the limit. Tuples can contain up to
-16 members, but can be nested indefinitely.</p>
-<p>Systems running during the <a href="pitfalls//gpu/stages.html">Extract stage</a> can also use
-<a href="https://docs.rs/bevy/0.9.1/bevy/render/struct.Extract.html"><code>Extract&lt;T&gt;</code></a>, to access data from the Main World instead of the
-Render World. <code>T</code> can be any other system parameter type.</p>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="pitfalls//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+<h2 id="error-adding-function-as-system"><a class="header" href="#error-adding-function-as-system">Error adding function as system</a></h2>
+<p>The errors can look like this:</p>
+<pre><code>error[E0277]: the trait bound `for&lt;'a, 'b, 'c&gt; fn(...) {system}: IntoSystem&lt;(), (), _&gt;` is not satisfied
+   --&gt; src/main.rs:5:21
+    |
+5   |         .add_system(my_system)
+    |          ---------- ^^^^^^^^^ the trait `IntoSystem&lt;(), (), _&gt;` is not implemented for fn item `for&lt;'a, 'b, 'c&gt; fn(...) {system}`
+    |          |
+    |          required by a bound introduced by this call
+    |
+    = help: the trait `IntoSystemAppConfig&lt;()&gt;` is implemented for `SystemAppConfig`
+    = note: required for `for&lt;'a, 'b, 'c&gt; fn(...) {system}` to implement `IntoSystemConfig&lt;_&gt;`
+    = note: required for `for&lt;'a, 'b, 'c&gt; fn(...) {system}` to implement `IntoSystemAppConfig&lt;_&gt;`
+</code></pre>
+<p>The error (confusingly) points to the place in your code where you try to add the system,
+but in reality, the problem is actually in the <code>fn</code> function definition!</p>
+<p>This is caused by your function having invalid parameters. <a href="pitfalls//builtins.html#systemparams">Bevy can
+only accept special types as system parameters!</a></p>
+<h2 id="error-on-malformed-queries"><a class="header" href="#error-on-malformed-queries">Error on malformed queries</a></h2>
+<p>You might also errors that look like this:</p>
+<pre><code>error[E0277]: the trait bound `Transform: WorldQuery` is not satisfied
+   --&gt; src/main.rs:10:12
+    |
+10  |     query: Query&lt;Transform&gt;,
+    |            ^^^^^^^^^^^^^^^ the trait `WorldQuery` is not implemented for `Transform`
+    |
+    = help: the following other types implement trait `WorldQuery`:
+              &amp;'__w mut T
+              &amp;T
+              ()
+              (F0, F1)
+              (F0, F1, F2)
+              (F0, F1, F2, F3)
+              (F0, F1, F2, F3, F4)
+              (F0, F1, F2, F3, F4, F5)
+            and 54 others
+note: required by a bound in `bevy::prelude::Query`
+   --&gt; ~/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.10.0/src/system/query.rs:276:37
+    |
+276 | pub struct Query&lt;'world, 'state, Q: WorldQuery, F: ReadOnlyWorldQuery = ()&gt; {
+    |                                     ^^^^^^^^^^ required by this bound in `Query`
+</code></pre>
+<p>To access your components, you need to use reference syntax (<code>&amp;</code> or <code>&amp;mut</code>).</p>
+<pre><code>error[E0107]: struct takes at most 2 generic arguments but 3 generic arguments were supplied
+   --&gt; src/main.rs:10:12
+    |
+10  |     query: Query&lt;&amp;Transform, &amp;Camera, &amp;GlobalTransform&gt;,
+    |            ^^^^^                      ---------------- help: remove this generic argument
+    |            |
+    |            expected at most 2 generic arguments
+    |
+note: struct defined here, with at most 2 generic parameters: `Q`, `F`
+   --&gt; ~/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_ecs-0.10.0/src/system/query.rs:276:12
+    |
+276 | pub struct Query&lt;'world, 'state, Q: WorldQuery, F: ReadOnlyWorldQuery = ()&gt; {
+    |            ^^^^^                 -              --------------------------
+</code></pre>
+<p>When you want to query for multiple components, you need to put them in a tuple:
+<code>(&amp;Transform, &amp;Camera, &amp;GlobalTransform)</code>.</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="pitfalls//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-10">0.10</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="2d-objects-not-displaying"><a class="header" href="#2d-objects-not-displaying">2D objects not displaying</a></h1>
@@ -1730,11 +1673,33 @@ own transform, <em>you need to do this!</em> The default transform (with Z=0.0)
 will place the camera so that your sprites (at positive +Z coordinates)
 would be behind the camera, and you wouldn't see them! You need to
 either set a large Z coordinate, or preserve/copy the Z value from the
-<a href="https://docs.rs/bevy/0.9.1/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> that is generated by Bevy's builtin Bundle
+<a href="https://docs.rs/bevy/0.10.1/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> that is generated by Bevy's builtin Bundle
 constructor (<code>Camera2dBundle::default()</code>).</p>
 <p>By default, when you create a 2D camera using Bevy's built-in Bundle
 constructor, Bevy sets the camera <code>Transform</code> to have Z=999.9. This is close to
 the default clipping plane (visible range of Z axis), which is set to 1000.0.</p>
+<pre><code class="language-rust no_run noplayground">// ✗ INCORRECT: we are creating a new transform with the given rotation
+// it does not have the correct Z,
+// because it overrides the Transform from the bundle default
+commands.spawn(Camera2dBundle {
+    transform: Transform::from_rotation(Quat::from_rotation_z(30.0f32.to_radians())),
+    ..Default::default()
+});
+
+// ✓ OKAY: we can set the XYZ position ourselves.
+// Z=999.9 is what Bevy's default uses.
+commands.spawn(Camera2dBundle {
+    transform: Transform::from_xyz(0.0, 0.0, 999.9)
+        .with_rotation(Quat::from_rotation_z(30.0f32.to_radians())),
+    ..Default::default()
+});
+
+// ✓ OKAY: we can create the bundle in a `mut` variable,
+// and then modify only what we care about
+// This way, Bevy's defaults remain intact
+let mut my_camera = Camera2dBundle::default();
+my_camera.transform.rotation = Quat::from_rotation_z(30.0f32.to_radians());
+commands.spawn(my_camera);</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="pitfalls//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
 </tbody></table>
 </div>
@@ -1813,7 +1778,7 @@ parent entities are not supposed to render anything.</p>
 You can use a <a href="https://docs.rs/bevy/0.9.1/bevy/render/view/visibility/struct.VisibilityBundle.html"><code>VisibilityBundle</code></a> or
 <a href="https://docs.rs/bevy/0.9.1/bevy/render/prelude/struct.SpatialBundle.html"><code>SpatialBundle</code></a> (with <a href="pitfalls//features/transforms.html">transforms</a>) if you
 are not using a bundle that already includes these components.</p>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="pitfalls//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="pitfalls//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-10">0.10</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="borrow-multiple-fields-from-struct"><a class="header" href="#borrow-multiple-fields-from-struct">Borrow multiple fields from struct</a></h1>
@@ -1850,7 +1815,7 @@ fn helper_func(foo: &amp;Foo, bar: &amp;mut Bar) {
 you don't modify the data afterwards, the component gets marked as changed.</p>
 <h2 id="explanation"><a class="header" href="#explanation">Explanation</a></h2>
 <p>Bevy typically gives you access to your data via special wrapper types (like
-<a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Res.html"><code>Res&lt;T&gt;</code></a>, <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a>, and <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/world/struct.Mut.html"><code>Mut&lt;T&gt;</code></a>
+<a href="https://docs.rs/bevy/0.10.1/bevy/ecs/system/struct.Res.html"><code>Res&lt;T&gt;</code></a>, <a href="https://docs.rs/bevy/0.10.1/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a>, and <a href="https://docs.rs/bevy/0.10.1/bevy/ecs/world/struct.Mut.html"><code>Mut&lt;T&gt;</code></a>
 (when <a href="pitfalls//programming/queries.html">querying</a> for components mutably)). This lets Bevy track
 access to the data.</p>
 <p>These are &quot;smart pointer&quot; types that use the Rust <a href="https://doc.rust-lang.org/stable/std/ops/trait.Deref.html"><code>Deref</code></a>
@@ -1880,7 +1845,7 @@ throughout the frame update cycle. It is intended to be used for game logic.</p>
 <p>This is not Bevy-specific, but applies to game development in general. Always
 get your time from your game engine, not from your programming language or
 operating system.</p>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="pitfalls//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="pitfalls//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-10">0.10</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="uv-coordinates-in-bevy"><a class="header" href="#uv-coordinates-in-bevy">UV coordinates in Bevy</a></h1>

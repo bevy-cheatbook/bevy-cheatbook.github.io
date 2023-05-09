@@ -147,7 +147,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-10">0.10</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="strange-build-errors"><a class="header" href="#strange-build-errors">Strange Build Errors</a></h1>
@@ -201,40 +201,6 @@ whole workspace. It will <em>not</em> be enabled by default.</p>
 <pre><code class="language-toml">[workspace]
 resolver = &quot;2&quot;
 </code></pre>
-<hr />
-<h2 id="what-errors"><a class="header" href="#what-errors">What errors?</a></h2>
-<p>One common example is the &quot;failed to select a version&quot; error, which can
-look something like this:</p>
-<pre><code>error: failed to select a version for `web-sys`.
-    ... required by package `wgpu v0.9.0`
-    ... which is depended on by `bevy_wgpu v0.5.0 (https://github.com/bevyengine/bevy#6a8a8c9d)`
-    ... which is depended on by `bevy_internal v0.5.0 (https://github.com/bevyengine/bevy#6a8a8c9d)`
-    ... which is depended on by `bevy v0.5.0 (https://github.com/bevyengine/bevy#6a8a8c9d)`
-    ... which is depended on by `bevy-scratchpad v0.1.0 (C:\Users\Alice\Documentsevy-scratchpad)`
-versions that meet the requirements `=0.3.50` are: 0.3.50
-
-all possible versions conflict with previously selected packages.
-
-  previously selected package `web-sys v0.3.46`
-    ... which is depended on by `bevy_app v0.5.0 (https://github.com/bevyengine/bevy#6a8a8c9d)`
-    ... which is depended on by `bevy_asset v0.5.0 (https://github.com/bevyengine/bevy#6a8a8c9d)`
-    ... which is depended on by `bevy_audio v0.5.0 (https://github.com/bevyengine/bevy#6a8a8c9d)`
-    ... which is depended on by `bevy_internal v0.5.0 (https://github.com/bevyengine/bevy#6a8a8c9d)`
-    ... which is depended on by `bevy v0.5.0 (https://github.com/bevyengine/bevy#6a8a8c9d)`
-    ... which is depended on by `bevy-scratchpad v0.1.0 (C:\Users\Alice\Documentsevy-scratchpad)`
-
-failed to select a version for `web-sys` which could resolve this conflict
-</code></pre>
-<p>(there are many variations, yours might not be identical to the example above)</p>
-<p>Another related error are seemingly-nonsensical compiler messages about
-conflicts with Bevy's internal types (like &quot;expected type <code>Transform</code>,
-found type <code>Transform</code>&quot;).</p>
-<h2 id="why-does-this-happen"><a class="header" href="#why-does-this-happen">Why does this happen?</a></h2>
-<p>Such errors are often caused by <code>cargo</code>'s internal state being broken. Usually,
-it is because of dependencies not being resolved properly, causing cargo to
-try to link multiple versions of Bevy into your project. This often occurs when
-transitioning your project between the release and the git version of Bevy. Cargo
-remembers the versions it was previously using, and gets confused.</p>
 
                     </main>
 
