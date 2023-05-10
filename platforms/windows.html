@@ -147,7 +147,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-10">0.10</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="windows-desktop"><a class="header" href="#windows-desktop">Windows Desktop</a></h1>
@@ -178,6 +178,29 @@ command-line program. Windows will know not display a console.</p>
 You can disable it only for release builds, and leave it enabled in debug
 builds, like this:</p>
 <pre><code class="language-rust no_run noplayground">#![cfg_attr(not(debug_assertions), windows_subsystem = &quot;windows&quot;)]</code></pre>
+<h2 id="working-in-wsl2"><a class="header" href="#working-in-wsl2">Working in WSL2</a></h2>
+<p>If you prefer to have a more Linux-centric development workflow, you might want
+to work inside of WSL2 and build your project there. Another reason to do it is
+compile times; they are often much faster in WSL2 than on the Windows host
+system.</p>
+<p>Fortunately, this can actually work quite well! The trick is that you want to
+<a href="/setup/cross/linux-windows.html">cross-compile for Windows</a>. The Windows EXE you build
+inside of WSL2 can be run just fine from the Linux commandline, and it will
+seamlessly run on the host system! This way, you don't need any GPU drivers or
+GUI support inside your WSL2 Linux environment.</p>
+<p>Note that when you run Windows binaries from WSL2, they don't get the Linux
+environment variables. <code>cargo run</code> does not just work, because your Bevy game
+will look for its <code>assets</code> folder in the path where the EXE is (which would be
+in the <code>target</code> build output folder). My simple solution is to just copy the
+EXE into the project folder after building, and run it directly from there.</p>
+<p>This can be automated with a little script, to use instead of <code>cargo run</code>:</p>
+<pre><code class="language-sh">#!/bin/sh
+cargo build --target x86_64-pc-windows-msvc &amp;&amp;
+cp target/x86_64-pc-windows-msvc/debug/mygame.exe . &amp;&amp;
+exec ./mygame.exe &quot;$@&quot;
+</code></pre>
+<p>This way you also don't have to type the cross-compilation target every time
+(and you can also add any other options you want there).</p>
 <h2 id="creating-an-icon-for-your-app"><a class="header" href="#creating-an-icon-for-your-app">Creating an icon for your app</a></h2>
 <p>There are two places where you might want to put your application icon:</p>
 <ul>
