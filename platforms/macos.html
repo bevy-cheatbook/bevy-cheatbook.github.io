@@ -147,7 +147,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-10">0.10</a></th><th>(current)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://github.com/bevyengine/bevy">main (0.11-dev)</a></th><th>(unreleased / upcoming)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="macos-desktop"><a class="header" href="#macos-desktop">macOS Desktop</a></h1>
@@ -157,6 +157,23 @@ please help improve this page!</p>
 <hr />
 <p><a href="/setup/cross/macos-windows.html">See here if you also want to build Windows EXEs from macOS</a>.</p>
 <h2 id="known-pitfalls"><a class="header" href="#known-pitfalls">Known Pitfalls</a></h2>
+<h3 id="input-peculiarities"><a class="header" href="#input-peculiarities">Input Peculiarities</a></h3>
+<p><a href="/input/mouse.html#mouse-scrolling--wheel">Mouse wheel scrolling</a> behaves in a peculiar manner,
+because macOS does &quot;scroll acceleration&quot; at the OS level. Other OSs, with
+regular PC mice, provide <code>Line</code> scroll events with whole number values, where
+1.0 corresponds to one step on the scroll wheel. macOS scales the value
+depending on how fast the user is spinning the wheel. You do not get whole
+numbers. They can range anywhere from tiny values &lt;0.1 (for the starting event,
+before the scroll speed ramps up), up to values as big as &gt;10.0 (say, for a fast
+flick of the wheel), per event.</p>
+<p>macOS provides <a href="/input/mouse.html#touchpad-gestures">special events for touchpad gestures</a>
+for zooming and rotation, which you can handle in Bevy.</p>
+<p>Some keyboard keys have a somewhat-unintuitive mapping:</p>
+<ul>
+<li>The Command (⌘) key is <code>KeyCode::{SuperLeft, SuperRight}</code>.</li>
+<li>The Option (⌥) key is <code>KeyCode::{AltLeft, AltRight}</code>.</li>
+</ul>
+<p>Other key codes have their intuitive names.</p>
 <h3 id="window-management-apps-compatability"><a class="header" href="#window-management-apps-compatability">Window Management Apps Compatability</a></h3>
 <p>Bevy apps can encounter performance issues (such as lag when dragging the window
 around the screen) when window management apps like &quot;Magnet&quot; are used. This is a
@@ -164,6 +181,168 @@ bug in <code>winit</code> (the OS window management library that Bevy uses). Thi
 be tracked <a href="https://github.com/rust-windowing/winit/issues/1737">here</a>.</p>
 <p>Until that bug is fixed, advise closing the window management apps, if
 encountering performance issues.</p>
+<h2 id="creating-an-application-bundle"><a class="header" href="#creating-an-application-bundle">Creating an Application Bundle</a></h2>
+<p>When you build your Bevy project normally, cargo/Rust will produce a bare
+executable file, similar to other operating systems. However, this is not how
+&quot;normal&quot; macOS apps look and behave. You probably want to create a proper
+native-feeling Mac app for distribution to your users.</p>
+<p>You need to do this, to have your app play nicely with the Mac desktop GUI, such
+as to have a nice icon appear in the dock.</p>
+<p>macOS applications are typically stored on the filesystem as &quot;bundles&quot; – special
+directories/folders that end in <code>.app</code>, that the OS displays to the user as one
+item. macOS expects to find a special hieararchy of subfolders and files inside.</p>
+<p>A minimal app bundle might have the following files:</p>
+<ul>
+<li><code>MyGame.app/Contents/MacOS/MyGame</code>: the actual executable file</li>
+<li><code>MyGame.app/Contents/MacOS/assets/</code>: your Bevy assets folder</li>
+<li><code>MyGame.app/Contents/Info.plist</code>: metadata (see below)</li>
+<li><code>MyGame.app/Contents/Resources/AppIcon.icns</code>: the app's icon</li>
+</ul>
+<p>Only the executable file is technically mandatory. If you have nothing else, the
+app will run, as long as the executable file name matches the app bundle file
+name. You should, however, follow the below instructions, if you want to make a
+proper nice Mac app. :)</p>
+<h3 id="executable-file"><a class="header" href="#executable-file">Executable File</a></h3>
+<p>The executable file produced by the Rust compiler (in the <code>target</code> directory) is
+a single-architecture binary for your current development machine. You could
+just copy this file into the app bundle, but then you will not support all Mac
+hardware natively.</p>
+<p>If you want to support both machines with Intel CPUs and with Apple Silicon
+(Arm) CPUs, you need to compile for both of them, and then combine them into a
+single executable using Apple's <code>lipo</code> tool.</p>
+<p>First, make sure you have Rust toolchain support for both architectures installed:</p>
+<pre><code class="language-sh">rustup target add x86_64-apple-darwin
+rustup target add aarch64-apple-darwin
+</code></pre>
+<p>Now, you can compile for both architectures:</p>
+<pre><code class="language-sh">cargo build --release --target x86_64-apple-darwin
+cargo build --release --target aarch64-apple-darwin
+</code></pre>
+<p>Now, you can combine the two executables into one, for your app bundle.</p>
+<pre><code class="language-sh">lipo &quot;target/x86_64-apple-darwin/release/my_game&quot; \
+     &quot;target/aarch64-apple-darwin/release/my_game&quot; \
+     -create -output &quot;MyGame.app/Contents/MacOS/MyGame&quot;
+</code></pre>
+<p>Note: please ensure the Bevy <code>dynamic_linking</code> cargo feature is <em><strong>not</strong></em> enabled.</p>
+<h3 id="game-assets"><a class="header" href="#game-assets">Game Assets</a></h3>
+<p>Your Bevy <code>assets</code> folder needs to be placed alongside the executable file,
+for Bevy to find it and be able to load your assets. Just copy it into
+<code>Contents/MacOS</code> in your app bundle.</p>
+<p>Note: This is not the standard conventional location as prescribed by Apple.
+Typically, macOS apps store their data files in <code>Contents/Resources</code>. However,
+Bevy will not find them there. Thankfully, Apple does not enforce this, so we
+are free to do something unusual when we have to.</p>
+<h3 id="infoplist"><a class="header" href="#infoplist"><code>Info.plist</code></a></h3>
+<p>This file contains all the metadata that macOS wants.</p>
+<p>If you do not create this file, or if it is missing some of the fields, macOS
+will try to guess them, so your app can still run. Ideally, you want to create a
+proper <code>Info.plist</code> file, to prevent issues.</p>
+<p><a href="/dl/Info.plist">Download an example file as a starting point.</a></p>
+<p>You can edit this file using Apple XCode or a text editor. Check that all the
+values make sense for your app. Pay special attention to these values:</p>
+<ul>
+<li><code>CFBundleName</code> (Bundle name)
+<ul>
+<li>Short user-visible name of your app</li>
+</ul>
+</li>
+<li><code>CFBundleDisplayName</code> (Bundle display name)
+<ul>
+<li>Optional: You can set a longer user-visible name here, if you want</li>
+</ul>
+</li>
+<li><code>CFBundleExecutable</code> (Executable file)
+<ul>
+<li>The name of the executable file</li>
+</ul>
+</li>
+<li><code>CFIconFile</code> (Icon file)
+<ul>
+<li>The name of the icon file</li>
+</ul>
+</li>
+<li><code>CFBundleIdentifier</code> (Bundle identifier)
+<ul>
+<li>Apple wants an ID for your app, in domain format, like: <code>com.mycompany.mygame</code></li>
+</ul>
+</li>
+<li><code>CFBundleShortVersionString</code> (Bundle version string (short))
+<ul>
+<li>The version of your app, like <code>0.1.0</code>.</li>
+</ul>
+</li>
+</ul>
+<h3 id="app-icon"><a class="header" href="#app-icon">App Icon</a></h3>
+<p>The icon file needs to be in a special Apple format.</p>
+<p>Such a file can be created from a collection of PNGs of different standard sizes
+(powers of two). If you want your app to look nice at all sizes, you can
+hand-craft an image for each size, following <a href="https://developer.apple.com/design/human-interface-guidelines/app-icons">Apple Design
+Guidelines</a>. If you don't care, you can just take one image
+(ideally 1024x1024, the biggest size used by macOS) and scale it to different sizes.</p>
+<p>Here is a script that does that:</p>
+<pre><code class="language-sh">SOURCE_IMAGE=&quot;myicon1024.png&quot;
+mkdir -p AppIcon.iconset
+sips -z 16 16     &quot;${SOURCE_IMAGE}&quot; --out AppIcon.iconset/icon_16x16.png
+sips -z 32 32     &quot;${SOURCE_IMAGE}&quot; --out AppIcon.iconset/icon_16x16@2x.png
+sips -z 32 32     &quot;${SOURCE_IMAGE}&quot; --out AppIcon.iconset/icon_32x32.png
+sips -z 64 64     &quot;${SOURCE_IMAGE}&quot; --out AppIcon.iconset/icon_32x32@2x.png
+sips -z 128 128   &quot;${SOURCE_IMAGE}&quot; --out AppIcon.iconset/icon_128x128.png
+sips -z 256 256   &quot;${SOURCE_IMAGE}&quot; --out AppIcon.iconset/icon_128x128@2x.png
+sips -z 256 256   &quot;${SOURCE_IMAGE}&quot; --out AppIcon.iconset/icon_256x256.png
+sips -z 512 512   &quot;${SOURCE_IMAGE}&quot; --out AppIcon.iconset/icon_256x256@2x.png
+sips -z 512 512   &quot;${SOURCE_IMAGE}&quot; --out AppIcon.iconset/icon_512x512.png
+cp &quot;${SOURCE_IMAGE}&quot; AppIcon.iconset/icon_512x512@2x.png
+iconutil -c icns AppIcon.iconset
+## move it into the app bundle
+mv AppIcon.icns MyGame.app/Contents/Resources
+</code></pre>
+<p>It works by creating a special <code>iconset</code> folder, with all the PNG files at different
+sizes, created by resizing your source image. Then, it uses <code>iconutil</code> to produce
+the final Apple ICNS file for your app bundle.</p>
+<p>If you want hand-crafted icons for each size, you could use a similar process.
+Create an <code>iconset</code> folder with your PNGs, and run <code>iconutil -c icns</code> on it.</p>
+<p>Alternatively, Apple XCode has GUI tools for creating and editing app icons.</p>
+<h3 id="putting-everything-together"><a class="header" href="#putting-everything-together">Putting Everything Together</a></h3>
+<p>Here is a simple shell script to build a Mac app. It follows the recommendations
+on this page. Adjust everything as necessary for your project.</p>
+<pre><code class="language-sh"># set the name of the Mac App
+APP_NAME=&quot;MyGame&quot;
+# set the name of your rust crate
+RUST_CRATE_NAME=&quot;my_game&quot;
+# create the folder structure
+mkdir -p &quot;${APP_NAME}.app/Contents/MacOS&quot;
+mkdir -p &quot;${APP_NAME}.app/Contents/Resources&quot;
+# copy Info.plist
+cp Info.plist &quot;${APP_NAME}.app/Contents/Info.plist&quot;
+# copy the icon (assuming you already have it in Apple ICNS format)
+cp AppIcon.icns &quot;${APP_NAME}.app/Contents/Resources/AppIcon.icns&quot;
+# copy your Bevy game assets
+cp -a assets &quot;${APP_NAME}.app/Contents/MacOS/&quot;
+# compile the executables for each architecture
+cargo build --release --target x86_64-apple-darwin # build for Intel
+cargo build --release --target aarch64-apple-darwin # build for Apple Silicon
+# combine the executables into a single file and put it in the bundle
+lipo &quot;target/x86_64-apple-darwin/release/${RUST_CRATE_NAME}&quot; \
+     &quot;target/aarch64-apple-darwin/release/${RUST_CRATE_NAME}&quot; \
+     -create -output &quot;${APP_NAME}.app/Contents/MacOS/${APP_NAME}&quot;
+</code></pre>
+<p>Note: please ensure the Bevy <code>dynamic_linking</code> cargo feature is <em><strong>not</strong></em> enabled.</p>
+<h2 id="creating-a-dmg-file"><a class="header" href="#creating-a-dmg-file">Creating a DMG file</a></h2>
+<p>It is common for Mac apps downloadable from the internet to be distributed as
+DMG files – Apple's &quot;disk image&quot; format. Users can drag-and-drop the app bundle
+inside into their <code>Applications</code> folder on their system.</p>
+<p>You can create a very simple one from the command-line, using <code>hdiutil</code>:</p>
+<pre><code class="language-sh">hdiutil create -fs HFS+ \
+  -volname &quot;My Bevy Game&quot; \
+  -srcfolder &quot;MyGame.app&quot; \
+  &quot;mybevygame_release_mac.dmg&quot;
+</code></pre>
+<p>Specify the Volume Name (how it appears when opened), the name of your app
+bundle, and the name of the output DMG file, respectively. You can use
+<code>-srcfolder</code> multiple times, if you want to add more files and folders to the
+DMG image.</p>
+<p>If you want to create a DMG file using a GUI, you can use Apple's &quot;Disk Utility&quot;
+app that comes preinstalled with macOS.</p>
 
                     </main>
 

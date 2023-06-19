@@ -147,7 +147,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://github.com/bevyengine/bevy">main (0.11-dev)</a></th><th>(unreleased/future)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://github.com/bevyengine/bevy">main (0.11-dev)</a></th><th>(unreleased / upcoming)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="mouse"><a class="header" href="#mouse">Mouse</a></h1>
@@ -251,9 +251,9 @@ scrolling, like laptop touchpads.</p>
 <p>You should probably handle each of these differently (with different
 sensitivity settings), to provide a good experience on both types of hardware.</p>
 <p><strong>Note:</strong> the <code>Line</code> unit is not guaranteed to have whole number values/steps!
-At least macOS does non-linear scaling / acceleration of scrolling at the OS
-level, meaning your app will get a fractional number of lines even when using a
-regular PC mouse with a scroll wheel.</p>
+At least <a href="/platforms/macos.html">macOS</a> does non-linear scaling / acceleration of
+scrolling at the OS level, meaning your app will get weird values for the number
+of lines, even when using a regular PC mouse with a fixed-stepping scroll wheel.</p>
 <h2 id="mouse-motion"><a class="header" href="#mouse-motion">Mouse Motion</a></h2>
 <p>Use this if you don't care about the exact position of the mouse cursor,
 but rather you just want to see how much it moved from frame to frame. This
