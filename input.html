@@ -157,16 +157,25 @@
 <li><a href="/input/char.html">Character</a> (for text input; keyboard layout handled by the OS)</li>
 <li><a href="/input/mouse.html">Mouse</a> (relative motion, buttons, scrolling)
 <ul>
-<li><a href="/input/mouse.html">Motion</a> (moving the mouse, not tied to OS cursor)</li>
-<li><a href="/input/mouse.html">Cursor</a> (absolute pointer position)</li>
-<li><a href="/input/mouse.html">Buttons</a></li>
-<li><a href="/input/mouse.html">Scrolling</a> (mouse wheel or touchpad gesture)</li>
+<li><a href="/input/mouse.html#mouse-motion">Motion</a> (moving the mouse, not tied to OS cursor)</li>
+<li><a href="/input/mouse.html#mouse-cursor-position">Cursor</a> (absolute pointer position)</li>
+<li><a href="/input/mouse.html#mouse-buttons">Buttons</a></li>
+<li><a href="/input/mouse.html#mouse-scrolling--wheel">Scrolling</a> (mouse wheel or touchpad gesture)</li>
+<li><a href="/input/mouse.html#touchpad-gestures">Zoom/Rotate touchpad gestures</a></li>
 </ul>
 </li>
 <li><a href="/input/touch.html">Touchscreen</a> (with multi-touch)</li>
 <li><a href="/input/gamepad.html">Gamepad (Controller, Joystick)</a> (via the <a href="https://gitlab.com/gilrs-project/gilrs">gilrs</a> library)</li>
 </ul>
-<p>Sensors, like accelerometers and gyroscopes, are not supported yet.</p>
+<p>The following notable input devices are <em><strong>not</strong></em> supported:</p>
+<ul>
+<li>Accelerometers and gyroscopes for device tilt</li>
+<li>Other sensors, like temperature sensors</li>
+<li>Tracking individual fingers on a multi-touch trackpad, like on a touchscreen</li>
+<li>Microphones and other audio input devices</li>
+<li>MIDI (musical instruments), but there is an unofficial plugin: <a href="https://github.com/BlackPhlox/bevy_midi"><code>bevy_midi</code></a>.</li>
+</ul>
+<hr />
 <p>For most input types (where it makes sense), Bevy provides two ways of
 dealing with them:</p>
 <ul>
@@ -198,6 +207,19 @@ have a system for reading inputs and converting them to your own internal
 &quot;movement intent/action events&quot;, and then another system acting on those
 internal events, to actually move the player. Make sure to use <a href="/programming/system-order.html">explicit
 system ordering</a> to avoid lag / frame delays.</p>
+<h2 id="run-conditions"><a class="header" href="#run-conditions">Run Conditions</a></h2>
+<p>Bevy also provides <a href="/programming/run-criteria.html">run conditions</a> (<a href="https://dev-docs.bevyengine.org/bevy/input/common_conditions/index.html">see all of them
+here</a>) that you can attach to your systems, if
+you want a specific system to only run when a specific key or button is pressed.</p>
+<p>This way, you can do input handling as part of the
+<a href="/programming/intro-code.html">scheduling/configuration</a> of your <a href="/programming/systems.html">systems</a>, and
+avoid running unnecessary code on the CPU.</p>
+<p>Using these in real games is not recommended, because you have to hard-code the
+keys, which makes it impossible to make user-configurable keybindings.</p>
+<p>To support configurable keybindings, you can implement your own run conditions
+that check your keybindings from the user settings.</p>
+<p>If you are using the <a href="https://github.com/leafwing-studios/leafwing-input-manager">LWIM plugin</a>, it also provides support for
+<a href="https://docs.rs/leafwing-input-manager/latest/leafwing_input_manager/common_conditions/index.html">a similar run-condition-based workflow</a>.</p>
 
                     </main>
 
