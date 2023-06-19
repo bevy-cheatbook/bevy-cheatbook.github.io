@@ -147,36 +147,113 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://github.com/bevyengine/bevy">main (0.11-dev)</a></th><th>(unreleased/future)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="text--character-input"><a class="header" href="#text--character-input">Text / Character Input</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/input/char_input_events.rs"><code>char_input_events</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/main/examples/input/char_input_events.rs"><code>char_input_events</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/main/examples/input/text_input.rs"><code>text_input</code></a>.</p>
 <hr />
 <p>Use this (<em>not</em> <a href="/input/keyboard.html">keyboard input</a>) if you want to implement
 text input in a Bevy app. This way, everything works as the user expects
 from their operating system, including Unicode support.</p>
-<p>Bevy will produce a <a href="https://docs.rs/bevy/0.9.1/bevy/window/struct.ReceivedCharacter.html"><code>ReceivedCharacter</code></a>
+<p>Bevy will produce a <a href="https://dev-docs.bevyengine.org/bevy/window/struct.ReceivedCharacter.html"><code>ReceivedCharacter</code></a>
 <a href="/programming/events.html">event</a> for every Unicode code point coming from the OS.</p>
 <p>This example shows how to let the user input text into a string (here stored
 as a <a href="/programming/local.html">local resource</a>).</p>
-<pre><code class="language-rust no_run noplayground">/// prints every char coming in; press enter to echo the full string
-fn text_input(
-    mut char_evr: EventReader&lt;ReceivedCharacter&gt;,
-    keys: Res&lt;Input&lt;KeyCode&gt;&gt;,
+<pre><code class="language-rust no_run noplayground">fn text_input(
+    mut evr_char: EventReader&lt;ReceivedCharacter&gt;,
+    kbd: Res&lt;Input&lt;KeyCode&gt;&gt;,
     mut string: Local&lt;String&gt;,
 ) {
-    for ev in char_evr.iter() {
-        println!(&quot;Got char: '{}'&quot;, ev.char);
-        string.push(ev.char);
-    }
-
-    if keys.just_pressed(KeyCode::Return) {
-        println!(&quot;Text input: {}&quot;, *string);
+    if kbd.just_pressed(KeyCode::Return) {
+        println!(&quot;Text input: {}&quot;, &amp;*string);
         string.clear();
     }
+    if kbd.just_pressed(KeyCode::Back) {
+        string.pop();
+    }
+    for ev in evr_char.iter() {
+        // ignore control (special) characters
+        if !ev.char.is_control() {
+            string.push(ev.char);
+        }
+    }
 }</code></pre>
+<p>Note: we are using Bevy's regular <a href="/input/keyboard.html">keyboard input</a> to handle
+the pressing of the enter and backspace keys. Character events are also sent
+when these keys are pressed (they produce special control characters, like
+ASCII newlines <code>\n</code>), so, if we don't want these to be saved to our string,
+we need to ignore them.</p>
+<p>In your own application, you might also want to handle things like arrow keys in
+a way that is appropriate to your UI.</p>
+<h2 id="ime-support"><a class="header" href="#ime-support">IME support</a></h2>
+<p>Bevy has support for IMEs (Input Method Editors), which is how people perform
+text input in languages with more complex scripts, like East Asian languages. It
+requires some special handling from you, however.</p>
+<p>IMEs work by using a special &quot;buffer&quot;, which shows the current in-progress text
+suggestions and allows users to select the correct characters before confirming
+them. The text suggestions / autocompletion is provided by the OS, but your app
+needs to display them for the user.</p>
+<p>If you'd like all international users to be able to input text in their
+language, the way they usually do in other GUI apps on their OS, you should
+support IMEs.</p>
+<p>To do this, you need to enable &quot;IME mode&quot; on the window, whenever you are
+expecting users to type text, and disable it afterwards. For example, if
+you prompt users to enter their name, before playing the game, you enable
+IME mode while the prompt is active.</p>
+<p>While &quot;IME mode&quot; is enabled, if the user is using an IME, you will receive
+<a href="https://dev-docs.bevyengine.org/bevy/window/enum.Ime.html"><code>Ime</code></a> events, instead of <a href="https://dev-docs.bevyengine.org/bevy/window/struct.ReceivedCharacter.html"><code>ReceivedCharacter</code></a>
+and regular keyboard input. However, if the user is not using an IME, then
+everything will behave as normal, even when &quot;IME mode&quot; is enabled.</p>
+<p>While the user has in-progress text, you will get <code>Ime::Preedit</code> events, to tell
+you the current contents of the &quot;temporary buffer&quot; and information about the
+cursor/highlight you need to show, so that users can see what they are doing.</p>
+<p>When the user confirms their input, you will get a <code>Ime::Commit</code> event, to tell
+you the text that the user wishes to insert into the app.</p>
+<pre><code class="language-rust no_run noplayground">// for this simple example, we will just enable/disable IME mode on mouse click
+fn ime_toggle(
+    mousebtn: Res&lt;Input&lt;MouseButton&gt;&gt;,
+    mut q_window: Query&lt;&amp;mut Window, With&lt;PrimaryWindow&gt;&gt;,
+) {
+    if mousebtn.just_pressed(MouseButton::Left) {
+        let mut window = q_window.single_mut();
+
+        // toggle &quot;IME mode&quot;
+        window.ime_enabled = !window.ime_enabled;
+
+        // We need to tell the OS the on-screen coordinates where the text will
+        // be displayed; for this simple example, let's just use the mouse cursor.
+        // In a real app, this might be the position of a UI text field, etc.
+        window.ime_position = window.cursor_position().unwrap();
+    }
+}
+
+fn ime_input(
+    mut evr_ime: EventReader&lt;Ime&gt;,
+) {
+    for ev in evr_ime.iter() {
+        match ev {
+            Ime::Commit { value, .. } =&gt; {
+                println!(&quot;IME confirmed text: {}&quot;, value);
+            }
+            Ime::Preedit { value, cursor, .. } =&gt; {
+                println!(&quot;IME buffer: {:?}, cursor: {:?}&quot;, value, cursor);
+            }
+            Ime::Enabled { .. } =&gt; {
+                println!(&quot;IME mode enabled!&quot;);
+            }
+            Ime::Disabled { .. } =&gt; {
+                println!(&quot;IME mode disabled!&quot;);
+            }
+        }
+    }
+}</code></pre>
+<p>For the sake of brevity, this example just prints the events to the console.</p>
+<p>In a real app, you will want to display the &quot;pre-edit&quot; text on-screen, and use
+different formatting to show the cursor. On &quot;commit&quot;, you can append the
+provided text to the actual string where you normally accept text input.</p>
 
                     </main>
 
