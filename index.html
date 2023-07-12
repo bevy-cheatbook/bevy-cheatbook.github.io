@@ -91,11 +91,33 @@
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
                                 <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky bordered">
+                <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
                         <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
                             <i class="fa fa-bars"></i>
@@ -147,10 +169,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>(any)</th></tr></thead><tbody>
-</tbody></table>
-</div>
-<h1 id="unofficial-bevy-cheat-book"><a class="header" href="#unofficial-bevy-cheat-book">Unofficial Bevy Cheat Book</a></h1>
+                        <h1 id="unofficial-bevy-cheat-book"><a class="header" href="#unofficial-bevy-cheat-book">Unofficial Bevy Cheat Book</a></h1>
 <p>This is a reference-style book for the <a href="https://bevyengine.org">Bevy game engine</a>
 (<a href="https://github.com/bevyengine/bevy">GitHub</a>).</p>
 <p>It aims to teach Bevy concepts in a concise way, help you be productive,
@@ -209,21 +228,17 @@ on the same page is not allowed.</p>
 updated for, at the top of the page, above the main heading. All content on that
 page must be relevant for the stated Bevy version.</p>
 <h3 id="current-bevy-version"><a class="header" href="#current-bevy-version">Current Bevy Version</a></h3>
-<p>The current Bevy release is 0.10.</p>
+<p>The current Bevy release is 0.11.</p>
 <p>The aim is to try to maintain the book up to date with the current latest
-release of Bevy. New content should be written for this version. Outdated pages
-will be updated on a best-effort basis.</p>
+release of Bevy. New content should be written for this version.</p>
 <h3 id="old-bevy-version"><a class="header" href="#old-bevy-version">Old Bevy Version</a></h3>
 <p>Content for old releases of Bevy is only allowed in the book if it already
-exists from before and has not been updated yet.</p>
+exists from before and has not been updated yet. Outdated pages will be updated
+on a best-effort basis.</p>
 <h3 id="unreleased-bevys-git-main-branch"><a class="header" href="#unreleased-bevys-git-main-branch">Unreleased (Bevy's git main branch)</a></h3>
 <p>Pages that cover new yet-unreleased features of Bevy are allowed. If there is an
 exciting new feature, and I want to document it, I will write a page, without
 waiting for the next release of Bevy to come out. :)</p>
-<p>For functionality that exists in the current release in some form, but has
-changed for the next release, the current version is the one that should be
-documented. The page can be updated in the future. I might sometimes make
-exceptions to this rule.</p>
 <h2 id="license"><a class="header" href="#license">License</a></h2>
 <p>Copyright © 2021-2023 Ida (IyesGames)</p>
 <p>All code in the book is provided under the

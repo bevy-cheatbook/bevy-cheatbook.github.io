@@ -91,11 +91,33 @@
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
                                 <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky bordered">
+                <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
                         <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
                             <i class="fa fa-bars"></i>
@@ -410,6 +432,7 @@ numerial index is supported. You cannot address sub-assets by name.</p>
 <li><code>Node{}</code>: GLTF Node as <a href="https://docs.rs/bevy/0.9.1/bevy/gltf/struct.GltfNode.html"><code>GltfNode</code></a></li>
 <li><code>Mesh{}</code>: GLTF Mesh as <a href="https://docs.rs/bevy/0.9.1/bevy/gltf/struct.GltfMesh.html"><code>GltfMesh</code></a></li>
 <li><code>Mesh{}/Primitive{}</code>: GLTF Primitive as Bevy <a href="https://docs.rs/bevy/0.9.1/bevy/render/mesh/struct.Mesh.html"><code>Mesh</code></a></li>
+<li><code>Mesh{}/Primitive{}/MorphTargets</code>: Morph target animation data for a GLTF Primitive</li>
 <li><code>Texture{}</code>: GLTF Texture as Bevy <a href="https://docs.rs/bevy/0.9.1/bevy/render/texture/struct.Image.html"><code>Image</code></a></li>
 <li><code>Material{}</code>: GLTF Material as Bevy <a href="https://docs.rs/bevy/0.9.1/bevy/pbr/struct.StandardMaterial.html"><code>StandardMaterial</code></a></li>
 <li><code>DefaultMaterial</code>: as above, if the GLTF file contains a default material with no index</li>

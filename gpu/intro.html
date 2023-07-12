@@ -91,11 +91,33 @@
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
                                 <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky bordered">
+                <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
                         <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
                             <i class="fa fa-bars"></i>
@@ -180,14 +202,6 @@ stored using entities and components.</p>
 <h2 id="core-architecture"><a class="header" href="#core-architecture">Core Architecture</a></h2>
 <p>The renderer operates in multiple <a href="/gpu/stages.html">render stages</a>. This
 is how the work that needs to be performed on the CPU is managed.</p>
-<ul>
-<li><code>Extract</code>: quickly copy the minimal data you need from the main World to the render World</li>
-<li><code>Prepare</code>: send data to the GPU (buffers, textures, bind groups)</li>
-<li><code>Queue</code>: generate the render jobs to be run (usually <a href="/TODO.html">phase items</a>)</li>
-<li><code>PhaseSort</code>: sort and batch <a href="/TODO.html">phase items</a> for efficient rendering</li>
-<li><code>Render</code>: execute the <a href="/TODO.html">render graph</a> to produce actual GPU commands and do the work</li>
-<li><code>Cleanup</code>: clear any data from the render World that should not persist to the next frame</li>
-</ul>
 <p>The ordering of the workloads to be performed on the GPU is controlled
 using the <a href="/TODO.html">render graph</a>. The graph consists of
 <a href="/TODO.html">nodes</a>, each representing a workload for the GPU,
@@ -206,16 +220,18 @@ graphics API. It is the abstraction layer over the GPU APIs of the underlying
 supported platforms. The API design of <a href="https://github.com/gfx-rs/wgpu"><code>wgpu</code></a> is based on
 the WebGPU standard, but with extensions to support native platform features,
 going beyond the limitations of the web platform.</p>
-<p><a href="https://github.com/gfx-rs/wgpu"><code>wgpu</code></a> (and hence Bevy) supports the following backends for each platform:</p>
-<ul>
-<li>Vulkan (Linux/Windows/Android)</li>
-<li>DirectX 12 (Windows)</li>
-<li>Metal (Apple)</li>
-<li>WebGL2 (Web)</li>
-<li>WebGPU (Web; experimental)</li>
-<li>GLES3 (Linux/Android; legacy)</li>
-<li>DirectX 11 (Windows; legacy; WIP (not yet ready for use))</li>
-</ul>
+<p><a href="https://github.com/gfx-rs/wgpu"><code>wgpu</code></a> (and hence Bevy) supports the following backends:</p>
+<div class="table-wrapper"><table><thead><tr><th>Platform</th><th>Backends (in order of priority)</th></tr></thead><tbody>
+<tr><td>Linux</td><td>Vulkan, GLES3</td></tr>
+<tr><td>Windows</td><td>DirectX 12, Vulkan, GLES3</td></tr>
+<tr><td>macOS</td><td>Metal</td></tr>
+<tr><td>iOS</td><td>Metal</td></tr>
+<tr><td>Android</td><td>Vulkan, GLES3</td></tr>
+<tr><td>Web</td><td>WebGPU, WebGL2</td></tr>
+</tbody></table>
+</div>
+<p>On GLES3 and WebGL2, some renderer features are unsupported and performance is worse.</p>
+<p>WebGPU is experimental and few browsers support it.</p>
 <p><code>wgpu</code> forms the &quot;lowest level&quot; of Bevy rendering. If you really need the
 most direct control over the GPU, you can pretty much use <code>wgpu</code> directly,
 from within the Bevy render framework.</p>

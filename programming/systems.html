@@ -91,11 +91,33 @@
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
                                 <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky bordered">
+                <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
                         <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
                             <i class="fa fa-bars"></i>
@@ -147,27 +169,33 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="systems"><a class="header" href="#systems">Systems</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/startup_system.rs"><code>startup_system</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/system_param.rs"><code>system_param</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/ecs/startup_system.rs"><code>startup_system</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/ecs/system_param.rs"><code>system_param</code></a>.</p>
 <hr />
-<p>Systems are functions you write, which are run by Bevy.</p>
-<p>This is where you implement all your game logic.</p>
+<p>Systems are pieces of functionality, which are run by Bevy. They are typically
+implemented using regular Rust functions.</p>
+<p>This is how you implement all your game logic. Each system specifies what data
+it needs to access to do its thing, and Bevy will run them in parallel when
+possible. You can add configuration/metadata to control how your systems should
+be run, using the <a href="/programming/app-builder.html">app builder</a>.</p>
 <p>These functions can only take <a href="/builtins.html#systemparams">special parameter types</a>,
-to specify what you need access to. <a href="/pitfalls/into-system.html">If you use unsupported parameter types
-in your function, you will get confusing compiler errors!</a></p>
-<p>Some of the options are:</p>
+to specify what <a href="/programming/intro-data.html">data</a> you need access to. If you use
+unsupported parameter types in your function, <a href="/pitfalls/into-system.html">you will get confusing compiler
+errors!</a></p>
+<p>Some of the possibilities are:</p>
 <ul>
-<li>accessing <a href="/programming/res.html">resources</a> using <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Res.html"><code>Res</code></a>/<a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.ResMut.html"><code>ResMut</code></a></li>
-<li>accessing <a href="/programming/ec.html#components">components of entities</a> using <a href="/programming/queries.html">queries</a> (<a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Query.html"><code>Query</code></a>)</li>
-<li>creating/destroying entities, components, and resources using <a href="/programming/commands.html">Commands</a> (<a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>)</li>
-<li>sending/receiving <a href="/programming/events.html">events</a> using <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/event/struct.EventWriter.html"><code>EventWriter</code></a>/<a href="https://docs.rs/bevy/0.9.1/bevy/ecs/event/struct.EventReader.html"><code>EventReader</code></a></li>
+<li>accessing <a href="/programming/res.html">resources</a> using <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.Res.html"><code>Res</code></a>/<a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut</code></a></li>
+<li>accessing <a href="/programming/ec.html#components">components of entities</a> using <a href="/programming/queries.html">queries</a> (<a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.Query.html"><code>Query</code></a>)</li>
+<li>creating/destroying entities, components, and resources using <a href="/programming/commands.html">Commands</a> (<a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>)</li>
+<li>sending/receiving <a href="/programming/events.html">events</a> using <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/event/struct.EventWriter.html"><code>EventWriter</code></a>/<a href="https://docs.rs/bevy/0.11.0/bevy/ecs/event/struct.EventReader.html"><code>EventReader</code></a></li>
 </ul>
+<p><a href="/builtins.html#systemparams">See here for a full list!</a></p>
 <pre><code class="language-rust no_run noplayground">fn debug_start(
     // access resource
     start: Res&lt;StartingLevel&gt;
@@ -188,29 +216,35 @@ useful for organization.</p>
 <p>Your function can have a maximum of 16 total parameters. If you need more,
 group them into tuples to work around the limit. Tuples can contain up to
 16 members, but can be nested indefinitely.</p>
+<p>There is also a different kind of systems: <a href="/programming/exclusive.html">exclusive systems</a>.
+They have <a href="/programming/world.html">full direct access to the ECS World</a>, so you can access
+any data you want and do anything, but cannot run in parallel. For most use
+cases, you should use regular parallel systems.</p>
 <h2 id="runtime"><a class="header" href="#runtime">Runtime</a></h2>
 <p>To run your systems, you need to add them to Bevy via the <a href="/programming/app-builder.html">app builder</a>:</p>
 <pre><code class="language-rust no_run noplayground">fn main() {
     App::new()
-        // ...
-
-        // run it only once at launch
-        .add_startup_system(init_menu)
-        .add_startup_system(debug_start)
-
-        // run it every frame update
-        .add_system(move_player)
-        .add_system(enemies_ai)
-
+        .add_plugins(DefaultPlugins)
+        // run these only once at launch
+        .add_systems(Startup, (setup_camera, debug_start))
+        // run these every frame update
+        .add_systems(Update, (move_player, enemies_ai))
         // ...
         .run();
 }</code></pre>
+<p>Be careful: writing a new system <code>fn</code> and forgetting to add it to your app is a
+common mistake! If you run your project and your new code doesn't seem to be
+running, make sure you added the system!</p>
 <p>The above is enough for simple projects.</p>
+<p>Systems are contained <a href="/programming/schedules.html">schedules</a>. <a href="https://docs.rs/bevy/0.11.0/bevy/app/struct.Update.html"><code>Update</code></a> is the
+schedule where you typically add any systems you want to run every frame.
+<a href="https://docs.rs/bevy/0.11.0/bevy/app/struct.Startup.html"><code>Startup</code></a> is where you typically add systems that should run
+only once on app startup. There are also <a href="/builtins.html#schedules">other possibilities</a>.</p>
 <p>As your project grows more complex, you might want to enhance your app builder
 with some of the powerful tools that Bevy offers for managing when/how
-your systems run, such as: <a href="/programming/system-order.html">explicit ordering</a> with
-<a href="/programming/labels.html">labels</a>, <a href="/programming/system-sets.html">system sets</a>, <a href="/programming/states.html">states</a>,
-<a href="/programming/run-criteria.html">run criteria</a>, and <a href="/programming/schedules.html">stages</a>.</p>
+your systems run, such as: <a href="/programming/system-order.html">explicit ordering</a>,
+<a href="/programming/system-sets.html">system sets</a>, <a href="/programming/states.html">states</a>,
+<a href="/programming/run-criteria.html">run conditions</a>.</p>
 
                     </main>
 

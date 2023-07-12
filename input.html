@@ -91,11 +91,33 @@
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
                                 <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky bordered">
+                <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
                         <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
                             <i class="fa fa-bars"></i>
@@ -147,7 +169,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://github.com/bevyengine/bevy">main (0.11-dev)</a></th><th>(unreleased / upcoming)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="input-handling"><a class="header" href="#input-handling">Input Handling</a></h1>
@@ -179,13 +201,13 @@
 <p>For most input types (where it makes sense), Bevy provides two ways of
 dealing with them:</p>
 <ul>
-<li>by checking the current state via <a href="https://dev-docs.bevyengine.org/bevy/ecs/system/struct.Res.html">resources</a> (<a href="/builtins.html#input-handling-resources">input resources</a>),</li>
+<li>by checking the current state via <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.Res.html">resources</a> (<a href="/builtins.html#input-handling-resources">input resources</a>),</li>
 <li>or via <a href="/programming/events.html">events</a> (<a href="/builtins.html#input-events">input events</a>).</li>
 </ul>
 <p>Some inputs are only provided as events.</p>
 <p>Checking state is done using <a href="/programming/res.html">resources</a> such as
-<a href="https://dev-docs.bevyengine.org/bevy/input/struct.Input.html"><code>Input</code></a> (for binary inputs like keys or buttons),
-<a href="https://dev-docs.bevyengine.org/bevy/input/struct.Axis.html"><code>Axis</code></a> (for analog inputs), <a href="https://dev-docs.bevyengine.org/bevy/input/touch/struct.Touches.html"><code>Touches</code></a>
+<a href="https://docs.rs/bevy/0.11.0/bevy/input/struct.Input.html"><code>Input</code></a> (for binary inputs like keys or buttons),
+<a href="https://docs.rs/bevy/0.11.0/bevy/input/struct.Axis.html"><code>Axis</code></a> (for analog inputs), <a href="https://docs.rs/bevy/0.11.0/bevy/input/touch/struct.Touches.html"><code>Touches</code></a>
 (for fingers on a touchscreen), etc. This way of handling input is very
 convenient for implementing game logic. In these scenarios, you typically
 only care about the specific inputs mapped to actions in your game. You can
@@ -208,7 +230,7 @@ have a system for reading inputs and converting them to your own internal
 internal events, to actually move the player. Make sure to use <a href="/programming/system-order.html">explicit
 system ordering</a> to avoid lag / frame delays.</p>
 <h2 id="run-conditions"><a class="header" href="#run-conditions">Run Conditions</a></h2>
-<p>Bevy also provides <a href="/programming/run-criteria.html">run conditions</a> (<a href="https://dev-docs.bevyengine.org/bevy/input/common_conditions/index.html">see all of them
+<p>Bevy also provides <a href="/programming/run-criteria.html">run conditions</a> (<a href="https://docs.rs/bevy/0.11.0/bevy/input/common_conditions/index.html">see all of them
 here</a>) that you can attach to your systems, if
 you want a specific system to only run when a specific key or button is pressed.</p>
 <p>This way, you can do input handling as part of the

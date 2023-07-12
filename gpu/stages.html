@@ -91,11 +91,33 @@
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
                                 <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky bordered">
+                <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
                         <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
                             <i class="fa fa-bars"></i>
@@ -153,14 +175,6 @@
 <h1 id="render-stages"><a class="header" href="#render-stages">Render Stages</a></h1>
 <p>Everything on the CPU side (the whole process of driving the GPU workloads)
 is structured in a sequence of &quot;render stages&quot;:</p>
-<ul>
-<li><code>Extract</code>: quickly copy the minimal data you need from the main World to the render World</li>
-<li><code>Prepare</code>: send data to the GPU (buffers, textures, bind groups)</li>
-<li><code>Queue</code>: generate the render jobs to be run (usually <a href="/TODO.html">phase items</a>)</li>
-<li><code>PhaseSort</code>: sort and batch <a href="/TODO.html">phase items</a> for efficient rendering</li>
-<li><code>Render</code>: execute the <a href="/TODO.html">render graph</a> to produce actual GPU commands and do the work</li>
-<li><code>Cleanup</code>: clear any data from the render World that should not persist to the next frame</li>
-</ul>
 <h2 id="timings"><a class="header" href="#timings">Timings</a></h2>
 <p>Note: Pipelined rendering is not yet actually enabled in Bevy 0.9. This section
 explains the intended behavior, which will land in a future Bevy version. You

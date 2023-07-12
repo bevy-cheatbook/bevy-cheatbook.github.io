@@ -91,11 +91,33 @@
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
                                 <div id="menu-bar-hover-placeholder"></div>
-                <div id="menu-bar" class="menu-bar sticky bordered">
+                <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
                         <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
                             <i class="fa fa-bars"></i>
@@ -147,17 +169,17 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-10">0.10</a></th><th>(current)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="ecs-programming-introduction"><a class="header" href="#ecs-programming-introduction">ECS Programming Introduction</a></h1>
 <p>This page will try to teach you the general ECS mindset/paradigm.</p>
 <hr />
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.10.1/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
 <p>Also check out the complete game examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.10.1/examples/games/alien_cake_addict.rs"><code>alien_cake_addict</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/v0.10.1/examples/games/breakout.rs"><code>breakout</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/games/alien_cake_addict.rs"><code>alien_cake_addict</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/games/breakout.rs"><code>breakout</code></a>.</p>
 <hr />
 <p>ECS is a programming paradigm that separates data and behavior. Bevy will store
 all of <a href="/programming/intro-data.html">your data</a> and manage all of <a href="/programming/intro-code.html">your individual pieces
