@@ -5259,56 +5259,23 @@ higher than 2x the fixed timestep.</p>
 <p>One way around that is to use <a href="features//patterns/manual-event-clear.html">events with manual
 clearing</a>. This gives you control over how long events
 persist, but can also leak / waste memory if you forget to clear them.</p>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="features//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="features//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="audio-1"><a class="header" href="#audio-1">Audio</a></h1>
-<p>Bevy's own built-in audio support is extremely barebones and limited. It
-can play sounds and give some control over its volume and playback.</p>
-<p><strong>TODO:</strong> show how to use Bevy audio, now that it its usability has improved.</p>
-<h2 id="kira-audio"><a class="header" href="#kira-audio">Kira Audio</a></h2>
-<p>Instead, you could try the <a href="https://github.com/NiklasEi/bevy_kira_audio"><code>bevy_kira_audio</code></a>
-community plugin, which integrates the Kira sound library with bevy. Kira
-is much more feature-rich, including support for managing many audio tracks
-(like background music and sound effects), with volume control, stereo panning,
-playback rate, and streaming.</p>
-<p>Using <code>bevy_kira_audio</code> in your project requires some extra configuration,
-because you need to disable Bevy's own audio. Bevy's audio is a cargo feature
-that is enabled by default, but must be disabled. Cargo does not let you
-disable individual default features, so you need to disable all default bevy
-features and re-enable the ones you need. <a href="features//setup/bevy-config.html">See here</a> for more info.</p>
-<p>You must not include the <code>bevy_audio</code> feature, or any of the audio file
-formats (such as the default <code>vorbis</code>). Enable the file formats you care
-about on <code>bevy_kira_audio</code> instead of Bevy.</p>
-<pre><code class="language-toml">[dependencies.bevy]
-version = &quot;0.9&quot;
-default-features = false
-# These are the remaining default features other than `bevy_audio` and `vorbis`
-features = [
-  &quot;render&quot;,
-  &quot;animation&quot;,
-  &quot;bevy_asset&quot;,
-  &quot;bevy_scene&quot;,
-  &quot;bevy_winit&quot;,
-  &quot;bevy_gilrs&quot;,
-  &quot;png&quot;,
-  &quot;hdr&quot;,
-  &quot;filesystem_watcher&quot;,
-  &quot;x11&quot;
-]
-
-[dependencies.bevy_kira_audio]
-version = &quot;0.11&quot;
-# `ogg` format support is enabled by default, disable if you don't want it
-default-features = false
-# enable the features you care about
-features = [
-  &quot;wav&quot;,
-  &quot;flac&quot;,
-  &quot;mp3&quot;,
-  &quot;ogg&quot;,
-]
-</code></pre>
+<p>Relevant official examples:
+<a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/audio/audio.rs"><code>audio</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/audio/audio_control.rs"><code>audio_control</code></a>.</p>
+<p>TODO</p>
+<h2 id="spatial-audio"><a class="header" href="#spatial-audio">Spatial Audio</a></h2>
+<p>Relevant official examples:
+<a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/audio/spatial_audio_2d.rs"><code>spatial_audio_2d</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/audio/spatial_audio_3d.rs"><code>spatial_audio_3d</code></a>.</p>
+<p>TODO</p>
+<h2 id="custom-audio-data-stream"><a class="header" href="#custom-audio-data-stream">Custom Audio Data Stream</a></h2>
+<p>Relevant official examples:
+<a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/audio/decodable.rs"><code>decodable</code></a>.</p>
+<p>TODO</p>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-10">0.10</a></th><th>(outdated!)</th></tr></thead><tbody>
 </tbody></table>
 </div>
