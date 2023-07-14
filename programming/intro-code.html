@@ -169,7 +169,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-10">0.10</a></th><th>(outdated!)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="intro-your-code"><a class="header" href="#intro-your-code">Intro: Your Code</a></h1>
@@ -184,7 +184,7 @@ access to whatever parts of <a href="/programming/intro-data.html">your data</a>
 is a Rust function (<code>fn</code>) you write, which accepts <a href="/builtins.html#systemparams">special parameter
 types</a> to indicate what <a href="/programming/intro-data.html">data</a> it needs to
 access. Think of the function signature as a &quot;specification&quot; for what to fetch
-from the ECS <a href="https://docs.rs/bevy/0.10.1/bevy/ecs/world/struct.World.html"><code>World</code></a>.</p>
+from the ECS <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/world/struct.World.html"><code>World</code></a>.</p>
 <p>Here is what a <a href="/programming/systems.html">system</a> might look like. Note how, just by looking
 at the function parameters, we know <em>exactly</em> what <a href="/programming/intro-data.html">data</a>
 can be accessed.</p>
@@ -205,8 +205,8 @@ can be accessed.</p>
 <p>Based on the <a href="/builtins.html#systemparams">parameter</a> types of the <a href="/programming/systems.html">systems</a>
 you write, Bevy knows what data each system can access and whether it conflicts
 with any other systems.  Systems that do not conflict (don't access any of the
-same data) will be automatically <a href="/programming/system-order.html">run in parallel</a> on
-different CPU threads. This way, you get multithreading, utilizing modern
+same data mutably) will be automatically <a href="/programming/system-order.html">run in parallel</a>
+on different CPU threads. This way, you get multithreading, utilizing modern
 multi-core CPU hardware effectively, with no extra effort from you!</p>
 <p>For best parallelism performance, it is recommended that you keep your
 functionality and <a href="/programming/intro-data.html">your data</a> granular. Create many small
@@ -224,7 +224,7 @@ with other systems, because they can access anything and do anything. Sometimes,
 you might need this additonal power.</p>
 <h2 id="schedules"><a class="header" href="#schedules">Schedules</a></h2>
 <p>Bevy stores systems inside of <a href="/programming/schedules.html">schedules</a>
-(<a href="https://docs.rs/bevy/0.10.1/bevy/ecs/schedule/struct.Schedule.html"><code>Schedule</code></a>). The schedule contains the systems and all
+(<a href="https://docs.rs/bevy/0.11.0/bevy/ecs/schedule/struct.Schedule.html"><code>Schedule</code></a>). The schedule contains the systems and all
 relevant metadata to organize them, telling Bevy when and how to run them. Bevy
 <a href="/programming/app-builder.html">Apps</a> typically contain many schedules. Each one is a collection of
 systems to be invoked in different scenarios (every frame update, <a href="/features/fixed-timestep.html">fixed
@@ -271,10 +271,10 @@ game might be organized.</p>
 <tr><td><code>AudioSet</code></td><td></td><td><code>not(audio_muted)</code></td><td></td></tr>
 </tbody></table>
 </div>
-<p>Note that it doesn't matter how systems are listed in the schedule. Their
-<a href="/programming/system-order.html">order</a> of execution is determined by the metadata. Bevy will
-respect those constraints, but otherwise run systems in parallel as much as it
-can, depending on what CPU threads are available.</p>
+<p>Note that it doesn't matter in what order systems are listed in the schedule.
+Their <a href="/programming/system-order.html">order</a> of execution is determined by the metadata. Bevy
+will respect those constraints, but otherwise run systems in parallel as much as
+it can, depending on what CPU threads are available.</p>
 <p>Also note how our hypothetical game is implemented using many individually-small
 systems. For example, instead of playing audio inside of the <code>player_movement</code>
 system, we made a separate <code>play_footstep_sounds</code> system. These two pieces of
@@ -292,53 +292,50 @@ all the functionality in your game. What will you do with all this power? ;)</p>
 <hr />
 <p>Here is how <a href="/programming/schedules.html">schedule</a> that was illustrated above could be
 created in code:</p>
-<pre><code class="language-rust no_run noplayground">app.configure_set(MainMenuSet
+<pre><code class="language-rust no_run noplayground">// Set configuration is per-schedule. Here we do it for `Update`
+app.configure_set(Update, MainMenuSet
     .run_if(in_state(MainMenu))
 );
-app.configure_set(GameplaySet
+app.configure_set(Update, GameplaySet
     .run_if(in_state(InGame))
 );
-app.configure_set(InputSet
+app.configure_set(Update, InputSet
     .in_set(GameplaySet)
 );
-app.configure_set(EnemyAiSet
+app.configure_set(Update, EnemyAiSet
     .in_set(GameplaySet)
     .run_if(not(cutscene))
     .after(player_movement)
 );
-app.configure_set(AudioSet
+app.configure_set(Update, AudioSet
     .run_if(audio_muted)
 );
-app.add_systems(
+app.add_systems(Update, (
+    (
+        ui_button_animate,
+        menu_logo_animate.in_set(MainMenuSet),
+    ),
     (
         enemy_movement,
         enemy_spawn,
         enemy_despawn.before(enemy_spawn),
-    ).in_set(EnemyAiSet)
-);
-app.add_systems(
+    ).in_set(EnemyAiSet),
     (
         mouse_input.run_if(mouse_enabled),
         controller_input.run_if(gamepad_enabled),
-    ).in_set(InputSet)
-);
-app.add_systems(
+    ).in_set(InputSet),
     (
         footstep_sound.in_set(GameplaySet),
         menu_button_sound.in_set(MainMenuSet),
         background_music,
-    ).in_set(AudioSet)
-);
-app.add_systems(
+    ).in_set(AudioSet),
     (
         player_movement
             .run_if(player_alive)
             .run_if(not(cutscene)),
         camera_movement,
-    ).in_set(GameplaySet).after(InputSet)
-);
-app.add_system(ui_button_animate);
-app.add_system(menu_logo_animate.in_set(MainMenuSet));</code></pre>
+    ).in_set(GameplaySet).after(InputSet),
+));</code></pre>
 <p>(learn more about: <a href="/programming/schedules.html">schedules</a>, <a href="/programming/system-sets.html">system sets</a>, <a href="/programming/states.html">states</a>, <a href="/programming/run-criteria.html">run conditions</a>, <a href="/programming/system-order.html">system ordering</a>)</p>
 
                     </main>
