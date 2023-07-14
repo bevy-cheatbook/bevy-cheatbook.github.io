@@ -2304,69 +2304,91 @@ app.add_systems(Update, (
     ).in_set(GameplaySet).after(InputSet),
 ));</code></pre>
 <p>(learn more about: <a href="programming//programming/schedules.html">schedules</a>, <a href="programming//programming/system-sets.html">system sets</a>, <a href="programming//programming/states.html">states</a>, <a href="programming//programming/run-criteria.html">run conditions</a>, <a href="programming//programming/system-order.html">system ordering</a>)</p>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="the-app"><a class="header" href="#the-app">The App</a></h1>
 <p>Relevant official examples: All of them ;)</p>
 <p>In particular, check out the complete game examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/games/alien_cake_addict.rs"><code>alien_cake_addict</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/games/breakout.rs"><code>breakout</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/games/alien_cake_addict.rs"><code>alien_cake_addict</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/games/breakout.rs"><code>breakout</code></a>.</p>
 <hr />
-<p>To enter the bevy runtime, you need to configure an <a href="https://docs.rs/bevy/0.9.1/bevy/app/struct.App.html"><code>App</code></a>. The app
+<p>To enter the bevy runtime, you need to configure an <a href="https://docs.rs/bevy/0.11.0/bevy/app/struct.App.html"><code>App</code></a>. The app
 is how you define the structure of all the things that make up your project:
-<a href="programming//programming/plugins.html">plugins</a>, <a href="programming//programming/systems.html">systems</a>, <a href="programming//programming/events.html">event</a> types,
-<a href="programming//programming/states.html">states</a>, <a href="programming//programming/schedules.html">stages</a>…</p>
+<a href="programming//programming/plugins.html">plugins</a>, <a href="programming//programming/systems.html">systems</a> (and their configuration/metadata),
+<a href="programming//programming/events.html">event</a> types, <a href="programming//programming/states.html">states</a>, <a href="programming//programming/schedules.html">schedules</a>…</p>
+<p>Technically, the <a href="https://docs.rs/bevy/0.11.0/bevy/app/struct.App.html"><code>App</code></a> is what brings the whole ECS together. It
+contains the <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/world/struct.World.html"><code>World</code></a>(s) (where <a href="programming//programming/intro-data.html">all the data</a>
+is stored), the Schedule(s) (where all <a href="programming//programming/intro-code.html">the functionality</a> is
+stored and configured), and the &quot;runner&quot;, which is the code that is responsible
+for running everything.</p>
+<p>You typically create your <a href="https://docs.rs/bevy/0.11.0/bevy/app/struct.App.html"><code>App</code></a> in your project's <code>main</code> function.
+However, you don't have to add everything from there. If you want to add things
+to your app from multiple places (like other Rust files or crates), use
+<a href="programming//programming/plugins.html">plugins</a>. As your project grows, you will need to do that to keep
+everything organized.</p>
 <pre><code class="language-rust no_run noplayground">fn main() {
     App::new()
         // Bevy itself:
         .add_plugins(DefaultPlugins)
 
-        // resources:
-        .insert_resource(StartingLevel(3))
-        // if it implements `Default` or `FromWorld`
-        .init_resource::&lt;MyFancyResource&gt;()
-
         // events:
         .add_event::&lt;LevelUpEvent&gt;()
 
         // systems to run once at startup:
-        .add_startup_system(spawn_things)
+        .add_systems(Startup, spawn_things)
 
         // systems to run each frame:
-        .add_system(player_level_up)
-        .add_system(debug_levelups)
-        .add_system(debug_stats_change)
+        .add_systems(Update, (
+            player_level_up,
+            debug_levelups,
+            debug_stats_change,
+        ))
         // ...
 
         // launch the app!
         .run();
 }</code></pre>
-<p>Technically, the <a href="https://docs.rs/bevy/0.9.1/bevy/app/struct.App.html"><code>App</code></a> contains the ECS World(s) (where all
-the data is stored) and Schedule(s) (where all the <a href="programming//programming/systems.html">systems</a>
-to run are stored). For advanced use-cases, <a href="programming//programming/app-builder.html#sub-apps">Sub-apps</a> are a
-way to have more than one ECS World and Schedule.</p>
+<p>Note: <code>add_systems</code> and <code>add_plugins</code> allow you to add multiple things at once,
+using tuple syntax.</p>
 <p><a href="programming//programming/local.html">Local resources</a> do not need to be registered. They are part of
 their respective <a href="programming//programming/systems.html">systems</a>.</p>
 <p><a href="programming//programming/ec.html#components">Component</a> types do not need to be registered.</p>
-<hr />
-<p>Schedules cannot (yet) be modified at runtime; all <a href="programming//programming/systems.html">systems</a> you
-want to run must be added/configured in the <a href="https://docs.rs/bevy/0.9.1/bevy/app/struct.App.html"><code>App</code></a> ahead of time.</p>
-<p>The data in the ECS World can be modified at any time; create/destroy your
-<a href="programming//programming/intro-data.html#entities--components">entities</a> and <a href="programming//programming/res.html">resources</a>, from <a href="programming//programming/systems.html">systems</a>
-using <a href="programming//programming/commands.html">Commands</a>, or <a href="programming//programming/exclusive.html">exclusive systems</a> using
-<a href="programming//programming/world.html">direct World access</a>.</p>
-<p><a href="programming//programming/res.html">Resources</a> can also be initialized ahead of time, here in the
-<a href="https://docs.rs/bevy/0.9.1/bevy/app/struct.App.html"><code>App</code></a> builder.</p>
+<p>Schedules cannot <a href="https://github.com/bevyengine/bevy/issues/279">(yet)</a> be modified at runtime; all
+<a href="programming//programming/systems.html">systems</a> you want to run must be added/configured in the
+<a href="https://docs.rs/bevy/0.11.0/bevy/app/struct.App.html"><code>App</code></a> ahead of time. You can control individual systems using <a href="programming//programming/run-criteria.html">run
+conditions</a>. You can also <a href="programming//patterns/schedule-dynamic.html">dynamically enable/disable entire
+schedules</a> using the
+<a href="https://docs.rs/bevy/0.11.0/bevy/app/struct.MainScheduleOrder.html"><code>MainScheduleOrder</code></a> <a href="programming//programming/res.html">resource</a>.</p>
 <h2 id="builtin-bevy-functionality"><a class="header" href="#builtin-bevy-functionality">Builtin Bevy Functionality</a></h2>
 <p>The Bevy game engine's own functionality is represented as a <a href="programming//programming/plugins.html#plugin-groups">plugin group</a>.
 Every typical Bevy app must first add it, using either:</p>
 <ul>
-<li><a href="https://docs.rs/bevy/0.9.1/bevy/struct.DefaultPlugins.html"><code>DefaultPlugins</code></a> if you are making a full game/app</li>
-<li><a href="https://docs.rs/bevy/0.9.1/bevy/struct.MinimalPlugins.html"><code>MinimalPlugins</code></a> for something like a headless server.</li>
+<li><a href="https://docs.rs/bevy/0.11.0/bevy/struct.DefaultPlugins.html"><code>DefaultPlugins</code></a> if you are making a full game/app</li>
+<li><a href="https://docs.rs/bevy/0.11.0/bevy/struct.MinimalPlugins.html"><code>MinimalPlugins</code></a> for something like a headless server.</li>
 </ul>
+<h2 id="setting-up-data"><a class="header" href="#setting-up-data">Setting up data</a></h2>
+<p>Normally, you can set up <a href="programming//programming/intro-data.html">your data</a> from
+<a href="programming//programming/systems.html">systems</a>. Use <a href="programming//programming/commands.html">Commands</a> from regular systems, or
+use <a href="programming//programming/exclusive.html">exclusive systems</a> to get <a href="programming//programming/world.html">full World access</a>.</p>
+<p>Add your setup systems as startup systems for things you want to initialize
+at launch, or use <a href="programming//programming/states.html">state</a> enter/exit systems to do things when
+transitioning between menus, game modes, levels, etc.</p>
+<p>However, you can also initialize data directly from the app builder. This
+is common for <a href="programming//programming/res.html">resources</a>, if they need to be present at all
+times. You can also get <a href="programming//programming/world.html">direct World access</a>.</p>
+<pre><code class="language-rust no_run noplayground">// Create (or overwrite) resource with specific value
+app.insert_resource(StartingLevel(3));
+
+// Ensure resource exists; if not, create it
+// (using `Default` or `FromWorld`)
+app.init_resource::&lt;MyFancyResource&gt;();
+
+// We can also access/manipulate the World directly
+// (in this example, to spawn an entity, but you can do anything)
+app.world.spawn(SomeBundle::default());</code></pre>
 <h2 id="quitting-the-app"><a class="header" href="#quitting-the-app">Quitting the App</a></h2>
-<p>To cleanly shut down bevy, send an <a href="https://docs.rs/bevy/0.9.1/bevy/app/struct.AppExit.html"><code>AppExit</code></a>
+<p>To cleanly shut down bevy, send an <a href="https://docs.rs/bevy/0.11.0/bevy/app/struct.AppExit.html"><code>AppExit</code></a>
 <a href="programming//programming/events.html">event</a> from any <a href="programming//programming/systems.html">system</a>:</p>
 <pre><code class="language-rust no_run noplayground">use bevy::app::AppExit;
 
@@ -2376,12 +2398,7 @@ fn exit_system(mut exit: EventWriter&lt;AppExit&gt;) {
 <p>For prototyping, Bevy provides a convenient system you can add, to close the
 focused window on pressing the <code>Esc</code> key. When all windows are closed, Bevy will
 quit automatically.</p>
-<pre><code class="language-rust no_run noplayground">fn main() {
-    App::new()
-        .add_plugins(DefaultPlugins)
-        .add_system(bevy::window::close_on_esc)
-        .run();
-}</code></pre>
+<pre><code class="language-rust no_run noplayground">app.add_systems(Update, bevy::window::close_on_esc);</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
@@ -2458,73 +2475,133 @@ with some of the powerful tools that Bevy offers for managing when/how
 your systems run, such as: <a href="programming//programming/system-order.html">explicit ordering</a>,
 <a href="programming//programming/system-sets.html">system sets</a>, <a href="programming//programming/states.html">states</a>,
 <a href="programming//programming/run-criteria.html">run conditions</a>.</p>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="resources-2"><a class="header" href="#resources-2">Resources</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
 <hr />
 <p>Resources allow you to store a single global instance of some data type,
-independently of entities.</p>
-<p>Use them for data that is truly global for your app, such as configuration
-/ settings.</p>
+independently of <a href="programming//programming/intro-data.html#entities--components">entities</a>.</p>
+<p>Use them for <a href="programming//programming/intro-data.html">data</a> that is truly global for your app, such
+as configuration / settings. Resources make it easy for you to access such data
+from anywhere.</p>
+<hr />
 <p>To create a new resource type, simply define a Rust <code>struct</code> or <code>enum</code>, and
-derive the <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/trait.Resource.html"><code>Resource</code></a> trait, similar to
-<a href="programming//programming/ec.html#components">components</a>.</p>
-<p>Types must be unique; there can only be one instance of a given type.</p>
+derive the <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/trait.Resource.html"><code>Resource</code></a> trait, similar to
+<a href="programming//programming/ec.html#components">components</a> and <a href="programming//programming/events.html">events</a>.</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Resource)]
 struct GoalsReached {
     main_goal: bool,
-    bonus: bool,
+    bonus: u32,
 }</code></pre>
-<p>Resources can be accessed from <a href="programming//programming/systems.html">systems</a>, using <code>Res</code>/<code>ResMut</code>.</p>
+<p>Types must be unique; there can only be at most one instance of a given type. If
+you might need multiple, consider using <a href="programming//programming/intro-data.html#entities--components">entities and components</a> instead.</p>
+<h2 id="accessing-resources"><a class="header" href="#accessing-resources">Accessing Resources</a></h2>
+<p>To access the value of a resource from <a href="programming//programming/systems.html">systems</a>, use <code>Res</code>/<code>ResMut</code>:</p>
+<pre><code class="language-rust no_run noplayground">fn my_system(
+    // these will panic if the resources don't exist
+    mut goals: ResMut&lt;GoalsReached&gt;,
+    other: Res&lt;MyOtherResource&gt;,
+    // use Option if a resource might not exist
+    mut fancy: Option&lt;ResMut&lt;MyFancyResource&gt;&gt;,
+) {
+    if let Some(fancy) = &amp;mut fancy {
+        // TODO: do things with `fancy`
+    }
+    // TODO: do things with `goals` and `other`
+}</code></pre>
+<h2 id="managing-resources"><a class="header" href="#managing-resources">Managing Resources</a></h2>
+<p>If you need to create/remove resources at runtime, you can do so using
+<a href="programming//programming/commands.html">commands</a> (<a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>):</p>
+<pre><code class="language-rust no_run noplayground">fn my_setup(mut commands: Commands, /* ... */) {
+    // add (or overwrite) resource, using the provided data
+    commands.insert_resource(GoalsReached { main_goal: false, bonus: 100 });
+    // ensure resource exists (creating if necessary)
+    commands.init_resource::&lt;MyFancyResource&gt;();
+    // remove a resource (if it exists)
+    commands.remove_resource::&lt;MyOtherResource&gt;();
+}</code></pre>
+<p>Alternatively, using <a href="programming//programming/world.html">direct World access</a> from an <a href="programming//programming/exclusive.html">exclusive
+system</a>:</p>
+<pre><code class="language-rust no_run noplayground">fn my_setup2(world: &amp;mut World) {
+    // The same methods as with Commands are also available here,
+    // but we can also do fancier things:
+
+    // Check if resource exists
+    if !world.contains_resource::&lt;MyFancyResource&gt;() {
+        // Get access to a resource, inserting a custom value if unavailable
+        let _bonus = world.get_resource_or_insert_with(
+            || GoalsReached { main_goal: false, bonus: 100 }
+        ).bonus;
+    }
+}</code></pre>
+<p>Resources can also be set up from the <a href="programming//programming/app-builder.html">app builder</a>. Do this for
+resources that are meant to always exist from the start.</p>
+<pre><code class="language-rust no_run noplayground">App::new()
+    .add_plugins(DefaultPlugins)
+    .insert_resource(StartingLevel(3))
+    .init_resource::&lt;MyFancyResource&gt;()
+    // ...</code></pre>
 <h2 id="resource-initialization"><a class="header" href="#resource-initialization">Resource Initialization</a></h2>
-<p>Implement <code>Default</code> for simple resources:</p>
-<pre><code class="language-rust no_run noplayground">#[derive(Resource, Default, Debug)]
-struct StartingLevel(usize);</code></pre>
-<p>For resources that need complex initialization, implement <code>FromWorld</code>:</p>
+<p>Implement <a href="https://doc.rust-lang.org/stable/std/default/trait.Default.html"><code>Default</code></a> for simple resources:</p>
+<pre><code class="language-rust no_run noplayground">// simple derive, to set all fields to their defaults
+#[derive(Resource, Default)]
+struct GameProgress {
+    game_completed: bool,
+    secrets_unlocked: u32,
+}
+
+#[derive(Resource)]
+struct StartingLevel(usize);
+
+// custom implementation for unusual values
+impl Default for StartingLevel {
+    fn default() -&gt; Self {
+        StartingLevel(1)
+    }
+}
+
+// on enums, you can specify the default variant
+#[derive(Resource, Default)]
+enum GameMode {
+    Tutorial,
+    #[default]
+    Singleplayer,
+    Multiplayer,
+}</code></pre>
+<p>For resources that need complex initialization, implement <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/world/trait.FromWorld.html"><code>FromWorld</code></a>:</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Resource)]
 struct MyFancyResource { /* stuff */ }
 
 impl FromWorld for MyFancyResource {
     fn from_world(world: &amp;mut World) -&gt; Self {
-        // You have full access to anything in the ECS from here.
-        // For instance, you can mutate other resources:
-        let mut x = world.get_resource_mut::&lt;MyOtherResource&gt;().unwrap();
+        // You have full access to anything in the ECS World from here.
+        // For example, you can access (and mutate!) other resources:
+        let mut x = world.resource_mut::&lt;MyOtherResource&gt;();
         x.do_mut_stuff();
 
         MyFancyResource { /* stuff */ }
     }
 }</code></pre>
-<p>You can initialize your resources at <a href="programming//programming/app-builder.html"><code>App</code> creation</a>:</p>
-<pre><code class="language-rust no_run noplayground">fn main() {
-    App::new()
-        // ...
-
-        // if it implements `Default` or `FromWorld`
-        .init_resource::&lt;MyFancyResource&gt;()
-        // if not, or if you want to set a specific value
-        .insert_resource(StartingLevel(3))
-
-        // ...
-        .run();
-}</code></pre>
-<p><a href="programming//programming/commands.html"><code>Commands</code></a> can be used to create/remove resources from
-inside a system:</p>
-<pre><code class="language-rust no_run noplayground">commands.insert_resource(GoalsReached { main_goal: false, bonus: false });
-commands.remove_resource::&lt;MyResource&gt;();</code></pre>
-<p>If you insert a resource of a type that already exists, it will be overwritten.</p>
+<p>Beware: it can be easy to get yourself into a mess of unmaintainable code
+if you overuse <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/world/trait.FromWorld.html"><code>FromWorld</code></a> to do complex things.</p>
 <h2 id="usage-advice"><a class="header" href="#usage-advice">Usage Advice</a></h2>
-<p>The choice of when to use entities/components vs. resources is typically
-about how you want to access the data: globally from anywhere (resources),
-or using ECS patterns (entities/components).</p>
+<p>The choice of when to use <a href="programming//programming/intro-data.html#entities--components">entities/components</a> vs. resources is
+typically about how you want to access the <a href="programming//programming/intro-data.html">data</a>: globally
+from anywhere (resources), or using ECS patterns (entities/components).</p>
 <p>Even if there is only one of a certain thing in your game (such as the
 player in a single-player game), it can be a good fit to use an entity
 instead of resources, because entities are composed of multiple components,
 some of which can be common with other entities. This can make your game
 logic more flexible. For example, you could have a &quot;health/damage system&quot;
 that works with both the player and enemies.</p>
+<h3 id="settings"><a class="header" href="#settings">Settings</a></h3>
+<p>One common usage of resources is for storing settings and configuration.</p>
+<p>However, if it is something that cannot be changed at runtime and only used when
+initializing a <a href="programming//programming/plugins.html">plugin</a>, consider putting that inside the plugin's
+<code>struct</code>, instead of a resource.</p>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
 </tbody></table>
 </div>
@@ -2716,7 +2793,7 @@ will see them on the next frame update)</p>
     mut commands: Commands,
 ) {
     // manage resources
-    commands.insert_resource(GoalsReached { main_goal: false, bonus: false });
+    commands.insert_resource(MyResource);
     commands.remove_resource::&lt;MyResource&gt;();
 
     // create a new entity using `spawn`,
@@ -2788,36 +2865,9 @@ fn despawn_all_enemies(
 </ul>
 <p>Every reader tracks the events it has read independently, so you can handle
 the same events from multiple <a href="programming//programming/systems.html">systems</a>.</p>
-<pre><code class="language-rust no_run noplayground">struct LevelUpEvent(Entity);
-
-fn player_level_up(
-    mut ev_levelup: EventWriter&lt;LevelUpEvent&gt;,
-    query: Query&lt;(Entity, &amp;PlayerXp)&gt;,
-) {
-    for (entity, xp) in query.iter() {
-        if xp.0 &gt; 1000 {
-            ev_levelup.send(LevelUpEvent(entity));
-        }
-    }
-}
-
-fn debug_levelups(
-    mut ev_levelup: EventReader&lt;LevelUpEvent&gt;,
-) {
-    for ev in ev_levelup.iter() {
-        eprintln!(&quot;Entity {:?} leveled up!&quot;, ev.0);
-    }
-}</code></pre>
+<pre><code class="language-rust no_run noplayground"></code></pre>
 <p>You need to add your custom event types via the <a href="programming//programming/app-builder.html">app builder</a>:</p>
-<pre><code class="language-rust no_run noplayground">fn main() {
-    App::new()
-        // ...
-        .add_event::&lt;LevelUpEvent&gt;()
-        .add_system(player_level_up)
-        .add_system(debug_levelups)
-        // ...
-        .run();
-}</code></pre>
+<pre><code class="language-rust no_run noplayground"></code></pre>
 <p>Events should be your go-to data flow tool. As events can be sent from any
 system and received by multiple systems, they are <em>extremely</em> versatile.</p>
 <h2 id="possible-pitfalls"><a class="header" href="#possible-pitfalls">Possible Pitfalls</a></h2>

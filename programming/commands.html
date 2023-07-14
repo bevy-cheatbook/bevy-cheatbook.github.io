@@ -186,7 +186,7 @@ will see them on the next frame update)</p>
     mut commands: Commands,
 ) {
     // manage resources
-    commands.insert_resource(GoalsReached { main_goal: false, bonus: false });
+    commands.insert_resource(MyResource);
     commands.remove_resource::&lt;MyResource&gt;();
 
     // create a new entity using `spawn`,

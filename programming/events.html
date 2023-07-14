@@ -183,36 +183,9 @@
 </ul>
 <p>Every reader tracks the events it has read independently, so you can handle
 the same events from multiple <a href="/programming/systems.html">systems</a>.</p>
-<pre><code class="language-rust no_run noplayground">struct LevelUpEvent(Entity);
-
-fn player_level_up(
-    mut ev_levelup: EventWriter&lt;LevelUpEvent&gt;,
-    query: Query&lt;(Entity, &amp;PlayerXp)&gt;,
-) {
-    for (entity, xp) in query.iter() {
-        if xp.0 &gt; 1000 {
-            ev_levelup.send(LevelUpEvent(entity));
-        }
-    }
-}
-
-fn debug_levelups(
-    mut ev_levelup: EventReader&lt;LevelUpEvent&gt;,
-) {
-    for ev in ev_levelup.iter() {
-        eprintln!(&quot;Entity {:?} leveled up!&quot;, ev.0);
-    }
-}</code></pre>
+<pre><code class="language-rust no_run noplayground"></code></pre>
 <p>You need to add your custom event types via the <a href="/programming/app-builder.html">app builder</a>:</p>
-<pre><code class="language-rust no_run noplayground">fn main() {
-    App::new()
-        // ...
-        .add_event::&lt;LevelUpEvent&gt;()
-        .add_system(player_level_up)
-        .add_system(debug_levelups)
-        // ...
-        .run();
-}</code></pre>
+<pre><code class="language-rust no_run noplayground"></code></pre>
 <p>Events should be your go-to data flow tool. As events can be sent from any
 system and received by multiple systems, they are <em>extremely</em> versatile.</p>
 <h2 id="possible-pitfalls"><a class="header" href="#possible-pitfalls">Possible Pitfalls</a></h2>
