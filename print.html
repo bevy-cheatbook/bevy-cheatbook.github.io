@@ -2498,6 +2498,9 @@ struct GoalsReached {
 }</code></pre>
 <p>Types must be unique; there can only be at most one instance of a given type. If
 you might need multiple, consider using <a href="programming//programming/intro-data.html#entities--components">entities and components</a> instead.</p>
+<p>Bevy <a href="programming//builtins.html#resources">uses resources for many things</a>. You can use these builtin
+resources to access various features of the engine. They work just like your own
+custom types.</p>
 <h2 id="accessing-resources"><a class="header" href="#accessing-resources">Accessing Resources</a></h2>
 <p>To access the value of a resource from <a href="programming//programming/systems.html">systems</a>, use <code>Res</code>/<code>ResMut</code>:</p>
 <pre><code class="language-rust no_run noplayground">fn my_system(
