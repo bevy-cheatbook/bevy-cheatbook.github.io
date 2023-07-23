@@ -1,0 +1,11 @@
+/home/runner/work/bevy-cheatbook/bevy-cheatbook/src/code011/target/debug/deps/naga_oil-97786156966ebfae.rmeta: /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga_oil-0.8.1/src/lib.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga_oil-0.8.1/src/compose/mod.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga_oil-0.8.1/src/compose/error.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga_oil-0.8.1/src/compose/preprocess.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga_oil-0.8.1/src/compose/test.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga_oil-0.8.1/src/derive.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga_oil-0.8.1/src/redirect.rs
+
+/home/runner/work/bevy-cheatbook/bevy-cheatbook/src/code011/target/debug/deps/naga_oil-97786156966ebfae.d: /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga_oil-0.8.1/src/lib.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga_oil-0.8.1/src/compose/mod.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga_oil-0.8.1/src/compose/error.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga_oil-0.8.1/src/compose/preprocess.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga_oil-0.8.1/src/compose/test.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga_oil-0.8.1/src/derive.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga_oil-0.8.1/src/redirect.rs
+
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga_oil-0.8.1/src/lib.rs:
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga_oil-0.8.1/src/compose/mod.rs:
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga_oil-0.8.1/src/compose/error.rs:
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga_oil-0.8.1/src/compose/preprocess.rs:
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga_oil-0.8.1/src/compose/test.rs:
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga_oil-0.8.1/src/derive.rs:
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/naga_oil-0.8.1/src/redirect.rs:
