@@ -197,7 +197,7 @@ version = &quot;0.1.0&quot;
 edition = &quot;2021&quot;
 
 [dependencies]
-bevy = &quot;0.10&quot;
+bevy = &quot;0.11&quot;
 </code></pre>
 <p>The <code>src/main.rs</code> file is your main source code file. This is where you
 start writing your Rust code. For a minimal Bevy <a href="/programming/app-builder.html">app</a>, you need
@@ -238,17 +238,20 @@ members have encountered are documented there.</p>
 <p>If you need help, use <a href="https://github.com/bevyengine/bevy/discussions">GitHub Discussions</a>, or feel
 welcome to come chat and ask for help in <a href="https://discord.gg/bevy">Discord</a>.</p>
 <h2 id="gpu-drivers"><a class="header" href="#gpu-drivers">GPU Drivers</a></h2>
-<p>On Linux, Bevy currently requires Vulkan for graphics.</p>
-<p>On Windows, either Vulkan or DirectX 12 can be used.</p>
+<p>To work at its best, Bevy needs DirectX 12 (Windows) or Vulkan (Linux, Android,
+Windows). macOS/iOS should just work, without any special driver setup, using
+Metal.</p>
+<p>OpenGL (GLES3) can be used as a fallback, but will likely have issues (some
+bugs, unsupported features, worse performance).</p>
 <p>Make sure you have compatible hardware and drivers installed on your system.
 Your users will also need to satisfy this requirement.</p>
-<p>If Bevy is not working, install the latest drivers, or check with your Linux
-distribution whether Vulkan needs additional packages to be installed.</p>
-<p>OpenGL should work as a fallback, for systems that do not support other APIs,
-but might not be in such a good state as other APIs. DirectX 11 support for
-legacy systems is planned, but not available yet.</p>
-<p>macOS/iOS should work without any special driver setup, using Metal.</p>
-<p>Web games are supported and should work in any modern browser, using WebGL2.</p>
+<p>If Bevy is not working, install the latest drivers for your OS, or check with
+your Linux distribution whether Vulkan needs additional packages to be
+installed.</p>
+<p>Web games are supported and should work in any modern browser, using WebGL2.
+Performance is limited and some Bevy features will not work. The new
+experimental high-performance WebGPU API is also supported, but browser adoption
+is still limited.</p>
 
                     </main>
 

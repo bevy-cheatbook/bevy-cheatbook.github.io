@@ -1129,7 +1129,7 @@ version = &quot;0.1.0&quot;
 edition = &quot;2021&quot;
 
 [dependencies]
-bevy = &quot;0.10&quot;
+bevy = &quot;0.11&quot;
 </code></pre>
 <p>The <code>src/main.rs</code> file is your main source code file. This is where you
 start writing your Rust code. For a minimal Bevy <a href="setup//programming/app-builder.html">app</a>, you need
@@ -1170,17 +1170,20 @@ members have encountered are documented there.</p>
 <p>If you need help, use <a href="https://github.com/bevyengine/bevy/discussions">GitHub Discussions</a>, or feel
 welcome to come chat and ask for help in <a href="https://discord.gg/bevy">Discord</a>.</p>
 <h2 id="gpu-drivers"><a class="header" href="#gpu-drivers">GPU Drivers</a></h2>
-<p>On Linux, Bevy currently requires Vulkan for graphics.</p>
-<p>On Windows, either Vulkan or DirectX 12 can be used.</p>
+<p>To work at its best, Bevy needs DirectX 12 (Windows) or Vulkan (Linux, Android,
+Windows). macOS/iOS should just work, without any special driver setup, using
+Metal.</p>
+<p>OpenGL (GLES3) can be used as a fallback, but will likely have issues (some
+bugs, unsupported features, worse performance).</p>
 <p>Make sure you have compatible hardware and drivers installed on your system.
 Your users will also need to satisfy this requirement.</p>
-<p>If Bevy is not working, install the latest drivers, or check with your Linux
-distribution whether Vulkan needs additional packages to be installed.</p>
-<p>OpenGL should work as a fallback, for systems that do not support other APIs,
-but might not be in such a good state as other APIs. DirectX 11 support for
-legacy systems is planned, but not available yet.</p>
-<p>macOS/iOS should work without any special driver setup, using Metal.</p>
-<p>Web games are supported and should work in any modern browser, using WebGL2.</p>
+<p>If Bevy is not working, install the latest drivers for your OS, or check with
+your Linux distribution whether Vulkan needs additional packages to be
+installed.</p>
+<p>Web games are supported and should work in any modern browser, using WebGL2.
+Performance is limited and some Bevy features will not work. The new
+experimental high-performance WebGPU API is also supported, but browser adoption
+is still limited.</p>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="setup//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://github.com/bevyengine/bevy">main</a></th><th>(development)</th></tr></thead><tbody>
 </tbody></table>
 </div>
@@ -1204,18 +1207,18 @@ compelling to join in on the action!</p>
 <p>If you are new to Bevy, this might not be for you. You might be more
 comfortable using the released version. It will have the best compatibility
 with community plugins and documentation.</p>
-<p>The biggest downside to using unreleased versions of Bevy is 3rd-party plugin
-compatibility. Bevy is unstable and breaking changes happen often. However,
-many actively-maintained community plugins have branches for tracking the
-latest Bevy main branch, although they might not be fully up-to-date. It's
-possible that a plugin you want to use does not work with the latest changes
-in Bevy main, and you may have to fix it yourself.</p>
-<p>The frequent breaking changes might not be a problem for you, though. Thanks
-to cargo, you can update bevy at your convenience, whenever you feel ready
-to handle any possible breaking changes.</p>
-<p>You may want to consider forking the repositories of any plugins you use.
-This allows you to easily apply fixes if needed, or edit their <code>Cargo.toml</code>
-for any special configuration to make your project work.</p>
+<p>The in-development version of Bevy has frequent breaking changes. Therefore,
+it can be very annoying to use for any more serious projects, and 3rd-party
+plugin authors often don't bother to stay compatible. You will face breakage
+often and probably have to fix it yourself.</p>
+<p>It is only recommended to do this for more experimental or toy projects. Most
+Bevy users should use the released version.</p>
+<p>Though, there are ways you can manage the breakage and make it less of a
+problem. Thanks to cargo, you can update bevy at your convenience, whenever you
+feel ready to handle any possible breaking changes.</p>
+<p>You may want to consider forking the repositories of Bevy and any plugins you
+use. Using your own forks allows you to easily apply fixes if needed, or edit
+their <code>Cargo.toml</code> for any special configuration to make your project work.</p>
 <p>If you choose to use Bevy main, you are highly encouraged to interact with
 the Bevy community on <a href="https://discord.gg/bevy">Discord</a> and <a href="https://github.com/bevyengine/bevy">GitHub</a>, so
 you can keep track of what's going on, get help, or participate in discussions.</p>
@@ -1231,63 +1234,41 @@ strange unexpected build errors.</p>
 to use multiple different versions of bevy in your dependency tree
 simultaneously. This can happen if some of the plugins you use have specified
 a different Bevy version/commit from your project.</p>
-<p>Make sure you use the correct branch of each plugin you depend on, with support
-for Bevy main. If you have your own forks, check that the dependencies are
-correctly and consistently specified everywhere.</p>
-<p>If you have issues, they might still be fixable. Read the next section
-below for advice on how to configure your project in a way that minimizes
-the chances of this happening.</p>
-<h2 id="how-to-use-bleeding-edge-bevy"><a class="header" href="#how-to-use-bleeding-edge-bevy">How to use bleeding-edge bevy?</a></h2>
-<pre><code class="language-toml">[dependencies]
-# recommended: specify a known-working commit hash to pin to
-# (specify it in the URL, to make the patch tricks below work)
-bevy = { git = &quot;https://github.com/bevyengine/bevy?rev=a420beb0&quot; }
-
-# add any 3rd-party plugins you use, and make sure to use the correct branch
-# (alternatively, you could also specify a commit hash, with &quot;rev&quot;)
-bevy_thing = { git = &quot;https://github.com/author/bevy_thing?branch=bevy_main&quot; }
-
-# For each plugin we use, patch them to use the same bevy commit as us:
-
-# If they have specified a different commit:
-# (you need to figure this out)
-[patch.&quot;https://github.com/bevyengine/bevy?rev=146123ea&quot;] # their bevy commit
-bevy = { git = &quot;https://github.com/bevyengine/bevy?rev=a420beb0&quot; } # ours
-
-# For those that have not specified anything:
+<p>If you are using any 3rd-party plugins, please consider forking them, so you can
+edit their <code>Cargo.toml</code> and have control over how everything is configured.</p>
+<h2 id="cargo-patches"><a class="header" href="#cargo-patches">Cargo Patches</a></h2>
+<p>In some cases, you might be able to use &quot;cargo patches&quot; to locally override
+dependencies. For example, you might be able to point plugins to use your
+fork of bevy, without forking and editing the plugin's <code>Cargo.toml</code>, by
+doing something like this:</p>
+<pre><code class="language-toml"># replace the bevy git URL source with ours
 [patch.&quot;https://github.com/bevyengine/bevy&quot;]
-bevy = { git = &quot;https://github.com/bevyengine/bevy?rev=a420beb0&quot; }
+# if we have our own fork
+bevy = { git = &quot;https://github.com/me/bevy&quot; }
+# if we want to use a local path
+bevy = { path = &quot;../bevy&quot; }
+# some plugins might depend on individual bevy crates,
+# instead of all of bevy, which means we need to patch
+# every individual bevy crate specifically:
+bevy_ecs = { path = &quot;../bevy/crates/bevy_ecs&quot; }
+bevy_app = { path = &quot;../bevy/crates/bevy_app&quot; }
+# ...
+
+# replace released versions of crates (crates.io source) with ours
+[patch.crates-io]
+thing = { git = &quot;https://github.com/me/thing&quot; }
 </code></pre>
-<p>Some 3rd-party plugins depend on specific bevy sub-crates, rather than the
-full bevy. You may additionally have to patch those individually:</p>
-<pre><code class="language-toml">[patch.&quot;https://github.com/bevyengine/bevy&quot;]
-# specific crates as needed by the plugins you use (check their `Cargo.toml`)
-bevy_ecs = { git = &quot;https://github.com/bevyengine/bevy?rev=a420beb0&quot; }
-bevy_math = { git = &quot;https://github.com/bevyengine/bevy?rev=a420beb0&quot; }
-# ... and so on
-</code></pre>
-<p>To collect all the information you need, in order to fully patch all your
-dependencies, you can either look at their <code>Cargo.toml</code>, or figure it out
-by running <code>cargo tree</code> or searching inside your <code>Cargo.lock</code> file for
-duplicate entries (multiple copies of bevy crates).</p>
-<p>Make sure to delete <code>Cargo.lock</code> every time you make a change to your
-dependencies configuration, to force cargo to resolve everything again.</p>
 <h2 id="updating-bevy"><a class="header" href="#updating-bevy">Updating Bevy</a></h2>
 <p>It is recommended that you specify a known-good Bevy commit in your
 <code>Cargo.toml</code>, so that you can be sure that you only update it when you
 actually want to do so, avoiding unwanted breakage.</p>
-<pre><code class="language-toml">bevy = { git = &quot;https://github.com/bevyengine/bevy?rev=7a1bd34e&quot; }
+<pre><code class="language-toml">bevy = { git = &quot;https://github.com/bevyengine/bevy&quot;, rev = &quot;7a1bd34e&quot; }
 </code></pre>
-<p>Even if you do not, the <code>Cargo.lock</code> file always keeps track of the exact
-version (including the git commit) you are working with. You will not be
-affected by new changes in upstream bevy or plugins, until you update it.</p>
-<p>To update, run:</p>
+<p>When you change anything, be sure to run:</p>
 <pre><code class="language-sh">cargo update
 </code></pre>
-<p>or delete <code>Cargo.lock</code>.</p>
-<p>Make sure you do this every time you change the configuration in your
-<code>Cargo.toml</code>. Otherwise you risk errors from cargo not resolving dependencies
-correctly.</p>
+<p>(or delete <code>Cargo.lock</code>)</p>
+<p>Otherwise you risk errors from cargo not resolving dependencies correctly.</p>
 <h2 id="advice-for-plugin-authors"><a class="header" href="#advice-for-plugin-authors">Advice for plugin authors</a></h2>
 <p>If you are publishing a plugin crate, here are some recommendations:</p>
 <ul>
