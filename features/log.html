@@ -172,12 +172,12 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="logging-console-messages"><a class="header" href="#logging-console-messages">Logging, Console Messages</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/app/logs.rs"><code>logs</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/app/logs.rs"><code>logs</code></a>.</p>
 <hr />
 <p>You may have noticed how, when you run your Bevy project, you get messages
 in your console window. For example:</p>
@@ -191,6 +191,9 @@ also from your own code.</p>
 <code>println</code>/<code>eprintln</code> from Rust. Log messages can have metadata, like the
 level, timestamp, and Rust module where it came from. You can see that this
 metadata is printed alongside the contents of the message.</p>
+<p>This is set up by Bevy's <a href="https://docs.rs/bevy/0.11.0/bevy/log/struct.LogPlugin.html"><code>LogPlugin</code></a>. It is part of the
+<a href="https://docs.rs/bevy/0.11.0/bevy/struct.DefaultPlugins.html"><code>DefaultPlugins</code></a> plugin group, so most Bevy users
+will have it automatically in every typical Bevy project.</p>
 <h2 id="levels"><a class="header" href="#levels">Levels</a></h2>
 <p>Levels determine how important a message is, and allow messages to be filtered.</p>
 <p>The available levels are: <code>error</code>, <code>warn</code>, <code>info</code>, <code>debug</code>, <code>trace</code>.</p>
@@ -216,7 +219,7 @@ trace!(&quot;entity transform: {:?}&quot;, transform);
 <span class="boring">}</span></code></pre></pre>
 <h2 id="filtering-messages"><a class="header" href="#filtering-messages">Filtering messages</a></h2>
 <p>To control what messages you would like to see, you can configure Bevy's
-<a href="https://docs.rs/bevy/0.9.1/bevy/log/struct.LogPlugin.html"><code>LogPlugin</code></a>:</p>
+<a href="https://docs.rs/bevy/0.11.0/bevy/log/struct.LogPlugin.html"><code>LogPlugin</code></a>:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>use bevy::log::LogPlugin;
