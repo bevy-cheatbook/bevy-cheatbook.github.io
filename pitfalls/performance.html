@@ -172,7 +172,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-10">0.10</a></th><th>(outdated!)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="performance"><a class="header" href="#performance">Performance</a></h1>
@@ -194,6 +194,11 @@ projects (similar to a full release build), so it is not generally recommended.<
 [profile.dev]
 opt-level = 1
 </code></pre>
+<p><strong>Warning!</strong> If you are using a debugger (like <code>gdb</code> or <code>lldb</code>) to step through
+your code, any amount of compiler optimization can mess with the experience.
+Your breakpoints might be skipped, and the code flow might jump around in
+unexpected ways. If you want to debug / step through your code, you might want
+<code>opt-level = 0</code>.</p>
 <h3 id="why-is-this-necessary"><a class="header" href="#why-is-this-necessary">Why is this necessary?</a></h3>
 <p>Rust without compiler optimizations is <em>very slow</em>. With Bevy in
 particular, the default cargo build debug settings will lead to <em>awful</em> runtime
