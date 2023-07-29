@@ -1146,6 +1146,16 @@ while, as it needs to build the whole Bevy engine and dependencies. Subsequent
 runs should be fast. You can do this from your IDE/editor, or the commandline:</p>
 <pre><code class="language-sh">cargo run
 </code></pre>
+<h2 id="documentation"><a class="header" href="#documentation">Documentation</a></h2>
+<p>You can generate your own docs (like what is on <a href="https://docs.rs">docs.rs</a>), for
+offline use, including everything from your own project and all dependencies, in
+one place.</p>
+<pre><code class="language-sh">cargo doc --open
+</code></pre>
+<p>This will build all the HTML docs and open them in your web browser.</p>
+<p>It does not require an internet connection, and gives you an easy way to search
+the API docs for all crates in your dependency tree all at once. It is more
+useful than the online version of the docs.</p>
 <h2 id="optional-extra-setup"><a class="header" href="#optional-extra-setup">Optional Extra Setup</a></h2>
 <p>You will likely quickly run into unusably slow performance with the default
 Rust unoptimized dev builds. <a href="setup//pitfalls/performance.html">See here how to fix.</a></p>
