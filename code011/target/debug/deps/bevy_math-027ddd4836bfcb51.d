@@ -1,0 +1,11 @@
+/home/runner/work/bevy-cheatbook/bevy-cheatbook/src/code011/target/debug/deps/bevy_math-027ddd4836bfcb51.rmeta: /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_math-0.11.0/src/lib.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_math-0.11.0/src/cubic_splines.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_math-0.11.0/src/ray.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_math-0.11.0/src/rects/mod.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_math-0.11.0/src/rects/irect.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_math-0.11.0/src/rects/rect.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_math-0.11.0/src/rects/urect.rs
+
+/home/runner/work/bevy-cheatbook/bevy-cheatbook/src/code011/target/debug/deps/bevy_math-027ddd4836bfcb51.d: /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_math-0.11.0/src/lib.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_math-0.11.0/src/cubic_splines.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_math-0.11.0/src/ray.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_math-0.11.0/src/rects/mod.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_math-0.11.0/src/rects/irect.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_math-0.11.0/src/rects/rect.rs /home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_math-0.11.0/src/rects/urect.rs
+
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_math-0.11.0/src/lib.rs:
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_math-0.11.0/src/cubic_splines.rs:
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_math-0.11.0/src/ray.rs:
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_math-0.11.0/src/rects/mod.rs:
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_math-0.11.0/src/rects/irect.rs:
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_math-0.11.0/src/rects/rect.rs:
+/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bevy_math-0.11.0/src/rects/urect.rs:

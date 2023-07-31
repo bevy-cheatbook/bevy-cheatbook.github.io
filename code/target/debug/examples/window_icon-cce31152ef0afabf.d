@@ -1,0 +1,5 @@
+/home/runner/work/bevy-cheatbook/bevy-cheatbook/src/code/target/debug/examples/window_icon-cce31152ef0afabf.rmeta: examples/window-icon.rs
+
+/home/runner/work/bevy-cheatbook/bevy-cheatbook/src/code/target/debug/examples/window_icon-cce31152ef0afabf.d: examples/window-icon.rs
+
+examples/window-icon.rs:
