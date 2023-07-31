@@ -1101,7 +1101,7 @@ documentation</a>.</p>
 <li><a href="/platforms.html">Platform-specific information</a></li>
 <li><a href="/pitfalls/performance.html">Configuration to fix slow performance</a></li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="setup//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-10">0.10</a></th><th>(outdated!)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="setup//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h1>
@@ -1168,7 +1168,7 @@ about additional external dev tools that may be helpful.</p>
 <h2 id="whats-next"><a class="header" href="#whats-next">What's Next?</a></h2>
 <p>Have a look at the <a href="setup//tutorial.html">guided tutorial</a> page of this book,
 and Bevy's <a href="https://github.com/bevyengine/bevy/tree/latest/examples#examples">official examples</a>.</p>
-<p>Check out the <a href="https://docs.rs/bevy/0.10.1/bevy/asset/struct.Assets.html">Bevy Assets Website</a> to find other tutorials
+<p>Check out the <a href="https://docs.rs/bevy/0.11.0/bevy/asset/struct.Assets.html">Bevy Assets Website</a> to find other tutorials
 and learning resources from the community, and <a href="setup//setup/unofficial-plugins.html">plugins</a>
 to use in your project.</p>
 <p>Join the community on <a href="https://discord.gg/bevy">Discord</a> to chat with us!</p>
@@ -1496,7 +1496,7 @@ please file a <a href="https://github.com/bevy-cheatbook/bevy-cheatbook/issues">
 <h1 id="emacs"><a class="header" href="#emacs">Emacs</a></h1>
 <p>If you are an Emacs user and you'd like something to be added to this page,
 please file a <a href="https://github.com/bevy-cheatbook/bevy-cheatbook/issues">GitHub Issue</a>.</p>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="setup//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-10">0.10</a></th><th>(outdated!)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="setup//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="configuring-bevy"><a class="header" href="#configuring-bevy">Configuring Bevy</a></h1>
@@ -1509,12 +1509,11 @@ standalone, or integrated into otherwise non-Bevy projects.</p>
 <h2 id="bevy-cargo-features"><a class="header" href="#bevy-cargo-features">Bevy Cargo Features</a></h2>
 <p>In Bevy projects, you can enable/disable various parts of Bevy using cargo features.</p>
 <p>Many common features are enabled by default. If you want to disable some of
-them, note that, unfortunately, Cargo does not let you disable individual
-default features, so you need to disable all default bevy features and
-re-enable the ones you need.</p>
+them, you need to disable all of them and re-enable the ones you need.
+Unfortunately, Cargo does not let you just disable individual default features.</p>
 <p>Here is how you might configure your Bevy:</p>
 <pre><code class="language-toml">[dependencies.bevy]
-version = &quot;0.10&quot;
+version = &quot;0.11&quot;
 # Disable the default features if there are any that you do not want
 default-features = false
 features = [
@@ -1522,6 +1521,7 @@ features = [
   # (re-enable whichever you like)
 
   # Bevy functionality:
+  &quot;multi-threaded&quot;,     # Run with multithreading
   &quot;bevy_asset&quot;,         # Assets management
   &quot;bevy_audio&quot;,         # Builtin audio
   &quot;bevy_gilrs&quot;,         # Gamepad input support
@@ -1529,6 +1529,7 @@ features = [
   &quot;bevy_winit&quot;,         # Window management
   &quot;bevy_render&quot;,        # Rendering framework core
   &quot;bevy_core_pipeline&quot;, # Common rendering abstractions
+  &quot;bevy_gizmos&quot;,        # Support drawing debug lines and shapes
   &quot;bevy_sprite&quot;,        # 2D (sprites) rendering
   &quot;bevy_pbr&quot;,           # 3D (physically-based) rendering
   &quot;bevy_gltf&quot;,          # GLTF 3D assets format support
@@ -1537,8 +1538,7 @@ features = [
   &quot;animation&quot;,          # Animation support
   &quot;tonemapping_luts&quot;,   # Support different camera Tonemapping modes (embeds extra data)
   &quot;filesystem_watcher&quot;, # Asset hot-reloading
-  &quot;x11&quot;,                # Linux: Support X11 windowing system
-  &quot;android_shared_stdcxx&quot;, # For Android builds, use shared C++ library
+  &quot;default_font&quot;,       # Embed a minimal default font for text/UI
 
   # File formats:
   &quot;png&quot;,    # PNG image format for simple 2D images
@@ -1547,38 +1547,51 @@ features = [
   &quot;zstd&quot;,   # ZSTD compression support in KTX2 files
   &quot;vorbis&quot;, # Audio: OGG Vorbis
 
+  # Platform-specific:
+  &quot;x11&quot;,                   # Linux: Support X11 windowing system
+  &quot;android_shared_stdcxx&quot;, # Android: use shared C++ library
+  &quot;webgl2&quot;,                # Web: use WebGL2 instead of WebGPU
+
   # These are other features that may be of interest:
   # (add any of these that you need)
 
   # Bevy functionality:
-  &quot;wayland&quot;,              # Linux: Support Wayland windowing system
   &quot;subpixel_glyph_atlas&quot;, # Subpixel antialiasing for text/fonts
   &quot;serialize&quot;,            # Support for `serde` Serialize/Deserialize
-  &quot;bevy_dynamic_plugin&quot;,  # Support for loading of `DynamicPlugin`s
-  &quot;accesskit_unix&quot;,       # AccessKit integration for UI Accessibility
 
   # File formats:
   &quot;dds&quot;,  # Alternative DirectX format for GPU textures, instead of KTX2
   &quot;jpeg&quot;, # JPEG lossy format for 2D photos
+  &quot;webp&quot;, # WebP image format
   &quot;bmp&quot;,  # Uncompressed BMP image format
   &quot;tga&quot;,  # Truevision Targa image format
   &quot;exr&quot;,  # OpenEXR advanced image format
+  &quot;pnm&quot;,  # PNM (pam, pbm, pgm, ppm) image format
   &quot;basis-universal&quot;, # Basis Universal GPU texture compression format
+  &quot;zlib&quot;, # zlib compression support in KTX2 files
   &quot;flac&quot;, # Audio: FLAC lossless format
   &quot;mp3&quot;,  # Audio: MP3 format (not recommended)
   &quot;wav&quot;,  # Audio: Uncompressed WAV
   &quot;symphonia-all&quot;, # All Audio formats supported by the Symphonia library
+  &quot;shader_format_glsl&quot;, # GLSL shader support
+  &quot;shader_format_spirv&quot;, # SPIR-V shader support
+
+  # Platform-specific:
+  &quot;wayland&quot;,              # (Linux) Support Wayland windowing system
+  &quot;accesskit_unix&quot;,       # (Unix-like) AccessKit integration for UI Accessibility
+  &quot;bevy_dynamic_plugin&quot;,  # (Desktop) support for loading of `DynamicPlugin`s
 
   # Development/Debug features:
   &quot;dynamic_linking&quot;, # Dynamic linking for faster compile-times
   &quot;trace&quot;,           # Enable tracing for performance measurement
   &quot;detailed_trace&quot;,  # Make traces more verbose
   &quot;trace_tracy&quot;,     # Tracing using `tracy`
+  &quot;trace_tracy_memory&quot;, # + memory profiling
   &quot;trace_chrome&quot;,    # Tracing using the Chrome format
   &quot;wgpu_trace&quot;,      # WGPU/rendering tracing
 ]
 </code></pre>
-<p>(See <a href="https://docs.rs/crate/bevy/0.10.1/features">here</a> for a full list of Bevy's cargo features.)</p>
+<p>(See <a href="https://docs.rs/crate/bevy/0.11.0/features">here</a> for a full list of Bevy's cargo features.)</p>
 <h3 id="graphics--rendering"><a class="header" href="#graphics--rendering">Graphics / Rendering</a></h3>
 <p>For a graphical application or game (most Bevy projects), you can include
 <code>bevy_winit</code> and your selection of Rendering features. For
@@ -1589,12 +1602,9 @@ Bevy rendering.</p>
 <p>If you only need 3D and no 2D, add <code>bevy_pbr</code>. If you are <a href="setup//features/gltf.html">loading 3D models
 from GLTF files</a>, add <code>bevy_gltf</code>.</p>
 <p>If you are using Bevy UI, you need <code>bevy_text</code> and <code>bevy_ui</code>.</p>
+<p>If you want to draw debug lines and shapes on-screen, add <code>bevy_gizmos</code>.</p>
 <p>If you don't need any graphics (like for a dedicated game server, scientific
 simulation, etc.), you may remove all of these features.</p>
-<h3 id="audio"><a class="header" href="#audio">Audio</a></h3>
-<p>Bevy's audio is very limited in functionality. If you want something with more
-features, you can use the <a href="https://github.com/NiklasEi/bevy_kira_audio"><code>bevy_kira_audio</code></a> plugin
-instead. Disable <code>bevy_audio</code> and <code>vorbis</code>.</p>
 <h3 id="file-formats-1"><a class="header" href="#file-formats-1">File Formats</a></h3>
 <p>You can use the relevant cargo features to enable/disable support for loading
 assets with various different file formats.</p>
@@ -5482,7 +5492,7 @@ persist, but can also leak / waste memory if you forget to clear them.</p>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="features//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
-<h1 id="audio-1"><a class="header" href="#audio-1">Audio</a></h1>
+<h1 id="audio"><a class="header" href="#audio">Audio</a></h1>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/audio/audio.rs"><code>audio</code></a>,
 <a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/audio/audio_control.rs"><code>audio_control</code></a>.</p>
