@@ -172,7 +172,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-10">0.10</a></th><th>(outdated!)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>(any)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="borrow-multiple-fields-from-struct"><a class="header" href="#borrow-multiple-fields-from-struct">Borrow multiple fields from struct</a></h1>
@@ -203,13 +203,16 @@ fn helper_func(foo: &amp;Foo, bar: &amp;mut Bar) {
     |         immutable borrow later used by call
 </code></pre>
 <p>The solution is to use the &quot;reborrow&quot; idiom, a common but non-obvious trick in Rust programming:</p>
-<pre><code class="language-rust no_run noplayground">        // add this at the start of the for loop, before using `thing`:
-        let thing = &amp;mut *thing;</code></pre>
+<pre><code class="language-rust no_run noplayground">// add this at the start of the for loop, before using `thing`:
+let thing = &amp;mut *thing;
+
+// or, alternatively, Bevy provides a method, which does the same:
+let thing = thing.into_inner();</code></pre>
 <p>Note that this line triggers <a href="/programming/change-detection.html">change detection</a>. Even if
 you don't modify the data afterwards, the component gets marked as changed.</p>
 <h2 id="explanation"><a class="header" href="#explanation">Explanation</a></h2>
 <p>Bevy typically gives you access to your data via special wrapper types (like
-<a href="https://docs.rs/bevy/0.10.1/bevy/ecs/system/struct.Res.html"><code>Res&lt;T&gt;</code></a>, <a href="https://docs.rs/bevy/0.10.1/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a>, and <a href="https://docs.rs/bevy/0.10.1/bevy/ecs/world/struct.Mut.html"><code>Mut&lt;T&gt;</code></a>
+[<code>Res&lt;T&gt;</code>][bevy::Res], [<code>ResMut&lt;T&gt;</code>][bevy::ResMut], and [<code>Mut&lt;T&gt;</code>][bevy::Mut]
 (when <a href="/programming/queries.html">querying</a> for components mutably)). This lets Bevy track
 access to the data.</p>
 <p>These are &quot;smart pointer&quot; types that use the Rust <a href="https://doc.rust-lang.org/stable/std/ops/trait.Deref.html"><code>Deref</code></a>

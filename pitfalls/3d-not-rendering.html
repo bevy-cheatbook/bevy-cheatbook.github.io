@@ -172,16 +172,45 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="3d-objects-not-displaying"><a class="header" href="#3d-objects-not-displaying">3D objects not displaying</a></h1>
 <p>This page will list some common issues that you may encounter, if you are
 trying to spawn a 3D object, but cannot see it on the screen.</p>
+<h2 id="missing-visibility-components-on-parent"><a class="header" href="#missing-visibility-components-on-parent">Missing visibility components on parent</a></h2>
+<p>If your entity is in a hierarchy, all its parents need to have
+<a href="/features/visibility.html">visibility</a> components. It is required even if those parent
+entities are not supposed to render anything.</p>
+<p>Fix it by inserting a <a href="https://docs.rs/bevy/0.11.0/bevy/render/view/visibility/struct.VisibilityBundle.html"><code>VisibilityBundle</code></a>:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>commands.entity(parent)
+    .insert(VisibilityBundle::default());
+<span class="boring">}</span></code></pre></pre>
+<p>Or better, make sure to spawn the parent entities correctly in the first place.
+You can use a <a href="https://docs.rs/bevy/0.11.0/bevy/render/view/visibility/struct.VisibilityBundle.html"><code>VisibilityBundle</code></a> or
+<a href="https://docs.rs/bevy/0.11.0/bevy/render/prelude/struct.SpatialBundle.html"><code>SpatialBundle</code></a> (with <a href="/features/transforms.html">transforms</a>) if you
+are not using a bundle that already includes these components.</p>
+<h2 id="too-far-from-camera"><a class="header" href="#too-far-from-camera">Too far from camera</a></h2>
+<p>If something is further away than a certain distance from the camera, it will be
+culled (not rendered). The default value is <code>1000.0</code> units.</p>
+<p>You can control this using the <code>far</code> field of
+<a href="https://docs.rs/bevy/0.11.0/bevy/render/camera/struct.PerspectiveProjection.html"><code>PerspectiveProjection</code></a>:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>commands.spawn(Camera3dBundle {
+    projection: Projection::Perspective(PerspectiveProjection {
+        far: 10000.0, // change the maximum render distance
+        ..default()
+    }),
+    ..default()
+});
+<span class="boring">}</span></code></pre></pre>
 <h2 id="missing-vertex-attributes"><a class="header" href="#missing-vertex-attributes">Missing Vertex Attributes</a></h2>
-<p>Make sure your <a href="https://docs.rs/bevy/0.9.1/bevy/render/mesh/struct.Mesh.html"><code>Mesh</code></a> includes all vertex attributes required
+<p>Make sure your <a href="https://docs.rs/bevy/0.11.0/bevy/render/mesh/struct.Mesh.html"><code>Mesh</code></a> includes all vertex attributes required
 by your shader/material.</p>
-<p>Bevy's default PBR <a href="https://docs.rs/bevy/0.9.1/bevy/pbr/struct.StandardMaterial.html"><code>StandardMaterial</code></a>
+<p>Bevy's default PBR <a href="https://docs.rs/bevy/0.11.0/bevy/pbr/struct.StandardMaterial.html"><code>StandardMaterial</code></a>
 requires <em>all</em> meshes to have:</p>
 <ul>
 <li>Positions</li>
@@ -205,11 +234,11 @@ use GLTF with Bevy.</p>
 <p>GLTF files are complex. They contain many sub-assets, represented by
 different Bevy types. Make sure you are using the correct thing.</p>
 <p>Make sure you are spawning a GLTF Scene, or using the correct
-<a href="https://docs.rs/bevy/0.9.1/bevy/render/mesh/struct.Mesh.html"><code>Mesh</code></a> and <a href="https://docs.rs/bevy/0.9.1/bevy/pbr/struct.StandardMaterial.html"><code>StandardMaterial</code></a>
+<a href="https://docs.rs/bevy/0.11.0/bevy/render/mesh/struct.Mesh.html"><code>Mesh</code></a> and <a href="https://docs.rs/bevy/0.11.0/bevy/pbr/struct.StandardMaterial.html"><code>StandardMaterial</code></a>
 associated with the correct GLTF Primitive.</p>
 <p>If you are using an asset path, be sure to include a label for the sub-asset you want:</p>
-<pre><code class="language-rust no_run noplayground">asset_server.load(&quot;my.gltf#Scene0&quot;);</code></pre>
-<p>If you are spawning the top-level <a href="https://docs.rs/bevy/0.9.1/bevy/gltf/struct.Gltf.html"><code>Gltf</code></a> <a href="/features/gltf.html#gltf-master-asset">master asset</a>, it won't work.</p>
+<pre><code class="language-rust no_run noplayground">let handle_scene: Handle&lt;Scene&gt; = asset_server.load(&quot;my.gltf#Scene0&quot;);</code></pre>
+<p>If you are spawning the top-level <a href="https://docs.rs/bevy/0.11.0/bevy/gltf/struct.Gltf.html"><code>Gltf</code></a> <a href="/features/gltf.html#gltf-master-asset">master asset</a>, it won't work.</p>
 <p>If you are spawning a GLTF Mesh, it won't work.</p>
 <h2 id="unsupported-gltf"><a class="header" href="#unsupported-gltf">Unsupported GLTF</a></h2>
 <p>Bevy does not fully support all features of the GLTF format and has some
@@ -226,30 +255,16 @@ does not support this yet. If your assets are missing mipmaps, textures will loo
 </ul>
 <p>This list is not exhaustive. There may be other unsupported scenarios that I
 did not know of or forgot to include here. :)</p>
+<h2 id="vertex-order-and-culling"><a class="header" href="#vertex-order-and-culling">Vertex Order and Culling</a></h2>
+<p>By default, the Bevy renderer assumes Counter-Clockwise vertex order and has
+back-face culling enabled.</p>
+<p>If you are generating your <a href="https://docs.rs/bevy/0.11.0/bevy/render/mesh/struct.Mesh.html"><code>Mesh</code></a> from code, make sure your
+vertices are in the correct order.</p>
 <h2 id="unoptimized--debug-builds"><a class="header" href="#unoptimized--debug-builds">Unoptimized / Debug builds</a></h2>
 <p>Maybe your asset just takes a while to load? Bevy is very slow without
 compiler optimizations. It's actually possible that complex GLTF files with
 big textures can take over a minute to load and show up on the screen. It
 would be almost instant in optimized builds. <a href="/pitfalls/performance.html">See here</a>.</p>
-<h2 id="vertex-order-and-culling"><a class="header" href="#vertex-order-and-culling">Vertex Order and Culling</a></h2>
-<p>By default, the Bevy renderer assumes Counter-Clockwise vertex order and has
-back-face culling enabled.</p>
-<p>If you are generating your <a href="https://docs.rs/bevy/0.9.1/bevy/render/mesh/struct.Mesh.html"><code>Mesh</code></a> from code, make sure your
-vertices are in the correct order.</p>
-<h2 id="missing-visibility-component-on-parent"><a class="header" href="#missing-visibility-component-on-parent">Missing Visibility component on parent</a></h2>
-<p>If your entity is in a hierarchy, all its parents need to have a
-<a href="https://docs.rs/bevy/0.9.1/bevy/render/view/visibility/struct.Visibility.html"><code>Visibility</code></a> component. It is required even if those
-parent entities are not supposed to render anything.</p>
-<p>Fix it by inserting a <a href="https://docs.rs/bevy/0.9.1/bevy/render/view/visibility/struct.VisibilityBundle.html"><code>VisibilityBundle</code></a>:</p>
-<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>    commands.entity(parent)
-        .insert(VisibilityBundle::default());
-<span class="boring">}</span></code></pre></pre>
-<p>Or better, make sure to spawn the parent entities correctly in the first place.
-You can use a <a href="https://docs.rs/bevy/0.9.1/bevy/render/view/visibility/struct.VisibilityBundle.html"><code>VisibilityBundle</code></a> or
-<a href="https://docs.rs/bevy/0.9.1/bevy/render/prelude/struct.SpatialBundle.html"><code>SpatialBundle</code></a> (with <a href="/features/transforms.html">transforms</a>) if you
-are not using a bundle that already includes these components.</p>
 
                     </main>
 

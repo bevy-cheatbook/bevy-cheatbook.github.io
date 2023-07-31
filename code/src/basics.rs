@@ -436,16 +436,6 @@ fn spawn_special_entity(
 }
 // ANCHOR_END: spatialbundle
 
-fn insert_visibilitybundle(
-    mut commands: Commands,
-) {
-    let parent = Entity::from_raw(0);
-// ANCHOR: insert-visibilitybundle
-    commands.entity(parent)
-        .insert(VisibilityBundle::default());
-// ANCHOR_END: insert-visibilitybundle
-}
-
 // ANCHOR: propagation
 fn spawn_toplevel_entity(
     mut commands: Commands,
@@ -2092,6 +2082,5 @@ pub fn _main_all() {
         .add_system(despawn_child)
         .add_system(inflate_balloons)
         .add_system(reveal_map)
-        .add_system(insert_visibilitybundle)
         .run();
 }
