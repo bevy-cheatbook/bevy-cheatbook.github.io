@@ -201,9 +201,10 @@ metadata is printed alongside the contents of the message.</p>
 will have it automatically in every typical Bevy project.</p>
 <h2 id="levels"><a class="header" href="#levels">Levels</a></h2>
 <p>Levels determine how important a message is, and allow messages to be filtered.</p>
-<p>The available levels are: <code>error</code>, <code>warn</code>, <code>info</code>, <code>debug</code>, <code>trace</code>.</p>
+<p>The available levels are: <code>off</code>, <code>error</code>, <code>warn</code>, <code>info</code>, <code>debug</code>, <code>trace</code>.</p>
 <p>A rough guideline for when to use each level, could be:</p>
 <ul>
+<li><code>off</code>: disable all log messages</li>
 <li><code>error</code>: something happened that prevents things from working correctly</li>
 <li><code>warn</code>: something unusual happened, but things can continue to work</li>
 <li><code>info</code>: general informational messages</li>
