@@ -1,10 +1,10 @@
 <!DOCTYPE HTML>
-<html lang="en" class="sidebar-visible no-js light">
+<html lang="en" class="light" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
         <title>Unofficial Bevy Cheat Book</title>
-        <meta name="robots" content="noindex" />
+        <meta name="robots" content="noindex">
 
 
         <!-- Custom HTML head -->
@@ -12,7 +12,7 @@
 
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="theme-color" content="#ffffff" />
+        <meta name="theme-color" content="#ffffff">
 
         <link rel="icon" href="favicon.svg">
         <link rel="shortcut icon" href="favicon.png">
@@ -35,7 +35,7 @@
         <link rel="stylesheet" href="sidebar.css">
 
     </head>
-    <body>
+    <body class="sidebar-visible no-js">
     <div id="body-container">
         <!-- Provide site root to javascript -->
         <script>
@@ -65,24 +65,29 @@
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             var html = document.querySelector('html');
-            html.classList.remove('no-js')
             html.classList.remove('light')
             html.classList.add(theme);
-            html.classList.add('js');
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
         </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var html = document.querySelector('html');
+            var body = document.querySelector('body');
             var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             } else {
                 sidebar = 'hidden';
             }
-            html.classList.remove('sidebar-visible');
-            html.classList.add("sidebar-" + sidebar);
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
@@ -120,9 +125,9 @@
                                 <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
-                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
                             <i class="fa fa-bars"></i>
-                        </button>
+                        </label>
                         <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
                             <i class="fa fa-paint-brush"></i>
                         </button>
@@ -7687,7 +7692,7 @@ fn main() {
         .add_plugin(FrameTimeDiagnosticsPlugin::default())
         .run();
 }</code></pre>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="cookbook//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="cookbook//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="convert-cursor-to-world-coordinates"><a class="header" href="#convert-cursor-to-world-coordinates">Convert cursor to world coordinates</a></h1>
@@ -7697,36 +7702,41 @@ fn main() {
 <p>There is a good (unofficial) plugin:
 <a href="https://github.com/aevyrie/bevy_mod_picking"><code>bevy_mod_picking</code></a>.</p>
 <h2 id="2d-games"><a class="header" href="#2d-games">2D games</a></h2>
-<p>Starting from Bevy 0.9, there are camera methods to help you convert between
-screen-space (viewport) and world-space coordinates. We can use this to easily
-find the position of the mouse cursor.</p>
-<p>This code will work regardless of the <a href="cookbook//features/camera.html#projection">camera's projection</a>
-settings and <a href="cookbook//features/transforms.html">transform</a>.</p>
-<p>(there will likely be <em>slight</em> inaccuracy from floating-point calculations)</p>
-<pre><code class="language-rust no_run noplayground">/// Used to help identify our main camera
+<p>If you only have one window (the primary window), as is the case for most apps
+and games, you can do this:</p>
+<details>
+  <summary>
+  <code>Code (simple version):</code>
+  </summary>
+<pre><code class="language-rust no_run noplayground">use bevy::window::PrimaryWindow;
+
+/// We will store the world position of the mouse cursor here.
+#[derive(Resource, Default)]
+struct MyWorldCoords(Vec2);
+
+/// Used to help identify our main camera
 #[derive(Component)]
 struct MainCamera;
 
 fn setup(mut commands: Commands) {
+    commands.init_resource::&lt;MyWorldCoords&gt;();
+    // Make sure to add the marker component when you set up your camera
     commands.spawn((Camera2dBundle::default(), MainCamera));
 }
 
 fn my_cursor_system(
-    // need to get window dimensions
-    windows: Res&lt;Windows&gt;,
+    mut mycoords: ResMut&lt;MyWorldCoords&gt;,
+    // query to get the window (so we can read the current cursor position)
+    q_window: Query&lt;&amp;Window, With&lt;PrimaryWindow&gt;&gt;,
     // query to get camera transform
-    camera_q: Query&lt;(&amp;Camera, &amp;GlobalTransform), With&lt;MainCamera&gt;&gt;,
+    q_camera: Query&lt;(&amp;Camera, &amp;GlobalTransform), With&lt;MainCamera&gt;&gt;,
 ) {
     // get the camera info and transform
-    // assuming there is exactly one main camera entity, so query::single() is OK
-    let (camera, camera_transform) = camera_q.single();
+    // assuming there is exactly one main camera entity, so Query::single() is OK
+    let (camera, camera_transform) = q_camera.single();
 
-    // get the window that the camera is displaying to (or the primary window)
-    let window = if let RenderTarget::Window(id) = camera.target {
-        windows.get(id).unwrap()
-    } else {
-        windows.get_primary().unwrap()
-    };
+    // There is only one primary window, so we can similarly get it from the query:
+    let window = q_window.single();
 
     // check if the cursor is inside the window and get its position
     // then, ask bevy to convert into world coordinates, and truncate to discard Z
@@ -7734,13 +7744,70 @@ fn my_cursor_system(
         .and_then(|cursor| camera.viewport_to_world(camera_transform, cursor))
         .map(|ray| ray.origin.truncate())
     {
+        mycoords.0 = world_position;
         eprintln!(&quot;World coords: {}/{}&quot;, world_position.x, world_position.y);
     }
 }</code></pre>
-<p>In older versions of Bevy, there were no such coordinate conversion methods, and
-the math had to be done manually. If you are interested in how that works, see
-the example from an old version of the book,
-<a href="https://github.com/bevy-cheatbook/bevy-cheatbook/blob/5baa8f74860068e9d0714cd2864d4c026acccdc7/src/code/examples/cursor2world.rs">here</a>.</p>
+</details>
+<p>If you have a more complex application with multiple windows, here is a more
+complex version of the code that can handle that:</p>
+<details>
+  <summary>
+  <code>Code (multi-window version):</code>
+  </summary>
+<pre><code class="language-rust no_run noplayground">use bevy::render::camera::RenderTarget;
+use bevy::window::WindowRef;
+
+/// We will add this to each camera we want to compute cursor position for.
+/// Add the component to the camera that renders to each window.
+#[derive(Component, Default)]
+struct WorldCursorCoords(Vec2);
+
+fn setup_multiwindow(mut commands: Commands) {
+    // TODO: set up multiple cameras for multiple windows.
+    // See bevy's example code for how to do that.
+
+    // Make sure we add our component to each camera
+    commands.spawn((Camera2dBundle::default(), WorldCursorCoords::default()));
+}
+
+fn my_cursor_system_multiwindow(
+    // query to get the primary window
+    q_window_primary: Query&lt;&amp;Window, With&lt;PrimaryWindow&gt;&gt;,
+    // query to get other windows
+    q_window: Query&lt;&amp;Window&gt;,
+    // query to get camera transform
+    mut q_camera: Query&lt;(&amp;Camera, &amp;GlobalTransform, &amp;mut WorldCursorCoords)&gt;,
+) {
+    for (camera, camera_transform, mut worldcursor) in &amp;mut q_camera {
+        // get the window the camera is rendering to
+        let window = match camera.target {
+            // the camera is rendering to the primary window
+            RenderTarget::Window(WindowRef::Primary) =&gt; {
+                q_window_primary.single()
+            },
+            // the camera is rendering to some other window
+            RenderTarget::Window(WindowRef::Entity(e_window)) =&gt; {
+                q_window.get(e_window).unwrap()
+            },
+            // the camera is rendering to something else (like a texture), not a window
+            _ =&gt; {
+                // skip this camera
+                continue;
+            }
+        };
+
+        // check if the cursor is inside the window and get its position
+        // then, ask bevy to convert into world coordinates, and truncate to discard Z
+        if let Some(world_position) = window.cursor_position()
+            .and_then(|cursor| camera.viewport_to_world(camera_transform, cursor))
+            .map(|ray| ray.origin.truncate())
+        {
+            worldcursor.0 = world_position;
+        }
+    }
+}</code></pre>
+</details>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="cookbook//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
 </tbody></table>
 </div>
