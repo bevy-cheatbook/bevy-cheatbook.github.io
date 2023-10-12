@@ -238,7 +238,8 @@ app.add_plugins(DefaultPlugins.set(LogPlugin {
 <p>The <code>filter</code> field is a string specifying a list of rules for what level to
 enable for different Rust modules/crates. In the example above, the string
 means: show up to <code>info</code> by default, limit <code>wgpu_core</code> and <code>wgpu_hal</code>
-to <code>warn</code> level, for <code>mygame</code> show <code>debug</code>.</p>
+to <code>warn</code> level, for <code>mygame</code> show <code>debug</code>. <code>mygame</code> has to be replaced with
+the name of your game, i.e. the name of the rust project found in the Cargo.toml project configuration.</p>
 <p>All levels higher than the one specified are also enabled. All levels lower
 than the one specified are disabled, and those messages will not be displayed.</p>
 <p>The <code>level</code> filter is a global limit on the lowest level to use. Messages
