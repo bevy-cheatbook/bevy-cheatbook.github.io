@@ -177,7 +177,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(current)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.12</th><th>(upcoming)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="windows-desktop"><a class="header" href="#windows-desktop">Windows Desktop</a></h1>
@@ -197,6 +197,13 @@ together in a ZIP file. If you use some other method of installation,
 install the <code>assets</code> folder and the EXE to the same path.</p>
 <p>If built with the MSVC toolchain, your users may need the Microsoft C/C++
 Runtime Redistributables installed.</p>
+<h3 id="dxc-compiler-support"><a class="header" href="#dxc-compiler-support">DXC Compiler Support</a></h3>
+<p>Bevy (technically <code>wgpu</code>) supports using the Microsoft DXC compiler for
+improved shader compilation when using DirectX 12.</p>
+<p>To do this, you need to <a href="https://github.com/microsoft/DirectXShaderCompiler/releases/latest">download it from Microsoft's
+repo</a> and put <code>dxcompiler.dll</code> and <code>dxil.dll</code>
+alongside your game's EXE.</p>
+<p>Bevy should detect these DLL files automatically and use them.</p>
 <h2 id="disabling-the-windows-console"><a class="header" href="#disabling-the-windows-console">Disabling the Windows Console</a></h2>
 <p>By default, when you run a Bevy app (or any Rust program for that matter)
 on Windows, a Console window also shows up. To disable this,
@@ -213,11 +220,21 @@ builds, like this:</p>
 to work inside of WSL2 and build your project there. Another reason to do it is
 compile times; they are often much faster in WSL2 than on the Windows host
 system.</p>
-<p>Fortunately, this can actually work quite well! The trick is that you want to
-<a href="/setup/cross/linux-windows.html">cross-compile for Windows</a>. The Windows EXE you build
-inside of WSL2 can be run just fine from the Linux commandline, and it will
-seamlessly run on the host system! This way, you don't need any GPU drivers or
-GUI support inside your WSL2 Linux environment.</p>
+<h3 id="running-linux-builds-using-wslg"><a class="header" href="#running-linux-builds-using-wslg">Running Linux builds using WSLg</a></h3>
+<p>Newer installs of WSL2 should have support for WSLg: Microsoft's Linux GUI
+support. It should allow you to simply compile your Bevy game in Linux and
+run it. WSLg will do the dark magic needed to forward graphics and audio to
+the Windows host. This will likely have some overhead.</p>
+<p>Both Wayland and X11 are supported.</p>
+<p>If this doesn't work for you, try the Cross-Compilation workflow described
+below.</p>
+<h3 id="cross-compiling-to-run-windows-native"><a class="header" href="#cross-compiling-to-run-windows-native">Cross-compiling to run Windows Native</a></h3>
+<p>You can also <a href="/setup/cross/linux-windows.html">cross-compile for Windows</a>. The Windows
+EXE you build inside of WSL2 can be run just fine from the Linux commandline,
+and it will seamlessly run on the host system! This way, you don't need any
+GPU drivers or GUI support inside your WSL2 Linux environment. Also, you
+will be running and testing the Windows build of your game, so you can see
+how it will really perform on Windows.</p>
 <p>Note that when you run Windows binaries from WSL2, they don't get the Linux
 environment variables. <code>cargo run</code> does not just work, because your Bevy game
 will look for its <code>assets</code> folder in the path where the EXE is (which would be
