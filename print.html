@@ -8572,7 +8572,7 @@ using an environment variable:</p>
 <pre><code class="language-shell">export WINIT_UNIX_BACKEND=wayland
 </code></pre>
 <p>(to require the use of Wayland)</p>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="platforms//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(current)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="platforms//introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.12</th><th>(upcoming)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="macos-desktop"><a class="header" href="#macos-desktop">macOS Desktop</a></h1>
@@ -8756,7 +8756,41 @@ lipo &quot;target/x86_64-apple-darwin/release/${RUST_CRATE_NAME}&quot; \
 <p>It is common for Mac apps downloadable from the internet to be distributed as
 DMG files – Apple's &quot;disk image&quot; format. Users can drag-and-drop the app bundle
 inside into their <code>Applications</code> folder on their system.</p>
-<p>You can create a very simple one from the command-line, using <code>hdiutil</code>:</p>
+<h3 id="create-dmg"><a class="header" href="#create-dmg"><code>create-dmg</code></a></h3>
+<p>If you want to create a fancy DMG file, you can install and use the
+<a href="https://github.com/create-dmg/create-dmg"><code>create-dmg</code> tool</a>.</p>
+<p>If you are using Homebrew, you can install it easily from there:</p>
+<pre><code class="language-sh">brew install create-dmg
+</code></pre>
+<p>Then, you can use it as follows:</p>
+<pre><code class="language-sh">create-dmg \
+  --volname &quot;My Bevy Game&quot; \
+  --volicon &quot;AppIcon.icns&quot; \
+  --background &quot;DMG-background.png&quot; \
+  --window-size 800 400 \
+  --icon-size 128 \
+  --icon &quot;MyGame.app&quot; 200 200 \
+  --hide-extension &quot;MyGame.app&quot; \
+  --app-drop-link 600 200 \
+  &quot;mybevygame_release_mac.dmg&quot; \
+  &quot;build/mac/&quot;
+</code></pre>
+<p>The options are:</p>
+<ul>
+<li><code>--volname</code>: the name of the device when the user opens the DMG file</li>
+<li><code>--volicon</code>: the icon of the device when the user opens the DMG file</li>
+<li><code>--background</code>: the background image for the Finder window</li>
+<li><code>--window-size</code>: the size of the Finder window</li>
+<li><code>--icon-size</code>: the default zoom level (how big the icons should look)</li>
+<li><code>--icon</code>: specify the X/Y coordinates where to display a specific file</li>
+<li><code>--hide-extension</code>: do not display the file extension for this file</li>
+<li><code>--app-drop-link</code>: create a shortcut to Applications for easy drag-and-drop; place at given X/Y coordinates</li>
+<li>the name of the DMG file to create</li>
+<li>the name of the folder where you have the files to be added to the DMG (your app + anything else you want to add)</li>
+</ul>
+<h3 id="hdiutil"><a class="header" href="#hdiutil"><code>hdiutil</code></a></h3>
+<p>If you don't want to install any special tools, you can create a very simple
+DMG file using <code>hdiutil</code>, which comes with macOS:</p>
 <pre><code class="language-sh">hdiutil create -fs HFS+ \
   -volname &quot;My Bevy Game&quot; \
   -srcfolder &quot;MyGame.app&quot; \
@@ -8766,8 +8800,10 @@ inside into their <code>Applications</code> folder on their system.</p>
 bundle, and the name of the output DMG file, respectively. You can use
 <code>-srcfolder</code> multiple times, if you want to add more files and folders to the
 DMG image.</p>
-<p>If you want to create a DMG file using a GUI, you can use Apple's &quot;Disk Utility&quot;
-app that comes preinstalled with macOS.</p>
+<h3 id="gui"><a class="header" href="#gui">GUI</a></h3>
+<p>If you want to create a DMG file using a GUI, you can use Apple's &quot;Disk
+Utility&quot; app that comes preinstalled with macOS. Then, just use Finder to
+set up everything inside how you like it.</p>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="platforms//introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.12</th><th>(upcoming)</th></tr></thead><tbody>
 </tbody></table>
 </div>
@@ -8811,21 +8847,13 @@ builds, like this:</p>
 to work inside of WSL2 and build your project there. Another reason to do it is
 compile times; they are often much faster in WSL2 than on the Windows host
 system.</p>
-<h3 id="running-linux-builds-using-wslg"><a class="header" href="#running-linux-builds-using-wslg">Running Linux builds using WSLg</a></h3>
-<p>Newer installs of WSL2 should have support for WSLg: Microsoft's Linux GUI
-support. It should allow you to simply compile your Bevy game in Linux and
-run it. WSLg will do the dark magic needed to forward graphics and audio to
-the Windows host. This will likely have some overhead.</p>
-<p>Both Wayland and X11 are supported.</p>
-<p>If this doesn't work for you, try the Cross-Compilation workflow described
-below.</p>
 <h3 id="cross-compiling-to-run-windows-native"><a class="header" href="#cross-compiling-to-run-windows-native">Cross-compiling to run Windows Native</a></h3>
-<p>You can also <a href="platforms//setup/cross/linux-windows.html">cross-compile for Windows</a>. The Windows
-EXE you build inside of WSL2 can be run just fine from the Linux commandline,
-and it will seamlessly run on the host system! This way, you don't need any
-GPU drivers or GUI support inside your WSL2 Linux environment. Also, you
-will be running and testing the Windows build of your game, so you can see
-how it will really perform on Windows.</p>
+<p>The recommended way to run your Bevy app from WSL is to <a href="platforms//setup/cross/linux-windows.html">cross-compile for
+Windows</a>. The Windows EXE you build inside of WSL2 can
+be run just fine from the Linux commandline, and it will seamlessly run on the
+host system! This way, you don't need any GPU drivers or GUI support inside
+your WSL2 Linux environment. Also, you will be running and testing the Windows
+build of your game, so you can see how it will really perform on Windows.</p>
 <p>Note that when you run Windows binaries from WSL2, they don't get the Linux
 environment variables. <code>cargo run</code> does not just work, because your Bevy game
 will look for its <code>assets</code> folder in the path where the EXE is (which would be
@@ -8839,6 +8867,39 @@ exec ./mygame.exe &quot;$@&quot;
 </code></pre>
 <p>This way you also don't have to type the cross-compilation target every time
 (and you can also add any other options you want there).</p>
+<h3 id="running-linux-builds-using-wslg"><a class="header" href="#running-linux-builds-using-wslg">Running Linux builds using WSLg</a></h3>
+<p>This is an alternative way of running your Bevy game from WSL. It does not
+require cross-compilation, but is likely to have other issues and limitations.</p>
+<p>Newer installs of WSL2 should have support for WSLg: Microsoft's Linux GUI
+support. It should allow you to simply compile your Bevy game in Linux and
+run it. WSLg will do the dark magic needed to forward graphics and audio to
+the Windows host.</p>
+<p>Your game will only run with 60 FPS, and there will be other performance
+overheads. Some things might be broken/unsupported.</p>
+<p>Both Wayland and X11 should work. Wayland is recommended, so be sure to
+enable the <code>&quot;wayland&quot;</code> <a href="platforms//setup/bevy-config.html">cargo feature in Bevy</a>.</p>
+<p>There are many dependencies (such as graphics drivers) needed for GUI support
+in Linux, which are likely missing if you have never used any other GUI app
+from your WSL environment. The easiest way to make sure you have everything installed,
+is to just install some random Linux GUI app. For example:</p>
+<pre><code class="language-sh">sudo apt install gucharmap # the GNOME Character Map app
+</code></pre>
+<p>It will pull in everything needed for a Linux GUI environment. Bevy should then
+also be able to work.</p>
+<p>This will be sufficient for OpenGL support. However, to use all features of
+Bevy, you need Vulkan. For Vulkan in WSL, it is recommended that you use
+a PPA (unofficial repository) to get an updated version of Mesa (graphics
+drivers). Here is how to install everything:</p>
+<pre><code class="language-sh">sudo add-apt-repository ppa:kisak/kisak-mesa
+sudo apt update
+sudo apt upgrade
+sudo apt install vulkan-tools
+</code></pre>
+<p>(<code>dzn</code>, Microsoft's Vulkan driver for WSL2, is technically non-conformant,
+so there may be bugs and other issues, but it seems to work fine)</p>
+<p>Now, you can simply run your Bevy project in Linux:</p>
+<pre><code class="language-sh">cargo run
+</code></pre>
 <h2 id="creating-an-icon-for-your-app"><a class="header" href="#creating-an-icon-for-your-app">Creating an icon for your app</a></h2>
 <p>There are two places where you might want to put your application icon:</p>
 <ul>

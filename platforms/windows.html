@@ -220,21 +220,13 @@ builds, like this:</p>
 to work inside of WSL2 and build your project there. Another reason to do it is
 compile times; they are often much faster in WSL2 than on the Windows host
 system.</p>
-<h3 id="running-linux-builds-using-wslg"><a class="header" href="#running-linux-builds-using-wslg">Running Linux builds using WSLg</a></h3>
-<p>Newer installs of WSL2 should have support for WSLg: Microsoft's Linux GUI
-support. It should allow you to simply compile your Bevy game in Linux and
-run it. WSLg will do the dark magic needed to forward graphics and audio to
-the Windows host. This will likely have some overhead.</p>
-<p>Both Wayland and X11 are supported.</p>
-<p>If this doesn't work for you, try the Cross-Compilation workflow described
-below.</p>
 <h3 id="cross-compiling-to-run-windows-native"><a class="header" href="#cross-compiling-to-run-windows-native">Cross-compiling to run Windows Native</a></h3>
-<p>You can also <a href="/setup/cross/linux-windows.html">cross-compile for Windows</a>. The Windows
-EXE you build inside of WSL2 can be run just fine from the Linux commandline,
-and it will seamlessly run on the host system! This way, you don't need any
-GPU drivers or GUI support inside your WSL2 Linux environment. Also, you
-will be running and testing the Windows build of your game, so you can see
-how it will really perform on Windows.</p>
+<p>The recommended way to run your Bevy app from WSL is to <a href="/setup/cross/linux-windows.html">cross-compile for
+Windows</a>. The Windows EXE you build inside of WSL2 can
+be run just fine from the Linux commandline, and it will seamlessly run on the
+host system! This way, you don't need any GPU drivers or GUI support inside
+your WSL2 Linux environment. Also, you will be running and testing the Windows
+build of your game, so you can see how it will really perform on Windows.</p>
 <p>Note that when you run Windows binaries from WSL2, they don't get the Linux
 environment variables. <code>cargo run</code> does not just work, because your Bevy game
 will look for its <code>assets</code> folder in the path where the EXE is (which would be
@@ -248,6 +240,39 @@ exec ./mygame.exe &quot;$@&quot;
 </code></pre>
 <p>This way you also don't have to type the cross-compilation target every time
 (and you can also add any other options you want there).</p>
+<h3 id="running-linux-builds-using-wslg"><a class="header" href="#running-linux-builds-using-wslg">Running Linux builds using WSLg</a></h3>
+<p>This is an alternative way of running your Bevy game from WSL. It does not
+require cross-compilation, but is likely to have other issues and limitations.</p>
+<p>Newer installs of WSL2 should have support for WSLg: Microsoft's Linux GUI
+support. It should allow you to simply compile your Bevy game in Linux and
+run it. WSLg will do the dark magic needed to forward graphics and audio to
+the Windows host.</p>
+<p>Your game will only run with 60 FPS, and there will be other performance
+overheads. Some things might be broken/unsupported.</p>
+<p>Both Wayland and X11 should work. Wayland is recommended, so be sure to
+enable the <code>&quot;wayland&quot;</code> <a href="/setup/bevy-config.html">cargo feature in Bevy</a>.</p>
+<p>There are many dependencies (such as graphics drivers) needed for GUI support
+in Linux, which are likely missing if you have never used any other GUI app
+from your WSL environment. The easiest way to make sure you have everything installed,
+is to just install some random Linux GUI app. For example:</p>
+<pre><code class="language-sh">sudo apt install gucharmap # the GNOME Character Map app
+</code></pre>
+<p>It will pull in everything needed for a Linux GUI environment. Bevy should then
+also be able to work.</p>
+<p>This will be sufficient for OpenGL support. However, to use all features of
+Bevy, you need Vulkan. For Vulkan in WSL, it is recommended that you use
+a PPA (unofficial repository) to get an updated version of Mesa (graphics
+drivers). Here is how to install everything:</p>
+<pre><code class="language-sh">sudo add-apt-repository ppa:kisak/kisak-mesa
+sudo apt update
+sudo apt upgrade
+sudo apt install vulkan-tools
+</code></pre>
+<p>(<code>dzn</code>, Microsoft's Vulkan driver for WSL2, is technically non-conformant,
+so there may be bugs and other issues, but it seems to work fine)</p>
+<p>Now, you can simply run your Bevy project in Linux:</p>
+<pre><code class="language-sh">cargo run
+</code></pre>
 <h2 id="creating-an-icon-for-your-app"><a class="header" href="#creating-an-icon-for-your-app">Creating an icon for your app</a></h2>
 <p>There are two places where you might want to put your application icon:</p>
 <ul>
