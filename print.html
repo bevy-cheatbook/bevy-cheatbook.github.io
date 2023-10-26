@@ -1722,15 +1722,19 @@ your components and resources in real-time as the game is running.</p>
 <p><a href="https://github.com/jakobhellermann/bevy_editor_pls"><code>bevy_editor_pls</code></a> is an editor-like interface that
 you can embed into your game. It has even more features, like switching app
 states, fly camera, performance diagnostics, and inspector panels.</p>
+<p>[<code>space_editor</code>][project::space_editor] is another such editor that can be
+embedded into your game. It seems to be designed for a Unity-inspired prefab
+workflow.</p>
+<p>You can also use [Blender][project::blender] as a level/scene editor,
+by exporting your scenes to <a href="setup//features/gltf.html">GLTF</a>. The [Blender Bevy Components
+Workflow][project::blender_bevy_components_workflow] project improves on this
+experience, by allowing you to setup your Bevy ECS <a href="setup//programming/ec.html#components">Components</a>
+in Blender, include them in the exported GLTF, and use them in Bevy.</p>
 <h2 id="diagnostics"><a class="header" href="#diagnostics">Diagnostics</a></h2>
 <p><a href="https://github.com/jakobhellermann/bevy_mod_debugdump"><code>bevy_mod_debugdump</code></a> is a tool to help visualize
 your <a href="setup/../programming/app-builder.html">App Schedules</a> (all of the registered
 <a href="setup/../programming/systems.html">systems</a> with their <a href="setup/../programming/system-order.html">ordering
 dependencies</a>), and the Bevy Render Graph.</p>
-<p>If you are getting confusing/cryptic compiler error messages (like
-<a href="setup/../pitfalls/into-system.html">these</a>) and you cannot figure them out,
-<a href="https://github.com/jakobhellermann/bevycheck"><code>bevycheck</code></a> is a tool you could use to help diagnose them.
-It tries to provide more user-friendly Bevy-specific error messages.</p>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="setup//introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.12</th><th>(upcoming)</th></tr></thead><tbody>
 </tbody></table>
 </div>
