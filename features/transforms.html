@@ -307,8 +307,9 @@ propagation system&quot;), which runs in the <a href="https://dev-docs.bevyengin
 <p>Beware: When you mutate the <a href="https://dev-docs.bevyengine.org/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>, the
 <a href="https://dev-docs.bevyengine.org/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> is not updated immediately. They
 will be out-of-sync until the transform propagation system runs.</p>
-<p>If you need to work with <a href="https://dev-docs.bevyengine.org/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> directly,
-you should add your <a href="/programming/systems.html">system</a> to the <a href="https://dev-docs.bevyengine.org/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a>
+<p>If you need to work with <a href="https://dev-docs.bevyengine.org/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a>
+directly, you should <a href="/programming/app-builder.html">add</a> your
+<a href="/programming/systems.html">system</a> to the <a href="https://dev-docs.bevyengine.org/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a>
 <a href="/programming/schedules.html">schedule</a> and <a href="/programming/system-order.html">order it after</a>
 <a href="https://dev-docs.bevyengine.org/bevy/transform/enum.TransformSystem.html"><code>TransformSystem::TransformPropagate</code></a>.</p>
 <pre><code class="language-rust no_run noplayground">/// Print the up-to-date global coordinates of the player
@@ -317,22 +318,16 @@ fn debug_globaltransform(
 ) {
     let gxf = query.single();
     debug!(&quot;Player at: {:?}&quot;, gxf.translation());
-}
-
-fn main() {
-    // the label to use for ordering
-    use bevy::transform::TransformSystem;
-
-    App::new()
-        .add_plugins(DefaultPlugins)
-        .add_systems(PostUpdate,
-            debug_globaltransform
-                // we want to read the GlobalTransform after
-                // it has been updated by Bevy for this frame
-                .after(TransformSystem::TransformPropagate)
-        )
-        .run();
 }</code></pre>
+<pre><code class="language-rust no_run noplayground">// the label to use for ordering
+use bevy::transform::TransformSystem;
+
+app.add_systems(PostUpdate,
+    debug_globaltransform
+        // we want to read the GlobalTransform after
+        // it has been updated by Bevy for this frame
+        .after(TransformSystem::TransformPropagate)
+);</code></pre>
 <h2 id="transformhelper"><a class="header" href="#transformhelper"><code>TransformHelper</code></a></h2>
 <p>If you need to get an up-to-date <a href="https://dev-docs.bevyengine.org/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a>
 in a <a href="/programming/systems.html">system</a> that has to run before transform propagation,
