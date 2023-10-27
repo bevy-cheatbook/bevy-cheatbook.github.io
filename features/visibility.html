@@ -221,23 +221,7 @@ you can use one of the following to ensure you don't miss them:</p>
 <li><a href="https://docs.rs/bevy/0.9.1/bevy/render/prelude/struct.SpatialBundle.html"><code>SpatialBundle</code></a> for <a href="/features/transforms.html">transforms</a> + visibility</li>
 <li><a href="https://docs.rs/bevy/0.9.1/bevy/render/view/visibility/struct.VisibilityBundle.html"><code>VisibilityBundle</code></a> for just visibility</li>
 </ul>
-<pre><code class="language-rust no_run noplayground">fn spawn_special_entity(
-    mut commands: Commands,
-) {
-    // create an entity that does not use one of the common Bevy bundles,
-    // but still needs transforms and visibility
-    commands.spawn((
-        ComponentA,
-        ComponentB,
-        SpatialBundle {
-            transform: Transform::from_scale(Vec3::splat(3.0)),
-            visibility: Visibility {
-                is_visible: false,
-            },
-            ..Default::default()
-        },
-    ));
-}</code></pre>
+<pre><code class="language-rust no_run noplayground"></code></pre>
 <h3 id="visibility-1"><a class="header" href="#visibility-1"><code>Visibility</code></a></h3>
 <p><a href="https://docs.rs/bevy/0.9.1/bevy/render/view/visibility/struct.Visibility.html"><code>Visibility</code></a> is the &quot;user-facing toggle&quot;. This is where
 you specify if you want this entity to be visible or not.</p>
