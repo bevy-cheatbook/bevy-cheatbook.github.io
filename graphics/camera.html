@@ -1,0 +1,533 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Cameras - Unofficial Bevy Cheat Book</title>
+
+
+        <!-- Custom HTML head -->
+        <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../nagbar.css">
+        <link rel="stylesheet" href="../sidebar.css">
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../introduction.html">Introduction</a></li><li class="chapter-item expanded affix "><a href="../overview.html">Chapter Overview</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../builtins.html">List of Bevy Builtins</a></li><li class="spacer"></li><li class="chapter-item expanded "><a href="../tutorial.html"><strong aria-hidden="true">1.</strong> Bevy Tutorials</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../tutorial/guide.html"><strong aria-hidden="true">1.1.</strong> Guided Tour</a></li></ol></li><li class="chapter-item expanded "><a href="../setup.html"><strong aria-hidden="true">2.</strong> Bevy Setup Tips</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../setup/getting-started.html"><strong aria-hidden="true">2.1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="../setup/bevy-git.html"><strong aria-hidden="true">2.2.</strong> Using bleeding-edge Bevy (main)</a></li><li class="chapter-item expanded "><a href="../setup/editor.html"><strong aria-hidden="true">2.3.</strong> Text Editor / IDE</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../setup/editor/vscode.html"><strong aria-hidden="true">2.3.1.</strong> Visual Studio Code</a></li><li class="chapter-item expanded "><a href="../setup/editor/jetbrains.html"><strong aria-hidden="true">2.3.2.</strong> JetBrains (RustRover, IntelliJ, CLion)</a></li><li class="chapter-item expanded "><a href="../setup/editor/kak.html"><strong aria-hidden="true">2.3.3.</strong> Kakoune</a></li><li class="chapter-item expanded "><a href="../setup/editor/vim.html"><strong aria-hidden="true">2.3.4.</strong> Vim</a></li><li class="chapter-item expanded "><a href="../setup/editor/emacs.html"><strong aria-hidden="true">2.3.5.</strong> Emacs</a></li></ol></li><li class="chapter-item expanded "><a href="../setup/bevy-config.html"><strong aria-hidden="true">2.4.</strong> Customizing Bevy (features, modularity)</a></li><li class="chapter-item expanded "><a href="../setup/unofficial-plugins.html"><strong aria-hidden="true">2.5.</strong> Community Plugin Ecosystem</a></li><li class="chapter-item expanded "><a href="../setup/bevy-tools.html"><strong aria-hidden="true">2.6.</strong> Dev Tools and Editors for Bevy</a></li><li class="chapter-item expanded "><a href="../setup/perf.html"><strong aria-hidden="true">2.7.</strong> Performance Tunables</a></li></ol></li><li class="chapter-item expanded "><a href="../pitfalls.html"><strong aria-hidden="true">3.</strong> Common Pitfalls</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../pitfalls/build-errors.html"><strong aria-hidden="true">3.1.</strong> Strange compile errors from Bevy or dependencies</a></li><li class="chapter-item expanded "><a href="../pitfalls/performance.html"><strong aria-hidden="true">3.2.</strong> Slow Performance</a></li><li class="chapter-item expanded "><a href="../pitfalls/into-system.html"><strong aria-hidden="true">3.3.</strong> Error adding function as system</a></li><li class="chapter-item expanded "><a href="../pitfalls/3d-not-rendering.html"><strong aria-hidden="true">3.4.</strong> 3D objects not displaying</a></li><li class="chapter-item expanded "><a href="../pitfalls/split-borrows.html"><strong aria-hidden="true">3.5.</strong> Borrow multiple fields from struct</a></li><li class="chapter-item expanded "><a href="../pitfalls/time.html"><strong aria-hidden="true">3.6.</strong> Jittering Time (choppy movement/animation)</a></li><li class="chapter-item expanded "><a href="../pitfalls/uv-coordinates.html"><strong aria-hidden="true">3.7.</strong> Textures/Images are flipped</a></li></ol></li><li class="chapter-item expanded "><a href="../fundamentals.html"><strong aria-hidden="true">4.</strong> Game Engine Fundamentals</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../fundamentals/coords.html"><strong aria-hidden="true">4.1.</strong> Coordinate System</a></li><li class="chapter-item expanded "><a href="../fundamentals/transforms.html"><strong aria-hidden="true">4.2.</strong> Transforms</a></li><li class="chapter-item expanded "><a href="../fundamentals/visibility.html"><strong aria-hidden="true">4.3.</strong> Visibility</a></li><li class="chapter-item expanded "><a href="../fundamentals/time.html"><strong aria-hidden="true">4.4.</strong> Time and Timers</a></li><li class="chapter-item expanded "><a href="../fundamentals/log.html"><strong aria-hidden="true">4.5.</strong> Logging, Console Messages</a></li><li class="chapter-item expanded "><a href="../fundamentals/hierarchy.html"><strong aria-hidden="true">4.6.</strong> Parent/Child Hierarchies</a></li><li class="chapter-item expanded "><a href="../fundamentals/fixed-timestep.html"><strong aria-hidden="true">4.7.</strong> Fixed Timestep</a></li></ol></li><li class="chapter-item expanded "><a href="../graphics.html"><strong aria-hidden="true">5.</strong> General Graphics Features</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../graphics/camera.html" class="active"><strong aria-hidden="true">5.1.</strong> Cameras</a></li><li class="chapter-item expanded "><a href="../graphics/hdr-tonemap.html"><strong aria-hidden="true">5.2.</strong> HDR and Tonemapping</a></li><li class="chapter-item expanded "><a href="../graphics/bloom.html"><strong aria-hidden="true">5.3.</strong> Bloom</a></li></ol></li><li class="chapter-item expanded "><a href="../2d.html"><strong aria-hidden="true">6.</strong> Working with 2D</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../2d/camera.html"><strong aria-hidden="true">6.1.</strong> 2D Camera Setup</a></li><li class="chapter-item expanded "><a href="../2d/sprites.html"><strong aria-hidden="true">6.2.</strong> Sprites and Atlases</a></li></ol></li><li class="chapter-item expanded "><a href="../3d.html"><strong aria-hidden="true">7.</strong> Working with 3D</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../3d/camera.html"><strong aria-hidden="true">7.1.</strong> 3D Camera Setup</a></li><li class="chapter-item expanded "><a href="../3d/gltf.html"><strong aria-hidden="true">7.2.</strong> 3D Models and Scenes (GLTF)</a></li></ol></li><li class="chapter-item expanded "><a href="../input.html"><strong aria-hidden="true">8.</strong> Input Handling</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../input/keyboard.html"><strong aria-hidden="true">8.1.</strong> Keyboard</a></li><li class="chapter-item expanded "><a href="../input/mouse.html"><strong aria-hidden="true">8.2.</strong> Mouse</a></li><li class="chapter-item expanded "><a href="../input/char.html"><strong aria-hidden="true">8.3.</strong> Text / Character</a></li><li class="chapter-item expanded "><a href="../input/gamepad.html"><strong aria-hidden="true">8.4.</strong> Gamepad (Controller, Joystick)</a></li><li class="chapter-item expanded "><a href="../input/touch.html"><strong aria-hidden="true">8.5.</strong> Touchscreen</a></li><li class="chapter-item expanded "><a href="../input/dnd.html"><strong aria-hidden="true">8.6.</strong> Drag-and-Drop (Files)</a></li></ol></li><li class="chapter-item expanded "><a href="../window.html"><strong aria-hidden="true">9.</strong> Window Management</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../window/props.html"><strong aria-hidden="true">9.1.</strong> Window Properties</a></li><li class="chapter-item expanded "><a href="../window/clear-color.html"><strong aria-hidden="true">9.2.</strong> Change the Background Color</a></li><li class="chapter-item expanded "><a href="../window/mouse-grab.html"><strong aria-hidden="true">9.3.</strong> Grab/Capture the Mouse Cursor</a></li><li class="chapter-item expanded "><a href="../window/icon.html"><strong aria-hidden="true">9.4.</strong> Set the Window Icon</a></li></ol></li><li class="chapter-item expanded "><a href="../assets.html"><strong aria-hidden="true">10.</strong> Asset Management</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../assets/handles.html"><strong aria-hidden="true">10.1.</strong> Handles</a></li><li class="chapter-item expanded "><a href="../assets/assetserver.html"><strong aria-hidden="true">10.2.</strong> Load Assets from Files</a></li><li class="chapter-item expanded "><a href="../assets/data.html"><strong aria-hidden="true">10.3.</strong> Access the Asset Data</a></li><li class="chapter-item expanded "><a href="../assets/assetevent.html"><strong aria-hidden="true">10.4.</strong> React to Changes with Asset Events</a></li><li class="chapter-item expanded "><a href="../assets/ready.html"><strong aria-hidden="true">10.5.</strong> Track Loading Progress</a></li><li class="chapter-item expanded "><a href="../assets/hot-reload.html"><strong aria-hidden="true">10.6.</strong> Hot-Reloading Assets</a></li></ol></li><li class="chapter-item expanded "><a href="../audio.html"><strong aria-hidden="true">11.</strong> Audio</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../audio/basic.html"><strong aria-hidden="true">11.1.</strong> Playing Sounds</a></li><li class="chapter-item expanded "><a href="../audio/spatial.html"><strong aria-hidden="true">11.2.</strong> Spatial Audio</a></li><li class="chapter-item expanded "><a href="../audio/custom.html"><strong aria-hidden="true">11.3.</strong> Custom Audio Streams</a></li></ol></li><li class="chapter-item expanded "><a href="../ui.html"><strong aria-hidden="true">12.</strong> Bevy UI Framework</a></li><li class="chapter-item expanded "><a href="../programming.html"><strong aria-hidden="true">13.</strong> Bevy Core Programming Framework</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../programming/ecs-intro.html"><strong aria-hidden="true">13.1.</strong> Intro to ECS</a></li><li class="chapter-item expanded "><a href="../programming/intro-data.html"><strong aria-hidden="true">13.2.</strong> Intro: Your Data</a></li><li class="chapter-item expanded "><a href="../programming/intro-code.html"><strong aria-hidden="true">13.3.</strong> Intro: Your Code</a></li><li class="chapter-item expanded "><a href="../programming/app-builder.html"><strong aria-hidden="true">13.4.</strong> The App</a></li><li class="chapter-item expanded "><a href="../programming/systems.html"><strong aria-hidden="true">13.5.</strong> Systems</a></li><li class="chapter-item expanded "><a href="../programming/res.html"><strong aria-hidden="true">13.6.</strong> Resources</a></li><li class="chapter-item expanded "><a href="../programming/ec.html"><strong aria-hidden="true">13.7.</strong> Entities, Components</a></li><li class="chapter-item expanded "><a href="../programming/bundle.html"><strong aria-hidden="true">13.8.</strong> Bundles</a></li><li class="chapter-item expanded "><a href="../programming/queries.html"><strong aria-hidden="true">13.9.</strong> Queries</a></li><li class="chapter-item expanded "><a href="../programming/commands.html"><strong aria-hidden="true">13.10.</strong> Commands</a></li><li class="chapter-item expanded "><a href="../programming/events.html"><strong aria-hidden="true">13.11.</strong> Events</a></li><li class="chapter-item expanded "><a href="../programming/local.html"><strong aria-hidden="true">13.12.</strong> Local Resources</a></li><li class="chapter-item expanded "><a href="../programming/exclusive.html"><strong aria-hidden="true">13.13.</strong> Exclusive Systems</a></li><li class="chapter-item expanded "><a href="../programming/world.html"><strong aria-hidden="true">13.14.</strong> Direct ECS World Access</a></li><li class="chapter-item expanded "><a href="../programming/schedules.html"><strong aria-hidden="true">13.15.</strong> Schedules</a></li><li class="chapter-item expanded "><a href="../programming/system-order.html"><strong aria-hidden="true">13.16.</strong> System Order of Execution</a></li><li class="chapter-item expanded "><a href="../programming/run-criteria.html"><strong aria-hidden="true">13.17.</strong> Run Criteria</a></li><li class="chapter-item expanded "><a href="../programming/system-sets.html"><strong aria-hidden="true">13.18.</strong> System Sets</a></li><li class="chapter-item expanded "><a href="../programming/states.html"><strong aria-hidden="true">13.19.</strong> States</a></li><li class="chapter-item expanded "><a href="../programming/plugins.html"><strong aria-hidden="true">13.20.</strong> Plugins</a></li><li class="chapter-item expanded "><a href="../programming/change-detection.html"><strong aria-hidden="true">13.21.</strong> Change Detection</a></li><li class="chapter-item expanded "><a href="../programming/system-piping.html"><strong aria-hidden="true">13.22.</strong> System Piping</a></li><li class="chapter-item expanded "><a href="../programming/paramset.html"><strong aria-hidden="true">13.23.</strong> ParamSet</a></li><li class="chapter-item expanded "><a href="../programming/non-send.html"><strong aria-hidden="true">13.24.</strong> Non-Send</a></li></ol></li><li class="chapter-item expanded "><a href="../gpu.html"><strong aria-hidden="true">14.</strong> Bevy Render (GPU) Framework</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../gpu/intro.html"><strong aria-hidden="true">14.1.</strong> Render Architecture Overview</a></li><li class="chapter-item expanded "><a href="../gpu/stages.html"><strong aria-hidden="true">14.2.</strong> Render Stages</a></li></ol></li><li class="chapter-item expanded "><a href="../patterns.html"><strong aria-hidden="true">15.</strong> Programming Patterns</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../patterns/generic-systems.html"><strong aria-hidden="true">15.1.</strong> Generic Systems</a></li><li class="chapter-item expanded "><a href="../patterns/component-storage.html"><strong aria-hidden="true">15.2.</strong> Component Storage (Table/Sparse-Set)</a></li><li class="chapter-item expanded "><a href="../patterns/manual-event-clear.html"><strong aria-hidden="true">15.3.</strong> Manual Event Clearing</a></li><li class="chapter-item expanded "><a href="../patterns/system-tests.html"><strong aria-hidden="true">15.4.</strong> Writing Tests for Systems</a></li></ol></li><li class="chapter-item expanded "><a href="../cookbook.html"><strong aria-hidden="true">16.</strong> Bevy Cookbook</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../cookbook/print-framerate.html"><strong aria-hidden="true">16.1.</strong> Show Framerate in Console</a></li><li class="chapter-item expanded "><a href="../cookbook/cursor2world.html"><strong aria-hidden="true">16.2.</strong> Convert cursor to world coordinates</a></li><li class="chapter-item expanded "><a href="../cookbook/custom-projection.html"><strong aria-hidden="true">16.3.</strong> Custom Camera Projection</a></li><li class="chapter-item expanded "><a href="../cookbook/pan-orbit-camera.html"><strong aria-hidden="true">16.4.</strong> Pan+Orbit Camera</a></li><li class="chapter-item expanded "><a href="../cookbook/print-resources.html"><strong aria-hidden="true">16.5.</strong> List All Resource Types</a></li></ol></li><li class="chapter-item expanded "><a href="../platforms.html"><strong aria-hidden="true">17.</strong> Bevy on Different Platforms</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../platforms/linux.html"><strong aria-hidden="true">17.1.</strong> Linux Desktop</a></li><li class="chapter-item expanded "><a href="../platforms/macos.html"><strong aria-hidden="true">17.2.</strong> macOS Desktop</a></li><li class="chapter-item expanded "><a href="../platforms/windows.html"><strong aria-hidden="true">17.3.</strong> Windows Desktop</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../platforms/windows/wsl2.html"><strong aria-hidden="true">17.3.1.</strong> Working in WSL2</a></li></ol></li><li class="chapter-item expanded "><a href="../platforms/wasm.html"><strong aria-hidden="true">17.4.</strong> Browser (WebAssembly)</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../platforms/wasm/panic-console.html"><strong aria-hidden="true">17.4.1.</strong> Panic Messages</a></li><li class="chapter-item expanded "><a href="../platforms/wasm/size-opt.html"><strong aria-hidden="true">17.4.2.</strong> Optimize for Size</a></li><li class="chapter-item expanded "><a href="../platforms/wasm/gh-pages.html"><strong aria-hidden="true">17.4.3.</strong> Hosting on GitHub Pages</a></li></ol></li><li class="chapter-item expanded "><a href="../setup/cross.html"><strong aria-hidden="true">17.5.</strong> Cross-Compilation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../setup/cross/linux-windows.html"><strong aria-hidden="true">17.5.1.</strong> From Linux to Windows</a></li><li class="chapter-item expanded "><a href="../setup/cross/macos-windows.html"><strong aria-hidden="true">17.5.2.</strong> From macOS to Windows</a></li></ol></li></ol></li><li class="chapter-item expanded "><a href="../concepts.html"><strong aria-hidden="true">18.</strong> Appendix: General Concepts</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../credits.html">Credits</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../contact.html">Contact Me</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../contributing-bevy.html">Contribute to Bevy</a></li><li class="chapter-item expanded affix "><a href="../contributing.html">Contribute to this Book</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Unofficial Bevy Cheat Book</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/bevy-cheatbook/bevy-cheatbook/issues/new" title="Suggest an edit" aria-label="Suggest an edit">
+                            <i id="git-edit-button" class="fa fa-edit"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div>
+<h1 id="cameras"><a class="header" href="#cameras">Cameras</a></h1>
+<p>Cameras drive all rendering in Bevy. They are responsible for configuring what
+to draw, how to draw it, and where to draw it.</p>
+<p>You must have at least one camera entity, in order for anything to be displayed
+at all! If you forget to spawn a camera, you will get an empty black screen.</p>
+<p>In the simplest case, you can create a camera with the default settings. Just
+spawn an entity using <a href="https://docs.rs/bevy/0.9.1/bevy/core_pipeline/core_2d/struct.Camera2dBundle.html"><code>Camera2dBundle</code></a> or
+<a href="https://docs.rs/bevy/0.9.1/bevy/core_pipeline/core_3d/struct.Camera3dBundle.html"><code>Camera3dBundle</code></a>. It will simply draw all renderable
+entities that are <a href="/fundamentals/visibility.html">visible</a>.</p>
+<p>This page gives a general overview of cameras in Bevy. Also see the dedicated
+pages for <a href="/2d/camera.html">2D cameras</a> and <a href="/3d/camera.html">3D cameras</a>.</p>
+<p>Practical advice: always create <a href="/programming/ec.html#components">marker components</a> for
+your camera entities, so that you can <a href="/programming/queries.html">query</a> your cameras easily!</p>
+<pre><code class="language-rust no_run noplayground">#[derive(Component)]
+struct MyGameCamera;
+
+fn setup(mut commands: Commands) {
+    commands.spawn((
+        Camera3dBundle::default(),
+        MyGameCamera,
+    ));
+}</code></pre>
+<h2 id="the-camera-transform"><a class="header" href="#the-camera-transform">The Camera Transform</a></h2>
+<p>Cameras have <a href="/fundamentals/transforms.html">transforms</a>, which can be used to position or
+rotate the camera. This is how you move the camera around.</p>
+<p>For examples, see these <a href="/cookbook.html">cookbook</a> pages:</p>
+<ul>
+<li><a href="/cookbook/pan-orbit-camera.html">3D pan-orbit camera</a>, like in 3D editor apps</li>
+</ul>
+<p>If you are making a game, you should implement your own custom camera controls
+that feel appropriate to your game's genre and gameplay.</p>
+<h3 id="zooming-the-camera"><a class="header" href="#zooming-the-camera">Zooming the camera</a></h3>
+<p>Do not use the transform scale to &quot;zoom&quot; a camera! It just stretches the image,
+which is not &quot;zooming&quot;. It might also cause other issues and incompatibilities.
+Use the <a href="/graphics/camera.html#projection">projection</a> to zoom.</p>
+<p>For orthographic projections, change the projection's scale. This way you can be
+confident about how exactly coordinate/units map to the screen. This also helps
+avoid scaling artifacts with 2D assets.</p>
+<pre><code class="language-rust no_run noplayground">fn zoom_2d(
+    mut q: Query&lt;&amp;mut OrthographicProjection, With&lt;MyGameCamera&gt;&gt;,
+) {
+    let mut projection = q.single_mut();
+
+    // example: zoom in
+    projection.scale *= 1.25;
+    // example: zoom out
+    projection.scale *= 0.75;
+
+    // always ensure you end up with sane values
+    // (pick an upper and lower bound for your application)
+    projection.scale = projection.scale.clamp(0.5, 5.0);
+}</code></pre>
+<p>For 3D perspective projections, change the FOV. This achieves the desired 3D
+effect of zooming with a lens, while keeping the camera at the same distance
+from what it is looking at. Decrease the FOV to &quot;zoom in&quot; (make objects appear
+closer). Increase the FOV to &quot;zoom out&quot; (make objects appear further away,
+increase the stretching due to the perspective effect).</p>
+<pre><code class="language-rust no_run noplayground">fn zoom_3d(
+    mut q: Query&lt;&amp;mut PerspectiveProjection, With&lt;MyGameCamera&gt;&gt;,
+) {
+    let mut projection = q.single_mut();
+
+    // example: zoom in
+    projection.fov *= 1.25;
+    // example: zoom out
+    projection.fov *= 0.75;
+
+    // always ensure you end up with sane values
+    // (pick an upper and lower bound for your application)
+    projection.fov = projection.fov.clamp(30.0f32.to_radians(), 90.0f32.to_radians());
+}</code></pre>
+<p>In some applications (like 3D editors), &quot;zooming&quot; might mean moving the camera
+closer or farther away, instead of changing the FOV.</p>
+<h2 id="projection"><a class="header" href="#projection">Projection</a></h2>
+<p>The camera projection is responsible for mapping the coordinate system to the
+viewport. This effectively determines the &quot;coordinate space&quot; you are working in.</p>
+<p>Bevy provides two kinds of projections:
+<a href="https://docs.rs/bevy/0.9.1/bevy/render/camera/struct.OrthographicProjection.html"><code>OrthographicProjection</code></a> and
+<a href="https://docs.rs/bevy/0.9.1/bevy/render/camera/struct.PerspectiveProjection.html"><code>PerspectiveProjection</code></a>. They are configurable,
+to be able to serve a variety of different use cases. See the dedicated pages
+for <a href="/2d/camera.html">2D cameras</a> and <a href="/3d/camera.html">3D cameras</a> to learn more
+about what you can do with them.</p>
+<p>It is possible to implement your own <a href="/cookbook/custom-projection.html">custom camera
+projections</a>. This can give you full control over
+the coordinate system. However, beware that things might behave in unexpected
+ways if you violate Bevy's <a href="/fundamentals/coords.html">coordinate system conventions</a>!</p>
+<p>Note that Bevy uses a an <a href="https://developer.nvidia.com/content/depth-precision-visualized">infinite reversed
+Z</a> configuration for 3D.</p>
+<h2 id="hdr-and-tonemapping"><a class="header" href="#hdr-and-tonemapping">HDR and Tonemapping</a></h2>
+<p><a href="/graphics/hdr-tonemap.html">See here!</a></p>
+<h2 id="render-target"><a class="header" href="#render-target">Render Target</a></h2>
+<p>The render target of a camera determines where the GPU will draw things to. It
+could be a window (for outputting directly to the screen) or an
+<a href="https://docs.rs/bevy/0.9.1/bevy/render/texture/struct.Image.html"><code>Image</code></a> <a href="/assets.html">asset</a> (render-to-texture).</p>
+<p>By default, cameras output to the primary window.</p>
+<pre><code class="language-rust no_run noplayground">use bevy::render::camera::RenderTarget;
+
+fn debug_render_targets(
+    q: Query&lt;&amp;Camera&gt;,
+) {
+    for camera in &amp;q {
+        match &amp;camera.target {
+            RenderTarget::Window(wid) =&gt; {
+                eprintln!(&quot;Camera renders to window with id: {:?}&quot;, wid);
+            }
+            RenderTarget::Image(handle) =&gt; {
+                eprintln!(&quot;Camera renders to image asset with id: {:?}&quot;, handle);
+            }
+        }
+    }
+}</code></pre>
+<h2 id="viewport"><a class="header" href="#viewport">Viewport</a></h2>
+<p>The viewport is an (optional) way to restrict a camera to a sub-area of its
+render target, defined as a rectangle. That rectangle is effectively treated as
+the &quot;window&quot; to draw in.</p>
+<p>An obvious use-case are split-screen games, where you want a camera to only draw
+to one half of the screen.</p>
+<pre><code class="language-rust no_run noplayground">use bevy::render::camera::Viewport;
+
+fn setup_minimap(mut commands: Commands) {
+    commands.spawn((
+        Camera2dBundle {
+            camera: Camera {
+                // renders after / on top of other cameras
+                priority: 2,
+                // set the viewport to a 256x256 square in the top left corner
+                viewport: Some(Viewport {
+                    physical_position: UVec2::new(0, 0),
+                    physical_size: UVec2::new(256, 256),
+                    ..default()
+                }),
+                ..default()
+            },
+            ..default()
+        },
+        MyMinimapCamera,
+    ));
+}</code></pre>
+<p>If you need to find out the area a camera renders to (the viewport, if
+configured, or the entire window, if not):</p>
+<pre><code class="language-rust no_run noplayground">fn debug_viewports(
+    q: Query&lt;&amp;Camera, With&lt;MyExtraCamera&gt;&gt;,
+) {
+    let camera = q.single();
+
+    // the size of the area being rendered to
+    let view_dimensions = camera.logical_viewport_size().unwrap();
+
+    // the top-left and bottom-right coordinates
+    let (corner1, corner2) = camera.logical_viewport_rect().unwrap();
+}</code></pre>
+<h2 id="coordinate-conversion"><a class="header" href="#coordinate-conversion">Coordinate Conversion</a></h2>
+<p><a href="https://docs.rs/bevy/0.9.1/bevy/render/camera/struct.Camera.html"><code>Camera</code></a> provides methods to help with coordinate conversion
+between on-screen coordinates and world-space coordinates. For an example, see
+the <a href="/cookbook/cursor2world.html">&quot;cursor to world&quot;</a> cookbook page.</p>
+<h2 id="clear-color"><a class="header" href="#clear-color">Clear Color</a></h2>
+<p>This is the &quot;background color&quot; that the whole viewport will be cleared to,
+before a camera renders anything.</p>
+<p>You can also disable clearing on a camera, if you want to preserve all the
+pixels as they were before.</p>
+<p><a href="/window/clear-color.html">See this page for more info.</a></p>
+<h2 id="render-layers"><a class="header" href="#render-layers">Render Layers</a></h2>
+<p><a href="https://docs.rs/bevy/0.9.1/bevy/render/view/visibility/struct.RenderLayers.html"><code>RenderLayers</code></a> is a way to filter what entities should be
+drawn by what cameras. Insert this <a href="/programming/ec.html#components">component</a> onto your entities
+to place them in specific &quot;layers&quot;. The layers are integers from 0 to 31 (32
+total available).</p>
+<p>Inserting this component onto a camera entity selects what layers that camera
+should render. Inserting this component onto renderable entities selects what
+cameras should render those entities. An entity will be rendered if there is any
+overlap between the camera's layers and the entity's layers (they have at least
+one layer in common).</p>
+<p>If an entity does not have the <a href="https://docs.rs/bevy/0.9.1/bevy/render/view/visibility/struct.RenderLayers.html"><code>RenderLayers</code></a> component,
+it is assumed to belong to layer 0 (only).</p>
+<pre><code class="language-rust no_run noplayground">use bevy::render::view::visibility::RenderLayers;
+// This camera renders everything in layers 0, 1
+commands.spawn((
+    Camera2dBundle::default(),
+    RenderLayers::from_layers(&amp;[0, 1])
+));
+// This camera renders everything in layers 1, 2
+commands.spawn((
+    Camera2dBundle::default(),
+    RenderLayers::from_layers(&amp;[1, 2])
+));
+// This sprite will only be seen by the first camera
+commands.spawn((
+    SpriteBundle::default(),
+    RenderLayers::layer(0),
+));
+// This sprite will be seen by both cameras
+commands.spawn((
+    SpriteBundle::default(),
+    RenderLayers::layer(1),
+));
+// This sprite will only be seen by the second camera
+commands.spawn((
+    SpriteBundle::default(),
+    RenderLayers::layer(2),
+));
+// This sprite will also be seen by both cameras
+commands.spawn((
+    SpriteBundle::default(),
+    RenderLayers::from_layers(&amp;[0, 2]),
+));</code></pre>
+<p>You can also modify the render layers of entities after they are spawned.</p>
+<h2 id="camera-ordering"><a class="header" href="#camera-ordering">Camera Ordering</a></h2>
+<p>A camera's priority is a simple integer value that controls the order relative
+to any other cameras with the same render target.</p>
+<p>For example, if you have multiple cameras that all render to the primary window,
+they will behave as multiple &quot;layers&quot;. Cameras with higher priority will render
+&quot;on top of&quot; cameras with lower priority.</p>
+<pre><code class="language-rust no_run noplayground">use bevy::core_pipeline::clear_color::ClearColorConfig;
+
+commands.spawn((
+    Camera2dBundle {
+        camera_2d: Camera2d {
+            // no &quot;background color&quot;, we need to see the main camera's output
+            clear_color: ClearColorConfig::None,
+            ..default()
+        },
+        camera: Camera {
+            // renders after / on top of the main camera
+            priority: 1,
+            ..default()
+        },
+        ..default()
+    },
+    MyOverlayCamera,
+));</code></pre>
+<h2 id="ui-rendering"><a class="header" href="#ui-rendering">UI Rendering</a></h2>
+<p>Bevy UI rendering is integrated into the cameras! Every camera will, by default,
+also draw UI.</p>
+<p>However, if you are working with multiple cameras, you probably only want your
+UI to be drawn once (probably by the main camera). You can disable UI rendering
+on your other cameras.</p>
+<p>Also, UI on multiple cameras is currently broken in Bevy. Even if you want
+multiple UI cameras (say, to display UI in an app with multiple windows), it
+does not work correctly.</p>
+<pre><code class="language-rust no_run noplayground">commands.spawn((
+    Camera3dBundle::default(),
+    // UI config is a separate component
+    UiCameraConfig {
+        show_ui: false,
+    },
+    MyExtraCamera,
+));</code></pre>
+<h2 id="disabling-cameras"><a class="header" href="#disabling-cameras">Disabling Cameras</a></h2>
+<p>You can deactivate a camera without despawning it. This is useful when you want
+to preserve the camera entity and all the configuration it carries, so you can
+easily re-enable it later.</p>
+<p>Some example use cases: toggling an overlay, switching between a 2D and 3D view.</p>
+<pre><code class="language-rust no_run noplayground">fn toggle_overlay(
+    mut q: Query&lt;&amp;mut Camera, With&lt;MyOverlayCamera&gt;&gt;,
+) {
+    let mut camera = q.single_mut();
+    camera.is_active = !camera.is_active;
+}</code></pre>
+<h2 id="multiple-cameras"><a class="header" href="#multiple-cameras">Multiple Cameras</a></h2>
+<p>This is an overview of different scenarios where you would need more than one
+camera entity.</p>
+<h3 id="multiple-windows"><a class="header" href="#multiple-windows">Multiple Windows</a></h3>
+<p>Official example: <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/window/multiple_windows.rs"><code>multiple_windows</code></a>.</p>
+<p>If you want to create a Bevy app with multiple windows, you need to spawn
+multiple cameras, one for each window, and set their render targets
+respectively. Then, you can use your cameras to control what to display in each
+window.</p>
+<h3 id="split-screen"><a class="header" href="#split-screen">Split-Screen</a></h3>
+<p>Official example: <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/3d/split_screen.rs"><code>split_screen</code></a>.</p>
+<p>You can set the camera <a href="#viewport">viewport</a> to only render to a part of the
+render target. This way, a camera can be made to render one half of the screen
+(or any other area). Use a separate camera for each view in a split-screen game.</p>
+<h3 id="overlays"><a class="header" href="#overlays">Overlays</a></h3>
+<p>Official example: <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/3d/two_passes.rs"><code>two_passes</code></a>.</p>
+<p>You might want to render multiple &quot;layers&quot; (passes) to the same render target.
+An example of this might be an overlay/HUD to be displayed as an overlay on top
+of the main game.</p>
+<p>The overlay camera could be completely different from the main camera. For
+example, the main camera might draw a 3D scene, and the overlay camera might
+draw 2D shapes. Such use cases are possible!</p>
+<p>Use a separate camera to create the overlay. Set the <a href="#priority">priority</a>
+higher, to tell Bevy to render it after (on top of) the main camera. Make sure
+to disable <a href="#clear-color">clearing</a>!</p>
+<p>Think about which camera you want to be responsible for <a href="#ui-rendering">rendering the
+UI</a>. Use the overlay camera if you want it to be unaffected,
+or use the main camera if you want the overlay to be on top of the UI. Disable
+it on the other camera.</p>
+<p>Use <a href="#render-layers">Render Layers</a> to control what entities should be rendered
+by each camera.</p>
+<h3 id="render-to-image"><a class="header" href="#render-to-image">Render to Image</a></h3>
+<p>(aka Render to Texture)</p>
+<p>Official example: <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/3d/render_to_texture.rs"><code>render_to_texture</code></a>.</p>
+<p>If you want to generate an image in memory, you can output to an <code>Image</code> asset.</p>
+<p>This is useful for intermediate steps in games, such as rendering a minimap or
+the gun in a shooter game. You can then use that image as part of the final
+scene to render to the screen. Item previews are a similar use case.</p>
+<p>Another use case is window-less applications that want to generate image files.
+For example, you could use Bevy to render something, and then export it to a PNG
+file.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../graphics.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../graphics/hdr-tonemap.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../graphics.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../graphics/hdr-tonemap.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+        <script src="../nagbar.js"></script>
+
+
+    </div>
+    </body>
+</html>
