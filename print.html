@@ -5331,17 +5331,17 @@ features are covered in other chapters of the book. You can start with
 Patterns</a> chapter.</p>
 <p>If you are also interested in GPU programming, see the <a href="/gpu.html">Bevy GPU
 Framework</a> chapter.</p>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(current)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.12</th><th>(upcoming)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="ecs-programming-introduction"><a class="header" href="#ecs-programming-introduction">ECS Programming Introduction</a></h1>
 <p>This page will try to teach you the general ECS mindset/paradigm.</p>
 <hr />
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/main/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
 <p>Also check out the complete game examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/games/alien_cake_addict.rs"><code>alien_cake_addict</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/games/breakout.rs"><code>breakout</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/main/examples/games/alien_cake_addict.rs"><code>alien_cake_addict</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/main/examples/games/breakout.rs"><code>breakout</code></a>.</p>
 <hr />
 <p>ECS is a programming paradigm that separates data and behavior. Bevy will store
 all of <a href="programming//programming/intro-data.html">your data</a> and manage all of <a href="programming//programming/intro-code.html">your individual pieces
@@ -5360,7 +5360,7 @@ player movement, which only applies to the player), that is naturally easy to
 express, too.</p>
 <p><a href="programming//programming/intro-data.html">Read more about how to represent your data.</a></p>
 <p><a href="programming//programming/intro-code.html">Read more about how to represent your functionality.</a></p>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(current)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.12</th><th>(upcoming)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="intro-your-data"><a class="header" href="#intro-your-data">Intro: Your Data</a></h1>
@@ -5371,7 +5371,7 @@ learn more about each concept.</p>
 <p>As mentioned in <a href="programming//programming/ecs-intro.html">the ECS Intro</a>, Bevy stores all your data for
 you and allows you easy and flexible access to whatever you need, wherever you
 need it.</p>
-<p>The ECS's data structure is called the <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/world/struct.World.html"><code>World</code></a>. That is what
+<p>The ECS's data structure is called the <a href="https://dev-docs.bevyengine.org/bevy/ecs/world/struct.World.html"><code>World</code></a>. That is what
 stores and manages all of the data. For advanced scenarios, is possible to have
 <a href="programming//programming/sub-apps.html">multiple worlds</a>, and then each one will behave as its own
 separate ECS. However, normally, you just work with the main World that Bevy
@@ -5383,7 +5383,7 @@ sets up for your <a href="programming//programming/app-builder.html">App</a>.</p
 spreadsheet. Your different data types (<a href="programming//programming/ec.html#components">Components</a>) are like
 the &quot;columns&quot; of a table, and there can be arbitrarily many &quot;rows&quot;
 (<a href="programming//programming/ec.html#entities">Entities</a>) containing values / instances of various components.
-The <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> ID is like the row number. It's an integer index
+The <a href="https://dev-docs.bevyengine.org/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> ID is like the row number. It's an integer index
 that lets you find specific component values.</p>
 <p>Component types that are empty <code>struct</code>s (contain no data) are called <a href="programming//programming/ec.html#components">marker
 components</a>. They are useful as &quot;tags&quot; to identify
@@ -5394,7 +5394,7 @@ player, to select entities to be despawned at the end of the level, etc.</p>
 checkmarks show what component types are present on each entity. Empty cells
 mean that the component is not present. In this example, we have a player,
 a camera, and several enemies.</p>
-<div class="table-wrapper"><table><thead><tr><th><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> (ID)</th><th><a href="https://docs.rs/bevy/0.11.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a></th><th><code>Player</code></th><th><code>Enemy</code></th><th><a href="https://docs.rs/bevy/0.11.0/bevy/render/camera/struct.Camera.html"><code>Camera</code></a></th><th><code>Health</code></th><th>...</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th><a href="https://dev-docs.bevyengine.org/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> (ID)</th><th><a href="https://dev-docs.bevyengine.org/bevy/transform/components/struct.Transform.html"><code>Transform</code></a></th><th><code>Player</code></th><th><code>Enemy</code></th><th><a href="https://dev-docs.bevyengine.org/bevy/render/camera/struct.Camera.html"><code>Camera</code></a></th><th><code>Health</code></th><th>...</th></tr></thead><tbody>
 <tr><td>...</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 <tr><td>107</td><td>✓ <code>&lt;translation&gt;</code> <code>&lt;rotation&gt;</code> <code>&lt;scale&gt;</code></td><td>✓</td><td></td><td></td><td>✓ <code>50.0</code></td><td></td></tr>
 <tr><td>108</td><td>✓ <code>&lt;translation&gt;</code> <code>&lt;rotation&gt;</code> <code>&lt;scale&gt;</code></td><td></td><td>✓</td><td></td><td>✓ <code>25.0</code></td><td></td></tr>
@@ -5419,7 +5419,28 @@ or configuration parameters, or other abstract things.</p>
 For example, if you want to implement a game mechanic, write a <a href="programming//programming/systems.html">system</a>,
 specify what component types you want to access, and do your thing. You can either
 iterate through all entities that match your specification, or access specific
-ones (if you know their <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> ID).</p>
+ones (if you know their <a href="https://dev-docs.bevyengine.org/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> ID).</p>
+<pre><code class="language-rust no_run noplayground">#[derive(Component)]
+struct Xp(u32);
+
+#[derive(Component)]
+struct Health {
+    current: u32,
+    max: u32,
+}
+
+fn level_up(
+    // operate on anything that has Xp and Health
+    mut query: Query&lt;(&amp;mut Xp, &amp;mut Health)&gt;,
+) {
+    for (mut xp, mut health) in query.iter_mut() {
+        if xp.0 &gt; 1000 {
+            xp.0 -= 1000;
+            health.max += 25;
+            health.current = health.max;
+        }
+    }
+}</code></pre>
 <p>Bevy can automatically keep track of what data your <a href="programming//programming/systems.html">systems</a> have
 access to and <a href="programming//programming/system-order.html">run them in parallel</a> on multiple CPU
 cores. This way, you get multithreading with no extra effort from you!</p>
@@ -5431,6 +5452,38 @@ systems might be running. These operations can be buffered/deferred using
 also get <a href="programming//programming/world.html">direct World access</a> using <a href="programming//programming/exclusive.html">exclusive
 systems</a>, if you want to perform such operations
 immediately (but without multithreading).</p>
+<p><a href="programming//programming/bundle.html">Bundles</a> serve as &quot;templates&quot; for common sets of components, to
+help you when you spawn new entities, so you don't accidentally forget anything.</p>
+<pre><code class="language-rust no_run noplayground">// Marker for the player
+#[derive(Component)]
+struct Player;
+
+fn spawn_player(
+    // needed for creating/removing data in the ECS World
+    mut commands: Commands,
+    // needed for loading assets
+    asset_server: Res&lt;AssetServer&gt;,
+) {
+    // create a new entity with whatever components we want
+    commands.spawn((
+        // give it a marker
+        Player,
+        // give it health and xp
+        Health {
+            current: 100,
+            max: 125,
+        },
+        Xp(0),
+        // give it a 2D sprite to render on-screen
+        // (Bevy's SpriteBundle lets us add everything necessary)
+        SpriteBundle {
+            texture: asset_server.load(&quot;player.png&quot;),
+            transform: Transform::from_xyz(25.0, 50.0, 0.0),
+            // use the default values for all other components in the bundle
+            ..Default::default()
+        },
+    ));
+}</code></pre>
 <h3 id="comparison-with-object-oriented-programming"><a class="header" href="#comparison-with-object-oriented-programming">Comparison with Object-Oriented Programming</a></h3>
 <p>Object-Oriented programming teaches you to think of everything as &quot;objects&quot;,
 where each object is an instance of a &quot;class&quot;. The class specifies the data
@@ -5450,15 +5503,15 @@ make things granular, when different pieces of data may be accessed independentl
 <p>For example, represent the player in your game as an entity, composed
 of separate component types (separate <code>struct</code>s) for things like the
 health, XP, or whatever is relevant to your game. You can also attach
-standard Bevy components like <a href="https://docs.rs/bevy/0.11.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> (<a href="programming//fundamentals/transforms.html">transforms
+standard Bevy components like <a href="https://dev-docs.bevyengine.org/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> (<a href="programming//fundamentals/transforms.html">transforms
 explained</a>) to it.</p>
 <p>Then, each piece of functionality (each <a href="programming//programming/systems.html">system</a>) can just
-query for the data it needs. Common functionality (like a health/damage
-system) can be applied to any entity with the matching components,
+<a href="programming//programming/queries.html">query</a> for the data it needs. Common functionality (like a
+health/damage system) can be applied to any entity with the matching components,
 regardless of whether that's the player or something else in the game.</p>
 <p>However, if some data always makes sense to be accessed together, then you
 should put it in a single <code>struct</code>. For example, Bevy's
-<a href="https://docs.rs/bevy/0.11.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> or <a href="https://docs.rs/bevy/0.11.0/bevy/render/color/enum.Color.html"><code>Color</code></a>. With these types, the
+<a href="https://dev-docs.bevyengine.org/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> or <a href="https://dev-docs.bevyengine.org/bevy/render/color/enum.Color.html"><code>Color</code></a>. With these types, the
 fields are not likely to be useful independently.</p>
 <h3 id="additional-internal-details"><a class="header" href="#additional-internal-details">Additional Internal Details</a></h3>
 <p>The set / combination of components that a given entity has, is called the
@@ -5468,6 +5521,9 @@ allows the CPU to access and cache it efficiently.</p>
 <p>If you add/remove component types on existing entities, you are changing the
 Archetype, which may require Bevy to copy the data to a different location.</p>
 <p><a href="programming//patterns/component-storage.html">Learn more about Bevy's component storage.</a></p>
+<p>Entity IDs can also be reused. The <a href="https://dev-docs.bevyengine.org/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> type is actually two
+integers: the ID and a &quot;generation&quot;. After you despawn some entities, their IDs can
+be reused for newly-spawned entities, but Bevy will increase the generation value.</p>
 <h2 id="resources-1"><a class="header" href="#resources-1">Resources</a></h2>
 <p>If there is only one global instance (singleton) of something, and it is
 standalone (not associated with other data), create a <a href="programming//programming/res.html">Resource</a>.</p>
@@ -5475,7 +5531,38 @@ standalone (not associated with other data), create a <a href="programming//prog
 settings, or the data for the currently active game mode or session.</p>
 <p>This is a simple way of storing data, when you know you don't need the
 flexibility of Entities/Components.</p>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(current)</th></tr></thead><tbody>
+<pre><code class="language-rust no_run noplayground">#[derive(Resource)]
+struct GameSettings {
+    current_level: u32,
+    difficulty: u32,
+    max_time_seconds: u32,
+}
+
+fn setup_game(
+    mut commands: Commands,
+) {
+    // Add the GameSettings resource to the ECS
+    // (if one already exists, it will be overwritten)
+    commands.insert_resource(GameSettings {
+        current_level: 1,
+        difficulty: 100,
+        max_time_seconds: 60,
+    });
+}
+
+fn spawn_extra_enemies(
+    mut commands: Commands,
+    // we can easily access our resource from any system
+    game_settings: Res&lt;GameSettings&gt;,
+) {
+    if game_settings.difficulty &gt; 50 {
+        commands.spawn((
+            // ...
+        ));
+    }
+}
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.12</th><th>(upcoming)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="intro-your-code"><a class="header" href="#intro-your-code">Intro: Your Code</a></h1>
@@ -5490,7 +5577,7 @@ access to whatever parts of <a href="programming//programming/intro-data.html">y
 is a Rust function (<code>fn</code>) you write, which accepts <a href="programming//builtins.html#systemparams">special parameter
 types</a> to indicate what <a href="programming//programming/intro-data.html">data</a> it needs to
 access. Think of the function signature as a &quot;specification&quot; for what to fetch
-from the ECS <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/world/struct.World.html"><code>World</code></a>.</p>
+from the ECS <a href="https://dev-docs.bevyengine.org/bevy/ecs/world/struct.World.html"><code>World</code></a>.</p>
 <p>Here is what a <a href="programming//programming/systems.html">system</a> might look like. Note how, just by looking
 at the function parameters, we know <em>exactly</em> what <a href="programming//programming/intro-data.html">data</a>
 can be accessed.</p>
@@ -5528,9 +5615,15 @@ different and unpredictable order relative to one another, unless you add
 access</a> to the ECS <a href="programming//programming/world.html"><code>World</code></a>. They cannot run in parallel
 with other systems, because they can access anything and do anything. Sometimes,
 you might need this additonal power.</p>
+<pre><code class="language-rust no_run noplayground">fn save_game(
+    // get full access to the World, so we can access all data and do anything
+    world: &amp;mut World,
+) {
+    // ... save game data to disk, or something ...
+}</code></pre>
 <h2 id="schedules-1"><a class="header" href="#schedules-1">Schedules</a></h2>
 <p>Bevy stores systems inside of <a href="programming//programming/schedules.html">schedules</a>
-(<a href="https://docs.rs/bevy/0.11.0/bevy/ecs/schedule/struct.Schedule.html"><code>Schedule</code></a>). The schedule contains the systems and all
+(<a href="https://dev-docs.bevyengine.org/bevy/ecs/schedule/struct.Schedule.html"><code>Schedule</code></a>). The schedule contains the systems and all
 relevant metadata to organize them, telling Bevy when and how to run them. Bevy
 <a href="programming//programming/app-builder.html">Apps</a> typically contain many schedules. Each one is a collection of
 systems to be invoked in different scenarios (every frame update, <a href="programming//fundamentals/fixed-timestep.html">fixed
@@ -5599,23 +5692,20 @@ all the functionality in your game. What will you do with all this power? ;)</p>
 <p>Here is how <a href="programming//programming/schedules.html">schedule</a> that was illustrated above could be
 created in code:</p>
 <pre><code class="language-rust no_run noplayground">// Set configuration is per-schedule. Here we do it for `Update`
-app.configure_set(Update, MainMenuSet
-    .run_if(in_state(MainMenu))
-);
-app.configure_set(Update, GameplaySet
-    .run_if(in_state(InGame))
-);
-app.configure_set(Update, InputSet
-    .in_set(GameplaySet)
-);
-app.configure_set(Update, EnemyAiSet
-    .in_set(GameplaySet)
-    .run_if(not(cutscene))
-    .after(player_movement)
-);
-app.configure_set(Update, AudioSet
-    .run_if(audio_muted)
-);
+app.configure_sets(Update, (
+    MainMenuSet
+        .run_if(in_state(MainMenu)),
+    GameplaySet
+        .run_if(in_state(InGame)),
+    InputSet
+        .in_set(GameplaySet),
+    EnemyAiSet
+        .in_set(GameplaySet)
+        .run_if(not(cutscene))
+        .after(player_movement),
+    AudioSet
+        .run_if(not(audio_muted)),
+));
 app.add_systems(Update, (
     (
         ui_button_animate,

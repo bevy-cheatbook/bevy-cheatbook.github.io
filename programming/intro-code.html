@@ -177,7 +177,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(current)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.12</th><th>(upcoming)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="intro-your-code"><a class="header" href="#intro-your-code">Intro: Your Code</a></h1>
@@ -192,7 +192,7 @@ access to whatever parts of <a href="/programming/intro-data.html">your data</a>
 is a Rust function (<code>fn</code>) you write, which accepts <a href="/builtins.html#systemparams">special parameter
 types</a> to indicate what <a href="/programming/intro-data.html">data</a> it needs to
 access. Think of the function signature as a &quot;specification&quot; for what to fetch
-from the ECS <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/world/struct.World.html"><code>World</code></a>.</p>
+from the ECS <a href="https://dev-docs.bevyengine.org/bevy/ecs/world/struct.World.html"><code>World</code></a>.</p>
 <p>Here is what a <a href="/programming/systems.html">system</a> might look like. Note how, just by looking
 at the function parameters, we know <em>exactly</em> what <a href="/programming/intro-data.html">data</a>
 can be accessed.</p>
@@ -230,9 +230,15 @@ different and unpredictable order relative to one another, unless you add
 access</a> to the ECS <a href="/programming/world.html"><code>World</code></a>. They cannot run in parallel
 with other systems, because they can access anything and do anything. Sometimes,
 you might need this additonal power.</p>
+<pre><code class="language-rust no_run noplayground">fn save_game(
+    // get full access to the World, so we can access all data and do anything
+    world: &amp;mut World,
+) {
+    // ... save game data to disk, or something ...
+}</code></pre>
 <h2 id="schedules"><a class="header" href="#schedules">Schedules</a></h2>
 <p>Bevy stores systems inside of <a href="/programming/schedules.html">schedules</a>
-(<a href="https://docs.rs/bevy/0.11.0/bevy/ecs/schedule/struct.Schedule.html"><code>Schedule</code></a>). The schedule contains the systems and all
+(<a href="https://dev-docs.bevyengine.org/bevy/ecs/schedule/struct.Schedule.html"><code>Schedule</code></a>). The schedule contains the systems and all
 relevant metadata to organize them, telling Bevy when and how to run them. Bevy
 <a href="/programming/app-builder.html">Apps</a> typically contain many schedules. Each one is a collection of
 systems to be invoked in different scenarios (every frame update, <a href="/fundamentals/fixed-timestep.html">fixed
@@ -301,23 +307,20 @@ all the functionality in your game. What will you do with all this power? ;)</p>
 <p>Here is how <a href="/programming/schedules.html">schedule</a> that was illustrated above could be
 created in code:</p>
 <pre><code class="language-rust no_run noplayground">// Set configuration is per-schedule. Here we do it for `Update`
-app.configure_set(Update, MainMenuSet
-    .run_if(in_state(MainMenu))
-);
-app.configure_set(Update, GameplaySet
-    .run_if(in_state(InGame))
-);
-app.configure_set(Update, InputSet
-    .in_set(GameplaySet)
-);
-app.configure_set(Update, EnemyAiSet
-    .in_set(GameplaySet)
-    .run_if(not(cutscene))
-    .after(player_movement)
-);
-app.configure_set(Update, AudioSet
-    .run_if(audio_muted)
-);
+app.configure_sets(Update, (
+    MainMenuSet
+        .run_if(in_state(MainMenu)),
+    GameplaySet
+        .run_if(in_state(InGame)),
+    InputSet
+        .in_set(GameplaySet),
+    EnemyAiSet
+        .in_set(GameplaySet)
+        .run_if(not(cutscene))
+        .after(player_movement),
+    AudioSet
+        .run_if(not(audio_muted)),
+));
 app.add_systems(Update, (
     (
         ui_button_animate,
