@@ -177,11 +177,11 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(current)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.12</th><th>(upcoming)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/main/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
 <hr />
 <h1 id="bundles"><a class="header" href="#bundles">Bundles</a></h1>
 <p>You can think of Bundles like &quot;templates&quot; or &quot;blueprints&quot; for creating entities.
@@ -240,7 +240,7 @@ struct PlayerBundle {
     ..Default::default()
 });</code></pre>
 <h2 id="loose-components-as-bundles"><a class="header" href="#loose-components-as-bundles">Loose components as bundles</a></h2>
-<p>Bevy also considers arbitrary tuples of components as bundles:</p>
+<p>Technically, Bevy also considers arbitrary tuples of components as bundles:</p>
 <pre><code>(ComponentA, ComponentB, ComponentC)
 </code></pre>
 <p>This allows you to easily spawn an entity using a loose bunch of components (or

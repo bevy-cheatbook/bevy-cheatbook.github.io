@@ -5733,25 +5733,21 @@ app.add_systems(Update, (
     ).in_set(GameplaySet).after(InputSet),
 ));</code></pre>
 <p>(learn more about: <a href="programming//programming/schedules.html">schedules</a>, <a href="programming//programming/system-sets.html">system sets</a>, <a href="programming//programming/states.html">states</a>, <a href="programming//programming/run-criteria.html">run conditions</a>, <a href="programming//programming/system-order.html">system ordering</a>)</p>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(current)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.12</th><th>(upcoming)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="the-app"><a class="header" href="#the-app">The App</a></h1>
 <p>Relevant official examples: All of them ;)</p>
 <p>In particular, check out the complete game examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/games/alien_cake_addict.rs"><code>alien_cake_addict</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/games/breakout.rs"><code>breakout</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/main/examples/games/alien_cake_addict.rs"><code>alien_cake_addict</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/main/examples/games/breakout.rs"><code>breakout</code></a>.</p>
 <hr />
-<p>To enter the bevy runtime, you need to configure an <a href="https://docs.rs/bevy/0.11.0/bevy/app/struct.App.html"><code>App</code></a>. The app
+<p>To enter the Bevy runtime, you need to configure an <a href="https://dev-docs.bevyengine.org/bevy/app/struct.App.html"><code>App</code></a>. The app
 is how you define the structure of all the things that make up your project:
-<a href="programming//programming/plugins.html">plugins</a>, <a href="programming//programming/systems.html">systems</a> (and their configuration/metadata),
+<a href="programming//programming/plugins.html">plugins</a>, <a href="programming//programming/systems.html">systems</a> (and their configuration/metadata:
+<a href="programming//programming/run-criteria.html">run conditions</a>, <a href="programming//programming/system-order.html">ordering</a>, <a href="programming//programming/system-sets.html">sets</a>),
 <a href="programming//programming/events.html">event</a> types, <a href="programming//programming/states.html">states</a>, <a href="programming//programming/schedules.html">schedules</a>…</p>
-<p>Technically, the <a href="https://docs.rs/bevy/0.11.0/bevy/app/struct.App.html"><code>App</code></a> is what brings the whole ECS together. It
-contains the <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/world/struct.World.html"><code>World</code></a>(s) (where <a href="programming//programming/intro-data.html">all the data</a>
-is stored), the Schedule(s) (where all <a href="programming//programming/intro-code.html">the functionality</a> is
-stored and configured), and the &quot;runner&quot;, which is the code that is responsible
-for running everything.</p>
-<p>You typically create your <a href="https://docs.rs/bevy/0.11.0/bevy/app/struct.App.html"><code>App</code></a> in your project's <code>main</code> function.
+<p>You typically create your <a href="https://dev-docs.bevyengine.org/bevy/app/struct.App.html"><code>App</code></a> in your project's <code>main</code> function.
 However, you don't have to add everything from there. If you want to add things
 to your app from multiple places (like other Rust files or crates), use
 <a href="programming//programming/plugins.html">plugins</a>. As your project grows, you will need to do that to keep
@@ -5778,23 +5774,21 @@ everything organized.</p>
         // launch the app!
         .run();
 }</code></pre>
-<p>Note: <code>add_systems</code> and <code>add_plugins</code> allow you to add multiple things at once,
-using tuple syntax.</p>
-<p><a href="programming//programming/local.html">Local resources</a> do not need to be registered. They are part of
-their respective <a href="programming//programming/systems.html">systems</a>.</p>
+<p>Note: use tuples with <code>add_systems</code>/<code>add_plugins</code>/<code>configure_sets</code> to add
+multiple things at once.</p>
 <p><a href="programming//programming/ec.html#components">Component</a> types do not need to be registered.</p>
 <p>Schedules cannot <a href="https://github.com/bevyengine/bevy/issues/279">(yet)</a> be modified at runtime; all
 <a href="programming//programming/systems.html">systems</a> you want to run must be added/configured in the
-<a href="https://docs.rs/bevy/0.11.0/bevy/app/struct.App.html"><code>App</code></a> ahead of time. You can control individual systems using <a href="programming//programming/run-criteria.html">run
+<a href="https://dev-docs.bevyengine.org/bevy/app/struct.App.html"><code>App</code></a> ahead of time. You can control individual systems using <a href="programming//programming/run-criteria.html">run
 conditions</a>. You can also <a href="programming//patterns/schedule-dynamic.html">dynamically enable/disable entire
 schedules</a> using the
-<a href="https://docs.rs/bevy/0.11.0/bevy/app/struct.MainScheduleOrder.html"><code>MainScheduleOrder</code></a> <a href="programming//programming/res.html">resource</a>.</p>
+<a href="https://dev-docs.bevyengine.org/bevy/app/struct.MainScheduleOrder.html"><code>MainScheduleOrder</code></a> <a href="programming//programming/res.html">resource</a>.</p>
 <h2 id="builtin-bevy-functionality"><a class="header" href="#builtin-bevy-functionality">Builtin Bevy Functionality</a></h2>
 <p>The Bevy game engine's own functionality is represented as a <a href="programming//programming/plugins.html#plugin-groups">plugin group</a>.
 Every typical Bevy app must first add it, using either:</p>
 <ul>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/struct.DefaultPlugins.html"><code>DefaultPlugins</code></a> if you are making a full game/app</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/struct.MinimalPlugins.html"><code>MinimalPlugins</code></a> for something like a headless server.</li>
+<li><a href="https://dev-docs.bevyengine.org/bevy/struct.DefaultPlugins.html"><code>DefaultPlugins</code></a> if you are making a full game/app</li>
+<li><a href="https://dev-docs.bevyengine.org/bevy/struct.MinimalPlugins.html"><code>MinimalPlugins</code></a> for something like a headless server.</li>
 </ul>
 <h2 id="setting-up-data"><a class="header" href="#setting-up-data">Setting up data</a></h2>
 <p>Normally, you can set up <a href="programming//programming/intro-data.html">your data</a> from
@@ -5817,7 +5811,7 @@ app.init_resource::&lt;MyFancyResource&gt;();
 // (in this example, to spawn an entity, but you can do anything)
 app.world.spawn(SomeBundle::default());</code></pre>
 <h2 id="quitting-the-app"><a class="header" href="#quitting-the-app">Quitting the App</a></h2>
-<p>To cleanly shut down bevy, send an <a href="https://docs.rs/bevy/0.11.0/bevy/app/struct.AppExit.html"><code>AppExit</code></a>
+<p>To cleanly shut down bevy, send an <a href="https://dev-docs.bevyengine.org/bevy/app/struct.AppExit.html"><code>AppExit</code></a>
 <a href="programming//programming/events.html">event</a> from any <a href="programming//programming/systems.html">system</a>:</p>
 <pre><code class="language-rust no_run noplayground">use bevy::app::AppExit;
 
@@ -5828,31 +5822,30 @@ fn exit_system(mut exit: EventWriter&lt;AppExit&gt;) {
 focused window on pressing the <code>Esc</code> key. When all windows are closed, Bevy will
 quit automatically.</p>
 <pre><code class="language-rust no_run noplayground">app.add_systems(Update, bevy::window::close_on_esc);</code></pre>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(current)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.12</th><th>(upcoming)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="systems"><a class="header" href="#systems">Systems</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/ecs/startup_system.rs"><code>startup_system</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/ecs/system_param.rs"><code>system_param</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/main/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/main/examples/ecs/startup_system.rs"><code>startup_system</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/main/examples/ecs/system_param.rs"><code>system_param</code></a>.</p>
 <hr />
 <p>Systems are pieces of functionality, which are run by Bevy. They are typically
 implemented using regular Rust functions.</p>
 <p>This is how you implement all your game logic. Each system specifies what data
 it needs to access to do its thing, and Bevy will run them in parallel when
-possible. You can add configuration/metadata to control how your systems should
-be run, using the <a href="programming//programming/app-builder.html">app builder</a>.</p>
+possible.</p>
 <p>These functions can only take <a href="programming//builtins.html#systemparams">special parameter types</a>,
 to specify what <a href="programming//programming/intro-data.html">data</a> you need access to. If you use
 unsupported parameter types in your function, <a href="programming//pitfalls/into-system.html">you will get confusing compiler
 errors!</a></p>
 <p>Some of the possibilities are:</p>
 <ul>
-<li>accessing <a href="programming//programming/res.html">resources</a> using <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.Res.html"><code>Res</code></a>/<a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut</code></a></li>
-<li>accessing <a href="programming//programming/ec.html#components">components of entities</a> using <a href="programming//programming/queries.html">queries</a> (<a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.Query.html"><code>Query</code></a>)</li>
-<li>creating/destroying entities, components, and resources using <a href="programming//programming/commands.html">Commands</a> (<a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>)</li>
-<li>sending/receiving <a href="programming//programming/events.html">events</a> using <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/event/struct.EventWriter.html"><code>EventWriter</code></a>/<a href="https://docs.rs/bevy/0.11.0/bevy/ecs/event/struct.EventReader.html"><code>EventReader</code></a></li>
+<li>accessing <a href="programming//programming/res.html">resources</a> using <a href="https://dev-docs.bevyengine.org/bevy/ecs/system/struct.Res.html"><code>Res</code></a>/<a href="https://dev-docs.bevyengine.org/bevy/ecs/system/struct.ResMut.html"><code>ResMut</code></a></li>
+<li>accessing <a href="programming//programming/ec.html#components">components of entities</a> using <a href="programming//programming/queries.html">queries</a> (<a href="https://dev-docs.bevyengine.org/bevy/ecs/system/struct.Query.html"><code>Query</code></a>)</li>
+<li>creating/destroying entities, components, and resources using <a href="programming//programming/commands.html">Commands</a> (<a href="https://dev-docs.bevyengine.org/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>)</li>
+<li>sending/receiving <a href="programming//programming/events.html">events</a> using <a href="https://dev-docs.bevyengine.org/bevy/ecs/event/struct.EventWriter.html"><code>EventWriter</code></a>/<a href="https://dev-docs.bevyengine.org/bevy/ecs/event/struct.EventReader.html"><code>EventReader</code></a></li>
 </ul>
 <p><a href="programming//builtins.html#systemparams">See here for a full list!</a></p>
 <pre><code class="language-rust no_run noplayground">fn debug_start(
@@ -5865,12 +5858,9 @@ errors!</a></p>
 useful for organization.</p>
 <pre><code class="language-rust no_run noplayground">fn complex_system(
     (a, mut b): (Res&lt;ResourceA&gt;, ResMut&lt;ResourceB&gt;),
-    // this resource might not exist, so wrap it in an Option
-    mut c: Option&lt;ResMut&lt;ResourceC&gt;&gt;,
+    (q0, q1, q2): (Query&lt;(/* … */)&gt;, Query&lt;(/* … */)&gt;, Query&lt;(/* … */)&gt;),
 ) {
-    if let Some(mut c) = c {
-        // do something
-    }
+    // …
 }</code></pre>
 <p>Your function can have a maximum of 16 total parameters. If you need more,
 group them into tuples to work around the limit. Tuples can contain up to
@@ -5879,6 +5869,9 @@ group them into tuples to work around the limit. Tuples can contain up to
 They have <a href="programming//programming/world.html">full direct access to the ECS World</a>, so you can access
 any data you want and do anything, but cannot run in parallel. For most use
 cases, you should use regular parallel systems.</p>
+<pre><code class="language-rust no_run noplayground">fn reload_game(world: &amp;mut World) {
+    // ... access whatever we want from the World
+}</code></pre>
 <h2 id="runtime"><a class="header" href="#runtime">Runtime</a></h2>
 <p>To run your systems, you need to add them to Bevy via the <a href="programming//programming/app-builder.html">app builder</a>:</p>
 <pre><code class="language-rust no_run noplayground">fn main() {
@@ -5895,21 +5888,20 @@ cases, you should use regular parallel systems.</p>
 common mistake! If you run your project and your new code doesn't seem to be
 running, make sure you added the system!</p>
 <p>The above is enough for simple projects.</p>
-<p>Systems are contained <a href="programming//programming/schedules.html">schedules</a>. <a href="https://docs.rs/bevy/0.11.0/bevy/app/struct.Update.html"><code>Update</code></a> is the
+<p>Systems are contained in <a href="programming//programming/schedules.html">schedules</a>. <a href="https://dev-docs.bevyengine.org/bevy/app/struct.Update.html"><code>Update</code></a> is the
 schedule where you typically add any systems you want to run every frame.
-<a href="https://docs.rs/bevy/0.11.0/bevy/app/struct.Startup.html"><code>Startup</code></a> is where you typically add systems that should run
+<a href="https://dev-docs.bevyengine.org/bevy/app/struct.Startup.html"><code>Startup</code></a> is where you typically add systems that should run
 only once on app startup. There are also <a href="programming//builtins.html#schedules">other possibilities</a>.</p>
-<p>As your project grows more complex, you might want to enhance your app builder
-with some of the powerful tools that Bevy offers for managing when/how
-your systems run, such as: <a href="programming//programming/system-order.html">explicit ordering</a>,
-<a href="programming//programming/system-sets.html">system sets</a>, <a href="programming//programming/states.html">states</a>,
-<a href="programming//programming/run-criteria.html">run conditions</a>.</p>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(current)</th></tr></thead><tbody>
+<p>As your project grows more complex, you might want to make use of some of the
+powerful tools that Bevy offers for managing when/how your systems run, such as:
+<a href="programming//programming/system-order.html">explicit ordering</a>, <a href="programming//programming/run-criteria.html">run conditions</a>, <a href="programming//programming/system-sets.html">system
+sets</a>, <a href="programming//programming/states.html">states</a>.</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.12</th><th>(upcoming)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="resources-2"><a class="header" href="#resources-2">Resources</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/main/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
 <hr />
 <p>Resources allow you to store a single global instance of some data type,
 independently of <a href="programming//programming/intro-data.html#entities--components">entities</a>.</p>
@@ -5918,7 +5910,7 @@ as configuration / settings. Resources make it easy for you to access such data
 from anywhere.</p>
 <hr />
 <p>To create a new resource type, simply define a Rust <code>struct</code> or <code>enum</code>, and
-derive the <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/trait.Resource.html"><code>Resource</code></a> trait, similar to
+derive the <a href="https://dev-docs.bevyengine.org/bevy/ecs/system/trait.Resource.html"><code>Resource</code></a> trait, similar to
 <a href="programming//programming/ec.html#components">components</a> and <a href="programming//programming/events.html">events</a>.</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Resource)]
 struct GoalsReached {
@@ -5946,7 +5938,7 @@ custom types.</p>
 }</code></pre>
 <h2 id="managing-resources"><a class="header" href="#managing-resources">Managing Resources</a></h2>
 <p>If you need to create/remove resources at runtime, you can do so using
-<a href="programming//programming/commands.html">commands</a> (<a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>):</p>
+<a href="programming//programming/commands.html">commands</a> (<a href="https://dev-docs.bevyengine.org/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>):</p>
 <pre><code class="language-rust no_run noplayground">fn my_setup(mut commands: Commands, /* ... */) {
     // add (or overwrite) resource, using the provided data
     commands.insert_resource(GoalsReached { main_goal: false, bonus: 100 });
@@ -6003,7 +5995,7 @@ enum GameMode {
     Singleplayer,
     Multiplayer,
 }</code></pre>
-<p>For resources that need complex initialization, implement <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/world/trait.FromWorld.html"><code>FromWorld</code></a>:</p>
+<p>For resources that need complex initialization, implement <a href="https://dev-docs.bevyengine.org/bevy/ecs/world/trait.FromWorld.html"><code>FromWorld</code></a>:</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Resource)]
 struct MyFancyResource { /* stuff */ }
 
@@ -6018,7 +6010,7 @@ impl FromWorld for MyFancyResource {
     }
 }</code></pre>
 <p>Beware: it can be easy to get yourself into a mess of unmaintainable code
-if you overuse <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/world/trait.FromWorld.html"><code>FromWorld</code></a> to do complex things.</p>
+if you overuse <a href="https://dev-docs.bevyengine.org/bevy/ecs/world/trait.FromWorld.html"><code>FromWorld</code></a> to do complex things.</p>
 <h2 id="usage-advice"><a class="header" href="#usage-advice">Usage Advice</a></h2>
 <p>The choice of when to use <a href="programming//programming/intro-data.html#entities--components">entities/components</a> vs. resources is
 typically about how you want to access the <a href="programming//programming/intro-data.html">data</a>: globally
@@ -6034,22 +6026,68 @@ that works with both the player and enemies.</p>
 <p>However, if it is something that cannot be changed at runtime and only used when
 initializing a <a href="programming//programming/plugins.html">plugin</a>, consider putting that inside the plugin's
 <code>struct</code>, instead of a resource.</p>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(current)</th></tr></thead><tbody>
+<h3 id="caches"><a class="header" href="#caches">Caches</a></h3>
+<p>Resources are also useful if you want to store some data in a way that is easier
+or more efficient for you to access. For example, keeping a collection of <a href="programming//assets/handles.html">asset
+handles</a>, or using a custom datastructure for representing a game
+map more efficiently than using entities and components, etc.</p>
+<p><a href="programming//programming/intro-data.html#entities--components">Entities and Components</a>, as flexible as they are, are not necessarily
+the best fit for all use cases. If you want to represent your data some other
+way, feel free to do so. Simply create a resource and put it there.</p>
+<h3 id="interfacing-with-external-libraries"><a class="header" href="#interfacing-with-external-libraries">Interfacing with external libraries</a></h3>
+<p>If you want to integrate some external non-Bevy software into a Bevy app,
+it can be very convenient to create a resource to hold onto its state/data.</p>
+<p>For example, if you wanted to use an external physics or audio engine, you
+could put all its data in a resource, and write some systems to call its
+functions. That can give you an easy way to interface with it from Bevy code.</p>
+<p>If the external code is not thread-safe (<code>!Send</code> in Rust parlance), which is
+common for non-Rust (e.g C++ and OS-level) libraries, you should use a
+<a href="programming//programming/non-send.html">Non-Send</a> Bevy resource instead. This will make sure any Bevy
+system that touches it will run on the main thread.</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.12</th><th>(upcoming)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/main/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
 <hr />
 <h1 id="entities"><a class="header" href="#entities">Entities</a></h1>
-<p>Entities are just a <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/entity/struct.Entity.html">simple integer ID</a>, that identifies a particular set of
-component values.</p>
-<p><a href="programming//programming/intro-data.html">See here if you need help understanding how storing data in the ECS works.</a></p>
-<p>You can create (&quot;spawn&quot;) new entities using <a href="programming//programming/commands.html"><code>Commands</code></a> or
-<a href="programming//programming/world.html">exclusive <code>World</code> access</a>.</p>
+<p><a href="programming//programming/intro-data.html">See here for more explanation on how storing data in the ECS works.</a></p>
+<p>Conceptually, an entity represents a set of values for different components.
+Each component is a Rust type (<code>struct</code> or <code>enum</code>) and an entity can be used to
+store a value of that type.</p>
+<p>Technically, an entity is just a simple integer ID (imagine the &quot;row number&quot; in
+a table/spreadsheet) that can be used to find related data values (in different
+&quot;columns&quot; of that table).</p>
+<p>In Bevy, <a href="https://dev-docs.bevyengine.org/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> is this value. It consists of two integers:
+the ID and the &quot;generation&quot; (allowing IDs to be reused, after you despawn old
+entities).</p>
+<p>You can create (&quot;spawn&quot;) new entities and destroy (&quot;despawn&quot;) entities using
+<a href="programming//programming/commands.html"><code>Commands</code></a> or <a href="programming//programming/world.html">exclusive <code>World</code> access</a>.</p>
+<pre><code class="language-rust no_run noplayground">fn setup(mut commands: Commands) {
+    // create a new entity
+    commands.spawn((
+        // Initialize all your components and bundles here
+        Enemy,
+        Health {
+            hp: 100.0,
+            extra: 25.0,
+        },
+        AiMode::Passive,
+        // ...
+    ));
+
+    // If you want to get the Entity ID, just call `.id()` after spawn
+    let my_entity = commands.spawn((/* ... */)).id();
+
+    // destroy an entity, removing all data associated with it
+    commands.entity(my_entity).despawn();
+}</code></pre>
+<p>Many of your entities might need to have the same common components. You can use
+<a href="programming//programming/bundle.html">Bundles</a> to make it easier to spawn your entities.</p>
 <h1 id="components-1"><a class="header" href="#components-1">Components</a></h1>
 <p>Components are the data associated with entities.</p>
 <p>To create a new component type, simply define a Rust <code>struct</code> or <code>enum</code>, and
-derive the <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/component/trait.Component.html"><code>Component</code></a> trait.</p>
+derive the <a href="https://dev-docs.bevyengine.org/bevy/ecs/component/trait.Component.html"><code>Component</code></a> trait.</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Component)]
 struct Health {
     hp: f32,
@@ -6061,7 +6099,7 @@ enum AiMode {
     Passive,
     ChasingPlayer,
 }</code></pre>
-<p>Types must be unique -- an entity can only have one component per Rust type.</p>
+<p>Types must be unique – an entity can only have one component per Rust type.</p>
 <h2 id="newtype-components"><a class="header" href="#newtype-components">Newtype Components</a></h2>
 <p>Use wrapper (newtype) structs to make unique components out of simpler types:</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Component)]
@@ -6089,14 +6127,54 @@ struct Player;
 struct Friendly;</code></pre>
 <h2 id="accessing-components"><a class="header" href="#accessing-components">Accessing Components</a></h2>
 <p>Components can be accessed from <a href="programming//programming/systems.html">systems</a>, using <a href="programming//programming/queries.html">queries</a>.</p>
+<p>You can think of the query as the &quot;specification&quot; for the data you want to access.
+It will search for entities that match and give you access to the data.</p>
+<pre><code class="language-rust no_run noplayground">fn level_up_player(
+    // get the relevant data. some components read-only, some mutable
+    mut query_player: Query&lt;(&amp;PlayerName, &amp;mut PlayerXp, &amp;mut Health), With&lt;Player&gt;&gt;,
+) {
+    // `single` assumes only one entity exists that matches the query
+    let (name, mut xp, mut health) = query_player.single_mut();
+    if xp.0 &gt; 1000 {
+        xp.0 = 0;
+        health.hp = 100.0;
+        health.extra += 25.0;
+        info!(&quot;Player {} leveled up!&quot;, name.0);
+    }
+}
+
+fn die(
+    // `Entity` can be used to get the ID of things that match the query
+    query_health: Query&lt;(Entity, &amp;Health)&gt;,
+    // we also need Commands, so we can despawn entities if we have to
+    mut commands: Commands,
+) {
+    // we can have many such entities (enemies, player, whatever)
+    // so we loop to check all of them
+    for (entity_id, health) in query_health.iter() {
+        if health.hp &lt;= 0.0 {
+            commands.entity(entity_id).despawn();
+        }
+    }
+}</code></pre>
 <h2 id="addingremoving-components"><a class="header" href="#addingremoving-components">Adding/removing Components</a></h2>
 <p>You can add/remove components on existing entities, using <a href="programming//programming/commands.html"><code>Commands</code></a> or
 <a href="programming//programming/world.html">exclusive <code>World</code> access</a>.</p>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(current)</th></tr></thead><tbody>
+<pre><code class="language-rust no_run noplayground">fn make_enemies_friendly(
+    query_enemy: Query&lt;Entity, With&lt;Enemy&gt;&gt;,
+    mut commands: Commands,
+) {
+    for entity_id in query_enemy.iter() {
+        commands.entity(entity_id)
+            .remove::&lt;Enemy&gt;()
+            .insert(Friendly);
+    }
+}</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.12</th><th>(upcoming)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/main/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
 <hr />
 <h1 id="bundles-1"><a class="header" href="#bundles-1">Bundles</a></h1>
 <p>You can think of Bundles like &quot;templates&quot; or &quot;blueprints&quot; for creating entities.
@@ -6155,7 +6233,7 @@ struct PlayerBundle {
     ..Default::default()
 });</code></pre>
 <h2 id="loose-components-as-bundles"><a class="header" href="#loose-components-as-bundles">Loose components as bundles</a></h2>
-<p>Bevy also considers arbitrary tuples of components as bundles:</p>
+<p>Technically, Bevy also considers arbitrary tuples of components as bundles:</p>
 <pre><code>(ComponentA, ComponentB, ComponentC)
 </code></pre>
 <p>This allows you to easily spawn an entity using a loose bunch of components (or

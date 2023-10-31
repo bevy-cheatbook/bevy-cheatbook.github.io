@@ -177,22 +177,50 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(current)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.12</th><th>(upcoming)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/main/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
 <hr />
 <h1 id="entities"><a class="header" href="#entities">Entities</a></h1>
-<p>Entities are just a <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/entity/struct.Entity.html">simple integer ID</a>, that identifies a particular set of
-component values.</p>
-<p><a href="/programming/intro-data.html">See here if you need help understanding how storing data in the ECS works.</a></p>
-<p>You can create (&quot;spawn&quot;) new entities using <a href="/programming/commands.html"><code>Commands</code></a> or
-<a href="/programming/world.html">exclusive <code>World</code> access</a>.</p>
+<p><a href="/programming/intro-data.html">See here for more explanation on how storing data in the ECS works.</a></p>
+<p>Conceptually, an entity represents a set of values for different components.
+Each component is a Rust type (<code>struct</code> or <code>enum</code>) and an entity can be used to
+store a value of that type.</p>
+<p>Technically, an entity is just a simple integer ID (imagine the &quot;row number&quot; in
+a table/spreadsheet) that can be used to find related data values (in different
+&quot;columns&quot; of that table).</p>
+<p>In Bevy, <a href="https://dev-docs.bevyengine.org/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> is this value. It consists of two integers:
+the ID and the &quot;generation&quot; (allowing IDs to be reused, after you despawn old
+entities).</p>
+<p>You can create (&quot;spawn&quot;) new entities and destroy (&quot;despawn&quot;) entities using
+<a href="/programming/commands.html"><code>Commands</code></a> or <a href="/programming/world.html">exclusive <code>World</code> access</a>.</p>
+<pre><code class="language-rust no_run noplayground">fn setup(mut commands: Commands) {
+    // create a new entity
+    commands.spawn((
+        // Initialize all your components and bundles here
+        Enemy,
+        Health {
+            hp: 100.0,
+            extra: 25.0,
+        },
+        AiMode::Passive,
+        // ...
+    ));
+
+    // If you want to get the Entity ID, just call `.id()` after spawn
+    let my_entity = commands.spawn((/* ... */)).id();
+
+    // destroy an entity, removing all data associated with it
+    commands.entity(my_entity).despawn();
+}</code></pre>
+<p>Many of your entities might need to have the same common components. You can use
+<a href="/programming/bundle.html">Bundles</a> to make it easier to spawn your entities.</p>
 <h1 id="components"><a class="header" href="#components">Components</a></h1>
 <p>Components are the data associated with entities.</p>
 <p>To create a new component type, simply define a Rust <code>struct</code> or <code>enum</code>, and
-derive the <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/component/trait.Component.html"><code>Component</code></a> trait.</p>
+derive the <a href="https://dev-docs.bevyengine.org/bevy/ecs/component/trait.Component.html"><code>Component</code></a> trait.</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Component)]
 struct Health {
     hp: f32,
@@ -204,7 +232,7 @@ enum AiMode {
     Passive,
     ChasingPlayer,
 }</code></pre>
-<p>Types must be unique -- an entity can only have one component per Rust type.</p>
+<p>Types must be unique – an entity can only have one component per Rust type.</p>
 <h2 id="newtype-components"><a class="header" href="#newtype-components">Newtype Components</a></h2>
 <p>Use wrapper (newtype) structs to make unique components out of simpler types:</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Component)]
@@ -232,9 +260,49 @@ struct Player;
 struct Friendly;</code></pre>
 <h2 id="accessing-components"><a class="header" href="#accessing-components">Accessing Components</a></h2>
 <p>Components can be accessed from <a href="/programming/systems.html">systems</a>, using <a href="/programming/queries.html">queries</a>.</p>
+<p>You can think of the query as the &quot;specification&quot; for the data you want to access.
+It will search for entities that match and give you access to the data.</p>
+<pre><code class="language-rust no_run noplayground">fn level_up_player(
+    // get the relevant data. some components read-only, some mutable
+    mut query_player: Query&lt;(&amp;PlayerName, &amp;mut PlayerXp, &amp;mut Health), With&lt;Player&gt;&gt;,
+) {
+    // `single` assumes only one entity exists that matches the query
+    let (name, mut xp, mut health) = query_player.single_mut();
+    if xp.0 &gt; 1000 {
+        xp.0 = 0;
+        health.hp = 100.0;
+        health.extra += 25.0;
+        info!(&quot;Player {} leveled up!&quot;, name.0);
+    }
+}
+
+fn die(
+    // `Entity` can be used to get the ID of things that match the query
+    query_health: Query&lt;(Entity, &amp;Health)&gt;,
+    // we also need Commands, so we can despawn entities if we have to
+    mut commands: Commands,
+) {
+    // we can have many such entities (enemies, player, whatever)
+    // so we loop to check all of them
+    for (entity_id, health) in query_health.iter() {
+        if health.hp &lt;= 0.0 {
+            commands.entity(entity_id).despawn();
+        }
+    }
+}</code></pre>
 <h2 id="addingremoving-components"><a class="header" href="#addingremoving-components">Adding/removing Components</a></h2>
 <p>You can add/remove components on existing entities, using <a href="/programming/commands.html"><code>Commands</code></a> or
 <a href="/programming/world.html">exclusive <code>World</code> access</a>.</p>
+<pre><code class="language-rust no_run noplayground">fn make_enemies_friendly(
+    query_enemy: Query&lt;Entity, With&lt;Enemy&gt;&gt;,
+    mut commands: Commands,
+) {
+    for entity_id in query_enemy.iter() {
+        commands.entity(entity_id)
+            .remove::&lt;Enemy&gt;()
+            .insert(Friendly);
+    }
+}</code></pre>
 
                     </main>
 
