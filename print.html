@@ -3004,7 +3004,12 @@ trace!(&quot;entity transform: {:?}&quot;, transform);
 <a href="https://dev-docs.bevyengine.org/bevy/log/struct.LogPlugin.html"><code>LogPlugin</code></a>:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>{{#include ../code011/src/features/log.rs:log-settings}}
+</span>use bevy::log::LogPlugin;
+
+app.add_plugins(DefaultPlugins.set(LogPlugin {
+    filter: &quot;info,wgpu_core=warn,wgpu_hal=warn,mygame=debug&quot;.into(),
+    level: bevy::log::Level::DEBUG,
+}));
 <span class="boring">}</span></code></pre></pre>
 <p>The <code>filter</code> field is a string specifying a list of rules for what level to
 enable for different Rust modules/crates. In the example above, the string
@@ -3031,7 +3036,21 @@ builds, an easy way to achieve it is using conditional compilation on
 &quot;debug assertions&quot;.</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>{{#include ../code011/src/features/log.rs:log-settings-debugrelease}}
+</span>use bevy::log::LogPlugin;
+
+// this code is compiled only if debug assertions are enabled (debug mode)
+#[cfg(debug_assertions)]
+app.add_plugins(DefaultPlugins.set(LogPlugin {
+    level: bevy::log::Level::DEBUG,
+    filter: &quot;debug,wgpu_core=warn,wgpu_hal=warn,mygame=debug&quot;.into(),
+}));
+
+// this code is compiled only if debug assertions are disabled (release mode)
+#[cfg(not(debug_assertions))]
+app.add_plugins(DefaultPlugins.set(LogPlugin {
+    level: bevy::log::Level::INFO,
+    filter: &quot;info,wgpu_core=warn,wgpu_hal=warn&quot;.into(),
+}));
 <span class="boring">}</span></code></pre></pre>
 <p>This is a good reason why <a href="fundamentals//pitfalls/performance.html">you should not use release mode during development
 just for performance reasons</a>.</p>
@@ -7676,7 +7695,7 @@ requirements. This implies that parallelism could be limited, affecting
 performance.</p>
 <p>If you create multiple &quot;piped systems&quot; that all contain a common function which
 contains any mutable access, that prevents all of them from running in parallel!</p>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.12</th><th>(upcoming)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="param-sets"><a class="header" href="#param-sets">Param Sets</a></h1>
@@ -7686,10 +7705,13 @@ same data.</p>
 <p>Some examples:</p>
 <ul>
 <li>Multiple incompatible <a href="programming//programming/queries.html">queries</a>.</li>
-<li>Using <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/world/struct.World.html"><code>&amp;World</code></a> while also having other system parameters to access specific data.</li>
+<li>Using <a href="https://dev-docs.bevyengine.org/bevy/ecs/world/struct.World.html"><code>&amp;World</code></a> while also having other system parameters to access specific data.</li>
 <li>…</li>
 </ul>
-<p>Bevy provides a solution: wrap them in a <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.ParamSet.html"><code>ParamSet</code></a>:</p>
+<p>Such code will compile (Rust cannot know about Bevy ECS semantics), but will
+result in a runtime panic. When Bevy tries to run the system, it will panic with
+a message about conflicting system parameters:</p>
+<p>Bevy provides a solution: wrap them in a <a href="https://dev-docs.bevyengine.org/bevy/ecs/system/struct.ParamSet.html"><code>ParamSet</code></a>:</p>
 <pre><code class="language-rust no_run noplayground">fn reset_health(
     // access the health of enemies and the health of players
     // (note: some entities could be both!)
@@ -7712,9 +7734,6 @@ same data.</p>
 
     // read some data from the world (use the 3rd param in the set)
     let my_resource = set.p2().resource::&lt;MyResource&gt;();
-
-    // since we only used the conflicting system params one at a time,
-    // everything is safe and our code can compile; ParamSet guarantees this
 }</code></pre>
 <p>This ensures only one of the conflicting parameters can be used at the same time.</p>
 <p>The maximum number of parameters in a param set is 8.</p>

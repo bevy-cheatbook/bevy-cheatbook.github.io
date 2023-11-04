@@ -177,7 +177,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.12</th><th>(upcoming)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="param-sets"><a class="header" href="#param-sets">Param Sets</a></h1>
@@ -187,10 +187,13 @@ same data.</p>
 <p>Some examples:</p>
 <ul>
 <li>Multiple incompatible <a href="/programming/queries.html">queries</a>.</li>
-<li>Using <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/world/struct.World.html"><code>&amp;World</code></a> while also having other system parameters to access specific data.</li>
+<li>Using <a href="https://dev-docs.bevyengine.org/bevy/ecs/world/struct.World.html"><code>&amp;World</code></a> while also having other system parameters to access specific data.</li>
 <li>…</li>
 </ul>
-<p>Bevy provides a solution: wrap them in a <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.ParamSet.html"><code>ParamSet</code></a>:</p>
+<p>Such code will compile (Rust cannot know about Bevy ECS semantics), but will
+result in a runtime panic. When Bevy tries to run the system, it will panic with
+a message about conflicting system parameters:</p>
+<p>Bevy provides a solution: wrap them in a <a href="https://dev-docs.bevyengine.org/bevy/ecs/system/struct.ParamSet.html"><code>ParamSet</code></a>:</p>
 <pre><code class="language-rust no_run noplayground">fn reset_health(
     // access the health of enemies and the health of players
     // (note: some entities could be both!)
@@ -213,9 +216,6 @@ same data.</p>
 
     // read some data from the world (use the 3rd param in the set)
     let my_resource = set.p2().resource::&lt;MyResource&gt;();
-
-    // since we only used the conflicting system params one at a time,
-    // everything is safe and our code can compile; ParamSet guarantees this
 }</code></pre>
 <p>This ensures only one of the conflicting parameters can be used at the same time.</p>
 <p>The maximum number of parameters in a param set is 8.</p>

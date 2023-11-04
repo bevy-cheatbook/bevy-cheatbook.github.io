@@ -228,7 +228,12 @@ trace!(&quot;entity transform: {:?}&quot;, transform);
 <a href="https://dev-docs.bevyengine.org/bevy/log/struct.LogPlugin.html"><code>LogPlugin</code></a>:</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>{{#include ../code011/src/features/log.rs:log-settings}}
+</span>use bevy::log::LogPlugin;
+
+app.add_plugins(DefaultPlugins.set(LogPlugin {
+    filter: &quot;info,wgpu_core=warn,wgpu_hal=warn,mygame=debug&quot;.into(),
+    level: bevy::log::Level::DEBUG,
+}));
 <span class="boring">}</span></code></pre></pre>
 <p>The <code>filter</code> field is a string specifying a list of rules for what level to
 enable for different Rust modules/crates. In the example above, the string
@@ -255,7 +260,21 @@ builds, an easy way to achieve it is using conditional compilation on
 &quot;debug assertions&quot;.</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>{{#include ../code011/src/features/log.rs:log-settings-debugrelease}}
+</span>use bevy::log::LogPlugin;
+
+// this code is compiled only if debug assertions are enabled (debug mode)
+#[cfg(debug_assertions)]
+app.add_plugins(DefaultPlugins.set(LogPlugin {
+    level: bevy::log::Level::DEBUG,
+    filter: &quot;debug,wgpu_core=warn,wgpu_hal=warn,mygame=debug&quot;.into(),
+}));
+
+// this code is compiled only if debug assertions are disabled (release mode)
+#[cfg(not(debug_assertions))]
+app.add_plugins(DefaultPlugins.set(LogPlugin {
+    level: bevy::log::Level::INFO,
+    filter: &quot;info,wgpu_core=warn,wgpu_hal=warn&quot;.into(),
+}));
 <span class="boring">}</span></code></pre></pre>
 <p>This is a good reason why <a href="/pitfalls/performance.html">you should not use release mode during development
 just for performance reasons</a>.</p>
