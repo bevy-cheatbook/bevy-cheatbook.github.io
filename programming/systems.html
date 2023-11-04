@@ -177,7 +177,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.12</th><th>(upcoming)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-12">0.12</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="systems"><a class="header" href="#systems">Systems</a></h1>
@@ -197,10 +197,10 @@ unsupported parameter types in your function, <a href="/pitfalls/into-system.htm
 errors!</a></p>
 <p>Some of the possibilities are:</p>
 <ul>
-<li>accessing <a href="/programming/res.html">resources</a> using <a href="https://dev-docs.bevyengine.org/bevy/ecs/system/struct.Res.html"><code>Res</code></a>/<a href="https://dev-docs.bevyengine.org/bevy/ecs/system/struct.ResMut.html"><code>ResMut</code></a></li>
-<li>accessing <a href="/programming/ec.html#components">components of entities</a> using <a href="/programming/queries.html">queries</a> (<a href="https://dev-docs.bevyengine.org/bevy/ecs/system/struct.Query.html"><code>Query</code></a>)</li>
-<li>creating/destroying entities, components, and resources using <a href="/programming/commands.html">Commands</a> (<a href="https://dev-docs.bevyengine.org/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>)</li>
-<li>sending/receiving <a href="/programming/events.html">events</a> using <a href="https://dev-docs.bevyengine.org/bevy/ecs/event/struct.EventWriter.html"><code>EventWriter</code></a>/<a href="https://dev-docs.bevyengine.org/bevy/ecs/event/struct.EventReader.html"><code>EventReader</code></a></li>
+<li>accessing <a href="/programming/res.html">resources</a> using <a href="https://docs.rs/bevy/0.12.0/bevy/ecs/system/struct.Res.html"><code>Res</code></a>/<a href="https://docs.rs/bevy/0.12.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut</code></a></li>
+<li>accessing <a href="/programming/ec.html#components">components of entities</a> using <a href="/programming/queries.html">queries</a> (<a href="https://docs.rs/bevy/0.12.0/bevy/ecs/system/struct.Query.html"><code>Query</code></a>)</li>
+<li>creating/destroying entities, components, and resources using <a href="/programming/commands.html">Commands</a> (<a href="https://docs.rs/bevy/0.12.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>)</li>
+<li>sending/receiving <a href="/programming/events.html">events</a> using <a href="https://docs.rs/bevy/0.12.0/bevy/ecs/event/struct.EventWriter.html"><code>EventWriter</code></a>/<a href="https://docs.rs/bevy/0.12.0/bevy/ecs/event/struct.EventReader.html"><code>EventReader</code></a></li>
 </ul>
 <p><a href="/builtins.html#systemparams">See here for a full list!</a></p>
 <pre><code class="language-rust no_run noplayground">fn debug_start(
@@ -243,9 +243,9 @@ cases, you should use regular parallel systems.</p>
 common mistake! If you run your project and your new code doesn't seem to be
 running, make sure you added the system!</p>
 <p>The above is enough for simple projects.</p>
-<p>Systems are contained in <a href="/programming/schedules.html">schedules</a>. <a href="https://dev-docs.bevyengine.org/bevy/app/struct.Update.html"><code>Update</code></a> is the
+<p>Systems are contained in <a href="/programming/schedules.html">schedules</a>. <a href="https://docs.rs/bevy/0.12.0/bevy/app/struct.Update.html"><code>Update</code></a> is the
 schedule where you typically add any systems you want to run every frame.
-<a href="https://dev-docs.bevyengine.org/bevy/app/struct.Startup.html"><code>Startup</code></a> is where you typically add systems that should run
+<a href="https://docs.rs/bevy/0.12.0/bevy/app/struct.Startup.html"><code>Startup</code></a> is where you typically add systems that should run
 only once on app startup. There are also <a href="/builtins.html#schedules">other possibilities</a>.</p>
 <p>As your project grows more complex, you might want to make use of some of the
 powerful tools that Bevy offers for managing when/how your systems run, such as:

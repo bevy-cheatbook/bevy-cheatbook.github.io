@@ -177,7 +177,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.12</th><th>(upcoming)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-12">0.12</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="resources"><a class="header" href="#resources">Resources</a></h1>
@@ -191,7 +191,7 @@ as configuration / settings. Resources make it easy for you to access such data
 from anywhere.</p>
 <hr />
 <p>To create a new resource type, simply define a Rust <code>struct</code> or <code>enum</code>, and
-derive the <a href="https://dev-docs.bevyengine.org/bevy/ecs/system/trait.Resource.html"><code>Resource</code></a> trait, similar to
+derive the <a href="https://docs.rs/bevy/0.12.0/bevy/ecs/system/trait.Resource.html"><code>Resource</code></a> trait, similar to
 <a href="/programming/ec.html#components">components</a> and <a href="/programming/events.html">events</a>.</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Resource)]
 struct GoalsReached {
@@ -219,7 +219,7 @@ custom types.</p>
 }</code></pre>
 <h2 id="managing-resources"><a class="header" href="#managing-resources">Managing Resources</a></h2>
 <p>If you need to create/remove resources at runtime, you can do so using
-<a href="/programming/commands.html">commands</a> (<a href="https://dev-docs.bevyengine.org/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>):</p>
+<a href="/programming/commands.html">commands</a> (<a href="https://docs.rs/bevy/0.12.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>):</p>
 <pre><code class="language-rust no_run noplayground">fn my_setup(mut commands: Commands, /* ... */) {
     // add (or overwrite) resource, using the provided data
     commands.insert_resource(GoalsReached { main_goal: false, bonus: 100 });
@@ -276,7 +276,7 @@ enum GameMode {
     Singleplayer,
     Multiplayer,
 }</code></pre>
-<p>For resources that need complex initialization, implement <a href="https://dev-docs.bevyengine.org/bevy/ecs/world/trait.FromWorld.html"><code>FromWorld</code></a>:</p>
+<p>For resources that need complex initialization, implement <a href="https://docs.rs/bevy/0.12.0/bevy/ecs/world/trait.FromWorld.html"><code>FromWorld</code></a>:</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Resource)]
 struct MyFancyResource { /* stuff */ }
 
@@ -291,7 +291,7 @@ impl FromWorld for MyFancyResource {
     }
 }</code></pre>
 <p>Beware: it can be easy to get yourself into a mess of unmaintainable code
-if you overuse <a href="https://dev-docs.bevyengine.org/bevy/ecs/world/trait.FromWorld.html"><code>FromWorld</code></a> to do complex things.</p>
+if you overuse <a href="https://docs.rs/bevy/0.12.0/bevy/ecs/world/trait.FromWorld.html"><code>FromWorld</code></a> to do complex things.</p>
 <h2 id="usage-advice"><a class="header" href="#usage-advice">Usage Advice</a></h2>
 <p>The choice of when to use <a href="/programming/intro-data.html#entities--components">entities/components</a> vs. resources is
 typically about how you want to access the <a href="/programming/intro-data.html">data</a>: globally
