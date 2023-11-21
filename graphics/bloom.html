@@ -177,7 +177,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-12">0.12</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="bloom"><a class="header" href="#bloom">Bloom</a></h1>
@@ -189,7 +189,11 @@ especially when outputting HDR to the display hardware is not supported.
 Your monitor can only display a certain maximum brightness, so Bloom is a
 common artistic choice to try to convey light intensity brighter than can
 be displayed.</p>
-<p>Bloom required <a href="/graphics/hdr-tonemap.html">HDR mode</a> to be enabled on your camera.</p>
+<p>Bloom looks best with a <a href="/graphics/hdr-tonemap.html#tonemapping">Tonemapping</a> algorithm that desaturates
+very bright colors. Bevy's default is a good choice.</p>
+<p>Bloom requires <a href="/graphics/hdr-tonemap.html">HDR mode</a> to be enabled on your camera. Add the
+<a href="https://docs.rs/bevy/0.12.0/bevy/core_pipeline/bloom/struct.BloomSettings.html"><code>BloomSettings</code></a> component to the camera to enable
+bloom and configure the effect.</p>
 <pre><code class="language-rust no_run noplayground">use bevy::core_pipeline::bloom::BloomSettings;
 
 commands.spawn((
@@ -200,11 +204,65 @@ commands.spawn((
         },
         ..default()
     },
-    BloomSettings {
-        intensity: 0.25, // the default is 0.3
-        ..default()
-    },
+    BloomSettings::NATURAL,
 ));</code></pre>
+<h2 id="bloom-settings"><a class="header" href="#bloom-settings">Bloom Settings</a></h2>
+<p>Bevy offers many parameters to tweak the look of the bloom effect.</p>
+<p>The default mode is &quot;energy-conserving&quot;, which is closer to how real light
+physics might behave. It tries to mimic the effect of light scattering,
+without brightening the image artificially. The effect is more subtle and &quot;natural&quot;.</p>
+<p>There is also an &quot;additive&quot; mode, which will brighten everything and make it feel
+like bright lights are &quot;glowing&quot; unnaturally. This sort of effect is quite common
+in many games, especially older games from the 2000s.</p>
+<p>Bevy offers three bloom &quot;presets&quot;:</p>
+<ul>
+<li><code>NATURAL</code>: energy-conerving, subtle, natural look.</li>
+<li><code>OLD_SCHOOL</code>: &quot;glowy&quot; effect, similar to how older games looked.</li>
+<li><code>SCREEN_BLUR</code>: very intense bloom that makes everything look blurred.</li>
+</ul>
+<p>You can also create an entirely custom configuration by tweaking all the
+parameters in <a href="https://docs.rs/bevy/0.12.0/bevy/core_pipeline/bloom/struct.BloomSettings.html"><code>BloomSettings</code></a> to your taste. Use the
+presets for inspiration.</p>
+<p>Here are the settings for the Bevy presets:</p>
+<pre><code class="language-rust no_run noplayground">// NATURAL
+BloomSettings {
+    intensity: 0.15,
+    low_frequency_boost: 0.7,
+    low_frequency_boost_curvature: 0.95,
+    high_pass_frequency: 1.0,
+    prefilter_settings: BloomPrefilterSettings {
+        threshold: 0.0,
+        threshold_softness: 0.0,
+    },
+    composite_mode: BloomCompositeMode::EnergyConserving,
+};
+
+// OLD_SCHOOL
+BloomSettings {
+    intensity: 0.05,
+    low_frequency_boost: 0.7,
+    low_frequency_boost_curvature: 0.95,
+    high_pass_frequency: 1.0,
+    prefilter_settings: BloomPrefilterSettings {
+        threshold: 0.6,
+        threshold_softness: 0.2,
+    },
+    composite_mode: BloomCompositeMode::Additive,
+};
+
+// SCREEN_BLUR
+BloomSettings {
+    intensity: 1.0,
+    low_frequency_boost: 0.0,
+    low_frequency_boost_curvature: 0.0,
+    high_pass_frequency: 1.0 / 3.0,
+    prefilter_settings: BloomPrefilterSettings {
+        threshold: 0.0,
+        threshold_softness: 0.0,
+    },
+    composite_mode: BloomCompositeMode::EnergyConserving,
+};</code></pre>
+<h2 id="visualization"><a class="header" href="#visualization">Visualization</a></h2>
 <p>Here is an example of Bloom in 3D:</p>
 <p><img src="/img/bloom_3d.png" alt="The Bloom effect on street lamps." /></p>
 <p>And here is a 2D example:</p>

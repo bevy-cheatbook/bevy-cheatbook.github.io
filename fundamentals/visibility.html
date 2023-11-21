@@ -252,6 +252,8 @@ you specify what you want for the current entity:</p>
 <p>If the current entity has any <a href="/fundamentals/hierarchy.html">children</a> that have <code>Inherited</code>,
 their visibility will be affected if you set the current entity to <code>Visible</code>
 or <code>Hidden</code>.</p>
+<p>If an entity has a parent, but the parent entity is missing the
+visibility-related components, things will behave as if there was no parent.</p>
 <h3 id="inheritedvisibility"><a class="header" href="#inheritedvisibility"><code>InheritedVisibility</code></a></h3>
 <p><a href="https://docs.rs/bevy/0.12.0/bevy/render/view/struct.InheritedVisibility.html"><code>InheritedVisibility</code></a> represents the state the
 current entity would have based on its <a href="/fundamentals/hierarchy.html">parent</a>'s visibility.</p>

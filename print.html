@@ -2758,6 +2758,8 @@ you specify what you want for the current entity:</p>
 <p>If the current entity has any <a href="fundamentals//fundamentals/hierarchy.html">children</a> that have <code>Inherited</code>,
 their visibility will be affected if you set the current entity to <code>Visible</code>
 or <code>Hidden</code>.</p>
+<p>If an entity has a parent, but the parent entity is missing the
+visibility-related components, things will behave as if there was no parent.</p>
 <h3 id="inheritedvisibility"><a class="header" href="#inheritedvisibility"><code>InheritedVisibility</code></a></h3>
 <p><a href="https://docs.rs/bevy/0.12.0/bevy/render/view/struct.InheritedVisibility.html"><code>InheritedVisibility</code></a> represents the state the
 current entity would have based on its <a href="fundamentals//fundamentals/hierarchy.html">parent</a>'s visibility.</p>
@@ -3289,7 +3291,7 @@ as configured via the various <a href="/programming/ec.html#components">componen
 <a href="/graphics/camera.html">camera</a>. You can enable all kinds of different workflows, as
 well as optional effects, by adding the relevant components to your camera
 and configuring them.</p>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="graphics//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="graphics//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-12">0.12</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="cameras"><a class="header" href="#cameras">Cameras</a></h1>
@@ -3298,8 +3300,8 @@ to draw, how to draw it, and where to draw it.</p>
 <p>You must have at least one camera entity, in order for anything to be displayed
 at all! If you forget to spawn a camera, you will get an empty black screen.</p>
 <p>In the simplest case, you can create a camera with the default settings. Just
-spawn an entity using <a href="https://docs.rs/bevy/0.9.1/bevy/core_pipeline/core_2d/struct.Camera2dBundle.html"><code>Camera2dBundle</code></a> or
-<a href="https://docs.rs/bevy/0.9.1/bevy/core_pipeline/core_3d/struct.Camera3dBundle.html"><code>Camera3dBundle</code></a>. It will simply draw all renderable
+spawn an entity using <a href="https://docs.rs/bevy/0.12.0/bevy/core_pipeline/core_2d/struct.Camera2dBundle.html"><code>Camera2dBundle</code></a> or
+<a href="https://docs.rs/bevy/0.12.0/bevy/core_pipeline/core_3d/struct.Camera3dBundle.html"><code>Camera3dBundle</code></a>. It will simply draw all renderable
 entities that are <a href="graphics//fundamentals/visibility.html">visible</a>.</p>
 <p>This page gives a general overview of cameras in Bevy. Also see the dedicated
 pages for <a href="graphics//2d/camera.html">2D cameras</a> and <a href="graphics//3d/camera.html">3D cameras</a>.</p>
@@ -3369,8 +3371,8 @@ closer or farther away, instead of changing the FOV.</p>
 <p>The camera projection is responsible for mapping the coordinate system to the
 viewport. This effectively determines the &quot;coordinate space&quot; you are working in.</p>
 <p>Bevy provides two kinds of projections:
-<a href="https://docs.rs/bevy/0.9.1/bevy/render/camera/struct.OrthographicProjection.html"><code>OrthographicProjection</code></a> and
-<a href="https://docs.rs/bevy/0.9.1/bevy/render/camera/struct.PerspectiveProjection.html"><code>PerspectiveProjection</code></a>. They are configurable,
+<a href="https://docs.rs/bevy/0.12.0/bevy/render/camera/struct.OrthographicProjection.html"><code>OrthographicProjection</code></a> and
+<a href="https://docs.rs/bevy/0.12.0/bevy/render/camera/struct.PerspectiveProjection.html"><code>PerspectiveProjection</code></a>. They are configurable,
 to be able to serve a variety of different use cases. See the dedicated pages
 for <a href="graphics//2d/camera.html">2D cameras</a> and <a href="graphics//3d/camera.html">3D cameras</a> to learn more
 about what you can do with them.</p>
@@ -3385,7 +3387,7 @@ Z</a> configuration for 3D.</p>
 <h2 id="render-target"><a class="header" href="#render-target">Render Target</a></h2>
 <p>The render target of a camera determines where the GPU will draw things to. It
 could be a window (for outputting directly to the screen) or an
-<a href="https://docs.rs/bevy/0.9.1/bevy/render/texture/struct.Image.html"><code>Image</code></a> <a href="graphics//assets.html">asset</a> (render-to-texture).</p>
+<a href="https://docs.rs/bevy/0.12.0/bevy/render/texture/struct.Image.html"><code>Image</code></a> <a href="graphics//assets.html">asset</a> (render-to-texture).</p>
 <p>By default, cameras output to the primary window.</p>
 <pre><code class="language-rust no_run noplayground">use bevy::render::camera::RenderTarget;
 
@@ -3399,6 +3401,9 @@ fn debug_render_targets(
             }
             RenderTarget::Image(handle) =&gt; {
                 eprintln!(&quot;Camera renders to image asset with id: {:?}&quot;, handle);
+            }
+            RenderTarget::TextureView(_) =&gt; {
+                eprintln!(&quot;This is a special camera that outputs to something outside of Bevy.&quot;);
             }
         }
     }
@@ -3416,7 +3421,7 @@ fn setup_minimap(mut commands: Commands) {
         Camera2dBundle {
             camera: Camera {
                 // renders after / on top of other cameras
-                priority: 2,
+                order: 2,
                 // set the viewport to a 256x256 square in the top left corner
                 viewport: Some(Viewport {
                     physical_position: UVec2::new(0, 0),
@@ -3440,11 +3445,11 @@ configured, or the entire window, if not):</p>
     // the size of the area being rendered to
     let view_dimensions = camera.logical_viewport_size().unwrap();
 
-    // the top-left and bottom-right coordinates
-    let (corner1, corner2) = camera.logical_viewport_rect().unwrap();
+    // the coordinates of the rectangle covered by the viewport
+    let rect = camera.logical_viewport_rect().unwrap();
 }</code></pre>
 <h2 id="coordinate-conversion"><a class="header" href="#coordinate-conversion">Coordinate Conversion</a></h2>
-<p><a href="https://docs.rs/bevy/0.9.1/bevy/render/camera/struct.Camera.html"><code>Camera</code></a> provides methods to help with coordinate conversion
+<p><a href="https://docs.rs/bevy/0.12.0/bevy/render/camera/struct.Camera.html"><code>Camera</code></a> provides methods to help with coordinate conversion
 between on-screen coordinates and world-space coordinates. For an example, see
 the <a href="graphics//cookbook/cursor2world.html">&quot;cursor to world&quot;</a> cookbook page.</p>
 <h2 id="clear-color"><a class="header" href="#clear-color">Clear Color</a></h2>
@@ -3454,7 +3459,7 @@ before a camera renders anything.</p>
 pixels as they were before.</p>
 <p><a href="graphics//window/clear-color.html">See this page for more info.</a></p>
 <h2 id="render-layers"><a class="header" href="#render-layers">Render Layers</a></h2>
-<p><a href="https://docs.rs/bevy/0.9.1/bevy/render/view/visibility/struct.RenderLayers.html"><code>RenderLayers</code></a> is a way to filter what entities should be
+<p><a href="https://docs.rs/bevy/0.12.0/bevy/render/view/visibility/struct.RenderLayers.html"><code>RenderLayers</code></a> is a way to filter what entities should be
 drawn by what cameras. Insert this <a href="graphics//programming/ec.html#components">component</a> onto your entities
 to place them in specific &quot;layers&quot;. The layers are integers from 0 to 31 (32
 total available).</p>
@@ -3463,7 +3468,7 @@ should render. Inserting this component onto renderable entities selects what
 cameras should render those entities. An entity will be rendered if there is any
 overlap between the camera's layers and the entity's layers (they have at least
 one layer in common).</p>
-<p>If an entity does not have the <a href="https://docs.rs/bevy/0.9.1/bevy/render/view/visibility/struct.RenderLayers.html"><code>RenderLayers</code></a> component,
+<p>If an entity does not have the <a href="https://docs.rs/bevy/0.12.0/bevy/render/view/visibility/struct.RenderLayers.html"><code>RenderLayers</code></a> component,
 it is assumed to belong to layer 0 (only).</p>
 <pre><code class="language-rust no_run noplayground">use bevy::render::view::visibility::RenderLayers;
 // This camera renders everything in layers 0, 1
@@ -3498,11 +3503,11 @@ commands.spawn((
 ));</code></pre>
 <p>You can also modify the render layers of entities after they are spawned.</p>
 <h2 id="camera-ordering"><a class="header" href="#camera-ordering">Camera Ordering</a></h2>
-<p>A camera's priority is a simple integer value that controls the order relative
+<p>A camera's <code>order</code> is a simple integer value that controls the order relative
 to any other cameras with the same render target.</p>
 <p>For example, if you have multiple cameras that all render to the primary window,
-they will behave as multiple &quot;layers&quot;. Cameras with higher priority will render
-&quot;on top of&quot; cameras with lower priority.</p>
+they will behave as multiple &quot;layers&quot;. Cameras with a higher order value will render
+&quot;on top of&quot; cameras with a lower value. <code>0</code> is the default.</p>
 <pre><code class="language-rust no_run noplayground">use bevy::core_pipeline::clear_color::ClearColorConfig;
 
 commands.spawn((
@@ -3514,7 +3519,7 @@ commands.spawn((
         },
         camera: Camera {
             // renders after / on top of the main camera
-            priority: 1,
+            order: 1,
             ..default()
         },
         ..default()
@@ -3553,21 +3558,21 @@ easily re-enable it later.</p>
 <p>This is an overview of different scenarios where you would need more than one
 camera entity.</p>
 <h3 id="multiple-windows"><a class="header" href="#multiple-windows">Multiple Windows</a></h3>
-<p>Official example: <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/window/multiple_windows.rs"><code>multiple_windows</code></a>.</p>
+<p>Official example: <a href="https://github.com/bevyengine/bevy/blob/main/examples/window/multiple_windows.rs"><code>multiple_windows</code></a>.</p>
 <p>If you want to create a Bevy app with multiple windows, you need to spawn
 multiple cameras, one for each window, and set their render targets
 respectively. Then, you can use your cameras to control what to display in each
 window.</p>
 <h3 id="split-screen"><a class="header" href="#split-screen">Split-Screen</a></h3>
-<p>Official example: <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/3d/split_screen.rs"><code>split_screen</code></a>.</p>
+<p>Official example: <a href="https://github.com/bevyengine/bevy/blob/main/examples/3d/split_screen.rs"><code>split_screen</code></a>.</p>
 <p>You can set the camera <a href="graphics/camera.html#viewport">viewport</a> to only render to a part of the
 render target. This way, a camera can be made to render one half of the screen
 (or any other area). Use a separate camera for each view in a split-screen game.</p>
 <h3 id="overlays"><a class="header" href="#overlays">Overlays</a></h3>
-<p>Official example: <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/3d/two_passes.rs"><code>two_passes</code></a>.</p>
+<p>Official example: <a href="https://github.com/bevyengine/bevy/blob/main/examples/3d/two_passes.rs"><code>two_passes</code></a>.</p>
 <p>You might want to render multiple &quot;layers&quot; (passes) to the same render target.
-An example of this might be an overlay/HUD to be displayed as an overlay on top
-of the main game.</p>
+An example of this might be an overlay/HUD to be displayed on top of the
+main game.</p>
 <p>The overlay camera could be completely different from the main camera. For
 example, the main camera might draw a 3D scene, and the overlay camera might
 draw 2D shapes. Such use cases are possible!</p>
@@ -3582,7 +3587,7 @@ it on the other camera.</p>
 by each camera.</p>
 <h3 id="render-to-image"><a class="header" href="#render-to-image">Render to Image</a></h3>
 <p>(aka Render to Texture)</p>
-<p>Official example: <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/3d/render_to_texture.rs"><code>render_to_texture</code></a>.</p>
+<p>Official example: <a href="https://github.com/bevyengine/bevy/blob/main/examples/3d/render_to_texture.rs"><code>render_to_texture</code></a>.</p>
 <p>If you want to generate an image in memory, you can output to an <code>Image</code> asset.</p>
 <p>This is useful for intermediate steps in games, such as rendering a minimap or
 the gun in a shooter game. You can then use that image as part of the final
@@ -3590,20 +3595,26 @@ scene to render to the screen. Item previews are a similar use case.</p>
 <p>Another use case is window-less applications that want to generate image files.
 For example, you could use Bevy to render something, and then export it to a PNG
 file.</p>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="graphics//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="graphics//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-12">0.12</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
-<h1 id="hdr-tonemapping-bloom"><a class="header" href="#hdr-tonemapping-bloom">HDR, Tonemapping, Bloom</a></h1>
-<p>HDR (High Dynamic Range) refers to the ability of the game engine to handle very
-bright lights or colors. Bevy's rendering is HDR. This means you can have
-objects with colors that go above <code>1.0</code>, very bright lights, or bright emissive
-materials. All of this is supported for both 3D and 2D.</p>
+<h1 id="hdr"><a class="header" href="#hdr">HDR</a></h1>
+<p>HDR (High Dynamic Range) refers to the ability of the game engine to handle
+very bright lights or colors. Bevy's rendering is HDR internally. This means
+you can have objects with colors that go above <code>1.0</code>, very bright lights,
+or bright emissive materials. All of this is supported for both 3D and 2D.</p>
 <p>This is not to be confused with HDR display output, which is the ability to
 produce a HDR image to be displayed by a modern monitor or TV with HDR
 capabilities. Bevy has no support for this yet.</p>
+<p>The internal HDR image has to be converted down to SDR (Standard Dynamic
+Range) before it can be displayed on the screen. This process is called
+<a href="graphics//graphics/hdr-tonemap.html#tonemapping">Tonemapping</a>. Bevy supports different algorithms that can
+result in a different look. It is an artistic choice what tonemapping
+algorithm to use for your game.</p>
 <h2 id="camera-hdr-configuration"><a class="header" href="#camera-hdr-configuration">Camera HDR configuration</a></h2>
 <p>There is a per-camera toggle that lets you decide whether you want Bevy to
-preserve the HDR data internally during rendering.</p>
+preserve the HDR data internally, to make it possible for subsequent passes
+(such as postprocessing effects) to use it.</p>
 <pre><code class="language-rust no_run noplayground">commands.spawn((
     Camera3dBundle {
         camera: Camera {
@@ -3615,14 +3626,15 @@ preserve the HDR data internally during rendering.</p>
 ));</code></pre>
 <p>If it is enabled, Bevy's intermediate textures will be in HDR format. The
 shaders output HDR values and Bevy will store them, so they can be used in later
-rendering passes. This allows you to enable post-processing effects like Bloom,
+rendering passes. This allows you to enable effects like <a href="graphics//graphics/bloom.html">Bloom</a>,
 that make use of the HDR data. <a href="graphics//graphics/hdr-tonemap.html#tonemapping">Tonemapping</a> will happen as a
-post-processing step.</p>
-<p>If it is disabled, the shaders are expected to output standard RGB colors in the
-0.0 to 1.0 range. <a href="graphics//graphics/hdr-tonemap.html#tonemapping">Tonemapping</a> happens in the shader. The HDR information
-is not preserved. Effects that require HDR data, like Bloom, will not work.</p>
-<p>It is disabled by default. If enabling it, make sure to also have
-<a href="graphics//graphics/hdr-tonemap.html#tonemapping">tonemapping</a> enabled, ideally with deband dithering.</p>
+post-processing step, after the HDR data is no longer needed for anything.</p>
+<p>If it is disabled, the shaders are expected to output standard RGB colors in
+the 0.0 to 1.0 range. <a href="graphics//graphics/hdr-tonemap.html#tonemapping">Tonemapping</a> happens in the shader. The
+HDR information is not preserved. Effects that require HDR data, like Bloom,
+will not work.</p>
+<p>It is disabled by default, because this results in better performance and
+reduced VRAM usage for applications with simple graphics that do not need it.</p>
 <p>If you have both HDR and MSAA enabled, it is possible you might encounter
 issues. There might be visual artifacts in some cases. It is also unsupported on
 Web/WASM, crashing at runtime. Disable MSAA if you experience any such issues.</p>
@@ -3633,39 +3645,103 @@ as they should be displayed on-screen.</p>
 <p>This is very important with HDR applications, as in that case the image can
 contain very bright pixels (above 1.0) which need to be remapped into a range
 that can be displayed.</p>
-<p>Tonemapping is enabled by default. Bevy gives you a simple toggle
-(<a href="https://docs.rs/bevy/0.9.1/bevy/core_pipeline/tonemapping/enum.Tonemapping.html"><code>Tonemapping</code></a>) to disable it, per-camera. This is not
+<p>Tonemapping is enabled by default. Bevy allows you to configure it via the
+(<a href="https://docs.rs/bevy/0.12.0/bevy/core_pipeline/tonemapping/enum.Tonemapping.html"><code>Tonemapping</code></a>) component, per-camera. Disabling it is not
 recommended, unless you know you only have very simple graphics that don't need
 it. It can make your graphics look incorrect.</p>
 <pre><code class="language-rust no_run noplayground">use bevy::core_pipeline::tonemapping::Tonemapping;
 
 commands.spawn((
     Camera3dBundle {
-        tonemapping: Tonemapping::Disabled,
+        // no tonemapping
+        tonemapping: Tonemapping::None,
         ..default()
     },
 ));
 commands.spawn((
     Camera3dBundle {
         // this is the default:
-        tonemapping: Tonemapping::Enabled {
-            deband_dither: true, // dithering
+        tonemapping: Tonemapping::TonyMcMapface,
+        ..default()
+    },
+));
+commands.spawn((
+    Camera3dBundle {
+        // another common choice:
+        tonemapping: Tonemapping::ReinhardLuminance,
+        ..default()
+    },
+));</code></pre>
+<p>Bevy supports many different tonemapping algorithms. Each of them results in a
+different look, affecting colors and brightness. It can be an artistic choice. You
+can decide what algorithm looks best for your game. Bevy's default is TonyMcMapface,
+which, despite the silly name, provides very good results for a wide variety of
+graphics styles. See the (<a href="https://docs.rs/bevy/0.12.0/bevy/core_pipeline/tonemapping/enum.Tonemapping.html"><code>Tonemapping</code></a>) documentation for
+an explanation of each of the available choices.</p>
+<p>Some tonemapping algorithms (incl. the default TonyMcMapface) require the
+<code>tonemapping_luts</code> <a href="graphics//setup/bevy-config.html">cargo feature</a>. It is enabled by default. Be
+sure to re-enable it if you disable default features and you need it. Enabling
+it also enables the <code>ktx2</code> and <code>zstd</code> features, because it works by embedding
+special data in KTX2 format into your game, which is used during tonemapping.</p>
+<p>The following tonemapping algorithms <em>DO NOT</em> require the special data from
+<code>tonemapping_luts</code>:</p>
+<ul>
+<li>Reinhard</li>
+<li>ReinhardLuminance</li>
+<li>AcesFitted</li>
+<li>SomewhatBoringDisplayTransform</li>
+</ul>
+<p>The following tonemapping algorithms <em>require</em> the special data from <code>tonemapping_luts</code>:</p>
+<ul>
+<li>AgX</li>
+<li>TonyMcMapface</li>
+<li>BlenderFilmic</li>
+</ul>
+<p>If you want to make a smaller game binary (might be important for Web games),
+you could reduce bloat by changing the default tonemapping to something
+simpler and disabling the <a href="graphics//setup/bevy-config.html">cargo features</a>.</p>
+<h2 id="color-grading"><a class="header" href="#color-grading">Color Grading</a></h2>
+<p>Color Grading is a manipulation of the overall look of the image.</p>
+<p>Together with tonemapping, this affects the &quot;tone&quot;/&quot;mood&quot; of the final image.</p>
+<p>This is also how you can implement a &quot;retina&quot; effect, where the camera
+dynamically adapts to very dark (such as inside a cave) and very bright
+(such as in daylight) scenes, by adjusting exposure/gamma.</p>
+<p>You can also adjust color saturation. Heavily desaturating the image can
+result in a greyscale or muted appearance, which can be a great artistic
+choice for apocalyptic or horror games.</p>
+<p>You can configure these parameters via the <a href="https://docs.rs/bevy/0.12.0/bevy/render/view/struct.ColorGrading.html"><code>ColorGrading</code></a>
+component:</p>
+<pre><code class="language-rust no_run noplayground">use bevy::render::view::ColorGrading;
+
+commands.spawn((
+    Camera3dBundle {
+        color_grading: ColorGrading {
+            exposure: 0.0,
+            gamma: 1.0,
+            pre_saturation: 1.0,
+            post_saturation: 1.0,
         },
         ..default()
     },
 ));</code></pre>
-<p>Bevy does not currently offer any way to customize the tonemapping operation,
-only a simple toggle. The tonemapping operation is Luminance-weighted Reinhard.</p>
 <h2 id="deband-dithering"><a class="header" href="#deband-dithering">Deband Dithering</a></h2>
 <p>Deband dithering helps color gradients or other areas with subtle changes in
 color to appear higher-quality, without a &quot;color banding&quot; effect.</p>
 <p>It is enabled by default, and can be disabled per-camera.</p>
+<pre><code class="language-rust no_run noplayground">use bevy::core_pipeline::tonemapping::DebandDither;
+
+commands.spawn((
+    Camera3dBundle {
+        dither: DebandDither::Disabled,
+        ..default()
+    },
+));</code></pre>
 <p>Here is an example image without dithering (top) and with dithering (bottom).
 Pay attention to the quality/smoothness of the green color gradient on the
 ground plane. In games with photorealistic graphics, similar situations can
 arise in the sky, in dark rooms, or lights glowing with a bloom effect.</p>
 <p><img src="graphics//img/dithering.png" alt="Visual comparison of a scene simple cube on a flat green plane, with dithering disabled/enabled." /></p>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="graphics//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="graphics//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-12">0.12</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="bloom"><a class="header" href="#bloom">Bloom</a></h1>
@@ -3677,7 +3753,11 @@ especially when outputting HDR to the display hardware is not supported.
 Your monitor can only display a certain maximum brightness, so Bloom is a
 common artistic choice to try to convey light intensity brighter than can
 be displayed.</p>
-<p>Bloom required <a href="graphics//graphics/hdr-tonemap.html">HDR mode</a> to be enabled on your camera.</p>
+<p>Bloom looks best with a <a href="graphics//graphics/hdr-tonemap.html#tonemapping">Tonemapping</a> algorithm that desaturates
+very bright colors. Bevy's default is a good choice.</p>
+<p>Bloom requires <a href="graphics//graphics/hdr-tonemap.html">HDR mode</a> to be enabled on your camera. Add the
+<a href="https://docs.rs/bevy/0.12.0/bevy/core_pipeline/bloom/struct.BloomSettings.html"><code>BloomSettings</code></a> component to the camera to enable
+bloom and configure the effect.</p>
 <pre><code class="language-rust no_run noplayground">use bevy::core_pipeline::bloom::BloomSettings;
 
 commands.spawn((
@@ -3688,11 +3768,65 @@ commands.spawn((
         },
         ..default()
     },
-    BloomSettings {
-        intensity: 0.25, // the default is 0.3
-        ..default()
-    },
+    BloomSettings::NATURAL,
 ));</code></pre>
+<h2 id="bloom-settings"><a class="header" href="#bloom-settings">Bloom Settings</a></h2>
+<p>Bevy offers many parameters to tweak the look of the bloom effect.</p>
+<p>The default mode is &quot;energy-conserving&quot;, which is closer to how real light
+physics might behave. It tries to mimic the effect of light scattering,
+without brightening the image artificially. The effect is more subtle and &quot;natural&quot;.</p>
+<p>There is also an &quot;additive&quot; mode, which will brighten everything and make it feel
+like bright lights are &quot;glowing&quot; unnaturally. This sort of effect is quite common
+in many games, especially older games from the 2000s.</p>
+<p>Bevy offers three bloom &quot;presets&quot;:</p>
+<ul>
+<li><code>NATURAL</code>: energy-conerving, subtle, natural look.</li>
+<li><code>OLD_SCHOOL</code>: &quot;glowy&quot; effect, similar to how older games looked.</li>
+<li><code>SCREEN_BLUR</code>: very intense bloom that makes everything look blurred.</li>
+</ul>
+<p>You can also create an entirely custom configuration by tweaking all the
+parameters in <a href="https://docs.rs/bevy/0.12.0/bevy/core_pipeline/bloom/struct.BloomSettings.html"><code>BloomSettings</code></a> to your taste. Use the
+presets for inspiration.</p>
+<p>Here are the settings for the Bevy presets:</p>
+<pre><code class="language-rust no_run noplayground">// NATURAL
+BloomSettings {
+    intensity: 0.15,
+    low_frequency_boost: 0.7,
+    low_frequency_boost_curvature: 0.95,
+    high_pass_frequency: 1.0,
+    prefilter_settings: BloomPrefilterSettings {
+        threshold: 0.0,
+        threshold_softness: 0.0,
+    },
+    composite_mode: BloomCompositeMode::EnergyConserving,
+};
+
+// OLD_SCHOOL
+BloomSettings {
+    intensity: 0.05,
+    low_frequency_boost: 0.7,
+    low_frequency_boost_curvature: 0.95,
+    high_pass_frequency: 1.0,
+    prefilter_settings: BloomPrefilterSettings {
+        threshold: 0.6,
+        threshold_softness: 0.2,
+    },
+    composite_mode: BloomCompositeMode::Additive,
+};
+
+// SCREEN_BLUR
+BloomSettings {
+    intensity: 1.0,
+    low_frequency_boost: 0.0,
+    low_frequency_boost_curvature: 0.0,
+    high_pass_frequency: 1.0 / 3.0,
+    prefilter_settings: BloomPrefilterSettings {
+        threshold: 0.0,
+        threshold_softness: 0.0,
+    },
+    composite_mode: BloomCompositeMode::EnergyConserving,
+};</code></pre>
+<h2 id="visualization"><a class="header" href="#visualization">Visualization</a></h2>
 <p>Here is an example of Bloom in 3D:</p>
 <p><img src="graphics//img/bloom_3d.png" alt="The Bloom effect on street lamps." /></p>
 <p>And here is a 2D example:</p>
