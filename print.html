@@ -2784,8 +2784,8 @@ fn debug_player_visibility(
 <pre><code class="language-rust no_run noplayground">use bevy::render::view::VisibilitySystems;
 
 app.add_systems(PostUpdate,
-    debug_balloon_visibility
-        .after(VisibilitySystems::CheckVisibility)
+    debug_player_visibility
+        .after(VisibilitySystems::VisibilityPropagate)
 );</code></pre>
 <h3 id="viewvisibility"><a class="header" href="#viewvisibility"><code>ViewVisibility</code></a></h3>
 <p><a href="https://docs.rs/bevy/0.12.0/bevy/render/view/struct.ViewVisibility.html"><code>ViewVisibility</code></a> represents the actual final
@@ -2815,8 +2815,8 @@ fn debug_balloon_visibility(
 <pre><code class="language-rust no_run noplayground">use bevy::render::view::VisibilitySystems;
 
 app.add_systems(PostUpdate,
-    debug_player_visibility
-        .after(VisibilitySystems::VisibilityPropagate)
+    debug_balloon_visibility
+        .after(VisibilitySystems::CheckVisibility)
 );</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="fundamentals//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
 </tbody></table>
