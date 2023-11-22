@@ -3329,59 +3329,33 @@ that feel appropriate to your game's genre and gameplay.</p>
 <p>Do not use the transform scale to &quot;zoom&quot; a camera! It just stretches the image,
 which is not &quot;zooming&quot;. It might also cause other issues and incompatibilities.
 Use the <a href="graphics//graphics/camera.html#projection">projection</a> to zoom.</p>
-<p>For orthographic projections, change the projection's scale. This way you can be
-confident about how exactly coordinate/units map to the screen. This also helps
-avoid scaling artifacts with 2D assets.</p>
-<pre><code class="language-rust no_run noplayground">fn zoom_2d(
-    mut q: Query&lt;&amp;mut OrthographicProjection, With&lt;MyGameCamera&gt;&gt;,
-) {
-    let mut projection = q.single_mut();
-
-    // example: zoom in
-    projection.scale *= 1.25;
-    // example: zoom out
-    projection.scale *= 0.75;
-
-    // always ensure you end up with sane values
-    // (pick an upper and lower bound for your application)
-    projection.scale = projection.scale.clamp(0.5, 5.0);
-}</code></pre>
-<p>For 3D perspective projections, change the FOV. This achieves the desired 3D
-effect of zooming with a lens, while keeping the camera at the same distance
-from what it is looking at. Decrease the FOV to &quot;zoom in&quot; (make objects appear
-closer). Increase the FOV to &quot;zoom out&quot; (make objects appear further away,
-increase the stretching due to the perspective effect).</p>
-<pre><code class="language-rust no_run noplayground">fn zoom_3d(
-    mut q: Query&lt;&amp;mut PerspectiveProjection, With&lt;MyGameCamera&gt;&gt;,
-) {
-    let mut projection = q.single_mut();
-
-    // example: zoom in
-    projection.fov *= 1.25;
-    // example: zoom out
-    projection.fov *= 0.75;
-
-    // always ensure you end up with sane values
-    // (pick an upper and lower bound for your application)
-    projection.fov = projection.fov.clamp(30.0f32.to_radians(), 90.0f32.to_radians());
-}</code></pre>
-<p>In some applications (like 3D editors), &quot;zooming&quot; might mean moving the camera
-closer or farther away, instead of changing the FOV.</p>
+<p>For an orthographic projection, change the scale. For a perspective projection,
+change the FOV. The FOV mimics the effect of zooming with a lens.</p>
+<p>Learn more about how to do this in <a href="graphics//2d/camera.html#projection">2D</a> or
+<a href="graphics//3d/camera.html#projection">3D</a>.</p>
 <h2 id="projection"><a class="header" href="#projection">Projection</a></h2>
 <p>The camera projection is responsible for mapping the coordinate system to the
-viewport. This effectively determines the &quot;coordinate space&quot; you are working in.</p>
+viewport (commonly, the screen/window). It is what configures the coordinate
+space, as well as any scaling/stretching of the image.</p>
 <p>Bevy provides two kinds of projections:
 <a href="https://docs.rs/bevy/0.12.0/bevy/render/camera/struct.OrthographicProjection.html"><code>OrthographicProjection</code></a> and
 <a href="https://docs.rs/bevy/0.12.0/bevy/render/camera/struct.PerspectiveProjection.html"><code>PerspectiveProjection</code></a>. They are configurable,
-to be able to serve a variety of different use cases. See the dedicated pages
-for <a href="graphics//2d/camera.html">2D cameras</a> and <a href="graphics//3d/camera.html">3D cameras</a> to learn more
-about what you can do with them.</p>
+to be able to serve a variety of different use cases.</p>
+<p>Orthographic means that everything always appears the same size, regardless of
+how far away it is from the camera.</p>
+<p>Perspective means that things appear smaller the further away they are from
+the camera. This is the effect that gives 3D graphics a sense of depth and
+distance.</p>
+<p><a href="graphics//2d/camera.html">2D cameras</a> are always orthographic.</p>
+<p><a href="graphics//3d/camera.html">3D cameras</a> can use either kind of projection. Perspective is
+the most common (and default) choice. Orthographic is useful for applications
+such as CAD and engineering, where you want to accurately represent the
+dimensions of an object, instead of creating a realistic sense of 3D space. Some
+games (notably simulation games) use orthographic as an artistic choice.</p>
 <p>It is possible to implement your own <a href="graphics//cookbook/custom-projection.html">custom camera
 projections</a>. This can give you full control over
 the coordinate system. However, beware that things might behave in unexpected
 ways if you violate Bevy's <a href="graphics//fundamentals/coords.html">coordinate system conventions</a>!</p>
-<p>Note that Bevy uses a an <a href="https://developer.nvidia.com/content/depth-precision-visualized">infinite reversed
-Z</a> configuration for 3D.</p>
 <h2 id="hdr-and-tonemapping"><a class="header" href="#hdr-and-tonemapping">HDR and Tonemapping</a></h2>
 <p><a href="graphics//graphics/hdr-tonemap.html">See here!</a></p>
 <h2 id="render-target"><a class="header" href="#render-target">Render Target</a></h2>
@@ -3836,12 +3810,123 @@ BloomSettings {
 </div>
 <h1 id="bevy-2d"><a class="header" href="#bevy-2d">Bevy 2D</a></h1>
 <p>This chapter covers topics relevant to making 2D games with Bevy.</p>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="2d//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(outdated!)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="2d//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-12">0.12</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="2d-camera-setup"><a class="header" href="#2d-camera-setup">2D Camera Setup</a></h1>
-<p>Page coming soon…</p>
-<p>In the meantime, you can learn from Bevy's <a href="https://github.com/bevyengine/bevy/tree/latest/examples#examples">examples</a>.</p>
+<p><a href="2d//graphics/camera.html">Cameras</a> in Bevy are mandatory to see anything: they configure the
+rendering.</p>
+<p>This page will teach you about the specifics of 2D cameras. If you want to learn about
+general non-2D specific functionality, see the <a href="2d//graphics/camera.html">general page on cameras</a>.</p>
+<h2 id="creating-a-2d-camera"><a class="header" href="#creating-a-2d-camera">Creating a 2D Camera</a></h2>
+<p>Bevy provides a <a href="2d//programming/bundle.html">bundle</a> (<a href="https://docs.rs/bevy/0.12.0/bevy/core_pipeline/core_2d/struct.Camera2dBundle.html"><code>Camera2dBundle</code></a>)
+that you can use to <a href="2d//programming/commands.html">spawn</a> a camera <a href="2d//programming/ec.html#entities">entity</a>. It
+has reasonable defaults to set up everything correctly.</p>
+<p>You might want to set the <a href="2d//fundamentals/transforms.html">transform</a>, to position the camera.</p>
+<pre><code class="language-rust no_run noplayground">commands.spawn((
+    Camera2dBundle {
+        transform: Transform::from_xyz(100.0, 200.0, 0.0),
+        ..default()
+    },
+    MyCameraMarker,
+));</code></pre>
+<h2 id="projection-1"><a class="header" href="#projection-1">Projection</a></h2>
+<p>The <a href="2d//graphics/camera.html#projection">projection</a> is what determines how coordinates map to the
+<a href="2d//graphics/camera.html#viewport">viewport</a> (commonly, the screen/window).</p>
+<p>2D cameras always use an Orthographic projection.</p>
+<p>When you spawn a 2D camera using <a href="https://docs.rs/bevy/0.12.0/bevy/core_pipeline/core_2d/struct.Camera2dBundle.html"><code>Camera2dBundle</code></a>,
+it adds the <a href="https://docs.rs/bevy/0.12.0/bevy/render/camera/struct.OrthographicProjection.html"><code>OrthographicProjection</code></a>
+<a href="2d//programming/ec.html#components">component</a> to your <a href="2d//programming/ec.html#entities">entity</a>. When
+you are working with 2D cameras and you want to access
+the projection, you should <a href="2d//programming/queries.html">query</a> for
+<a href="https://docs.rs/bevy/0.12.0/bevy/render/camera/struct.OrthographicProjection.html"><code>OrthographicProjection</code></a>.</p>
+<pre><code class="language-rust no_run noplayground">fn debug_projection(
+    query_camera: Query&lt;&amp;OrthographicProjection, With&lt;MyCameraMarker&gt;&gt;,
+) {
+    let projection = query_camera.single();
+    // ... do something with the projection
+}</code></pre>
+<p>Note that this is different from <a href="2d//3d/camera.html#projection">3D</a>. If you are
+making a library or some other code that should be able to handle both 2D and
+3D, you cannot make a single <a href="2d//programming/queries.html">query</a> to access both 2D and 3D
+cameras. You should create separate <a href="2d//programming/systems.html">systems</a>, or at least two
+separate queries, to handle each kind of camera. This makes sense, as you will
+likely need different logic for 2D vs. 3D anyway.</p>
+<h3 id="scaling-mode"><a class="header" href="#scaling-mode">Scaling Mode</a></h3>
+<p>You can set the <a href="https://docs.rs/bevy/0.12.0/bevy/render/camera/enum.ScalingMode.html"><code>ScalingMode</code></a> according to how you want to
+handle window size / resolution.</p>
+<p>The default for Bevy 2D cameras is to have 1 screen pixel correspond to 1 world
+unit, thus allowing you to think of everything in &quot;pixels&quot;. When the window is
+resized, that causes more or less content to be seen.</p>
+<p>If you want to keep this window resizing behavior, but change the mapping of screen
+pixels to world units, use <code>ScalingMode::WindowSize(x)</code> with a value other than <code>1.0</code>.
+The value represents the number of screen pixels for one world unit.</p>
+<p>If, instead, you want to always fit the same amount of content
+on-screen, regardless of resolution, you should use something like
+<code>ScalingMode::FixedVertical</code> or <code>ScalingMode::AutoMax</code>. Then, you can directly
+specify how many units you want to display on-screen, and your content will
+be upscaled/downscaled as appropriate to fit the window size.</p>
+<pre><code class="language-rust no_run noplayground">use bevy::render::camera::ScalingMode;
+
+commands.spawn((
+    Camera2dBundle {
+        projection: OrthographicProjection {
+            // For this example, let's make the screen/window height
+            // correspond to 1600.0 world units. The width will
+            // depend on the aspect ratio.
+            scaling_mode: ScalingMode::FixedVertical(1600.0),
+            ..default()
+        },
+        transform: Transform::from_xyz(100.0, 200.0, 0.0),
+        ..default()
+    },
+    MyCameraMarker,
+));</code></pre>
+<h3 id="zooming"><a class="header" href="#zooming">Zooming</a></h3>
+<p>To &quot;zoom&quot; in 2D, you can change the orthographic projection's <code>scale</code>. This
+allows you to just scale everything by some factor, regardless of the
+<a href="https://docs.rs/bevy/0.12.0/bevy/render/camera/enum.ScalingMode.html"><code>ScalingMode</code></a> behavior.</p>
+<pre><code class="language-rust no_run noplayground">fn zoom_scale(
+    mut query_camera: Query&lt;&amp;mut OrthographicProjection, With&lt;MyCameraMarker&gt;&gt;,
+) {
+    let mut projection = query_camera.single_mut();
+    // zoom in
+    projection.scale /= 1.25;
+    // zoom out
+    projection.scale *= 1.25;
+}</code></pre>
+<p>Alternatively, you can reconfigure the <a href="https://docs.rs/bevy/0.12.0/bevy/render/camera/enum.ScalingMode.html"><code>ScalingMode</code></a>. This
+way you can be confident about how exactly coordinates/units map to the
+screen. This also helps avoid scaling artifacts with 2D assets, especially
+pixel art.</p>
+<pre><code class="language-rust no_run noplayground">fn zoom_scalingmode(
+    mut query_camera: Query&lt;&amp;mut OrthographicProjection, With&lt;MyCameraMarker&gt;&gt;,
+) {
+    use bevy::render::camera::ScalingMode;
+
+    let mut projection = query_camera.single_mut();
+    // 4 screen pixels to world/game pixel
+    projection.scaling_mode = ScalingMode::WindowSize(4.0);
+    // 6 screen pixels to world/game pixel
+    projection.scaling_mode = ScalingMode::WindowSize(6.0);
+}</code></pre>
+<p>Consider having a list of predefined &quot;zoom levels&quot; / scale values, so that you
+can make sure your game always looks good.</p>
+<p>If you are making a pixel-art game, you want to make sure the default texture
+filtering mode is set to Nearest (and not Linear), if you want your pixels
+to appear crisp instead of blurry:</p>
+<pre><code class="language-rust no_run noplayground">fn main() {
+    App::new()
+        .add_plugins(
+            DefaultPlugins
+                .set(ImagePlugin::default_nearest())
+        )
+        // ...
+        .run();
+}</code></pre>
+<p>However, when <em>downscaling</em>, Linear (the default) filtering is preferred
+for higher quality. So, for games with high-res assets, you want to leave
+it unchanged.</p>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="2d//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(outdated!)</th></tr></thead><tbody>
 </tbody></table>
 </div>
@@ -3853,12 +3938,171 @@ BloomSettings {
 </div>
 <h1 id="bevy-3d"><a class="header" href="#bevy-3d">Bevy 3D</a></h1>
 <p>This chapter covers topics relevant to making 3D games with Bevy.</p>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="3d//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(outdated!)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="3d//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-12">0.12</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="3d-camera-setup"><a class="header" href="#3d-camera-setup">3D Camera Setup</a></h1>
-<p>Page coming soon…</p>
-<p>In the meantime, you can learn from Bevy's <a href="https://github.com/bevyengine/bevy/tree/latest/examples#examples">examples</a>.</p>
+<p><a href="3d//graphics/camera.html">Cameras</a> in Bevy are mandatory to see anything: they configure the
+rendering.</p>
+<p>This page will teach you about the specifics of 3D cameras. If you want to learn about
+general non-3D specific functionality, see the <a href="3d//graphics/camera.html">general page on cameras</a>.</p>
+<h2 id="creating-a-3d-camera"><a class="header" href="#creating-a-3d-camera">Creating a 3D Camera</a></h2>
+<p>Bevy provides a <a href="3d//programming/bundle.html">bundle</a> that you can use to <a href="3d//programming/commands.html">spawn</a> a
+camera <a href="3d//programming/ec.html#entities">entity</a>. It has reasonable defaults to set up everything
+correctly.</p>
+<p>You might want to set the <a href="3d//fundamentals/transforms.html">transform</a>, to position the camera.</p>
+<pre><code class="language-rust no_run noplayground">commands.spawn((
+    Camera3dBundle {
+        transform: Transform::from_xyz(10.0, 12.0, 16.0)
+            .looking_at(Vec3::ZERO, Vec3::Y),
+        ..default()
+    },
+    MyCameraMarker,
+));</code></pre>
+<p>The &quot;looking at&quot; function is an easy way to orient a 3D camera. The second
+parameter (which we provide as <code>Y</code>) is the &quot;up&quot; direction. If you want the camera
+to be tilted sideways, you can use something else there. If you want to make a
+top-down camera, looking straight down, you need to use something other than <code>Y</code>.</p>
+<h2 id="projection-2"><a class="header" href="#projection-2">Projection</a></h2>
+<p>The <a href="3d//graphics/camera.html#projection">projection</a> is what determines how coordinates map to the
+<a href="3d//graphics/camera.html#viewport">viewport</a> (commonly, the screen/window).</p>
+<p>3D cameras can use either a Perspective or an Orthographic projection.
+Perspective is the default, and most common, choice.</p>
+<p>When you spawn a 3D camera using Bevy's <a href="3d//programming/bundle.html">bundle</a>
+(<a href="https://docs.rs/bevy/0.12.0/bevy/core_pipeline/core_2d/struct.Camera2dBundle.html"><code>Camera3dBundle</code></a>), it adds the
+<a href="https://docs.rs/bevy/0.12.0/bevy/render/camera/enum.Projection.html"><code>Projection</code></a> <a href="3d//programming/ec.html#components">component</a> to your
+<a href="3d//programming/ec.html#entities">entity</a>, which is an <code>enum</code>, allowing either projection kind to be
+used.</p>
+<p>When you are working with 3D cameras and you want to access the projection, you
+should <a href="3d//programming/queries.html">query</a> for the <a href="https://docs.rs/bevy/0.12.0/bevy/render/camera/struct.OrthographicProjection.html"><code>Projection</code></a>
+<a href="3d//programming/ec.html#components">component</a> type. You can then match on the enum, to handle each
+case appropriately.</p>
+<pre><code class="language-rust no_run noplayground">fn debug_projection(
+    query_camera: Query&lt;&amp;Projection, With&lt;MyCameraMarker&gt;&gt;,
+) {
+    let projection = query_camera.single();
+    match projection {
+        Projection::Perspective(persp) =&gt; {
+            // we have a perspective projection
+        }
+        Projection::Orthographic(ortho) =&gt; {
+            // we have an orthographic projection
+        }
+    }
+}</code></pre>
+<p>Note that this is different from <a href="3d//2d/camera.html#projection">2D</a>. If you are
+making a library or some other code that should be able to handle both 2D and
+3D, you cannot make a single <a href="3d//programming/queries.html">query</a> to access both 2D and 3D
+cameras. You should create separate <a href="3d//programming/systems.html">systems</a>, or at least two
+separate queries, to handle each kind of camera. This makes sense, as you will
+likely need different logic for 2D vs. 3D anyway.</p>
+<h3 id="perspective-projections"><a class="header" href="#perspective-projections">Perspective Projections</a></h3>
+<p>Perspective creates a realistic sense of 3D space. Things appear smaller the
+further away they are from the camera. This is how things appear to the human
+eye, and to real-life cameras.</p>
+<p>The most important variable here is the FOV (Field-of-View). The FOV determines
+the strength of the perspective effect. The FOV is the angle covered by the
+height of the screen/image.</p>
+<p>A larger FOV is like a wide-angle camera lens. It makes everything appear more
+distant, stretched, &quot;zoomed out&quot;. You can see more on-screen.</p>
+<p>A smaller FOV is like a telephoto camera lens. It makes everything appear closer
+and flatter, &quot;zoomed in&quot;. You can see less on-screen.</p>
+<p>For reference, a good neutral value is 45° (narrower, Bevy default) or 60°
+(wider). 90° is very wide. 30° is very narrow.</p>
+<pre><code class="language-rust no_run noplayground">commands.spawn((
+    Camera3dBundle {
+        projection: PerspectiveProjection {
+            // We must specify the FOV in radians.
+            // Rust can convert degrees to radians for us.
+            fov: 60.0_f32.to_radians(),
+            ..default()
+        }.into(),
+        transform: Transform::from_xyz(10.0, 12.0, 16.0)
+            .looking_at(Vec3::ZERO, Vec3::Y),
+        ..default()
+    },
+    MyCameraMarker,
+));</code></pre>
+<p><img src="3d//img/camera-3d-fov.png" alt="Side-by-side comparison of different FOV values." /></p>
+<p>In the above image, we are halving/doubling the FOV and doubling/halving
+how far away the camera is positioned, to compensate. Note how you can see
+pretty much the same 3D content, but the higher FOV looks more stretched
+and has a stronger 3D perspective effect.</p>
+<p>Internally, Bevy's perspective projection uses an <a href="https://developer.nvidia.com/content/depth-precision-visualized">infinite reversed
+Z</a> configuration. This allows for good numeric
+precision for both nearby and far away objects, avoiding visual artifacts.</p>
+<h4 id="zooming-1"><a class="header" href="#zooming-1">Zooming</a></h4>
+<p>To &quot;zoom&quot;, change the perspective projection's FOV.</p>
+<pre><code class="language-rust no_run noplayground">fn zoom_perspective(
+    mut query_camera: Query&lt;&amp;mut Projection, With&lt;MyCameraMarker&gt;&gt;,
+) {
+    // assume perspective. do nothing if orthographic.
+    let Projection::Perspective(persp) = query_camera.single_mut().into_inner() else {
+        return;
+    };
+    // zoom in
+    persp.fov /= 1.25;
+    // zoom out
+    persp.fov *= 1.25;
+}</code></pre>
+<p>If the camera does not move, decreasing the FOV makes everything appear closer
+and increasing it makes everything appear more distant:</p>
+<p><img src="3d//img/camera-3d-fov-zoom.png" alt="Side-by-side comparison of a &quot;zoomed in&quot; (small FOV) and a &quot;zoomed out&quot; (large FOV) 3D scene" /></p>
+<p>Contrast this with moving the camera itself (using the
+<a href="3d//fundamentals/transforms.html">transform</a>) closer or further away, while keeping the FOV the
+same:</p>
+<p><img src="3d//img/camera-3d-position.png" alt="Side-by-side comparison of a camera positioned nearer to vs. further away from a 3D scene" /></p>
+<p>In some applications (such as 3D editors), moving the camera might be preferable,
+instead of changing the FOV.</p>
+<h3 id="orthographic-projections"><a class="header" href="#orthographic-projections">Orthographic Projections</a></h3>
+<p>An Orthographic projection makes everything always look the same size,
+regardless of the distance from the camera. It can feel like if 3D was squashed
+down into 2D.</p>
+<p>Orthographic is useful for applications such as CAD and engineering, where you
+want to accurately represent the dimensions of an object. Some games (notably
+simulation games) might use orthographic as an artistic choice.</p>
+<p>Orthographic can feel confusing and unintuitive to some people, because it does
+not create any sense of 3D space. You cannot tell how far away anything is. It
+creates a perfectly &quot;flat&quot; look. When displayed from a top-down diagonal angle,
+this artistic style is sometimes referred to as &quot;isometric&quot;.</p>
+<p>You should set the <a href="https://docs.rs/bevy/0.12.0/bevy/render/camera/enum.ScalingMode.html"><code>ScalingMode</code></a> according to how you want
+to handle window size / resolution.</p>
+<pre><code class="language-rust no_run noplayground">use bevy::render::camera::ScalingMode;
+
+commands.spawn((
+    Camera3dBundle {
+        projection: OrthographicProjection {
+            // For this example, let's make the screen/window height
+            // correspond to 16.0 world units.
+            scaling_mode: ScalingMode::FixedVertical(16.0),
+            ..default()
+        }.into(),
+        // the distance doesn't really matter for orthographic,
+        // it should look the same (though it might affect
+        // shadows and clipping / culling)
+        transform: Transform::from_xyz(10.0, 12.0, 16.0)
+            .looking_at(Vec3::ZERO, Vec3::Y),
+        ..default()
+    },
+    MyCameraMarker,
+));</code></pre>
+<p><img src="3d//img/camera-3d-orthographic.png" alt="Visualization of a 3D scene with orthographic projection" /></p>
+<h4 id="zooming-2"><a class="header" href="#zooming-2">Zooming</a></h4>
+<p>To &quot;zoom&quot;, change the orthographic projection's scale. The scale determines
+how much of the scene is visible.</p>
+<pre><code class="language-rust no_run noplayground">fn zoom_orthographic(
+    mut query_camera: Query&lt;&amp;mut Projection, With&lt;MyCameraMarker&gt;&gt;,
+) {
+    // assume orthographic. do nothing if perspective.
+    let Projection::Orthographic(ortho) = query_camera.single_mut().into_inner() else {
+        return;
+    };
+    // zoom in
+    ortho.scale /= 1.25;
+    // zoom out
+    ortho.scale *= 1.25;
+}</code></pre>
+<p><img src="3d//img/camera-3d-orthographic-zoom.png" alt="Side-by-side comparison of different orthographic projection scale in 3D" /></p>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="3d//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
 </tbody></table>
 </div>

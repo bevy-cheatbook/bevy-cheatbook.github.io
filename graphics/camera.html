@@ -215,59 +215,33 @@ that feel appropriate to your game's genre and gameplay.</p>
 <p>Do not use the transform scale to &quot;zoom&quot; a camera! It just stretches the image,
 which is not &quot;zooming&quot;. It might also cause other issues and incompatibilities.
 Use the <a href="/graphics/camera.html#projection">projection</a> to zoom.</p>
-<p>For orthographic projections, change the projection's scale. This way you can be
-confident about how exactly coordinate/units map to the screen. This also helps
-avoid scaling artifacts with 2D assets.</p>
-<pre><code class="language-rust no_run noplayground">fn zoom_2d(
-    mut q: Query&lt;&amp;mut OrthographicProjection, With&lt;MyGameCamera&gt;&gt;,
-) {
-    let mut projection = q.single_mut();
-
-    // example: zoom in
-    projection.scale *= 1.25;
-    // example: zoom out
-    projection.scale *= 0.75;
-
-    // always ensure you end up with sane values
-    // (pick an upper and lower bound for your application)
-    projection.scale = projection.scale.clamp(0.5, 5.0);
-}</code></pre>
-<p>For 3D perspective projections, change the FOV. This achieves the desired 3D
-effect of zooming with a lens, while keeping the camera at the same distance
-from what it is looking at. Decrease the FOV to &quot;zoom in&quot; (make objects appear
-closer). Increase the FOV to &quot;zoom out&quot; (make objects appear further away,
-increase the stretching due to the perspective effect).</p>
-<pre><code class="language-rust no_run noplayground">fn zoom_3d(
-    mut q: Query&lt;&amp;mut PerspectiveProjection, With&lt;MyGameCamera&gt;&gt;,
-) {
-    let mut projection = q.single_mut();
-
-    // example: zoom in
-    projection.fov *= 1.25;
-    // example: zoom out
-    projection.fov *= 0.75;
-
-    // always ensure you end up with sane values
-    // (pick an upper and lower bound for your application)
-    projection.fov = projection.fov.clamp(30.0f32.to_radians(), 90.0f32.to_radians());
-}</code></pre>
-<p>In some applications (like 3D editors), &quot;zooming&quot; might mean moving the camera
-closer or farther away, instead of changing the FOV.</p>
+<p>For an orthographic projection, change the scale. For a perspective projection,
+change the FOV. The FOV mimics the effect of zooming with a lens.</p>
+<p>Learn more about how to do this in <a href="/2d/camera.html#projection">2D</a> or
+<a href="/3d/camera.html#projection">3D</a>.</p>
 <h2 id="projection"><a class="header" href="#projection">Projection</a></h2>
 <p>The camera projection is responsible for mapping the coordinate system to the
-viewport. This effectively determines the &quot;coordinate space&quot; you are working in.</p>
+viewport (commonly, the screen/window). It is what configures the coordinate
+space, as well as any scaling/stretching of the image.</p>
 <p>Bevy provides two kinds of projections:
 <a href="https://docs.rs/bevy/0.12.0/bevy/render/camera/struct.OrthographicProjection.html"><code>OrthographicProjection</code></a> and
 <a href="https://docs.rs/bevy/0.12.0/bevy/render/camera/struct.PerspectiveProjection.html"><code>PerspectiveProjection</code></a>. They are configurable,
-to be able to serve a variety of different use cases. See the dedicated pages
-for <a href="/2d/camera.html">2D cameras</a> and <a href="/3d/camera.html">3D cameras</a> to learn more
-about what you can do with them.</p>
+to be able to serve a variety of different use cases.</p>
+<p>Orthographic means that everything always appears the same size, regardless of
+how far away it is from the camera.</p>
+<p>Perspective means that things appear smaller the further away they are from
+the camera. This is the effect that gives 3D graphics a sense of depth and
+distance.</p>
+<p><a href="/2d/camera.html">2D cameras</a> are always orthographic.</p>
+<p><a href="/3d/camera.html">3D cameras</a> can use either kind of projection. Perspective is
+the most common (and default) choice. Orthographic is useful for applications
+such as CAD and engineering, where you want to accurately represent the
+dimensions of an object, instead of creating a realistic sense of 3D space. Some
+games (notably simulation games) use orthographic as an artistic choice.</p>
 <p>It is possible to implement your own <a href="/cookbook/custom-projection.html">custom camera
 projections</a>. This can give you full control over
 the coordinate system. However, beware that things might behave in unexpected
 ways if you violate Bevy's <a href="/fundamentals/coords.html">coordinate system conventions</a>!</p>
-<p>Note that Bevy uses a an <a href="https://developer.nvidia.com/content/depth-precision-visualized">infinite reversed
-Z</a> configuration for 3D.</p>
 <h2 id="hdr-and-tonemapping"><a class="header" href="#hdr-and-tonemapping">HDR and Tonemapping</a></h2>
 <p><a href="/graphics/hdr-tonemap.html">See here!</a></p>
 <h2 id="render-target"><a class="header" href="#render-target">Render Target</a></h2>

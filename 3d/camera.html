@@ -177,12 +177,171 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(outdated!)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-12">0.12</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="3d-camera-setup"><a class="header" href="#3d-camera-setup">3D Camera Setup</a></h1>
-<p>Page coming soon…</p>
-<p>In the meantime, you can learn from Bevy's <a href="https://github.com/bevyengine/bevy/tree/latest/examples#examples">examples</a>.</p>
+<p><a href="/graphics/camera.html">Cameras</a> in Bevy are mandatory to see anything: they configure the
+rendering.</p>
+<p>This page will teach you about the specifics of 3D cameras. If you want to learn about
+general non-3D specific functionality, see the <a href="/graphics/camera.html">general page on cameras</a>.</p>
+<h2 id="creating-a-3d-camera"><a class="header" href="#creating-a-3d-camera">Creating a 3D Camera</a></h2>
+<p>Bevy provides a <a href="/programming/bundle.html">bundle</a> that you can use to <a href="/programming/commands.html">spawn</a> a
+camera <a href="/programming/ec.html#entities">entity</a>. It has reasonable defaults to set up everything
+correctly.</p>
+<p>You might want to set the <a href="/fundamentals/transforms.html">transform</a>, to position the camera.</p>
+<pre><code class="language-rust no_run noplayground">commands.spawn((
+    Camera3dBundle {
+        transform: Transform::from_xyz(10.0, 12.0, 16.0)
+            .looking_at(Vec3::ZERO, Vec3::Y),
+        ..default()
+    },
+    MyCameraMarker,
+));</code></pre>
+<p>The &quot;looking at&quot; function is an easy way to orient a 3D camera. The second
+parameter (which we provide as <code>Y</code>) is the &quot;up&quot; direction. If you want the camera
+to be tilted sideways, you can use something else there. If you want to make a
+top-down camera, looking straight down, you need to use something other than <code>Y</code>.</p>
+<h2 id="projection"><a class="header" href="#projection">Projection</a></h2>
+<p>The <a href="/graphics/camera.html#projection">projection</a> is what determines how coordinates map to the
+<a href="/graphics/camera.html#viewport">viewport</a> (commonly, the screen/window).</p>
+<p>3D cameras can use either a Perspective or an Orthographic projection.
+Perspective is the default, and most common, choice.</p>
+<p>When you spawn a 3D camera using Bevy's <a href="/programming/bundle.html">bundle</a>
+(<a href="https://docs.rs/bevy/0.12.0/bevy/core_pipeline/core_2d/struct.Camera2dBundle.html"><code>Camera3dBundle</code></a>), it adds the
+<a href="https://docs.rs/bevy/0.12.0/bevy/render/camera/enum.Projection.html"><code>Projection</code></a> <a href="/programming/ec.html#components">component</a> to your
+<a href="/programming/ec.html#entities">entity</a>, which is an <code>enum</code>, allowing either projection kind to be
+used.</p>
+<p>When you are working with 3D cameras and you want to access the projection, you
+should <a href="/programming/queries.html">query</a> for the <a href="https://docs.rs/bevy/0.12.0/bevy/render/camera/struct.OrthographicProjection.html"><code>Projection</code></a>
+<a href="/programming/ec.html#components">component</a> type. You can then match on the enum, to handle each
+case appropriately.</p>
+<pre><code class="language-rust no_run noplayground">fn debug_projection(
+    query_camera: Query&lt;&amp;Projection, With&lt;MyCameraMarker&gt;&gt;,
+) {
+    let projection = query_camera.single();
+    match projection {
+        Projection::Perspective(persp) =&gt; {
+            // we have a perspective projection
+        }
+        Projection::Orthographic(ortho) =&gt; {
+            // we have an orthographic projection
+        }
+    }
+}</code></pre>
+<p>Note that this is different from <a href="/2d/camera.html#projection">2D</a>. If you are
+making a library or some other code that should be able to handle both 2D and
+3D, you cannot make a single <a href="/programming/queries.html">query</a> to access both 2D and 3D
+cameras. You should create separate <a href="/programming/systems.html">systems</a>, or at least two
+separate queries, to handle each kind of camera. This makes sense, as you will
+likely need different logic for 2D vs. 3D anyway.</p>
+<h3 id="perspective-projections"><a class="header" href="#perspective-projections">Perspective Projections</a></h3>
+<p>Perspective creates a realistic sense of 3D space. Things appear smaller the
+further away they are from the camera. This is how things appear to the human
+eye, and to real-life cameras.</p>
+<p>The most important variable here is the FOV (Field-of-View). The FOV determines
+the strength of the perspective effect. The FOV is the angle covered by the
+height of the screen/image.</p>
+<p>A larger FOV is like a wide-angle camera lens. It makes everything appear more
+distant, stretched, &quot;zoomed out&quot;. You can see more on-screen.</p>
+<p>A smaller FOV is like a telephoto camera lens. It makes everything appear closer
+and flatter, &quot;zoomed in&quot;. You can see less on-screen.</p>
+<p>For reference, a good neutral value is 45° (narrower, Bevy default) or 60°
+(wider). 90° is very wide. 30° is very narrow.</p>
+<pre><code class="language-rust no_run noplayground">commands.spawn((
+    Camera3dBundle {
+        projection: PerspectiveProjection {
+            // We must specify the FOV in radians.
+            // Rust can convert degrees to radians for us.
+            fov: 60.0_f32.to_radians(),
+            ..default()
+        }.into(),
+        transform: Transform::from_xyz(10.0, 12.0, 16.0)
+            .looking_at(Vec3::ZERO, Vec3::Y),
+        ..default()
+    },
+    MyCameraMarker,
+));</code></pre>
+<p><img src="/img/camera-3d-fov.png" alt="Side-by-side comparison of different FOV values." /></p>
+<p>In the above image, we are halving/doubling the FOV and doubling/halving
+how far away the camera is positioned, to compensate. Note how you can see
+pretty much the same 3D content, but the higher FOV looks more stretched
+and has a stronger 3D perspective effect.</p>
+<p>Internally, Bevy's perspective projection uses an <a href="https://developer.nvidia.com/content/depth-precision-visualized">infinite reversed
+Z</a> configuration. This allows for good numeric
+precision for both nearby and far away objects, avoiding visual artifacts.</p>
+<h4 id="zooming"><a class="header" href="#zooming">Zooming</a></h4>
+<p>To &quot;zoom&quot;, change the perspective projection's FOV.</p>
+<pre><code class="language-rust no_run noplayground">fn zoom_perspective(
+    mut query_camera: Query&lt;&amp;mut Projection, With&lt;MyCameraMarker&gt;&gt;,
+) {
+    // assume perspective. do nothing if orthographic.
+    let Projection::Perspective(persp) = query_camera.single_mut().into_inner() else {
+        return;
+    };
+    // zoom in
+    persp.fov /= 1.25;
+    // zoom out
+    persp.fov *= 1.25;
+}</code></pre>
+<p>If the camera does not move, decreasing the FOV makes everything appear closer
+and increasing it makes everything appear more distant:</p>
+<p><img src="/img/camera-3d-fov-zoom.png" alt="Side-by-side comparison of a &quot;zoomed in&quot; (small FOV) and a &quot;zoomed out&quot; (large FOV) 3D scene" /></p>
+<p>Contrast this with moving the camera itself (using the
+<a href="/fundamentals/transforms.html">transform</a>) closer or further away, while keeping the FOV the
+same:</p>
+<p><img src="/img/camera-3d-position.png" alt="Side-by-side comparison of a camera positioned nearer to vs. further away from a 3D scene" /></p>
+<p>In some applications (such as 3D editors), moving the camera might be preferable,
+instead of changing the FOV.</p>
+<h3 id="orthographic-projections"><a class="header" href="#orthographic-projections">Orthographic Projections</a></h3>
+<p>An Orthographic projection makes everything always look the same size,
+regardless of the distance from the camera. It can feel like if 3D was squashed
+down into 2D.</p>
+<p>Orthographic is useful for applications such as CAD and engineering, where you
+want to accurately represent the dimensions of an object. Some games (notably
+simulation games) might use orthographic as an artistic choice.</p>
+<p>Orthographic can feel confusing and unintuitive to some people, because it does
+not create any sense of 3D space. You cannot tell how far away anything is. It
+creates a perfectly &quot;flat&quot; look. When displayed from a top-down diagonal angle,
+this artistic style is sometimes referred to as &quot;isometric&quot;.</p>
+<p>You should set the <a href="https://docs.rs/bevy/0.12.0/bevy/render/camera/enum.ScalingMode.html"><code>ScalingMode</code></a> according to how you want
+to handle window size / resolution.</p>
+<pre><code class="language-rust no_run noplayground">use bevy::render::camera::ScalingMode;
+
+commands.spawn((
+    Camera3dBundle {
+        projection: OrthographicProjection {
+            // For this example, let's make the screen/window height
+            // correspond to 16.0 world units.
+            scaling_mode: ScalingMode::FixedVertical(16.0),
+            ..default()
+        }.into(),
+        // the distance doesn't really matter for orthographic,
+        // it should look the same (though it might affect
+        // shadows and clipping / culling)
+        transform: Transform::from_xyz(10.0, 12.0, 16.0)
+            .looking_at(Vec3::ZERO, Vec3::Y),
+        ..default()
+    },
+    MyCameraMarker,
+));</code></pre>
+<p><img src="/img/camera-3d-orthographic.png" alt="Visualization of a 3D scene with orthographic projection" /></p>
+<h4 id="zooming-1"><a class="header" href="#zooming-1">Zooming</a></h4>
+<p>To &quot;zoom&quot;, change the orthographic projection's scale. The scale determines
+how much of the scene is visible.</p>
+<pre><code class="language-rust no_run noplayground">fn zoom_orthographic(
+    mut query_camera: Query&lt;&amp;mut Projection, With&lt;MyCameraMarker&gt;&gt;,
+) {
+    // assume orthographic. do nothing if perspective.
+    let Projection::Orthographic(ortho) = query_camera.single_mut().into_inner() else {
+        return;
+    };
+    // zoom in
+    ortho.scale /= 1.25;
+    // zoom out
+    ortho.scale *= 1.25;
+}</code></pre>
+<p><img src="/img/camera-3d-orthographic-zoom.png" alt="Side-by-side comparison of different orthographic projection scale in 3D" /></p>
 
                     </main>
 

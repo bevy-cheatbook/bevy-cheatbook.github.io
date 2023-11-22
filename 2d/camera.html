@@ -177,12 +177,123 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(outdated!)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-12">0.12</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="2d-camera-setup"><a class="header" href="#2d-camera-setup">2D Camera Setup</a></h1>
-<p>Page coming soon…</p>
-<p>In the meantime, you can learn from Bevy's <a href="https://github.com/bevyengine/bevy/tree/latest/examples#examples">examples</a>.</p>
+<p><a href="/graphics/camera.html">Cameras</a> in Bevy are mandatory to see anything: they configure the
+rendering.</p>
+<p>This page will teach you about the specifics of 2D cameras. If you want to learn about
+general non-2D specific functionality, see the <a href="/graphics/camera.html">general page on cameras</a>.</p>
+<h2 id="creating-a-2d-camera"><a class="header" href="#creating-a-2d-camera">Creating a 2D Camera</a></h2>
+<p>Bevy provides a <a href="/programming/bundle.html">bundle</a> (<a href="https://docs.rs/bevy/0.12.0/bevy/core_pipeline/core_2d/struct.Camera2dBundle.html"><code>Camera2dBundle</code></a>)
+that you can use to <a href="/programming/commands.html">spawn</a> a camera <a href="/programming/ec.html#entities">entity</a>. It
+has reasonable defaults to set up everything correctly.</p>
+<p>You might want to set the <a href="/fundamentals/transforms.html">transform</a>, to position the camera.</p>
+<pre><code class="language-rust no_run noplayground">commands.spawn((
+    Camera2dBundle {
+        transform: Transform::from_xyz(100.0, 200.0, 0.0),
+        ..default()
+    },
+    MyCameraMarker,
+));</code></pre>
+<h2 id="projection"><a class="header" href="#projection">Projection</a></h2>
+<p>The <a href="/graphics/camera.html#projection">projection</a> is what determines how coordinates map to the
+<a href="/graphics/camera.html#viewport">viewport</a> (commonly, the screen/window).</p>
+<p>2D cameras always use an Orthographic projection.</p>
+<p>When you spawn a 2D camera using <a href="https://docs.rs/bevy/0.12.0/bevy/core_pipeline/core_2d/struct.Camera2dBundle.html"><code>Camera2dBundle</code></a>,
+it adds the <a href="https://docs.rs/bevy/0.12.0/bevy/render/camera/struct.OrthographicProjection.html"><code>OrthographicProjection</code></a>
+<a href="/programming/ec.html#components">component</a> to your <a href="/programming/ec.html#entities">entity</a>. When
+you are working with 2D cameras and you want to access
+the projection, you should <a href="/programming/queries.html">query</a> for
+<a href="https://docs.rs/bevy/0.12.0/bevy/render/camera/struct.OrthographicProjection.html"><code>OrthographicProjection</code></a>.</p>
+<pre><code class="language-rust no_run noplayground">fn debug_projection(
+    query_camera: Query&lt;&amp;OrthographicProjection, With&lt;MyCameraMarker&gt;&gt;,
+) {
+    let projection = query_camera.single();
+    // ... do something with the projection
+}</code></pre>
+<p>Note that this is different from <a href="/3d/camera.html#projection">3D</a>. If you are
+making a library or some other code that should be able to handle both 2D and
+3D, you cannot make a single <a href="/programming/queries.html">query</a> to access both 2D and 3D
+cameras. You should create separate <a href="/programming/systems.html">systems</a>, or at least two
+separate queries, to handle each kind of camera. This makes sense, as you will
+likely need different logic for 2D vs. 3D anyway.</p>
+<h3 id="scaling-mode"><a class="header" href="#scaling-mode">Scaling Mode</a></h3>
+<p>You can set the <a href="https://docs.rs/bevy/0.12.0/bevy/render/camera/enum.ScalingMode.html"><code>ScalingMode</code></a> according to how you want to
+handle window size / resolution.</p>
+<p>The default for Bevy 2D cameras is to have 1 screen pixel correspond to 1 world
+unit, thus allowing you to think of everything in &quot;pixels&quot;. When the window is
+resized, that causes more or less content to be seen.</p>
+<p>If you want to keep this window resizing behavior, but change the mapping of screen
+pixels to world units, use <code>ScalingMode::WindowSize(x)</code> with a value other than <code>1.0</code>.
+The value represents the number of screen pixels for one world unit.</p>
+<p>If, instead, you want to always fit the same amount of content
+on-screen, regardless of resolution, you should use something like
+<code>ScalingMode::FixedVertical</code> or <code>ScalingMode::AutoMax</code>. Then, you can directly
+specify how many units you want to display on-screen, and your content will
+be upscaled/downscaled as appropriate to fit the window size.</p>
+<pre><code class="language-rust no_run noplayground">use bevy::render::camera::ScalingMode;
+
+commands.spawn((
+    Camera2dBundle {
+        projection: OrthographicProjection {
+            // For this example, let's make the screen/window height
+            // correspond to 1600.0 world units. The width will
+            // depend on the aspect ratio.
+            scaling_mode: ScalingMode::FixedVertical(1600.0),
+            ..default()
+        },
+        transform: Transform::from_xyz(100.0, 200.0, 0.0),
+        ..default()
+    },
+    MyCameraMarker,
+));</code></pre>
+<h3 id="zooming"><a class="header" href="#zooming">Zooming</a></h3>
+<p>To &quot;zoom&quot; in 2D, you can change the orthographic projection's <code>scale</code>. This
+allows you to just scale everything by some factor, regardless of the
+<a href="https://docs.rs/bevy/0.12.0/bevy/render/camera/enum.ScalingMode.html"><code>ScalingMode</code></a> behavior.</p>
+<pre><code class="language-rust no_run noplayground">fn zoom_scale(
+    mut query_camera: Query&lt;&amp;mut OrthographicProjection, With&lt;MyCameraMarker&gt;&gt;,
+) {
+    let mut projection = query_camera.single_mut();
+    // zoom in
+    projection.scale /= 1.25;
+    // zoom out
+    projection.scale *= 1.25;
+}</code></pre>
+<p>Alternatively, you can reconfigure the <a href="https://docs.rs/bevy/0.12.0/bevy/render/camera/enum.ScalingMode.html"><code>ScalingMode</code></a>. This
+way you can be confident about how exactly coordinates/units map to the
+screen. This also helps avoid scaling artifacts with 2D assets, especially
+pixel art.</p>
+<pre><code class="language-rust no_run noplayground">fn zoom_scalingmode(
+    mut query_camera: Query&lt;&amp;mut OrthographicProjection, With&lt;MyCameraMarker&gt;&gt;,
+) {
+    use bevy::render::camera::ScalingMode;
+
+    let mut projection = query_camera.single_mut();
+    // 4 screen pixels to world/game pixel
+    projection.scaling_mode = ScalingMode::WindowSize(4.0);
+    // 6 screen pixels to world/game pixel
+    projection.scaling_mode = ScalingMode::WindowSize(6.0);
+}</code></pre>
+<p>Consider having a list of predefined &quot;zoom levels&quot; / scale values, so that you
+can make sure your game always looks good.</p>
+<p>If you are making a pixel-art game, you want to make sure the default texture
+filtering mode is set to Nearest (and not Linear), if you want your pixels
+to appear crisp instead of blurry:</p>
+<pre><code class="language-rust no_run noplayground">fn main() {
+    App::new()
+        .add_plugins(
+            DefaultPlugins
+                .set(ImagePlugin::default_nearest())
+        )
+        // ...
+        .run();
+}</code></pre>
+<p>However, when <em>downscaling</em>, Linear (the default) filtering is preferred
+for higher quality. So, for games with high-res assets, you want to leave
+it unchanged.</p>
 
                     </main>
 
