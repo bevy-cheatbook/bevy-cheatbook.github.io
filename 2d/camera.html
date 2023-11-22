@@ -190,13 +190,25 @@ general non-2D specific functionality, see the <a href="/graphics/camera.html">g
 that you can use to <a href="/programming/commands.html">spawn</a> a camera <a href="/programming/ec.html#entities">entity</a>. It
 has reasonable defaults to set up everything correctly.</p>
 <p>You might want to set the <a href="/fundamentals/transforms.html">transform</a>, to position the camera.</p>
-<pre><code class="language-rust no_run noplayground">commands.spawn((
-    Camera2dBundle {
-        transform: Transform::from_xyz(100.0, 200.0, 0.0),
-        ..default()
-    },
-    MyCameraMarker,
-));</code></pre>
+<pre><code class="language-rust no_run noplayground">#[derive(Component)]
+struct MyCameraMarker;
+
+fn setup_camera(mut commands: Commands) {
+    commands.spawn((
+        Camera2dBundle {
+            transform: Transform::from_xyz(100.0, 200.0, 0.0),
+            ..default()
+        },
+        MyCameraMarker,
+    ));
+}
+
+fn main() {
+    App::new()
+        .add_plugins(DefaultPlugins)
+        .add_systems(Startup, setup_camera)
+        .run();
+}</code></pre>
 <h2 id="projection"><a class="header" href="#projection">Projection</a></h2>
 <p>The <a href="/graphics/camera.html#projection">projection</a> is what determines how coordinates map to the
 <a href="/graphics/camera.html#viewport">viewport</a> (commonly, the screen/window).</p>

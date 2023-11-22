@@ -190,14 +190,26 @@ general non-3D specific functionality, see the <a href="/graphics/camera.html">g
 camera <a href="/programming/ec.html#entities">entity</a>. It has reasonable defaults to set up everything
 correctly.</p>
 <p>You might want to set the <a href="/fundamentals/transforms.html">transform</a>, to position the camera.</p>
-<pre><code class="language-rust no_run noplayground">commands.spawn((
-    Camera3dBundle {
-        transform: Transform::from_xyz(10.0, 12.0, 16.0)
-            .looking_at(Vec3::ZERO, Vec3::Y),
-        ..default()
-    },
-    MyCameraMarker,
-));</code></pre>
+<pre><code class="language-rust no_run noplayground">#[derive(Component)]
+struct MyCameraMarker;
+
+fn setup_camera(mut commands: Commands) {
+    commands.spawn((
+        Camera3dBundle {
+            transform: Transform::from_xyz(10.0, 12.0, 16.0)
+                .looking_at(Vec3::ZERO, Vec3::Y),
+            ..default()
+        },
+        MyCameraMarker,
+    ));
+}
+
+fn main() {
+    App::new()
+        .add_plugins(DefaultPlugins)
+        .add_systems(Startup, setup_camera)
+        .run();
+}</code></pre>
 <p>The &quot;looking at&quot; function is an easy way to orient a 3D camera. The second
 parameter (which we provide as <code>Y</code>) is the &quot;up&quot; direction. If you want the camera
 to be tilted sideways, you can use something else there. If you want to make a

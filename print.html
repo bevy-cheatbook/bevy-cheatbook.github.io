@@ -3823,13 +3823,25 @@ general non-2D specific functionality, see the <a href="2d//graphics/camera.html
 that you can use to <a href="2d//programming/commands.html">spawn</a> a camera <a href="2d//programming/ec.html#entities">entity</a>. It
 has reasonable defaults to set up everything correctly.</p>
 <p>You might want to set the <a href="2d//fundamentals/transforms.html">transform</a>, to position the camera.</p>
-<pre><code class="language-rust no_run noplayground">commands.spawn((
-    Camera2dBundle {
-        transform: Transform::from_xyz(100.0, 200.0, 0.0),
-        ..default()
-    },
-    MyCameraMarker,
-));</code></pre>
+<pre><code class="language-rust no_run noplayground">#[derive(Component)]
+struct MyCameraMarker;
+
+fn setup_camera(mut commands: Commands) {
+    commands.spawn((
+        Camera2dBundle {
+            transform: Transform::from_xyz(100.0, 200.0, 0.0),
+            ..default()
+        },
+        MyCameraMarker,
+    ));
+}
+
+fn main() {
+    App::new()
+        .add_plugins(DefaultPlugins)
+        .add_systems(Startup, setup_camera)
+        .run();
+}</code></pre>
 <h2 id="projection-1"><a class="header" href="#projection-1">Projection</a></h2>
 <p>The <a href="2d//graphics/camera.html#projection">projection</a> is what determines how coordinates map to the
 <a href="2d//graphics/camera.html#viewport">viewport</a> (commonly, the screen/window).</p>
@@ -3951,14 +3963,26 @@ general non-3D specific functionality, see the <a href="3d//graphics/camera.html
 camera <a href="3d//programming/ec.html#entities">entity</a>. It has reasonable defaults to set up everything
 correctly.</p>
 <p>You might want to set the <a href="3d//fundamentals/transforms.html">transform</a>, to position the camera.</p>
-<pre><code class="language-rust no_run noplayground">commands.spawn((
-    Camera3dBundle {
-        transform: Transform::from_xyz(10.0, 12.0, 16.0)
-            .looking_at(Vec3::ZERO, Vec3::Y),
-        ..default()
-    },
-    MyCameraMarker,
-));</code></pre>
+<pre><code class="language-rust no_run noplayground">#[derive(Component)]
+struct MyCameraMarker;
+
+fn setup_camera(mut commands: Commands) {
+    commands.spawn((
+        Camera3dBundle {
+            transform: Transform::from_xyz(10.0, 12.0, 16.0)
+                .looking_at(Vec3::ZERO, Vec3::Y),
+            ..default()
+        },
+        MyCameraMarker,
+    ));
+}
+
+fn main() {
+    App::new()
+        .add_plugins(DefaultPlugins)
+        .add_systems(Startup, setup_camera)
+        .run();
+}</code></pre>
 <p>The &quot;looking at&quot; function is an easy way to orient a 3D camera. The second
 parameter (which we provide as <code>Y</code>) is the &quot;up&quot; direction. If you want the camera
 to be tilted sideways, you can use something else there. If you want to make a
