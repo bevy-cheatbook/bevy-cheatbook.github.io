@@ -5241,8 +5241,6 @@ knowing the cursor position.</p>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/window/clear_color.rs"><code>clear_color</code></a>.</p>
 <hr />
-<p><a href="window//code/examples/clear-color.rs">Click here for the full example code.</a></p>
-<hr />
 <p>Use the <a href="https://docs.rs/bevy/0.9.1/bevy/core_pipeline/clear_color/struct.ClearColor.html"><code>ClearColor</code></a> <a href="window//programming/res.html">resource</a> to choose the
 default background color. This color will be used as the default for all
 <a href="window//graphics/camera.html">cameras</a>, unless overriden.</p>
@@ -8736,8 +8734,6 @@ sense, as described above, and see how it affects your results.</p>
 </tbody></table>
 </div>
 <h1 id="manual-event-clearing"><a class="header" href="#manual-event-clearing">Manual Event Clearing</a></h1>
-<p><a href="patterns//code/examples/manual-event-clear.rs">Click here to download a full example file with the code from this page.</a></p>
-<hr />
 <p>The <a href="patterns//programming/events.html">event</a> queue needs to be cleared periodically,
 so that it does not grow indefinitely and waste unbounded memory.</p>
 <p>Bevy's default cleanup strategy is to clear events every frame, but with double
@@ -8836,29 +8832,182 @@ task at hand.</p>
 are available and linked on each page.</p>
 <p>It is assumed that you are already familiar with
 <a href="/programming.html">Bevy Programming</a>.</p>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="cookbook//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="cookbook//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-12">0.12</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
-<h1 id="show-framerate-in-console"><a class="header" href="#show-framerate-in-console">Show Framerate in Console</a></h1>
-<p><a href="cookbook//code/examples/print-framerate.rs">Click here for the full example code.</a></p>
-<hr />
-<p>You can use bevy's builtin diagnostics system to print framerate (FPS)
-to the console, for monitoring performance.</p>
-<pre><code class="language-rust no_run noplayground">use bevy::diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin};
-
-fn main() {
-    App::new()
-        .add_plugins(DefaultPlugins)
-        .add_plugin(LogDiagnosticsPlugin::default())
-        .add_plugin(FrameTimeDiagnosticsPlugin::default())
-        .run();
+<h1 id="show-framerate"><a class="header" href="#show-framerate">Show Framerate</a></h1>
+<p>You can use Bevy's builtin diagnostics to measure framerate (FPS), for
+monitoring performance.</p>
+<p>To enable it, add Bevy's diagnostic plugin to your <a href="cookbook//programming/app-builder.html">app</a>:</p>
+<pre><code class="language-rust no_run noplayground">use bevy::diagnostic::FrameTimeDiagnosticsPlugin;
+app.add_plugins(FrameTimeDiagnosticsPlugin::default());</code></pre>
+<h2 id="print-to-console--log"><a class="header" href="#print-to-console--log">Print to Console / Log</a></h2>
+<p>The simplest way to use it is to print the diagnostics to the console
+(<a href="cookbook//fundamentals/log.html">log</a>). If you want to only do it in dev builds, you can add
+a conditional-compilation attribute.</p>
+<pre><code class="language-rust no_run noplayground">#[cfg(debug_assertions)] // debug/dev builds only
+{
+    use bevy::diagnostic::LogDiagnosticsPlugin;
+    app.add_plugins(LogDiagnosticsPlugin::default());
 }</code></pre>
+<h2 id="in-game--on-screen-fps-counter"><a class="header" href="#in-game--on-screen-fps-counter">In-Game / On-Screen FPS counter</a></h2>
+<p>You can use Bevy UI to create an in-game FPS counter.</p>
+<p>It is recommended that you create a new UI root (entity without
+a parent) with absolute positioning, so that you can control the
+exact position where the FPS counter appears, and so it doesn't
+affect the rest of your UI.</p>
+<p>Here is some example code showing you how to make a very nice-looking and
+readable FPS counter:</p>
+<details>
+  <summary>
+  <code>Code Example (Long):</code>
+  </summary>
+<pre><code class="language-rust no_run noplayground">use bevy::diagnostic::DiagnosticsStore;
+use bevy::diagnostic::FrameTimeDiagnosticsPlugin;
+
+/// Marker to find the container entity so we can show/hide the FPS counter
+#[derive(Component)]
+struct FpsRoot;
+
+/// Marker to find the text entity so we can update it
+#[derive(Component)]
+struct FpsText;
+
+fn setup_fps_counter(
+    mut commands: Commands,
+) {
+    // create our UI root node
+    // this is the wrapper/container for the text
+    let root = commands.spawn((
+        FpsRoot,
+        NodeBundle {
+            // give it a dark background for readability
+            background_color: BackgroundColor(Color::BLACK.with_a(0.5)),
+            // make it &quot;always on top&quot; by setting the Z index to maximum
+            // we want it to be displayed over all other UI
+            z_index: ZIndex::Global(i32::MAX),
+            style: Style {
+                position_type: PositionType::Absolute,
+                // position it at the top-right corner
+                // 1% away from the top window edge
+                right: Val::Percent(1.),
+                top: Val::Percent(1.),
+                // set bottom/left to Auto, so it can be
+                // automatically sized depending on the text
+                bottom: Val::Auto,
+                left: Val::Auto,
+                // give it some padding for readability
+                padding: UiRect::all(Val::Px(4.0)),
+                ..Default::default()
+            },
+            ..Default::default()
+        },
+    )).id();
+    // create our text
+    let text_fps = commands.spawn((
+        FpsText,
+        TextBundle {
+            // use two sections, so it is easy to update just the number
+            text: Text::from_sections([
+                TextSection {
+                    value: &quot;FPS: &quot;.into(),
+                    style: TextStyle {
+                        font_size: 16.0,
+                        color: Color::WHITE,
+                        // if you want to use your game's font asset,
+                        // uncomment this and provide the handle:
+                        // font: my_font_handle
+                        ..default()
+                    }
+                },
+                TextSection {
+                    value: &quot; N/A&quot;.into(),
+                    style: TextStyle {
+                        font_size: 16.0,
+                        color: Color::WHITE,
+                        // if you want to use your game's font asset,
+                        // uncomment this and provide the handle:
+                        // font: my_font_handle
+                        ..default()
+                    }
+                },
+            ]),
+            ..Default::default()
+        },
+    )).id();
+    commands.entity(root).push_children(&amp;[text_fps]);
+}
+
+fn fps_text_update_system(
+    diagnostics: Res&lt;DiagnosticsStore&gt;,
+    mut query: Query&lt;&amp;mut Text, With&lt;FpsText&gt;&gt;,
+) {
+    for mut text in &amp;mut query {
+        // try to get a &quot;smoothed&quot; FPS value from Bevy
+        if let Some(value) = diagnostics
+            .get(FrameTimeDiagnosticsPlugin::FPS)
+            .and_then(|fps| fps.smoothed())
+        {
+            // Format the number as to leave space for 4 digits, just in case,
+            // right-aligned and rounded. This helps readability when the
+            // number changes rapidly.
+            text.sections[1].value = format!(&quot;{value:&gt;4.0}&quot;);
+
+            // Let's make it extra fancy by changing the color of the
+            // text according to the FPS value:
+            text.sections[1].style.color = if value &gt;= 120.0 {
+                // Above 120 FPS, use green color
+                Color::rgb(0.0, 1.0, 0.0)
+            } else if value &gt;= 60.0 {
+                // Between 60-120 FPS, gradually transition from yellow to green
+                Color::rgb(
+                    (1.0 - (value - 60.0) / (120.0 - 60.0)) as f32,
+                    1.0,
+                    0.0,
+                )
+            } else if value &gt;= 30.0 {
+                // Between 30-60 FPS, gradually transition from red to yellow
+                Color::rgb(
+                    1.0,
+                    ((value - 30.0) / (60.0 - 30.0)) as f32,
+                    0.0,
+                )
+            } else {
+                // Below 30 FPS, use red color
+                Color::rgb(1.0, 0.0, 0.0)
+            }
+        } else {
+            // display &quot;N/A&quot; if we can't get a FPS measurement
+            // add an extra space to preserve alignment
+            text.sections[1].value = &quot; N/A&quot;.into();
+            text.sections[1].style.color = Color::WHITE;
+        }
+    }
+}
+
+/// Toggle the FPS counter when pressing F12
+fn fps_counter_showhide(
+    mut q: Query&lt;&amp;mut Visibility, With&lt;FpsRoot&gt;&gt;,
+    kbd: Res&lt;Input&lt;KeyCode&gt;&gt;,
+) {
+    if kbd.just_pressed(KeyCode::F12) {
+        let mut vis = q.single_mut();
+        *vis = match *vis {
+            Visibility::Hidden =&gt; Visibility::Visible,
+            _ =&gt; Visibility::Hidden,
+        };
+    }
+}</code></pre>
+<pre><code class="language-rust no_run noplayground">app.add_systems(Startup, setup_fps_counter);
+app.add_systems(Update, (
+    fps_text_update_system,
+    fps_counter_showhide,
+));</code></pre>
+</details>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="cookbook//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(outdated!)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="convert-cursor-to-world-coordinates"><a class="header" href="#convert-cursor-to-world-coordinates">Convert cursor to world coordinates</a></h1>
-<p><a href="cookbook//code/examples/cursor2world.rs">Click here for the full example code.</a></p>
-<hr />
 <h2 id="3d-games"><a class="header" href="#3d-games">3D games</a></h2>
 <p>There is a good (unofficial) plugin:
 <a href="https://github.com/aevyrie/bevy_mod_picking"><code>bevy_mod_picking</code></a>.</p>
@@ -8973,8 +9122,6 @@ fn my_cursor_system_multiwindow(
 </tbody></table>
 </div>
 <h1 id="custom-camera-projection"><a class="header" href="#custom-camera-projection">Custom Camera Projection</a></h1>
-<p><a href="cookbook//code/examples/custom-projection.rs">Click here for the full example code.</a></p>
-<hr />
 <p><strong>Note</strong>: this example is showing you how to do something not officially
 supported/endorsed by Bevy. Do at your own risk.</p>
 <p>Camera with a custom projection (not using one of Bevy's standard perspective
@@ -9076,8 +9223,6 @@ fn main() {
 </tbody></table>
 </div>
 <h1 id="pan--orbit-camera"><a class="header" href="#pan--orbit-camera">Pan + Orbit Camera</a></h1>
-<p><a href="cookbook//code/examples/pan-orbit-camera.rs">Click here for the full example code.</a></p>
-<hr />
 <p>This code is a community contribution.</p>
 <p>Current version developed by <a href="https://github.com/bevy-cheatbook/bevy-cheatbook/pull/1"><strong>@mirenbharta</strong></a>.
 Initial work by <a href="https://github.com/bevy-cheatbook/bevy-cookbook/pull/2"><strong>@skairunner</strong></a>.</p>
@@ -9223,8 +9368,6 @@ fn spawn_camera(mut commands: Commands) {
 </tbody></table>
 </div>
 <h1 id="list-all-resource-types"><a class="header" href="#list-all-resource-types">List All Resource Types</a></h1>
-<p><a href="cookbook//code/examples/print-resources.rs">Click here for the full example code.</a></p>
-<hr />
 <p>This example shows how to print a list of all types that have been added as
 <a href="cookbook//programming/res.html">resources</a>.</p>
 <pre><code class="language-rust no_run noplayground">fn print_resources(world: &amp;World) {
