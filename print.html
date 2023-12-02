@@ -1476,7 +1476,7 @@ fn cursor_to_ground_plane(
     // (we will only work with the primary window)
     q_window: Query&lt;&amp;Window, With&lt;PrimaryWindow&gt;&gt;,
     // query to get camera transform
-    q_camera: Query&lt;(&amp;Camera, &amp;GlobalTransform), With&lt;MainCamera&gt;&gt;,
+    q_camera: Query&lt;(&amp;Camera, &amp;GlobalTransform), With&lt;MyGameCamera&gt;&gt;,
     // query to get ground plane's transform
     q_plane: Query&lt;&amp;GlobalTransform, With&lt;MyGroundPlane&gt;&gt;,
 ) {
@@ -1529,10 +1529,10 @@ fn cursor_to_ground_plane(
     let inverse_transform_matrix = ground_transform.compute_matrix().inverse();
     let local_cursor = inverse_transform_matrix.transform_point3(global_cursor);
 
-    // we can discard the Z coordinate, because it should always be zero
+    // we can discard the Y coordinate, because it should always be zero
     // (our point is supposed to be on the plane)
-    mycoords.local = local_cursor.truncate();
-    eprintln!(&quot;Local cursor coords: {}/{}&quot;, local_cursor.x, local_cursor.y);
+    mycoords.local = local_cursor.xz();
+    eprintln!(&quot;Local cursor coords: {}/{}&quot;, local_cursor.x, local_cursor.z);
 }</code></pre>
 <pre><code class="language-rust no_run noplayground">app.init_resource::&lt;MyGroundCoords&gt;();
 app.add_systems(Startup, setup_3d_scene);
