@@ -179,45 +179,31 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-12">0.12</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="grabbing-the-mouse"><a class="header" href="#grabbing-the-mouse">Grabbing the Mouse</a></h1>
-<p><a href="/code/examples/mouse-grab.rs">Click here for the full example code.</a></p>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/input/mouse_grab.rs"><code>mouse_grab</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/main/examples/input/mouse_grab.rs"><code>mouse_grab</code></a>.</p>
 <hr />
-<p>You can lock/release the mouse cursor using bevy's <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/window/window_settings.rs">window settings
-API</a>.</p>
-<p>Here is an example that locks and hides the cursor in the primary window
-on <a href="/input/mouse.html#mouse-buttons">mouse click</a> and releases it when <a href="/input/keyboard.html">pressing
-<code>Esc</code></a>:</p>
-<pre><code class="language-rust no_run noplayground">use bevy::window::CursorGrabMode;
-
-fn cursor_grab_system(
-    mut windows: ResMut&lt;Windows&gt;,
-    btn: Res&lt;Input&lt;MouseButton&gt;&gt;,
-    key: Res&lt;Input&lt;KeyCode&gt;&gt;,
-) {
-    let window = windows.get_primary_mut().unwrap();
-
-    if btn.just_pressed(MouseButton::Left) {
-        // if you want to use the cursor, but not let it leave the window,
-        // use `Confined` mode:
-        window.set_cursor_grab_mode(CursorGrabMode::Confined);
-
-        // for a game that doesn't use the cursor (like a shooter):
-        // use `Locked` mode to keep the cursor in one place
-        window.set_cursor_grab_mode(CursorGrabMode::Locked);
-        // also hide the cursor
-        window.set_cursor_visibility(false);
-    }
-
-    if key.just_pressed(KeyCode::Escape) {
-        window.set_cursor_grab_mode(CursorGrabMode::None);
-        window.set_cursor_visibility(true);
-    }
-}</code></pre>
+<p>For some genres of games, you want to the mouse to be restricted to the window,
+to prevent it from leaving the window during gameplay.</p>
+<p>To grab the cursor:</p>
+<pre><code class="language-rust no_run noplayground">{{#include ../code012/examples/mouse-grab.rs:grab}}</code></pre>
+<p>To release the cursor:</p>
+<pre><code class="language-rust no_run noplayground">{{#include ../code012/examples/mouse-grab.rs:ungrab}}</code></pre>
+<p>You should grab the cursor during active gameplay and release it when
+the player pauses the game / exits to menu / etc.</p>
+<p>For relative mouse movement, you should use <a href="/input/mouse.html#mouse-motion">mouse motion</a>
+instead of <a href="/input/mouse.html#mouse-cursor-position">cursor input</a> to implement your gameplay.</p>
+<h2 id="platform-differences"><a class="header" href="#platform-differences">Platform Differences</a></h2>
+<p>macOS does not natively support <code>Confined</code> mode. Bevy will fallback to <code>Locked</code>.
+If you want to support macOS and you want to use <a href="/input/mouse.html#mouse-cursor-position">cursor input</a>,
+you might want to implement a &quot;virtual cursor&quot; instead.</p>
+<p>Windows does not natively support <code>Locked</code> mode. Bevy will fallback to <code>Confined</code>.
+You could emulate the locked behavior by re-centering the cursor every frame:</p>
+<pre><code class="language-rust no_run noplayground">{{#include ../code012/examples/mouse-grab.rs:recenter}}</code></pre>
+<pre><code class="language-rust no_run noplayground">{{#include ../code012/examples/mouse-grab.rs:recenter-app}}</code></pre>
 
                     </main>
 
