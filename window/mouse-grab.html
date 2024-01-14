@@ -189,9 +189,33 @@
 <p>For some genres of games, you want to the mouse to be restricted to the window,
 to prevent it from leaving the window during gameplay.</p>
 <p>To grab the cursor:</p>
-<pre><code class="language-rust no_run noplayground">{{#include ../code012/examples/mouse-grab.rs:grab}}</code></pre>
+<pre><code class="language-rust no_run noplayground">use bevy::window::{CursorGrabMode, PrimaryWindow};
+
+fn cursor_grab(
+    mut q_windows: Query&lt;&amp;mut Window, With&lt;PrimaryWindow&gt;&gt;,
+) {
+    let mut primary_window = q_windows.single_mut();
+
+    // if you want to use the cursor, but not let it leave the window,
+    // use `Confined` mode:
+    primary_window.cursor.grab_mode = CursorGrabMode::Confined;
+
+    // for a game that doesn't use the cursor (like a shooter):
+    // use `Locked` mode to keep the cursor in one place
+    primary_window.cursor.grab_mode = CursorGrabMode::Locked;
+
+    // also hide the cursor
+    primary_window.cursor.visible = false;
+}</code></pre>
 <p>To release the cursor:</p>
-<pre><code class="language-rust no_run noplayground">{{#include ../code012/examples/mouse-grab.rs:ungrab}}</code></pre>
+<pre><code class="language-rust no_run noplayground">fn cursor_ungrab(
+    mut q_windows: Query&lt;&amp;mut Window, With&lt;PrimaryWindow&gt;&gt;,
+) {
+    let mut primary_window = q_windows.single_mut();
+
+    primary_window.cursor.grab_mode = CursorGrabMode::None;
+    primary_window.cursor.visible = true;
+}</code></pre>
 <p>You should grab the cursor during active gameplay and release it when
 the player pauses the game / exits to menu / etc.</p>
 <p>For relative mouse movement, you should use <a href="/input/mouse.html#mouse-motion">mouse motion</a>
@@ -202,8 +226,19 @@ If you want to support macOS and you want to use <a href="/input/mouse.html#mous
 you might want to implement a &quot;virtual cursor&quot; instead.</p>
 <p>Windows does not natively support <code>Locked</code> mode. Bevy will fallback to <code>Confined</code>.
 You could emulate the locked behavior by re-centering the cursor every frame:</p>
-<pre><code class="language-rust no_run noplayground">{{#include ../code012/examples/mouse-grab.rs:recenter}}</code></pre>
-<pre><code class="language-rust no_run noplayground">{{#include ../code012/examples/mouse-grab.rs:recenter-app}}</code></pre>
+<pre><code class="language-rust no_run noplayground">#[cfg(target_os = &quot;windows&quot;)]
+fn cursor_recenter(
+    mut q_windows: Query&lt;&amp;mut Window, With&lt;PrimaryWindow&gt;&gt;,
+) {
+    let mut primary_window = q_windows.single_mut();
+    let center = Vec2::new(
+        primary_window.width() / 2.0,
+        primary_window.height() / 2.0,
+    );
+    primary_window.set_cursor_position(Some(center));
+}</code></pre>
+<pre><code class="language-rust no_run noplayground">#[cfg(target_os = &quot;windows&quot;)]
+app.add_systems(Update, cursor_recenter);</code></pre>
 
                     </main>
 
