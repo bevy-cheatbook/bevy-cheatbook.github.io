@@ -10004,7 +10004,8 @@ Windows</a>. The Windows EXE you build inside of WSL2 can
 be run just fine from the Linux commandline, and it will seamlessly run on the
 host system! This way, you don't need any GPU drivers or GUI support inside
 your WSL2 Linux environment. Also, you will be running and testing the Windows
-build of your game, so you can see how it will really perform on Windows.</p>
+build of your game, so you can see how it will really perform on Windows.
+It will run with full performance and use your host Windows GPU drivers.</p>
 <p>Note that when you run Windows binaries from WSL2, they don't get the Linux
 environment variables. <code>cargo run</code> does not just work, because your Bevy game
 will look for its <code>assets</code> folder in the path where the EXE is (which would be
@@ -10013,8 +10014,8 @@ EXE into the project folder after building, and run it directly from there.
 For non-Bevy Rust projects, this would be unnecessary.</p>
 <p>The process can be automated with a little script, to use instead of <code>cargo run</code>:</p>
 <pre><code class="language-sh">#!/bin/sh
-cargo build --target x86_64-pc-windows-msvc &amp;&amp;
-cp target/x86_64-pc-windows-msvc/debug/mygame.exe . &amp;&amp;
+cargo build --target x86_64-pc-windows-gnu &amp;&amp;
+cp target/x86_64-pc-windows-gnu/debug/mygame.exe . &amp;&amp;
 exec ./mygame.exe &quot;$@&quot;
 </code></pre>
 <p>This way you also don't have to type the cross-compilation target every time
@@ -10030,9 +10031,9 @@ require cross-compilation, but is likely to have other issues and limitations.</
 support. It should allow you to simply compile your Bevy game in Linux and
 run it. WSLg will do the dark magic needed to forward graphics and audio to
 the Windows host.</p>
-<p>Your game will only run with 60 FPS, and there will be other performance
-overheads. WSLg is effectively RDP (Remote Desktop) under the hood. It's
-like streaming video from the VM to the host. Some things might be
+<p>Your game will run locked to 60 FPS, and there will be other performance
+problems. WSLg is effectively RDP (Remote Desktop) under the hood. It's
+like streaming video from the VM to the host. Some functionality might be
 broken/unsupported.</p>
 <p>Both Wayland and X11 should work. Wayland is recommended, so be sure to
 enable the <code>&quot;wayland&quot;</code> <a href="platforms/windows//setup/bevy-config.html">cargo feature in Bevy</a>.</p>
@@ -10055,7 +10056,7 @@ sudo apt install vulkan-tools
 </code></pre>
 <p>(<code>dzn</code>, Microsoft's Vulkan driver for WSL2, is technically non-conformant,
 so there may be bugs and other issues, but it seems to work fine)</p>
-<p>Now, you can simply run your Bevy project in Linux:</p>
+<p>Now, you can simply run your Bevy project in Linux in the usual way:</p>
 <pre><code class="language-sh">cargo run
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="platforms//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-12">0.12</a></th><th>(current)</th></tr></thead><tbody>
@@ -10342,8 +10343,8 @@ Then click &quot;Save&quot;.</p>
 </tbody></table>
 </div>
 <h1 id="cross-compilation"><a class="header" href="#cross-compilation">Cross-Compilation</a></h1>
-<p>This sub-chapter covers how to make builds of your Bevy apps to run on a
-different Operating System than the one you are working on.</p>
+<p>This sub-chapter covers how to set up a Rust toolchain to allow you to build
+for a different Operating System than the one you are working on.</p>
 <ul>
 <li><a href="setup//setup/cross/linux-windows.html">Create Windows EXEs from Linux</a></li>
 <li><a href="setup//setup/cross/macos-windows.html">Create Windows EXEs from macOS</a></li>
@@ -10354,19 +10355,55 @@ different Operating System than the one you are working on.</p>
 <h1 id="build-windows-exes-from-linux"><a class="header" href="#build-windows-exes-from-linux">Build Windows EXEs from Linux</a></h1>
 <p>(also check out the <a href="setup/cross//platforms/windows.html">Windows Platform page</a> for info
 about developing for Windows generally)</p>
+<p>If you are working in WSL2, please also see <a href="setup/cross//platforms/windows/wsl2.html">this page for additional instructions</a>.</p>
 <hr />
 <p>Rust offers two different toolchains for building for Windows:</p>
 <ul>
-<li><a href="setup/cross/linux-windows.html#first-time-setup-msvc">MSVC</a>: the default when working in Windows, requires downloading Microsoft SDKs</li>
-<li><a href="setup/cross/linux-windows.html#first-time-setup-gnu">GNU</a>: alternative MINGW-based build</li>
+<li><a href="setup/cross/linux-windows.html#first-time-setup-msvc">MSVC</a></li>
+<li><a href="setup/cross/linux-windows.html#first-time-setup-gnu">GNU</a></li>
 </ul>
 <p>The instructions on this page use the <code>x86_64</code> architecture, but you could also
 set up a toolchain to target <code>i686</code> (32-bit) or <code>aarch64</code> (Windows-on-Arm) the
 same way.</p>
+<p>As of Bevy 0.12, cross-compiling with MSVC no longer works, because there
+are some dependencies that assume you are running Windows and that they can
+run Windows EXEs from their build scripts. As such, it is now recommended
+that you use the GNU toolchain for cross-compiling. Instructions for setting
+up MSVC are still provided on this page for completeness (and it could be
+useful for your other Rust projects).</p>
+<h2 id="first-time-setup-gnu"><a class="header" href="#first-time-setup-gnu">First-Time Setup (GNU)</a></h2>
+<p>On many Linux distros, the GNU/MINGW toolchain is the easier option. Your
+distro likely provides packages that you can easily install. Also, you do
+not need to accept any Microsoft licenses.</p>
+<details>
+  <summary>
+  Setup Instructions:
+  </summary>
+<h3 id="rust-toolchain-gnu"><a class="header" href="#rust-toolchain-gnu">Rust Toolchain (GNU)</a></h3>
+<p>Add the target to your Rust installation (assuming you use <a href="https://rustup.rs"><code>rustup</code></a>):</p>
+<pre><code class="language-sh">rustup target add x86_64-pc-windows-gnu
+</code></pre>
+<p>This installs the files Rust needs to compile for Windows, including the
+Rust standard library.</p>
+<h3 id="mingw"><a class="header" href="#mingw">MINGW</a></h3>
+<p>The GNU toolchain requires the MINGW environment to be installed. Your distro likely
+provides a package for it. Search your distro for a cross-compilation mingw package.</p>
+<p>It might be called something like: <code>mingw-w64-x86-64-dev</code>, <code>cross-x86_64-w64-mingw32</code>, etc.,
+the name varies in different distros.</p>
+<p>You don't need any files from Microsoft.</p>
+</details>
 <h2 id="first-time-setup-msvc"><a class="header" href="#first-time-setup-msvc">First-Time Setup (MSVC)</a></h2>
-<p>The MSVC toolchain is what the Rust community usually recommends for targetting
-the Windows platform. You can actually set it up and use it on Linux (and other
-UNIX-like systems), using some special tooling, which will be explained below.</p>
+<p>The MSVC toolchain is the native Microsoft way to target Windows. It is what
+the Rust community usually recommends for targetting the Windows platform. It
+may provide better compatibility with Windows DLLs / libraries and tooling.</p>
+<p>Even though it is meant to be used on Windows, you can actually set it up
+and use it on Linux (and other UNIX-like systems). It requires downloading
+the Windows SDKs and accepting the Microsoft license. There is a script to
+automate that for you.</p>
+<details>
+  <summary>
+  Setup Instructions:
+  </summary>
 <h3 id="rust-toolchain-msvc"><a class="header" href="#rust-toolchain-msvc">Rust Toolchain (MSVC)</a></h3>
 <p>Add the target to your Rust installation (assuming you use <a href="https://rustup.rs"><code>rustup</code></a>):</p>
 <pre><code class="language-sh">rustup target add x86_64-pc-windows-msvc
@@ -10406,29 +10443,15 @@ rustflags = [
 </code></pre>
 <p>Note: you need to specify the correct full absolute paths to the SDK files,
 wherever you installed them.</p>
-<h2 id="first-time-setup-gnu"><a class="header" href="#first-time-setup-gnu">First-Time Setup (GNU)</a></h2>
-<p>On many Linux distros, the alternative GNU/MINGW toolchain might be an easier
-option. Your distro might provide packages that you can easily install. Also,
-you do not need to accept any Microsoft licenses.</p>
-<h3 id="rust-toolchain-gnu"><a class="header" href="#rust-toolchain-gnu">Rust Toolchain (GNU)</a></h3>
-<p>Add the target to your Rust installation (assuming you use <a href="https://rustup.rs"><code>rustup</code></a>):</p>
-<pre><code class="language-sh">rustup target add x86_64-pc-windows-gnu
-</code></pre>
-<p>This installs the files Rust needs to compile for Windows, including the
-Rust standard library.</p>
-<h3 id="mingw"><a class="header" href="#mingw">MINGW</a></h3>
-<p>The GNU toolchain requires the MINGW environment to be installed. Your distro likely
-provides a package for it. Search your distro for a cross-compilation mingw package.</p>
-<p>It might be called something like: <code>cross-x86_64-w64-mingw32</code>, but that varies in different distros.</p>
-<p>You don't need any files from Microsoft.</p>
+</details>
 <h2 id="building-your-project"><a class="header" href="#building-your-project">Building Your Project</a></h2>
 <p>Finally, with all the setup done, you can just build your Rust/Bevy projects
 for Windows:</p>
+<p>GNU:</p>
+<pre><code class="language-sh">cargo build --target=x86_64-pc-windows-gnu --release
+</code></pre>
 <p>MSVC:</p>
 <pre><code class="language-sh">cargo build --target=x86_64-pc-windows-msvc --release
-</code></pre>
-<p>MinGW:</p>
-<pre><code class="language-sh">cargo build --target=x86_64-pc-windows-gnu --release
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="setup/cross//introduction.html#maintenance-policy">Bevy Version:</a></th><th>(any)</th></tr></thead><tbody>
 </tbody></table>
@@ -10436,11 +10459,18 @@ for Windows:</p>
 <h1 id="build-windows-exes-from-macos"><a class="header" href="#build-windows-exes-from-macos">Build Windows EXEs from macOS</a></h1>
 <p>(also check out the <a href="setup/cross//platforms/windows.html">Windows Platform page</a> for info
 about developing for Windows generally)</p>
+<p><strong>Note: As of Bevy 0.12, the instructions on this page no longer work!</strong></p>
+<p>There are some dependencies that assume you are running Windows and they
+can run Windows EXEs from their build scripts, which is not the case when
+cross-compiling.</p>
+<p>However, I decided to leave this page in the book, because it could be useful
+for other Rust projects (that do not use Bevy or something else that pulls
+in broken dependencies).</p>
 <hr />
 <p>Rust offers two different toolchains for building for Windows:</p>
 <ul>
-<li><a href="setup/cross/macos-windows.html#first-time-setup-msvc">MSVC</a>: the default when working in Windows, requires downloading Microsoft SDKs</li>
-<li><a href="setup/cross/macos-windows.html#first-time-setup-gnu">GNU</a>: alternative MINGW-based build</li>
+<li><a href="setup/cross/macos-windows.html#first-time-setup-msvc">MSVC</a></li>
+<li><a href="setup/cross/macos-windows.html#first-time-setup-gnu">GNU</a></li>
 </ul>
 <p>On macOS, the GNU software is not readily-available. I don't know how it could
 be installed. Even if possible, it might be difficult to set up.</p>

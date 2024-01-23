@@ -194,7 +194,8 @@ Windows</a>. The Windows EXE you build inside of WSL2 can
 be run just fine from the Linux commandline, and it will seamlessly run on the
 host system! This way, you don't need any GPU drivers or GUI support inside
 your WSL2 Linux environment. Also, you will be running and testing the Windows
-build of your game, so you can see how it will really perform on Windows.</p>
+build of your game, so you can see how it will really perform on Windows.
+It will run with full performance and use your host Windows GPU drivers.</p>
 <p>Note that when you run Windows binaries from WSL2, they don't get the Linux
 environment variables. <code>cargo run</code> does not just work, because your Bevy game
 will look for its <code>assets</code> folder in the path where the EXE is (which would be
@@ -203,8 +204,8 @@ EXE into the project folder after building, and run it directly from there.
 For non-Bevy Rust projects, this would be unnecessary.</p>
 <p>The process can be automated with a little script, to use instead of <code>cargo run</code>:</p>
 <pre><code class="language-sh">#!/bin/sh
-cargo build --target x86_64-pc-windows-msvc &amp;&amp;
-cp target/x86_64-pc-windows-msvc/debug/mygame.exe . &amp;&amp;
+cargo build --target x86_64-pc-windows-gnu &amp;&amp;
+cp target/x86_64-pc-windows-gnu/debug/mygame.exe . &amp;&amp;
 exec ./mygame.exe &quot;$@&quot;
 </code></pre>
 <p>This way you also don't have to type the cross-compilation target every time
@@ -220,9 +221,9 @@ require cross-compilation, but is likely to have other issues and limitations.</
 support. It should allow you to simply compile your Bevy game in Linux and
 run it. WSLg will do the dark magic needed to forward graphics and audio to
 the Windows host.</p>
-<p>Your game will only run with 60 FPS, and there will be other performance
-overheads. WSLg is effectively RDP (Remote Desktop) under the hood. It's
-like streaming video from the VM to the host. Some things might be
+<p>Your game will run locked to 60 FPS, and there will be other performance
+problems. WSLg is effectively RDP (Remote Desktop) under the hood. It's
+like streaming video from the VM to the host. Some functionality might be
 broken/unsupported.</p>
 <p>Both Wayland and X11 should work. Wayland is recommended, so be sure to
 enable the <code>&quot;wayland&quot;</code> <a href="/setup/bevy-config.html">cargo feature in Bevy</a>.</p>
@@ -245,7 +246,7 @@ sudo apt install vulkan-tools
 </code></pre>
 <p>(<code>dzn</code>, Microsoft's Vulkan driver for WSL2, is technically non-conformant,
 so there may be bugs and other issues, but it seems to work fine)</p>
-<p>Now, you can simply run your Bevy project in Linux:</p>
+<p>Now, you can simply run your Bevy project in Linux in the usual way:</p>
 <pre><code class="language-sh">cargo run
 </code></pre>
 
