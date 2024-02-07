@@ -190,13 +190,13 @@
 <p>Conceptually, an entity represents a set of values for different components.
 Each component is a Rust type (<code>struct</code> or <code>enum</code>) and an entity can be used to
 store a value of that type.</p>
-<p>Technically, an entity is just a simple integer ID (imagine the &quot;row number&quot; in
+<p>Technically, an entity is just a simple integer ID (imagine the "row number" in
 a table/spreadsheet) that can be used to find related data values (in different
-&quot;columns&quot; of that table).</p>
+"columns" of that table).</p>
 <p>In Bevy, <a href="https://docs.rs/bevy/0.12.0/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> is this value. It consists of two integers:
-the ID and the &quot;generation&quot; (allowing IDs to be reused, after you despawn old
+the ID and the "generation" (allowing IDs to be reused, after you despawn old
 entities).</p>
-<p>You can create (&quot;spawn&quot;) new entities and destroy (&quot;despawn&quot;) entities using
+<p>You can create ("spawn") new entities and destroy ("despawn") entities using
 <a href="/programming/commands.html"><code>Commands</code></a> or <a href="/programming/world.html">exclusive <code>World</code> access</a>.</p>
 <pre><code class="language-rust no_run noplayground">fn setup(mut commands: Commands) {
     // create a new entity
@@ -244,7 +244,7 @@ struct PlayerXp(u32);
 struct PlayerName(String);</code></pre>
 <h2 id="marker-components"><a class="header" href="#marker-components">Marker Components</a></h2>
 <p>You can use empty structs to help you identify specific entities. These are
-known as &quot;marker components&quot;. Useful with <a href="/programming/queries.html#query-filters">query filters</a>.</p>
+known as "marker components". Useful with <a href="/programming/queries.html#query-filters">query filters</a>.</p>
 <pre><code class="language-rust no_run noplayground">/// Add this to all menu ui entities to help identify them
 #[derive(Component)]
 struct MainMenuUI;
@@ -262,7 +262,7 @@ struct Player;
 struct Friendly;</code></pre>
 <h2 id="accessing-components"><a class="header" href="#accessing-components">Accessing Components</a></h2>
 <p>Components can be accessed from <a href="/programming/systems.html">systems</a>, using <a href="/programming/queries.html">queries</a>.</p>
-<p>You can think of the query as the &quot;specification&quot; for the data you want to access.
+<p>You can think of the query as the "specification" for the data you want to access.
 It will search for entities that match and give you access to the data.</p>
 <pre><code class="language-rust no_run noplayground">fn level_up_player(
     // get the relevant data. some components read-only, some mutable
@@ -274,7 +274,7 @@ It will search for entities that match and give you access to the data.</p>
         xp.0 = 0;
         health.hp = 100.0;
         health.extra += 25.0;
-        info!(&quot;Player {} leveled up!&quot;, name.0);
+        info!("Player {} leveled up!", name.0);
     }
 }
 

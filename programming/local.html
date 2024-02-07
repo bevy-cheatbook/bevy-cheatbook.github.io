@@ -213,7 +213,7 @@ fn my_system2(mut local: Local&lt;MyState&gt;) {
 default value for the type.</p>
 <p>If you need specific data, you can use a closure instead. Rust closures
 that take system parameters are valid Bevy systems, just like standalone
-functions. Using a closure allows you to &quot;move data into the function&quot;.</p>
+functions. Using a closure allows you to "move data into the function".</p>
 <p>This example shows how to initialize some data to configure a system,
 without using <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a>:</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Default)]
@@ -237,7 +237,7 @@ fn main() {
 
     App::new()
         .add_plugins(DefaultPlugins)
-        // create a &quot;move closure&quot;, so we can use the `config`
+        // create a "move closure", so we can use the `config`
         // variable that we created above
         .add_system(move |cmd: Commands, res: Res&lt;MyStuff&gt;| {
             // call our function from inside the closure
@@ -245,15 +245,15 @@ fn main() {
         })
         .run();
 }</code></pre>
-<p>Another way to accomplish the same thing is to &quot;return&quot; the system
-from &quot;constructor&quot; helper, that creates it:</p>
+<p>Another way to accomplish the same thing is to "return" the system
+from "constructor" helper, that creates it:</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Default)]
 struct MyConfig {
     magic: usize,
 }
 
 fn main() {
-    // create a &quot;constructor&quot; closure, which can initialize
+    // create a "constructor" closure, which can initialize
     // our data and move it into a closure that bevy can run as a system
     let constructor = || {
         // create the `MyConfig`
@@ -263,7 +263,7 @@ fn main() {
 
         // this is the actual system that bevy will run
         move |mut commands: Commands, res: Res&lt;MyStuff&gt;| {
-            // we can use `config` here, the value from above will be &quot;moved in&quot;
+            // we can use `config` here, the value from above will be "moved in"
             // we can also use our system params: `commands`, `res`
         }
     };
@@ -271,7 +271,7 @@ fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
         // note the parentheses `()`
-        // we are calling the &quot;constructor&quot; we made above,
+        // we are calling the "constructor" we made above,
         // which will return the actual system that gets added to bevy
         .add_system(constructor())
         .run();

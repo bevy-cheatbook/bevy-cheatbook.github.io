@@ -194,7 +194,7 @@ that does anything that needs time. <a href="/pitfalls/time.html">You should der
 it</a>.</p>
 <p>Bevy updates these values at the beginning of every frame.</p>
 <h3 id="delta-time"><a class="header" href="#delta-time">Delta Time</a></h3>
-<p>The most common use case is &quot;delta time&quot; – how much time passed between
+<p>The most common use case is "delta time" – how much time passed between
 the previous frame update and the current one. This tells you how fast the
 game is running, so you can scale things like movement and animations. This
 way everything can happen smoothly and run at the same speed, regardless of
@@ -239,10 +239,10 @@ calling <code>.tick(delta)</code>, for it to make progress, or it will be inacti
 The delta should come from the <a href="https://docs.rs/bevy/0.9.1/bevy/time/struct.Time.html"><code>Time</code></a> resource.</p>
 <h3 id="timer"><a class="header" href="#timer">Timer</a></h3>
 <p><a href="https://docs.rs/bevy/0.9.1/bevy/time/struct.Timer.html"><code>Timer</code></a> allows you to detect when a certain interval of time
-has elapsed. Timers have a set duration. They can be &quot;repeating&quot; or
-&quot;non-repeating&quot;.</p>
-<p>Both kinds can be manually &quot;reset&quot; (start counting the time interval from the
-beginning) and &quot;paused&quot; (they will not progress even if you keep ticking them).</p>
+has elapsed. Timers have a set duration. They can be "repeating" or
+"non-repeating".</p>
+<p>Both kinds can be manually "reset" (start counting the time interval from the
+beginning) and "paused" (they will not progress even if you keep ticking them).</p>
 <p>Repeating timers will automatically reset themselves after they reach their
 set duration.</p>
 <p>Use <code>.finished()</code> to detect when a timer has reached its set duration. Use
@@ -336,7 +336,7 @@ fn jump_duration(
     }
 
     if kbd.pressed(KeyCode::Space) {
-        println!(&quot;Jumping for {} seconds.&quot;, jump.time.elapsed_secs());
+        println!("Jumping for {} seconds.", jump.time.elapsed_secs());
         // stopwatch has to be ticked to progress
         jump.time.tick(time.delta());
     }

@@ -244,7 +244,7 @@ different Bevy types. Make sure you are using the correct thing.</p>
 <a href="https://docs.rs/bevy/0.11.0/bevy/render/mesh/struct.Mesh.html"><code>Mesh</code></a> and <a href="https://docs.rs/bevy/0.11.0/bevy/pbr/struct.StandardMaterial.html"><code>StandardMaterial</code></a>
 associated with the correct GLTF Primitive.</p>
 <p>If you are using an asset path, be sure to include a label for the sub-asset you want:</p>
-<pre><code class="language-rust no_run noplayground">let handle_scene: Handle&lt;Scene&gt; = asset_server.load(&quot;my.gltf#Scene0&quot;);</code></pre>
+<pre><code class="language-rust no_run noplayground">let handle_scene: Handle&lt;Scene&gt; = asset_server.load("my.gltf#Scene0");</code></pre>
 <p>If you are spawning the top-level <a href="https://docs.rs/bevy/0.11.0/bevy/gltf/struct.Gltf.html"><code>Gltf</code></a> <a href="/3d/gltf.html#gltf-master-asset">master asset</a>, it won't work.</p>
 <p>If you are spawning a GLTF Mesh, it won't work.</p>
 <h2 id="unsupported-gltf"><a class="header" href="#unsupported-gltf">Unsupported GLTF</a></h2>

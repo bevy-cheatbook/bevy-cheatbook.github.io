@@ -189,7 +189,7 @@
 your own code, to keep recompilations fast!</p>
 <p>In <code>Cargo.toml</code> or <code>.cargo/config.toml</code>:</p>
 <pre><code class="language-toml"># Enable max optimizations for dependencies, but not for our code:
-[profile.dev.package.&quot;*&quot;]
+[profile.dev.package."*"]
 opt-level = 3
 </code></pre>
 <p>The above is enough to make Bevy run fast. It will only slow down clean
@@ -222,7 +222,7 @@ to unplayable levels.</li>
 <h3 id="why-not-use---release"><a class="header" href="#why-not-use---release">Why not use <code>--release</code>?</a></h3>
 <p>You may have heard the advice: just run with <code>--release</code>! However, this is
 bad advice. Don't do it.</p>
-<p>Release mode also disables &quot;debug assertions&quot;: extra checks useful during
+<p>Release mode also disables "debug assertions": extra checks useful during
 development. Many libraries also include additional stuff under that
 setting. In Bevy and WGPU that includes validation for shaders and GPU API
 usage. Release mode disables these checks, causing less-informative crashes,
@@ -237,7 +237,7 @@ it for <em>actual</em> release builds that you send to your users.</p>
 release builds, to squeeze out even more performance at the cost of very
 slow compile times:</p>
 <pre><code class="language-toml">[profile.release]
-lto = &quot;thin&quot;
+lto = "thin"
 </code></pre>
 
                     </main>

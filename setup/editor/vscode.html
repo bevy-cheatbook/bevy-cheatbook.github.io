@@ -192,18 +192,18 @@ please file a <a href="https://github.com/bevy-cheatbook/bevy-cheatbook/issues">
 compiles, Rust Analyzer will ignore it unfortunately. You need to also
 configure RA to use it, with the following setting (in VSCode <code>settings.json</code>):</p>
 <p>Windows:</p>
-<pre><code class="language-json">&quot;rust-analyzer.cargo.extraEnv&quot;: {
-    &quot;RUSTFLAGS&quot;: &quot;-Clinker=rust-lld.exe&quot;
+<pre><code class="language-json">"rust-analyzer.cargo.extraEnv": {
+    "RUSTFLAGS": "-Clinker=rust-lld.exe"
 }
 </code></pre>
 <p>Linux (mold):</p>
-<pre><code class="language-json">&quot;rust-analyzer.cargo.extraEnv&quot;: {
-    &quot;RUSTFLAGS&quot;: &quot;-Clinker=clang -Clink-arg=-fuse-ld=mold&quot;
+<pre><code class="language-json">"rust-analyzer.cargo.extraEnv": {
+    "RUSTFLAGS": "-Clinker=clang -Clink-arg=-fuse-ld=mold"
 }
 </code></pre>
 <p>Linux (lld):</p>
-<pre><code class="language-json">&quot;rust-analyzer.cargo.extraEnv&quot;: {
-    &quot;RUSTFLAGS&quot;: &quot;-Clinker=clang -Clink-arg=-fuse-ld=lld&quot;
+<pre><code class="language-json">"rust-analyzer.cargo.extraEnv": {
+    "RUSTFLAGS": "-Clinker=clang -Clink-arg=-fuse-ld=lld"
 }
 </code></pre>
 <h2 id="cargo_manifest_dir"><a class="header" href="#cargo_manifest_dir"><code>CARGO_MANIFEST_DIR</code></a></h2>
@@ -222,30 +222,30 @@ find the <code>assets</code>.</p>
 <p>(this is for development on Bevy itself, and testing with the <code>breakout</code> example)</p>
 <p>(adapt to your needs if using for your project)</p>
 <pre><code class="language-json">{
-    &quot;type&quot;: &quot;lldb&quot;,
-    &quot;request&quot;: &quot;launch&quot;,
-    &quot;name&quot;: &quot;Debug example 'breakout'&quot;,
-    &quot;cargo&quot;: {
-        &quot;args&quot;: [
-            &quot;build&quot;,
-            &quot;--example=breakout&quot;,
-            &quot;--package=bevy&quot;
+    "type": "lldb",
+    "request": "launch",
+    "name": "Debug example 'breakout'",
+    "cargo": {
+        "args": [
+            "build",
+            "--example=breakout",
+            "--package=bevy"
         ],
-        &quot;filter&quot;: {
-            &quot;name&quot;: &quot;breakout&quot;,
-            &quot;kind&quot;: &quot;example&quot;
+        "filter": {
+            "name": "breakout",
+            "kind": "example"
         }
     },
-    &quot;args&quot;: [],
-    &quot;cwd&quot;: &quot;${workspaceFolder}&quot;,
-    &quot;env&quot;: {
-        &quot;CARGO_MANIFEST_DIR&quot;: &quot;${workspaceFolder}&quot;,
+    "args": [],
+    "cwd": "${workspaceFolder}",
+    "env": {
+        "CARGO_MANIFEST_DIR": "${workspaceFolder}",
     }
 }
 </code></pre>
-<p>To support dynamic linking, you should also add the following, inside the <code>&quot;env&quot;</code> section:</p>
+<p>To support dynamic linking, you should also add the following, inside the <code>"env"</code> section:</p>
 <p>Linux:</p>
-<pre><code class="language-json">&quot;LD_LIBRARY_PATH&quot;: &quot;${workspaceFolder}/target/debug/deps:${env:HOME}/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib&quot;,
+<pre><code class="language-json">"LD_LIBRARY_PATH": "${workspaceFolder}/target/debug/deps:${env:HOME}/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib",
 </code></pre>
 <p>(replace <code>stable-x86_64-unknown-linux-gnu</code> if you use a different toolchain/architecture)</p>
 <p>Windows: I don't know. If you do, please <a href="https://github.com/bevy-cheatbook/bevy-cheatbook/issues">file an issue</a>!</p>

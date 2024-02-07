@@ -200,10 +200,10 @@ fingers currently on the screen:</p>
 
     for finger in touches.iter() {
         if touches.just_pressed(finger.id()) {
-            println!(&quot;A new touch with ID {} just began.&quot;, finger.id());
+            println!("A new touch with ID {} just began.", finger.id());
         }
         println!(
-            &quot;Finger {} is at position ({},{}), started from ({},{}).&quot;,
+            "Finger {} is at position ({},{}), started from ({},{}).",
             finger.id(),
             finger.position().x,
             finger.position().y,
@@ -221,16 +221,16 @@ fingers currently on the screen:</p>
         // in real apps you probably want to store and track touch ids somewhere
         match ev.phase {
             TouchPhase::Started =&gt; {
-                println!(&quot;Touch {} started at: {:?}&quot;, ev.id, ev.position);
+                println!("Touch {} started at: {:?}", ev.id, ev.position);
             }
             TouchPhase::Moved =&gt; {
-                println!(&quot;Touch {} moved to: {:?}&quot;, ev.id, ev.position);
+                println!("Touch {} moved to: {:?}", ev.id, ev.position);
             }
             TouchPhase::Ended =&gt; {
-                println!(&quot;Touch {} ended at: {:?}&quot;, ev.id, ev.position);
+                println!("Touch {} ended at: {:?}", ev.id, ev.position);
             }
             TouchPhase::Cancelled =&gt; {
-                println!(&quot;Touch {} cancelled at: {:?}&quot;, ev.id, ev.position);
+                println!("Touch {} cancelled at: {:?}", ev.id, ev.position);
             }
         }
     }

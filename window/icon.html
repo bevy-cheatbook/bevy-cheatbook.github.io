@@ -205,8 +205,8 @@ fn set_window_icon(
     // here we use the `image` crate to load our icon data from a png file
     // this is not a very bevy-native solution, but it will do
     let (icon_rgba, icon_width, icon_height) = {
-        let image = image::open(&quot;my_icon.png&quot;)
-            .expect(&quot;Failed to open icon path&quot;)
+        let image = image::open("my_icon.png")
+            .expect("Failed to open icon path")
             .into_rgba8();
         let (width, height) = image.dimensions();
         let rgba = image.into_raw();
@@ -231,8 +231,8 @@ resource</a>.</p>
 <p>Note: you need to add <code>winit</code> to your project's dependencies, and it must
 be the same version as the one used by Bevy. You can use <code>cargo tree</code> or
 check <code>Cargo.lock</code> to see which is the correct version. As of Bevy 0.12,
-that should be <code>winit = &quot;0.28&quot;</code>. You should also try to match the version
-of the <code>image</code> library; Bevy uses <code>image = &quot;0.24&quot;</code>.</p>
+that should be <code>winit = "0.28"</code>. You should also try to match the version
+of the <code>image</code> library; Bevy uses <code>image = "0.24"</code>.</p>
 
                     </main>
 

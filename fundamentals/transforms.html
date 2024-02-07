@@ -195,8 +195,8 @@ anything that spawns 2D or 3D objects.</p>
 <hr />
 <p>First, a quick definition, if you are new to game development:</p>
 <p>a Transform is what allows you to place an object in the game world. It
-is a combination of the object's &quot;translation&quot; (position/coordinates),
-&quot;rotation&quot;, and &quot;scale&quot; (size adjustment).</p>
+is a combination of the object's "translation" (position/coordinates),
+"rotation", and "scale" (size adjustment).</p>
 <p>You move objects around by modifying the translation, rotate them by modifying
 the rotation, and make them larger or smaller by modifying the scale.</p>
 <pre><code class="language-rust no_run noplayground">// To simply position something at specific coordinates
@@ -289,7 +289,7 @@ position in the world.</p>
 <p>If the entity does not have a <a href="/fundamentals/hierarchy.html">parent</a>, then this will match
 the <a href="https://docs.rs/bevy/0.12.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>.</p>
 <p>The value of <a href="https://docs.rs/bevy/0.12.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> is calculated/managed
-internally by Bevy (<a href="#transform-propagation">&quot;transform propagation&quot;</a>).</p>
+internally by Bevy (<a href="#transform-propagation">"transform propagation"</a>).</p>
 <p>Unlike <a href="https://docs.rs/bevy/0.12.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>, the translation/rotation/scale are not
 accessible directly. The data is stored in an optimized way (using <code>Affine3A</code>)
 and it is possible to have complex transformations in a hierarchy that cannot
@@ -303,8 +303,8 @@ into a workable translation/rotation/scale representation, you can try the metho
 <li><code>.compute_transform()</code> (may be invalid)</li>
 </ul>
 <h2 id="transform-propagation"><a class="header" href="#transform-propagation">Transform Propagation</a></h2>
-<p>The two components are synchronized by a bevy-internal system (the &quot;transform
-propagation system&quot;), which runs in the <a href="https://docs.rs/bevy/0.12.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a>
+<p>The two components are synchronized by a bevy-internal system (the "transform
+propagation system"), which runs in the <a href="https://docs.rs/bevy/0.12.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a>
 <a href="/programming/schedules.html">schedule</a>.</p>
 <p>Beware: When you mutate the <a href="https://docs.rs/bevy/0.12.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>, the
 <a href="https://docs.rs/bevy/0.12.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> is not updated immediately. They
@@ -319,7 +319,7 @@ fn debug_globaltransform(
     query: Query&lt;&amp;GlobalTransform, With&lt;Player&gt;&gt;,
 ) {
     let gxf = query.single();
-    debug!(&quot;Player at: {:?}&quot;, gxf.translation());
+    debug!("Player at: {:?}", gxf.translation());
 }</code></pre>
 <pre><code class="language-rust no_run noplayground">// the label to use for ordering
 use bevy::transform::TransformSystem;

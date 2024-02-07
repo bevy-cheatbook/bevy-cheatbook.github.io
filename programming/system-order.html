@@ -241,7 +241,7 @@ you can add ordering constraints:</p>
 <h2 id="labels"><a class="header" href="#labels">Labels</a></h2>
 <p>For more advanced use cases, you can use <a href="/programming/labels.html">labels</a>. Labels can
 either be strings, or custom types (like <code>enum</code>s) that derive <code>SystemLabel</code>.</p>
-<p>This allows you to affect multiple systems at once, with the same constraints. 
+<p>This allows you to affect multiple systems at once, with the same constraints.
 You can place multiple labels on one system. You can also use the same label
 on multiple systems.</p>
 <p>Each label is a reference point that other systems can be ordered around.</p>
@@ -278,7 +278,7 @@ fn main() {
                 .label(MyLabel::Player)
                 .label(MyLabel::Movement)
                 // can also use loose strings as labels
-                .label(&quot;player_movement&quot;)
+                .label("player_movement")
         )
 
         // … and so on …

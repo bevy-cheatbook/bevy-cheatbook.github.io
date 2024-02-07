@@ -216,7 +216,7 @@ fn gamepad_connections(
         let id = ev.gamepad;
         match &amp;ev.event_type {
             GamepadEventType::Connected(info) =&gt; {
-                println!(&quot;New gamepad connected with ID: {:?}, name: {}&quot;, id, info.name);
+                println!("New gamepad connected with ID: {:?}, name: {}", id, info.name);
 
                 // if we don't have any gamepad yet, use this one
                 if my_gamepad.is_none() {
@@ -224,7 +224,7 @@ fn gamepad_connections(
                 }
             }
             GamepadEventType::Disconnected =&gt; {
-                println!(&quot;Lost gamepad connection with ID: {:?}&quot;, id);
+                println!("Lost gamepad connection with ID: {:?}", id);
 
                 // if it's the one we previously associated with the player,
                 // disassociate it:
@@ -357,7 +357,7 @@ fn configure_gamepads(
     settings.default_axis_settings.set_deadzone_lowerbound(-0.1);
     settings.default_axis_settings.set_deadzone_upperbound(0.1);
 
-    // make the right stick &quot;binary&quot;, squash higher values to 1.0 and lower values to 0.0
+    // make the right stick "binary", squash higher values to 1.0 and lower values to 0.0
     let mut right_stick_settings = AxisSettings::default();
     right_stick_settings.set_deadzone_lowerbound(-0.5);
     right_stick_settings.set_deadzone_upperbound(0.5);

@@ -216,13 +216,13 @@ pattern feels most appropriate to your use case.</p>
     buttons: Res&lt;Input&lt;MouseButton&gt;&gt;,
 ) {
     for button in buttons.get_pressed() {
-        println!(&quot;{:?} is currently held down&quot;, button);
+        println!("{:?} is currently held down", button);
     }
     for button in buttons.get_just_pressed() {
-        println!(&quot;{:?} was pressed&quot;, button);
+        println!("{:?} was pressed", button);
     }
     for button in buttons.get_just_released() {
-        println!(&quot;{:?} was released&quot;, button);
+        println!("{:?} was released", button);
     }
 }</code></pre>
 <p>Alternatively, you can use <a href="https://docs.rs/bevy/0.11.0/bevy/input/mouse/struct.MouseButtonInput.html"><code>MouseButtonInput</code></a>
@@ -237,10 +237,10 @@ fn mouse_button_events(
     for ev in mousebtn_evr.iter() {
         match ev.state {
             ButtonState::Pressed =&gt; {
-                println!(&quot;Mouse button press: {:?}&quot;, ev.button);
+                println!("Mouse button press: {:?}", ev.button);
             }
             ButtonState::Released =&gt; {
-                println!(&quot;Mouse button release: {:?}&quot;, ev.button);
+                println!("Mouse button release: {:?}", ev.button);
             }
         }
     }
@@ -268,10 +268,10 @@ fn scroll_events(
     for ev in scroll_evr.iter() {
         match ev.unit {
             MouseScrollUnit::Line =&gt; {
-                println!(&quot;Scroll (line units): vertical: {}, horizontal: {}&quot;, ev.y, ev.x);
+                println!("Scroll (line units): vertical: {}, horizontal: {}", ev.y, ev.x);
             }
             MouseScrollUnit::Pixel =&gt; {
-                println!(&quot;Scroll (pixel units): vertical: {}, horizontal: {}&quot;, ev.y, ev.x);
+                println!("Scroll (pixel units): vertical: {}, horizontal: {}", ev.y, ev.x);
             }
         }
     }
@@ -298,7 +298,7 @@ fn mouse_motion(
     mut motion_evr: EventReader&lt;MouseMotion&gt;,
 ) {
     for ev in motion_evr.iter() {
-        println!(&quot;Mouse moved: X: {} px, Y: {} px&quot;, ev.delta.x, ev.delta.y);
+        println!("Mouse moved: X: {} px, Y: {} px", ev.delta.x, ev.delta.y);
     }
 }</code></pre>
 <p>You might want to <a href="/window/mouse-grab.html">grab/lock the mouse inside the game
@@ -315,9 +315,9 @@ fn cursor_position(
 ) {
     // Games typically only have one window (the primary window)
     if let Some(position) = q_windows.single().cursor_position() {
-        println!(&quot;Cursor is inside the primary window, at {:?}&quot;, position);
+        println!("Cursor is inside the primary window, at {:?}", position);
     } else {
-        println!(&quot;Cursor is not in the game window.&quot;);
+        println!("Cursor is not in the game window.");
     }
 }</code></pre>
 <p>To detect when the pointer is moved, use <a href="https://docs.rs/bevy/0.11.0/bevy/window/struct.CursorMoved.html"><code>CursorMoved</code></a>
@@ -327,7 +327,7 @@ fn cursor_position(
 ) {
     for ev in cursor_evr.iter() {
         println!(
-            &quot;New cursor position: X: {}, Y: {}, in Window ID: {:?}&quot;,
+            "New cursor position: X: {}, Y: {}, in Window ID: {:?}",
             ev.position.x, ev.position.y, ev.window
         );
     }
@@ -335,7 +335,7 @@ fn cursor_position(
 <p>Note that you can only get the position of the mouse inside a window;
 you cannot get the global position of the mouse in the whole OS Desktop /
 on the screen as a whole.</p>
-<p>The coordinates you get are in &quot;window space&quot;. They represent window
+<p>The coordinates you get are in "window space". They represent window
 pixels, and the origin is the bottom left corner of the window. They do not
 relate to your camera or in-game coordinates in any way. <a href="/cookbook/cursor2world.html">See this cookbook
 example</a> for converting these window cursor coordinates
@@ -359,12 +359,12 @@ fn touchpad_gestures(
     for ev_magnify in evr_touchpad_magnify.iter() {
         // Positive numbers are zooming in
         // Negative numbers are zooming out
-        println!(&quot;Touchpad zoom by {}&quot;, ev_magnify.0);
+        println!("Touchpad zoom by {}", ev_magnify.0);
     }
     for ev_rotate in evr_touchpad_rotate.iter() {
         // Positive numbers are anticlockwise
         // Negative numbers are clockwise
-        println!(&quot;Touchpad rotate by {}&quot;, ev_rotate.0);
+        println!("Touchpad rotate by {}", ev_rotate.0);
     }
 }</code></pre>
 

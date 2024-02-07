@@ -193,7 +193,7 @@ access to whatever parts of <a href="/programming/intro-data.html">your data</a>
 <p>Individual pieces of functionality are called <a href="/programming/systems.html">systems</a>. Each system
 is a Rust function (<code>fn</code>) you write, which accepts <a href="/builtins.html#systemparams">special parameter
 types</a> to indicate what <a href="/programming/intro-data.html">data</a> it needs to
-access. Think of the function signature as a &quot;specification&quot; for what to fetch
+access. Think of the function signature as a "specification" for what to fetch
 from the ECS <a href="https://docs.rs/bevy/0.12.0/bevy/ecs/world/struct.World.html"><code>World</code></a>.</p>
 <p>Here is what a <a href="/programming/systems.html">system</a> might look like. Note how, just by looking
 at the function parameters, we know <em>exactly</em> what <a href="/programming/intro-data.html">data</a>
@@ -259,7 +259,7 @@ allow multiple systems to share common configuration/metadata. Systems
 inherit configuration from all sets they belong to. Sets can also inherit
 configuration from other sets.</p>
 <p>Here is an illustration to help you visualize the logical structure of a
-schedule. Let's look at how a hypothetical &quot;Update&quot; (run every frame) schedule of a
+schedule. Let's look at how a hypothetical "Update" (run every frame) schedule of a
 game might be organized.</p>
 <p>List of <a href="/programming/systems.html">systems</a>:</p>
 <div class="table-wrapper"><table><thead><tr><th><a href="/programming/systems.html">System</a> name</th><th><a href="/programming/system-sets.html">Sets</a> it belongs to</th><th><a href="/programming/run-criteria.html">Run conditions</a></th><th><a href="/programming/system-order.html">Ordering constraints</a></th></tr></thead><tbody>

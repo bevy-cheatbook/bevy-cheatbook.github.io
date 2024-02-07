@@ -234,7 +234,7 @@ App::new()
 you can do so by removing the <code>multi-threaded</code> default Cargo feature.</p>
 <p>In <code>Cargo.toml</code></p>
 <pre><code class="language-toml">[dependencies.bevy]
-version = &quot;0.12&quot;
+version = "0.12"
 default-features = false
 features = [
    # re-enable everything you need, without `multi-threaded`
@@ -341,7 +341,7 @@ App::new()
                 min_threads: available_parallelism() / 2,
                 // but limit it to a maximum of 8 threads
                 max_threads: 8,
-                // 1.0 in this case means &quot;use all remaining threads&quot;
+                // 1.0 in this case means "use all remaining threads"
                 // (that were not assigned to io/async_compute)
                 // (clamped to min_threads..=max_threads)
                 percent: 1.0,
@@ -359,7 +359,7 @@ next frame update.</p>
 waiting for the CPU to give it work to do), by making better use of CPU
 multithreading. Typically, it can result in 10-30% higher framerate, sometimes
 more.</p>
-<p>However, it can also affect perceived input latency (&quot;click-to-photon&quot;
+<p>However, it can also affect perceived input latency ("click-to-photon"
 latency), often for the worse. The effects of the player's input might be
 shown on screen delayed by one frame. It might be compensated by the faster
 framerate, or it might not be. Here is a diagram to visualize what happens:</p>

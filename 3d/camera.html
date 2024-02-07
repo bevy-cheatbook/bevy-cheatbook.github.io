@@ -212,8 +212,8 @@ fn main() {
         .add_systems(Startup, setup_camera)
         .run();
 }</code></pre>
-<p>The &quot;looking at&quot; function is an easy way to orient a 3D camera. The second
-parameter (which we provide as <code>Y</code>) is the &quot;up&quot; direction. If you want the camera
+<p>The "looking at" function is an easy way to orient a 3D camera. The second
+parameter (which we provide as <code>Y</code>) is the "up" direction. If you want the camera
 to be tilted sideways, you can use something else there. If you want to make a
 top-down camera, looking straight down, you need to use something other than <code>Y</code>.</p>
 <h2 id="projection"><a class="header" href="#projection">Projection</a></h2>
@@ -257,9 +257,9 @@ eye, and to real-life cameras.</p>
 the strength of the perspective effect. The FOV is the angle covered by the
 height of the screen/image.</p>
 <p>A larger FOV is like a wide-angle camera lens. It makes everything appear more
-distant, stretched, &quot;zoomed out&quot;. You can see more on-screen.</p>
+distant, stretched, "zoomed out". You can see more on-screen.</p>
 <p>A smaller FOV is like a telephoto camera lens. It makes everything appear closer
-and flatter, &quot;zoomed in&quot;. You can see less on-screen.</p>
+and flatter, "zoomed in". You can see less on-screen.</p>
 <p>For reference, a good neutral value is 45° (narrower, Bevy default) or 60°
 (wider). 90° is very wide. 30° is very narrow.</p>
 <pre><code class="language-rust no_run noplayground">commands.spawn((
@@ -285,7 +285,7 @@ and has a stronger 3D perspective effect.</p>
 Z</a> configuration. This allows for good numeric
 precision for both nearby and far away objects, avoiding visual artifacts.</p>
 <h4 id="zooming"><a class="header" href="#zooming">Zooming</a></h4>
-<p>To &quot;zoom&quot;, change the perspective projection's FOV.</p>
+<p>To "zoom", change the perspective projection's FOV.</p>
 <pre><code class="language-rust no_run noplayground">fn zoom_perspective(
     mut query_camera: Query&lt;&amp;mut Projection, With&lt;MyCameraMarker&gt;&gt;,
 ) {
@@ -316,8 +316,8 @@ want to accurately represent the dimensions of an object. Some games (notably
 simulation games) might use orthographic as an artistic choice.</p>
 <p>Orthographic can feel confusing and unintuitive to some people, because it does
 not create any sense of 3D space. You cannot tell how far away anything is. It
-creates a perfectly &quot;flat&quot; look. When displayed from a top-down diagonal angle,
-this artistic style is sometimes referred to as &quot;isometric&quot;.</p>
+creates a perfectly "flat" look. When displayed from a top-down diagonal angle,
+this artistic style is sometimes referred to as "isometric".</p>
 <p>You should set the <a href="https://docs.rs/bevy/0.12.0/bevy/render/camera/enum.ScalingMode.html"><code>ScalingMode</code></a> according to how you want
 to handle window size / resolution.</p>
 <pre><code class="language-rust no_run noplayground">use bevy::render::camera::ScalingMode;
@@ -341,7 +341,7 @@ commands.spawn((
 ));</code></pre>
 <p><img src="/img/camera-3d-orthographic.png" alt="Visualization of a 3D scene with orthographic projection" /></p>
 <h4 id="zooming-1"><a class="header" href="#zooming-1">Zooming</a></h4>
-<p>To &quot;zoom&quot;, change the orthographic projection's scale. The scale determines
+<p>To "zoom", change the orthographic projection's scale. The scale determines
 how much of the scene is visible.</p>
 <pre><code class="language-rust no_run noplayground">fn zoom_orthographic(
     mut query_camera: Query&lt;&amp;mut Projection, With&lt;MyCameraMarker&gt;&gt;,

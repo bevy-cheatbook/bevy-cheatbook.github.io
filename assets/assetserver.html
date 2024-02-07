@@ -195,7 +195,7 @@ fn load_ui_font(
     mut commands: Commands,
     server: Res&lt;AssetServer&gt;
 ) {
-    let handle: Handle&lt;Font&gt; = server.load(&quot;font.ttf&quot;);
+    let handle: Handle&lt;Font&gt; = server.load("font.ttf");
 
     // we can store the handle in a resource:
     //  - to prevent the asset from being unloaded
@@ -207,7 +207,7 @@ fn load_ui_font(
 cannot access the actual data immediately in the same <a href="/programming/systems.html">system</a>,
 but you can use the handle.</p>
 <p>You can spawn entities like your 2D sprites, 3D models, and UI, using the
-handle, even before the asset has loaded. They will just &quot;pop in&quot; later,
+handle, even before the asset has loaded. They will just "pop in" later,
 when the asset becomes ready.</p>
 <p>Note that it is OK to call <code>asset_server.load(…)</code> as many times as you want,
 even if the asset is currently loading, or already loaded. It will just
@@ -232,7 +232,7 @@ fn load_extra_assets(
     mut commands: Commands,
     server: Res&lt;AssetServer&gt;,
 ) {
-    if let Ok(handles) = server.load_folder(&quot;extra&quot;) {
+    if let Ok(handles) = server.load_folder("extra") {
         commands.insert_resource(ExtraAssets(handles));
     }
 }</code></pre>
@@ -251,10 +251,10 @@ after a <code>#</code> symbol.</p>
     server: Res&lt;AssetServer&gt;
 ) {
     // get a specific mesh
-    let my_mesh: Handle&lt;Mesh&gt; = server.load(&quot;my_scene.gltf#Mesh0/Primitive0&quot;);
+    let my_mesh: Handle&lt;Mesh&gt; = server.load("my_scene.gltf#Mesh0/Primitive0");
 
     // spawn a whole scene
-    let my_scene: Handle&lt;Scene&gt; = server.load(&quot;my_scene.gltf#Scene0&quot;);
+    let my_scene: Handle&lt;Scene&gt; = server.load("my_scene.gltf#Scene0");
     commands.spawn(SceneBundle {
         scene: my_scene,
         ..Default::default()
@@ -264,7 +264,7 @@ after a <code>#</code> symbol.</p>
 <h2 id="where-are-assets-loaded-from"><a class="header" href="#where-are-assets-loaded-from">Where are assets loaded from?</a></h2>
 <p>The asset server internally relies on an implementation of the
 <a href="https://docs.rs/bevy/0.9.1/bevy/asset/trait.AssetIo.html"><code>AssetIo</code></a> Rust trait, which is Bevy's way of providing
-&quot;backends&quot; for fetching data from different types of storage.</p>
+"backends" for fetching data from different types of storage.</p>
 <p>Bevy provides its own default built-in I/O backends for each <a href="/platforms.html">supported
 platform</a>.</p>
 <p>On desktop platforms, it treats asset paths as relative to a folder called

@@ -216,7 +216,7 @@ fn debug_levelups(
     mut ev_levelup: EventReader&lt;LevelUpEvent&gt;,
 ) {
     for ev in ev_levelup.iter() {
-        eprintln!(&quot;Entity {:?} leveled up!&quot;, ev.0);
+        eprintln!("Entity {:?} leveled up!", ev.0);
     }
 }</code></pre>
 <p>You need to register your custom event types via the <a href="/programming/app-builder.html">app builder</a>:</p>
@@ -228,7 +228,7 @@ versatile.</p>
 <p>Events can be a very useful layer of abstraction. They allow you to decouple
 things, so you can separate different functionality and more easily reason
 about which <a href="/programming/systems.html">system</a> is responsible for what.</p>
-<p>You can imagine how, even in the simple &quot;player level up&quot; example shown above,
+<p>You can imagine how, even in the simple "player level up" example shown above,
 using events would allow us to easily extend our hypothetical game with more
 functionality. If we wanted to display a fancy level-up effect or animation,
 update UI, or anything else, we can just add more systems that read the events
@@ -238,7 +238,7 @@ events, it would be unwieldy for future development of the game.</p>
 <h2 id="how-it-all-works"><a class="header" href="#how-it-all-works">How it all works</a></h2>
 <p>When you register an event type, Bevy will create an <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/event/struct.Events.html"><code>Events&lt;T&gt;</code></a>
 <a href="/programming/res.html">resource</a>, which acts as the backing storage for the event queue. Bevy
-also adds an &quot;event maintenance&quot; <a href="/programming/systems.html">system</a> to clear events every
+also adds an "event maintenance" <a href="/programming/systems.html">system</a> to clear events every
 frame, preventing them from accumulating and using up memory.</p>
 <p>The events storage is double-buffered, meaning that events stay for one extra
 frame after the frame when they were sent. This gives your systems a chance to

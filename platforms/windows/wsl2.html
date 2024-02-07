@@ -206,7 +206,7 @@ For non-Bevy Rust projects, this would be unnecessary.</p>
 <pre><code class="language-sh">#!/bin/sh
 cargo build --target x86_64-pc-windows-gnu &amp;&amp;
 cp target/x86_64-pc-windows-gnu/debug/mygame.exe . &amp;&amp;
-exec ./mygame.exe &quot;$@&quot;
+exec ./mygame.exe "$@"
 </code></pre>
 <p>This way you also don't have to type the cross-compilation target every time
 (and you can also add any other options you want there).</p>
@@ -226,7 +226,7 @@ problems. WSLg is effectively RDP (Remote Desktop) under the hood. It's
 like streaming video from the VM to the host. Some functionality might be
 broken/unsupported.</p>
 <p>Both Wayland and X11 should work. Wayland is recommended, so be sure to
-enable the <code>&quot;wayland&quot;</code> <a href="/setup/bevy-config.html">cargo feature in Bevy</a>.</p>
+enable the <code>"wayland"</code> <a href="/setup/bevy-config.html">cargo feature in Bevy</a>.</p>
 <p>There are many dependencies (such as graphics drivers) needed for GUI support
 in Linux, which are likely missing if you have never used any other GUI app
 from your WSL environment. The easiest way to make sure you have everything installed,

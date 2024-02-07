@@ -222,7 +222,7 @@ game saves, …</p>
 <p>Here are some ways that you can make use of the direct world access APIs.</p>
 <h3 id="systemstate"><a class="header" href="#systemstate"><code>SystemState</code></a></h3>
 <p>The easiest way to do things is using a <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.SystemState.html"><code>SystemState</code></a>.</p>
-<p>This is a type that &quot;imitates a system&quot;, behaving the same way as a
+<p>This is a type that "imitates a system", behaving the same way as a
 <a href="/programming/systems.html">system</a> with various parameters would. All the same behaviors
 like <a href="/programming/queries.html">queries</a>, <a href="/programming/change-detection.html">change detection</a>, and
 even <a href="/programming/commands.html"><code>Commands</code></a> are available. You can use any <a href="/builtins.html#systemparams">system
@@ -231,7 +231,7 @@ params</a>.</p>
 detection</a> or caching to improve performance. Therefore,
 if you plan on reusing the same <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.SystemState.html"><code>SystemState</code></a> multiple
 times, you should store it somewhere, rather than creating a new one every
-time. Every time you call <code>.get(world)</code>, it behaves like another &quot;run&quot;
+time. Every time you call <code>.get(world)</code>, it behaves like another "run"
 of a system.</p>
 <p>If you are using <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>, you can choose when you
 want to apply them to the world. You need to manually call <code>.apply(world)</code>

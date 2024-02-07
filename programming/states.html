@@ -186,7 +186,7 @@
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/state.rs"><code>state</code></a>.</p>
 <hr />
-<p>States allow you to structure the runtime &quot;flow&quot; of your app.</p>
+<p>States allow you to structure the runtime "flow" of your app.</p>
 <p>This is how you can implement things like:</p>
 <ul>
 <li>A menu screen or a loading screen</li>
@@ -276,11 +276,11 @@ on to the next <a href="/programming/schedules.html">stage</a>).</p>
 <h2 id="state-stack"><a class="header" href="#state-stack">State Stack</a></h2>
 <p>Instead of completely transitioning from one state to another, you can also
 overlay states, forming a stack.</p>
-<p>This is how you can implement things like a &quot;game paused&quot; screen, or an
+<p>This is how you can implement things like a "game paused" screen, or an
 overlay menu, with the game world still visible / running in the background.</p>
 <p>You can have some systems that are still running even when the state is
-&quot;inactive&quot; (that is, in the background, with other states running on top). You
-can also add one-shot systems to run when &quot;pausing&quot; or &quot;resuming&quot; the state.</p>
+"inactive" (that is, in the background, with other states running on top). You
+can also add one-shot systems to run when "pausing" or "resuming" the state.</p>
 <p>In your <a href="/programming/app-builder.html">app builder</a>:</p>
 <pre><code class="language-rust no_run noplayground">        // player movement only when actively playing
         .add_system_set(

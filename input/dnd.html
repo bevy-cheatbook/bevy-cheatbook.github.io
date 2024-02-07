@@ -195,9 +195,9 @@ containing the path of the file that was dropped in.</p>
     mut dnd_evr: EventReader&lt;FileDragAndDrop&gt;,
 ) {
     for ev in dnd_evr.iter() {
-        println!(&quot;{:?}&quot;, ev);
+        println!("{:?}", ev);
         if let FileDragAndDrop::DroppedFile { id, path_buf } = ev {
-            println!(&quot;Dropped file with path: {:?}, in window id: {:?}&quot;, path_buf, id);
+            println!("Dropped file with path: {:?}, in window id: {:?}", path_buf, id);
         }
     }
 }</code></pre>

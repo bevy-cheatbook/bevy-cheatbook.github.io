@@ -223,10 +223,10 @@ instead of <a href="/input/mouse.html#mouse-cursor-position">cursor input</a> to
 <h2 id="platform-differences"><a class="header" href="#platform-differences">Platform Differences</a></h2>
 <p>macOS does not natively support <code>Confined</code> mode. Bevy will fallback to <code>Locked</code>.
 If you want to support macOS and you want to use <a href="/input/mouse.html#mouse-cursor-position">cursor input</a>,
-you might want to implement a &quot;virtual cursor&quot; instead.</p>
+you might want to implement a "virtual cursor" instead.</p>
 <p>Windows does not natively support <code>Locked</code> mode. Bevy will fallback to <code>Confined</code>.
 You could emulate the locked behavior by re-centering the cursor every frame:</p>
-<pre><code class="language-rust no_run noplayground">#[cfg(target_os = &quot;windows&quot;)]
+<pre><code class="language-rust no_run noplayground">#[cfg(target_os = "windows")]
 fn cursor_recenter(
     mut q_windows: Query&lt;&amp;mut Window, With&lt;PrimaryWindow&gt;&gt;,
 ) {
@@ -237,7 +237,7 @@ fn cursor_recenter(
     );
     primary_window.set_cursor_position(Some(center));
 }</code></pre>
-<pre><code class="language-rust no_run noplayground">#[cfg(target_os = &quot;windows&quot;)]
+<pre><code class="language-rust no_run noplayground">#[cfg(target_os = "windows")]
 app.add_systems(Update, cursor_recenter);</code></pre>
 
                     </main>

@@ -188,7 +188,7 @@
 <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/app/plugin_group.rs"><code>plugin_group</code></a>.</p>
 <hr />
 <p>As your project grows, it can be useful to make it more modular. You can
-split it into &quot;plugins&quot;.</p>
+split it into "plugins".</p>
 <p>Plugins are simply collections of things to be added to the <a href="/programming/app-builder.html">App
 Builder</a>. Think of this as a way to add things to the app from
 multiple places, like different Rust files/modules or crates.</p>
@@ -277,7 +277,7 @@ impl Plugin for MyGameplayPlugin {
         app.add_system(movement_system);
         // ...
 
-        // if &quot;dev mode&quot; is enabled, add some hacks
+        // if "dev mode" is enabled, add some hacks
         if self.enable_dev_hacks {
             app.add_system(player_invincibility);
             app.add_system(free_camera);

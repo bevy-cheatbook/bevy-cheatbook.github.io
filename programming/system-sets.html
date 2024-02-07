@@ -193,25 +193,25 @@ for purposes such as <a href="/programming/labels.html">labeling</a>, <a href="/
         // group our input handling systems into a set
         .add_system_set(
             SystemSet::new()
-                .label(&quot;input&quot;)
+                .label("input")
                 .with_system(keyboard_input)
                 .with_system(gamepad_input)
         )
 
-        // our &quot;net&quot; systems should run before &quot;input&quot;
+        // our "net" systems should run before "input"
         .add_system_set(
             SystemSet::new()
-                .label(&quot;net&quot;)
-                .before(&quot;input&quot;)
+                .label("net")
+                .before("input")
                 // individual systems can still have
                 // their own labels (and ordering)
-                .with_system(server_session.label(&quot;session&quot;))
-                .with_system(server_updates.after(&quot;session&quot;))
+                .with_system(server_session.label("session"))
+                .with_system(server_updates.after("session"))
         )
 
         // some ungrouped systems
-        .add_system(player_movement.after(&quot;input&quot;))
-        .add_system(session_ui.after(&quot;session&quot;))
+        .add_system(player_movement.after("input"))
+        .add_system(session_ui.after("session"))
         .add_system(smoke_particles)
 
         .run();

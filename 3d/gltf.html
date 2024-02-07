@@ -190,12 +190,12 @@
 <p>Bevy uses the GLTF 2.0 file format for 3D assets.</p>
 <p>(other formats may be unofficially available via 3rd-party plugins)</p>
 <h2 id="quick-start-spawning-3d-models-into-your-world"><a class="header" href="#quick-start-spawning-3d-models-into-your-world">Quick-Start: Spawning 3D Models into your World</a></h2>
-<p>The simplest use case is to just load a &quot;3D model&quot; and spawn it into the game world.</p>
-<p>&quot;3D models&quot; can often be complex, consisting of multiple parts. Think of a
+<p>The simplest use case is to just load a "3D model" and spawn it into the game world.</p>
+<p>"3D models" can often be complex, consisting of multiple parts. Think of a
 house: the windows, roof, doors, etc., are separate pieces, that are likely
 made of multiple meshes, materials, and textures. Bevy would technically
 need multiple ECS Entities to represent and render the whole thing.</p>
-<p>This is why your GLTF &quot;model&quot; is represented by Bevy as a
+<p>This is why your GLTF "model" is represented by Bevy as a
 [Scene][cb::scene]. This way, you can easily spawn it, and Bevy will create
 all the relevant <a href="/fundamentals/hierarchy.html">child entities</a> and configure them correctly.</p>
 <pre><code class="language-rust no_run noplayground">fn spawn_gltf(
@@ -203,7 +203,7 @@ all the relevant <a href="/fundamentals/hierarchy.html">child entities</a> and c
     ass: Res&lt;AssetServer&gt;,
 ) {
     // note that we have to include the `Scene0` label
-    let my_gltf = ass.load(&quot;my.glb#Scene0&quot;);
+    let my_gltf = ass.load("my.glb#Scene0");
 
     // to position our 3d model, simply use the Transform
     // in the SceneBundle
@@ -215,8 +215,8 @@ all the relevant <a href="/fundamentals/hierarchy.html">child entities</a> and c
 }</code></pre>
 <p>You could also use GLTF files to load an entire map/level. It works the same way.</p>
 <p>The above example assumes that you have a simple GLTF file containing only
-one &quot;default scene&quot;. GLTF is a very flexible file format. A single file can
-contain many &quot;models&quot; or more complex &quot;scenes&quot;. To get a better understanding
+one "default scene". GLTF is a very flexible file format. A single file can
+contain many "models" or more complex "scenes". To get a better understanding
 of GLTF and possible workflows, read the rest of this page. :)</p>
 <h2 id="introduction-to-gltf"><a class="header" href="#introduction-to-gltf">Introduction to GLTF</a></h2>
 <p>GLTF is a modern open standard for exchanging 3D assets between different
@@ -240,22 +240,22 @@ in the GLTF file itself, and in Bevy.</p>
 what you see on the screen in your 3D modeling software. Scenes combine
 all of the data needed for the game engine to create all the needed
 entities to represent what you want. Conceptually, think of a scene as one
-&quot;unit&quot;. Depending on your use case, this could be one &quot;3d model&quot;,
+"unit". Depending on your use case, this could be one "3d model",
 or even a whole map or game level. In Bevy, these are represented as Bevy
 Scenes with all the child ECS entities.</p>
-<p>GLTF Scenes are composed of GLTF <strong>Nodes</strong>. These describe the &quot;objects&quot;
+<p>GLTF Scenes are composed of GLTF <strong>Nodes</strong>. These describe the "objects"
 in the scene, typically GLTF Meshes, but can also be other things like
 Cameras and Lights. Each GLTF Node has a transform for positioning it in
 the scene. GLTF Nodes do not have a core Bevy equivalent; Bevy just uses
 this data to create the ECS Entities inside of a Scene. Bevy has a special
 <a href="https://docs.rs/bevy/0.9.1/bevy/gltf/struct.GltfNode.html"><code>GltfNode</code></a> asset type, if you need access to this data.</p>
-<p>GLTF <strong>Meshes</strong> represent one conceptual &quot;3D object&quot;. These correspond
-to the &quot;objects&quot; in your 3D modeling software. GLTF Meshes may be complex
+<p>GLTF <strong>Meshes</strong> represent one conceptual "3D object". These correspond
+to the "objects" in your 3D modeling software. GLTF Meshes may be complex
 and composed of multiple smaller pieces, called GLTF Primitives, each of
 which may use a different Material. GLTF Meshes do not have a core Bevy
 equivalent, but there is a special <a href="https://docs.rs/bevy/0.9.1/bevy/gltf/struct.GltfMesh.html"><code>GltfMesh</code></a> asset type,
 which describes the primitives.</p>
-<p>GLTF <strong>Primitives</strong> are individual &quot;units of 3D geometry&quot;, for the purposes of
+<p>GLTF <strong>Primitives</strong> are individual "units of 3D geometry", for the purposes of
 rendering. They contain the actual geometry / vertex data, and reference the
 Material to be used when drawing. In Bevy, each GLTF Primitive is represented
 as a Bevy <a href="https://docs.rs/bevy/0.9.1/bevy/render/mesh/struct.Mesh.html"><code>Mesh</code></a> asset, and must be spawned as a separate ECS
@@ -283,13 +283,13 @@ types, referring to each other however they like.</p>
 <p>Because GLTF is so flexible, it is up to you how to structure your assets.</p>
 <p>A single GLTF file might be used:</p>
 <ul>
-<li>To represent a single &quot;3D model&quot;, containing a single
+<li>To represent a single "3D model", containing a single
 GLTF Scene with the model, so you can spawn it into your game.</li>
 <li>To represent a whole level, as a GLTF Scene, possibly also including
 the camera. This lets you load and spawn a whole level/map at once.</li>
 <li>To represent sections of a level/map, such as a rooms, as separate GLTF Scenes.
 They can share meshes and textures if needed.</li>
-<li>To contain a set of many different &quot;3D models&quot;, each as a separate GLTF Scene.
+<li>To contain a set of many different "3D models", each as a separate GLTF Scene.
 This lets you load and manage the whole collection at once and spawn them individually as needed.</li>
 <li>… others?</li>
 </ul>
@@ -314,10 +314,10 @@ Many 3D editors do not enable this option by default.</p>
 <h3 id="textures"><a class="header" href="#textures">Textures</a></h3>
 <p>For your Textures / image data, the GLTF format specification officially
 limits the supported formats to just PNG, JPEG, or Basis. However, Bevy does
-not enforce such &quot;artificial limitations&quot;. You can use any <a href="/builtins.html#file-formats">image format
+not enforce such "artificial limitations". You can use any <a href="/builtins.html#file-formats">image format
 supported by Bevy</a>.</p>
 <p>Your 3D editor will likely export your GLTF with PNG textures. This will
-&quot;just work&quot; and is nice for simple use cases.</p>
+"just work" and is nice for simple use cases.</p>
 <p>However, mipmaps and compressed textures are very important to get good GPU
 performance, memory (VRAM) usage, and visual quality. You will only get these
 benefits if you use a format like KTX2 or DDS, that supports these features.</p>
@@ -328,7 +328,7 @@ features</a> for Bevy.</p>
 <p>You can use the <a href="https://github.com/superdump/klafsa"><code>klafsa</code></a> tool to convert all the textures
 used in your GLTF files from PNG/JPEG into KTX2, with mipmaps and GPU texture
 compression of your choice.</p>
-<pre><code>TODO: show an example workflow for converting textures into the &quot;optimal&quot; format
+<pre><code>TODO: show an example workflow for converting textures into the "optimal" format
 </code></pre>
 <h2 id="using-gltf-sub-assets-in-bevy"><a class="header" href="#using-gltf-sub-assets-in-bevy">Using GLTF Sub-Assets in Bevy</a></h2>
 <p>The various sub-assets contained in a GLTF file can be addressed in two ways:</p>
@@ -338,7 +338,7 @@ compression of your choice.</p>
 when creating the asset, which can be exported into the GLTF)</li>
 </ul>
 <p>To get handles to the respective assets in Bevy, you can use the
-<a href="https://docs.rs/bevy/0.9.1/bevy/gltf/struct.Gltf.html"><code>Gltf</code></a> <a href="#gltf-master-asset">&quot;master asset&quot;</a>, or alternatively,
+<a href="https://docs.rs/bevy/0.9.1/bevy/gltf/struct.Gltf.html"><code>Gltf</code></a> <a href="#gltf-master-asset">"master asset"</a>, or alternatively,
 <a href="#assetpath-with-labels">AssetPath with Labels</a>.</p>
 <h3 id="gltf-master-asset"><a class="header" href="#gltf-master-asset"><code>Gltf</code> master asset</a></h3>
 <p>If you have a complex GLTF file, this is likely the most flexible and useful
@@ -354,7 +354,7 @@ fn load_gltf(
     mut commands: Commands,
     ass: Res&lt;AssetServer&gt;,
 ) {
-    let gltf = ass.load(&quot;my_asset_pack.glb&quot;);
+    let gltf = ass.load("my_asset_pack.glb");
     commands.insert_resource(MyAssetPack(gltf));
 }
 
@@ -371,9 +371,9 @@ fn spawn_gltf_objects(
             ..Default::default()
         });
 
-        // spawn the scene named &quot;YellowCar&quot;
+        // spawn the scene named "YellowCar"
         commands.spawn(SceneBundle {
-            scene: gltf.named_scenes[&quot;YellowCar&quot;].clone(),
+            scene: gltf.named_scenes["YellowCar"].clone(),
             transform: Transform::from_xyz(1.0, 2.0, 3.0),
             ..Default::default()
         });
@@ -393,9 +393,9 @@ fn gltf_manual_entity(
     assets_gltfmesh: Res&lt;Assets&lt;GltfMesh&gt;&gt;,
 ) {
     if let Some(gltf) = assets_gltf.get(&amp;my.0) {
-        // Get the GLTF Mesh named &quot;CarWheel&quot;
+        // Get the GLTF Mesh named "CarWheel"
         // (unwrap safety: we know the GLTF has loaded already)
-        let carwheel = assets_gltfmesh.get(&amp;gltf.named_meshes[&quot;CarWheel&quot;]).unwrap();
+        let carwheel = assets_gltfmesh.get(&amp;gltf.named_meshes["CarWheel"]).unwrap();
 
         // Spawn a PBR entity with the mesh and material of the first GLTF Primitive
         commands.spawn(PbrBundle {
@@ -422,14 +422,14 @@ numerial index is supported. You cannot address sub-assets by name.</p>
     ass: Res&lt;AssetServer&gt;,
 ) {
     // spawn the first scene in the file
-    let scene0 = ass.load(&quot;my_asset_pack.glb#Scene0&quot;);
+    let scene0 = ass.load("my_asset_pack.glb#Scene0");
     commands.spawn(SceneBundle {
         scene: scene0,
         ..Default::default()
     });
 
     // spawn the second scene
-    let scene1 = ass.load(&quot;my_asset_pack.glb#Scene1&quot;);
+    let scene1 = ass.load("my_asset_pack.glb#Scene1");
     commands.spawn(SceneBundle {
         scene: scene1,
         transform: Transform::from_xyz(1.0, 2.0, 3.0),

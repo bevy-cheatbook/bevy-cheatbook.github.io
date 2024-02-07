@@ -204,13 +204,13 @@ fn main() {
         .add_plugins(DefaultPlugins)
         .add_system_set(
             SystemSet::new()
-                // This prints out &quot;hello world&quot; once every second
+                // This prints out "hello world" once every second
                 .with_run_criteria(FixedTimestep::step(TIMESTEP_1_PER_SECOND))
                 .with_system(slow_timestep)
         )
         .add_system_set(
             SystemSet::new()
-                // This prints out &quot;goodbye world&quot; twice every second
+                // This prints out "goodbye world" twice every second
                 .with_run_criteria(FixedTimestep::step(TIMESTEP_2_PER_SECOND))
                 .with_system(fast_timestep)
         )
@@ -218,11 +218,11 @@ fn main() {
 }
 
 fn slow_timestep() {
-    println!(&quot;hello world&quot;);
+    println!("hello world");
 }
 
 fn fast_timestep() {
-    println!(&quot;goodbye world&quot;);
+    println!("goodbye world");
 }</code></pre>
 <h2 id="state"><a class="header" href="#state">State</a></h2>
 <p>You can check the current state of the fixed timestep trackers, by accessing

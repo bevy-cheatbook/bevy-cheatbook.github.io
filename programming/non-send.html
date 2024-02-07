@@ -183,8 +183,8 @@
 </tbody></table>
 </div>
 <h1 id="non-send-resources"><a class="header" href="#non-send-resources">Non-Send Resources</a></h1>
-<p>&quot;Non-send&quot; refers to data types that must only be accessed from the &quot;main
-thread&quot; of the application. Such data is marked by Rust as <code>!Send</code> (lacking
+<p>"Non-send" refers to data types that must only be accessed from the "main
+thread" of the application. Such data is marked by Rust as <code>!Send</code> (lacking
 the <a href="https://doc.rust-lang.org/stable/std/marker/trait.Send.html"><code>Send</code></a> trait).</p>
 <p>Some (often system) libraries have interfaces that cannot be safely used from
 other threads. A common example of this are various low-level OS interfaces
@@ -193,7 +193,7 @@ things like creating a Bevy plugin for interfacing with such things, you
 may encounter the need for this.</p>
 <p>Normally, Bevy works by running all your <a href="/programming/systems.html">systems</a> on a
 thread-pool, making use of many CPU cores. However, you might need to ensure
-that some code always runs on the &quot;main thread&quot;, or access data that is not
+that some code always runs on the "main thread", or access data that is not
 safe to access in a multithreaded way.</p>
 <h2 id="non-send-systems-and-data-access"><a class="header" href="#non-send-systems-and-data-access">Non-Send Systems and Data Access</a></h2>
 <p>To do this, you can use a <a href="https://docs.rs/bevy/0.12.0/bevy/ecs/system/struct.NonSend.html"><code>NonSend&lt;T&gt;</code></a> /

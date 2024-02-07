@@ -209,7 +209,7 @@ fn helper_func(foo: &amp;Foo, bar: &amp;mut Bar) {
     |         |            immutable borrow occurs here
     |         immutable borrow later used by call
 </code></pre>
-<p>The solution is to use the &quot;reborrow&quot; idiom, a common but non-obvious trick in Rust programming:</p>
+<p>The solution is to use the "reborrow" idiom, a common but non-obvious trick in Rust programming:</p>
 <pre><code class="language-rust no_run noplayground">// add this at the start of the for loop, before using `thing`:
 let thing = &amp;mut *thing;
 
@@ -222,13 +222,13 @@ you don't modify the data afterwards, the component gets marked as changed.</p>
 [<code>Res&lt;T&gt;</code>][bevy::Res], [<code>ResMut&lt;T&gt;</code>][bevy::ResMut], and [<code>Mut&lt;T&gt;</code>][bevy::Mut]
 (when <a href="/programming/queries.html">querying</a> for components mutably)). This lets Bevy track
 access to the data.</p>
-<p>These are &quot;smart pointer&quot; types that use the Rust <a href="https://doc.rust-lang.org/stable/std/ops/trait.Deref.html"><code>Deref</code></a>
+<p>These are "smart pointer" types that use the Rust <a href="https://doc.rust-lang.org/stable/std/ops/trait.Deref.html"><code>Deref</code></a>
 trait to dereference to your data. They usually work seamlessly and you
 don't even notice them.</p>
 <p>However, in a sense, they are opaque to the compiler. The Rust language
 allows fields of a struct to be borrowed individually, when you have direct
 access to the struct, but this does not work when it is wrapped in another type.</p>
-<p>The &quot;reborrow&quot; trick shown above, effectively converts the wrapper
+<p>The "reborrow" trick shown above, effectively converts the wrapper
 into a regular Rust reference. <code>*thing</code> dereferences the wrapper via
 <a href="https://doc.rust-lang.org/stable/std/ops/trait.DerefMut.html"><code>DerefMut</code></a>, and then <code>&amp;mut</code> borrows it mutably. You now have
 <code>&amp;mut MyStuff</code> instead of <code>Mut&lt;MyStuff&gt;</code>.</p>

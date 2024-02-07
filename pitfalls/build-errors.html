@@ -203,7 +203,7 @@ mysterious errors will go away.</p>
 <p>This trick often fixes the broken build, but if it doesn't help you,
 your issue might require further investigation. Reach out to the Bevy
 community via GitHub or <a href="https://discord.gg/bevy">Discord</a>, and ask for help.</p>
-<p>If you are using bleeding-edge Bevy (&quot;main&quot;), and the above does not solve
+<p>If you are using bleeding-edge Bevy ("main"), and the above does not solve
 the problem, your errors might be caused by 3rd-party plugins. See <a href="../setup/bevy-git.html#how-to-use-bleeding-edge-bevy">this
 page</a> for solutions.</p>
 <h2 id="new-cargo-resolver"><a class="header" href="#new-cargo-resolver">New Cargo Resolver</a></h2>
@@ -219,11 +219,11 @@ if you are using the latest Rust2021 Edition, the new resolver is automatically
 enabled.</p>
 <p>So, you need either one of these settings in your <code>Cargo.toml</code>:</p>
 <pre><code class="language-toml">[package]
-edition = &quot;2021&quot;
+edition = "2021"
 </code></pre>
 <p>or</p>
 <pre><code class="language-toml">[package]
-resolver = &quot;2&quot;
+resolver = "2"
 </code></pre>
 <h3 id="multi-crate-workspaces"><a class="header" href="#multi-crate-workspaces">Multi-Crate Workspaces</a></h3>
 <p>In a multi-crate Cargo workspace, the resolver is a global setting for the
@@ -231,7 +231,7 @@ whole workspace. It will <em>not</em> be enabled by default.</p>
 <p>This can bite you if you are transitioning a single-crate project into a workspace.</p>
 <p>You <em>must</em> add it manually to the top-level <code>Cargo.toml</code> for your Cargo Workspace:</p>
 <pre><code class="language-toml">[workspace]
-resolver = &quot;2&quot;
+resolver = "2"
 </code></pre>
 
                     </main>

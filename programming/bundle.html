@@ -186,7 +186,7 @@
 <a href="https://github.com/bevyengine/bevy/blob/main/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
 <hr />
 <h1 id="bundles"><a class="header" href="#bundles">Bundles</a></h1>
-<p>You can think of Bundles like &quot;templates&quot; or &quot;blueprints&quot; for creating entities.
+<p>You can think of Bundles like "templates" or "blueprints" for creating entities.
 They make it easy to create <a href="/programming/ec.html#entities">entities</a> with a common set of
 <a href="/programming/ec.html#components">components</a>.</p>
 <p>By creating a bundle type, instead of adding your components one by one, you
@@ -210,7 +210,7 @@ struct PlayerBundle {
 <p>You can then use your bundle when you spawn your entities:</p>
 <pre><code class="language-rust no_run noplayground">commands.spawn(PlayerBundle {
     xp: PlayerXp(0),
-    name: PlayerName(&quot;Player 1&quot;.into()),
+    name: PlayerName("Player 1".into()),
     health: Health {
         hp: 100.0,
         extra: 0.0,
@@ -226,7 +226,7 @@ struct PlayerBundle {
     fn default() -&gt; Self {
         Self {
             xp: PlayerXp(0),
-            name: PlayerName(&quot;Player&quot;.into()),
+            name: PlayerName("Player".into()),
             health: Health {
                 hp: 100.0,
                 extra: 0.0,
@@ -238,7 +238,7 @@ struct PlayerBundle {
 }</code></pre>
 <p>Now you can do this:</p>
 <pre><code class="language-rust no_run noplayground">commands.spawn(PlayerBundle {
-    name: PlayerName(&quot;Player 1&quot;.into()),
+    name: PlayerName("Player 1".into()),
     ..Default::default()
 });</code></pre>
 <h2 id="loose-components-as-bundles"><a class="header" href="#loose-components-as-bundles">Loose components as bundles</a></h2>

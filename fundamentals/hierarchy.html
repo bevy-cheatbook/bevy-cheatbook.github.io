@@ -191,7 +191,7 @@
 hierarchy (the <a href="/programming/ecs-intro.html">ECS</a> is a flat data structure). However,
 logical hierarchies are a common pattern in games.</p>
 <p>Bevy supports creating such a logical link between entities, to form
-a virtual &quot;hierarchy&quot;, by simply adding <a href="https://docs.rs/bevy/0.9.1/bevy/hierarchy/struct.Parent.html"><code>Parent</code></a> and
+a virtual "hierarchy", by simply adding <a href="https://docs.rs/bevy/0.9.1/bevy/hierarchy/struct.Parent.html"><code>Parent</code></a> and
 <a href="https://docs.rs/bevy/0.9.1/bevy/hierarchy/struct.Children.html"><code>Children</code></a> components on the respective entities.</p>
 <p>When using <a href="/programming/commands.html">Commands</a> to spawn entities,
 <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a> has methods for adding children to entities,
@@ -273,7 +273,7 @@ each Squad, and it needs some information about the children:</p>
     }
 }</code></pre>
 <h2 id="transform-and-visibility-propagation"><a class="header" href="#transform-and-visibility-propagation">Transform and Visibility Propagation</a></h2>
-<p>If your entities represent &quot;objects in the game world&quot;, you probably expect
+<p>If your entities represent "objects in the game world", you probably expect
 the children to be affected by the parent.</p>
 <p><a href="/fundamentals/transforms.html">Transform</a> propagation allows children to be positioned
 relative to their parent and move with it.</p>

@@ -230,7 +230,7 @@ fn setup_fps_counter(
         NodeBundle {
             // give it a dark background for readability
             background_color: BackgroundColor(Color::BLACK.with_a(0.5)),
-            // make it &quot;always on top&quot; by setting the Z index to maximum
+            // make it "always on top" by setting the Z index to maximum
             // we want it to be displayed over all other UI
             z_index: ZIndex::Global(i32::MAX),
             style: Style {
@@ -257,7 +257,7 @@ fn setup_fps_counter(
             // use two sections, so it is easy to update just the number
             text: Text::from_sections([
                 TextSection {
-                    value: &quot;FPS: &quot;.into(),
+                    value: "FPS: ".into(),
                     style: TextStyle {
                         font_size: 16.0,
                         color: Color::WHITE,
@@ -268,7 +268,7 @@ fn setup_fps_counter(
                     }
                 },
                 TextSection {
-                    value: &quot; N/A&quot;.into(),
+                    value: " N/A".into(),
                     style: TextStyle {
                         font_size: 16.0,
                         color: Color::WHITE,
@@ -290,7 +290,7 @@ fn fps_text_update_system(
     mut query: Query&lt;&amp;mut Text, With&lt;FpsText&gt;&gt;,
 ) {
     for mut text in &amp;mut query {
-        // try to get a &quot;smoothed&quot; FPS value from Bevy
+        // try to get a "smoothed" FPS value from Bevy
         if let Some(value) = diagnostics
             .get(FrameTimeDiagnosticsPlugin::FPS)
             .and_then(|fps| fps.smoothed())
@@ -298,7 +298,7 @@ fn fps_text_update_system(
             // Format the number as to leave space for 4 digits, just in case,
             // right-aligned and rounded. This helps readability when the
             // number changes rapidly.
-            text.sections[1].value = format!(&quot;{value:&gt;4.0}&quot;);
+            text.sections[1].value = format!("{value:&gt;4.0}");
 
             // Let's make it extra fancy by changing the color of the
             // text according to the FPS value:
@@ -324,9 +324,9 @@ fn fps_text_update_system(
                 Color::rgb(1.0, 0.0, 0.0)
             }
         } else {
-            // display &quot;N/A&quot; if we can't get a FPS measurement
+            // display "N/A" if we can't get a FPS measurement
             // add an extra space to preserve alignment
-            text.sections[1].value = &quot; N/A&quot;.into();
+            text.sections[1].value = " N/A".into();
             text.sections[1].style.color = Color::WHITE;
         }
     }

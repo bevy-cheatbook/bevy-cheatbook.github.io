@@ -214,8 +214,8 @@ rotate the camera. This is how you move the camera around.</p>
 <p>If you are making a game, you should implement your own custom camera controls
 that feel appropriate to your game's genre and gameplay.</p>
 <h3 id="zooming-the-camera"><a class="header" href="#zooming-the-camera">Zooming the camera</a></h3>
-<p>Do not use the transform scale to &quot;zoom&quot; a camera! It just stretches the image,
-which is not &quot;zooming&quot;. It might also cause other issues and incompatibilities.
+<p>Do not use the transform scale to "zoom" a camera! It just stretches the image,
+which is not "zooming". It might also cause other issues and incompatibilities.
 Use the <a href="/graphics/camera.html#projection">projection</a> to zoom.</p>
 <p>For an orthographic projection, change the scale. For a perspective projection,
 change the FOV. The FOV mimics the effect of zooming with a lens.</p>
@@ -259,13 +259,13 @@ fn debug_render_targets(
     for camera in &amp;q {
         match &amp;camera.target {
             RenderTarget::Window(wid) =&gt; {
-                eprintln!(&quot;Camera renders to window with id: {:?}&quot;, wid);
+                eprintln!("Camera renders to window with id: {:?}", wid);
             }
             RenderTarget::Image(handle) =&gt; {
-                eprintln!(&quot;Camera renders to image asset with id: {:?}&quot;, handle);
+                eprintln!("Camera renders to image asset with id: {:?}", handle);
             }
             RenderTarget::TextureView(_) =&gt; {
-                eprintln!(&quot;This is a special camera that outputs to something outside of Bevy.&quot;);
+                eprintln!("This is a special camera that outputs to something outside of Bevy.");
             }
         }
     }
@@ -273,7 +273,7 @@ fn debug_render_targets(
 <h2 id="viewport"><a class="header" href="#viewport">Viewport</a></h2>
 <p>The viewport is an (optional) way to restrict a camera to a sub-area of its
 render target, defined as a rectangle. That rectangle is effectively treated as
-the &quot;window&quot; to draw in.</p>
+the "window" to draw in.</p>
 <p>An obvious use-case are split-screen games, where you want a camera to only draw
 to one half of the screen.</p>
 <pre><code class="language-rust no_run noplayground">use bevy::render::camera::Viewport;
@@ -313,9 +313,9 @@ configured, or the entire window, if not):</p>
 <h2 id="coordinate-conversion"><a class="header" href="#coordinate-conversion">Coordinate Conversion</a></h2>
 <p><a href="https://docs.rs/bevy/0.12.0/bevy/render/camera/struct.Camera.html"><code>Camera</code></a> provides methods to help with coordinate conversion
 between on-screen coordinates and world-space coordinates. For an example, see
-the <a href="/cookbook/cursor2world.html">&quot;cursor to world&quot;</a> cookbook page.</p>
+the <a href="/cookbook/cursor2world.html">"cursor to world"</a> cookbook page.</p>
 <h2 id="clear-color"><a class="header" href="#clear-color">Clear Color</a></h2>
-<p>This is the &quot;background color&quot; that the whole viewport will be cleared to,
+<p>This is the "background color" that the whole viewport will be cleared to,
 before a camera renders anything.</p>
 <p>You can also disable clearing on a camera, if you want to preserve all the
 pixels as they were before.</p>
@@ -323,7 +323,7 @@ pixels as they were before.</p>
 <h2 id="render-layers"><a class="header" href="#render-layers">Render Layers</a></h2>
 <p><a href="https://docs.rs/bevy/0.12.0/bevy/render/view/visibility/struct.RenderLayers.html"><code>RenderLayers</code></a> is a way to filter what entities should be
 drawn by what cameras. Insert this <a href="/programming/ec.html#components">component</a> onto your entities
-to place them in specific &quot;layers&quot;. The layers are integers from 0 to 31 (32
+to place them in specific "layers". The layers are integers from 0 to 31 (32
 total available).</p>
 <p>Inserting this component onto a camera entity selects what layers that camera
 should render. Inserting this component onto renderable entities selects what
@@ -368,14 +368,14 @@ commands.spawn((
 <p>A camera's <code>order</code> is a simple integer value that controls the order relative
 to any other cameras with the same render target.</p>
 <p>For example, if you have multiple cameras that all render to the primary window,
-they will behave as multiple &quot;layers&quot;. Cameras with a higher order value will render
-&quot;on top of&quot; cameras with a lower value. <code>0</code> is the default.</p>
+they will behave as multiple "layers". Cameras with a higher order value will render
+"on top of" cameras with a lower value. <code>0</code> is the default.</p>
 <pre><code class="language-rust no_run noplayground">use bevy::core_pipeline::clear_color::ClearColorConfig;
 
 commands.spawn((
     Camera2dBundle {
         camera_2d: Camera2d {
-            // no &quot;background color&quot;, we need to see the main camera's output
+            // no "background color", we need to see the main camera's output
             clear_color: ClearColorConfig::None,
             ..default()
         },
@@ -432,7 +432,7 @@ render target. This way, a camera can be made to render one half of the screen
 (or any other area). Use a separate camera for each view in a split-screen game.</p>
 <h3 id="overlays"><a class="header" href="#overlays">Overlays</a></h3>
 <p>Official example: <a href="https://github.com/bevyengine/bevy/blob/main/examples/3d/two_passes.rs"><code>two_passes</code></a>.</p>
-<p>You might want to render multiple &quot;layers&quot; (passes) to the same render target.
+<p>You might want to render multiple "layers" (passes) to the same render target.
 An example of this might be an overlay/HUD to be displayed on top of the
 main game.</p>
 <p>The overlay camera could be completely different from the main camera. For

@@ -188,8 +188,8 @@
 <hr />
 <p>You can compose a single Bevy <a href="/programming/systems.html">system</a> from multiple Rust functions.</p>
 <p>You can make functions that can take an input and produce an output, and be
-connected together to run as a single larger system. This is called &quot;system piping&quot;.</p>
-<p>You can think of it as creating &quot;modular&quot; systems made up of multiple building
+connected together to run as a single larger system. This is called "system piping".</p>
+<p>You can think of it as creating "modular" systems made up of multiple building
 blocks. This way, you can reuse some common code/logic in multiple systems.</p>
 <p>Note that system piping is <em>not</em> a way of communicating between systems.
 If you want to pass data between systems, you should use <a href="/programming/events.html">Events</a>
@@ -206,11 +206,11 @@ them:</p>
 
 fn handle_io_errors(In(result): In&lt;std::io::Result&lt;()&gt;&gt;) {
     if let Err(e) = result {
-        eprintln!(&quot;I/O error occurred: {}&quot;, e);
+        eprintln!("I/O error occurred: {}", e);
     }
 }</code></pre>
 <p>Such functions cannot be <a href="/programming/app-builder.html">registered</a> individually as systems (Bevy
-doesn't know what to do with the input/output). By &quot;piping&quot; them together, we
+doesn't know what to do with the input/output). By "piping" them together, we
 create a valid system that we can add:</p>
 <pre><code class="language-rust no_run noplayground">fn main() {
     App::new()
@@ -224,7 +224,7 @@ create a valid system that we can add:</p>
 all the combined system parameters and their respective data access
 requirements. This implies that parallelism could be limited, affecting
 performance.</p>
-<p>If you create multiple &quot;piped systems&quot; that all contain a common function which
+<p>If you create multiple "piped systems" that all contain a common function which
 contains any mutable access, that prevents all of them from running in parallel!</p>
 
                     </main>

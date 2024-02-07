@@ -184,7 +184,7 @@
 </div>
 <h1 id="render-stages"><a class="header" href="#render-stages">Render Stages</a></h1>
 <p>Everything on the CPU side (the whole process of driving the GPU workloads)
-is structured in a sequence of &quot;render stages&quot;:</p>
+is structured in a sequence of "render stages":</p>
 <h2 id="timings"><a class="header" href="#timings">Timings</a></h2>
 <p>Note: Pipelined rendering is not yet actually enabled in Bevy 0.9. This section
 explains the intended behavior, which will land in a future Bevy version. You
@@ -211,13 +211,13 @@ will start again as soon as Extract has completed.</p>
 <p>If <a href="/window/props.html#vsync">vsync</a> is enabled, the wait for the next refresh of the
 screen will happen in the <a href="#prepare">Prepare</a> stage. This has the effect of
 prolonging the Prepare stage in the Render schedule. Therefore, in practice,
-your game will behave like the &quot;Render-bound&quot; scenario shown above.</p>
+your game will behave like the "Render-bound" scenario shown above.</p>
 <p>The final render (the framebuffer with the pixels to show in the
 <a href="/window/props.html">window</a>) is <em>presented</em> to the OS/driver at the end of the
 <a href="#render">Render</a> stage.</p>
 <p>Bevy updates its <a href="/fundamentals/time.html">timing information</a> (in <a href="https://docs.rs/bevy/0.9.1/bevy/time/struct.Time.html"><code>Res&lt;Time&gt;</code></a>)
 at the start of the First stage in the main App schedule. The value to
-use is measured at &quot;presentation time&quot;, in the render world, and the
+use is measured at "presentation time", in the render world, and the
 <a href="https://doc.rust-lang.org/stable/std/time/struct.Instant.html"><code>Instant</code></a> is sent over a channel, to be applied on the
 next frame.</p>
 <h2 id="adding-systems-to-render-stages"><a class="header" href="#adding-systems-to-render-stages">Adding Systems to Render Stages</a></h2>
@@ -253,7 +253,7 @@ render graph node will render them together with everything else.</p>
 <h2 id="extract"><a class="header" href="#extract">Extract</a></h2>
 <p>Extract is a very important and special stage. It is the synchronization
 point that links the two ECS Worlds. This is where the data required for
-rendering is copied (&quot;extracted&quot;) from the main App World into the Render
+rendering is copied ("extracted") from the main App World into the Render
 World, allowing for pipelined rendering.</p>
 <p>During the Extract stage, nothing else can run in parallel, on either the
 main App World or the Render World. Hence, Extract should be kept minimal
@@ -264,7 +264,7 @@ possible. Just copy data.</p>
 Create new <a href="/programming/ec.html#components">component types</a> and <a href="/programming/res.html">resources</a> just
 for use within the render World, with only the data you need.</p>
 <p>For example, Bevy's 2D sprites uses a <a href="https://docs.rs/bevy/0.9.1/bevy/sprite/struct.ExtractedSprite.html"><code>struct ExtractedSprite</code></a>, where it copies the relevant data
-from the &quot;user-facing&quot; components of sprite and spritesheet entities in the
+from the "user-facing" components of sprite and spritesheet entities in the
 main World.</p>
 <p>Bevy <strong>reserves Entity IDs</strong> in the render World, matching all the Entities
 existing in the main World. In most cases, you do not need to <em>spawn</em>
@@ -280,7 +280,7 @@ GPU. This is where you can create GPU <a href="/TODO.html">buffers</a>,
 <pre><code>// TODO: code example
 </code></pre>
 <h2 id="queue"><a class="header" href="#queue">Queue</a></h2>
-<p>Queue is the stage where you can set up the &quot;rendering jobs&quot; you will need to
+<p>Queue is the stage where you can set up the "rendering jobs" you will need to
 execute.</p>
 <p>Typically, this means creating <a href="/TODO.html">phase items</a>
 with the correct <a href="/TODO.html">render pipeline</a> and <a href="/TODO.html">draw

@@ -192,7 +192,7 @@ of the assets</a>.</p>
 <p>You can store handles in your <a href="/programming/ec.html#components">entity components</a> or
 <a href="/programming/res.html">resources</a>.</p>
 <p>Handles can refer to not-yet-loaded assets, meaning you can just spawn your
-entities anyway, using the handles, and the assets will just &quot;pop in&quot; when
+entities anyway, using the handles, and the assets will just "pop in" when
 they become ready.</p>
 <h2 id="obtaining-handles"><a class="header" href="#obtaining-handles">Obtaining Handles</a></h2>
 <p>If you are <a href="/assets/assetserver.html">loading an asset from a file</a>, the
@@ -208,7 +208,7 @@ will automatically unload unused assets, after the last handle is dropped.</p>
 to call <code>handle.clone()</code>. This makes the operation explicit, to ensure you are
 aware of all the places in your code where you create additional handles. The
 <code>.clone()</code> operation is cheap, so don't worry about performance (in most cases).</p>
-<p>There are two kinds of handles: &quot;strong&quot; and &quot;weak&quot;. Strong assets are
+<p>There are two kinds of handles: "strong" and "weak". Strong assets are
 counted, weak handles are not. By default, handles are strong. If you want
 to create a weak handle, use <code>.clone_weak()</code> (instead of <code>.clone()</code>) on an
 existing handle. Bevy can unload the asset after all strong handles are gone,

@@ -190,7 +190,7 @@
 <p>Use the <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Query.html"><code>Query</code></a> <a href="/programming/systems.html">system parameter</a>, where you can
 specify the data you want to access, and optionally additional
 <a href="/programming/queries.html#query-filters">filters</a> for selecting entities.</p>
-<p>Think of the types you put in your <code>Query</code> as a &quot;specification&quot; for selecting
+<p>Think of the types you put in your <code>Query</code> as a "specification" for selecting
 what entities you want to access. Queries will match only those entities in the
 ECS World that fit your specification. You are then able to access the relevant
 data from individual such entities (using an <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> ID), or
@@ -207,7 +207,7 @@ component. If you want multiple components, put them in a tuple.</p>
 ) {
     // get all matching entities
     for (health, mut transform, player) in query.iter_mut() {
-        eprintln!(&quot;Entity at {} has {} HP.&quot;, transform.translation, health.hp);
+        eprintln!("Entity at {} has {} HP.", transform.translation, health.hp);
 
         // center if hp is zero
         if health.hp &lt;= 0.0 {
@@ -268,9 +268,9 @@ that have specific components.</p>
     // get all matching entities
     for (health, name) in query.iter() {
         if let Some(name) = name {
-            eprintln!(&quot;Player {} has {} HP.&quot;, name.0, health.hp);
+            eprintln!("Player {} has {} HP.", name.0, health.hp);
         } else {
-            eprintln!(&quot;Unknown player has {} HP.&quot;, health.hp);
+            eprintln!("Unknown player has {} HP.", health.hp);
         }
     }
 }</code></pre>

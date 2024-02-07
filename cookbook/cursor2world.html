@@ -226,7 +226,7 @@ fn my_cursor_system(
         .map(|ray| ray.origin.truncate())
     {
         mycoords.0 = world_position;
-        eprintln!(&quot;World coords: {}/{}&quot;, world_position.x, world_position.y);
+        eprintln!("World coords: {}/{}", world_position.x, world_position.y);
     }
 }</code></pre>
 <pre><code class="language-rust no_run noplayground">app.init_resource::&lt;MyWorldCoords&gt;();
@@ -378,7 +378,7 @@ fn cursor_to_ground_plane(
 
     // Mathematically, we can represent the ground as an infinite flat plane.
     // To do that, we need a point (to position the plane) and a normal vector
-    // (the &quot;up&quot; direction, perpendicular to the ground plane).
+    // (the "up" direction, perpendicular to the ground plane).
 
     // We can get the correct values from the ground entity's GlobalTransform
     let plane_origin = ground_transform.translation();
@@ -401,7 +401,7 @@ fn cursor_to_ground_plane(
     let global_cursor = ray.get_point(distance);
 
     mycoords.global = global_cursor;
-    eprintln!(&quot;Global cursor coords: {}/{}/{}&quot;,
+    eprintln!("Global cursor coords: {}/{}/{}",
         global_cursor.x, global_cursor.y, global_cursor.z
     );
 
@@ -412,7 +412,7 @@ fn cursor_to_ground_plane(
     // we can discard the Y coordinate, because it should always be zero
     // (our point is supposed to be on the plane)
     mycoords.local = local_cursor.xz();
-    eprintln!(&quot;Local cursor coords: {}/{}&quot;, local_cursor.x, local_cursor.z);
+    eprintln!("Local cursor coords: {}/{}", local_cursor.x, local_cursor.z);
 }</code></pre>
 <pre><code class="language-rust no_run noplayground">app.init_resource::&lt;MyGroundCoords&gt;();
 app.add_systems(Startup, setup_3d_scene);

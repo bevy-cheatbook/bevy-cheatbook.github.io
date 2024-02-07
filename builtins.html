@@ -238,7 +238,7 @@ Read-only <a href="/programming/world.html">direct access to the ECS World</a></
 <li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.ParamSet.html"><code>ParamSet&lt;...&gt;</code></a> (with up to 8 params):
 Resolve <a href="/programming/paramset.html">conflicts between incompatible system parameters</a></li>
 <li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.Deferred.html"><code>Deferred&lt;T&gt;</code></a>:
-Custom <a href="/programming/deferred.html">&quot;deferred mutation&quot;</a>, similar to <code>Commands</code>, but for your own things</li>
+Custom <a href="/programming/deferred.html">"deferred mutation"</a>, similar to <code>Commands</code>, but for your own things</li>
 <li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/removal_detection/struct.RemovedComponents.html"><code>RemovedComponents&lt;T&gt;</code></a>:
 <a href="/programming/change-detection.html#removal-detection">Removal detection</a></li>
 <li><a href="https://docs.rs/bevy/0.11.0/bevy/gizmos/gizmos/struct.Gizmos.html"><code>Gizmos</code></a>:
@@ -302,15 +302,15 @@ Render World. <code>T</code> can be any read-only system parameter type.</p>
 Pixel data, used as a texture for 2D and 3D rendering;
 also contains the <a href="https://docs.rs/bevy/0.11.0/bevy/render/render_resource/struct.SamplerDescriptor.html"><code>SamplerDescriptor</code></a> for texture filtering settings</li>
 <li><a href="https://docs.rs/bevy/0.11.0/bevy/sprite/struct.TextureAtlas.html"><code>TextureAtlas</code></a>:
-2D &quot;Sprite Sheet&quot; defining sub-images within a single larger image</li>
+2D "Sprite Sheet" defining sub-images within a single larger image</li>
 <li><a href="https://docs.rs/bevy/0.11.0/bevy/render/mesh/struct.Mesh.html"><code>Mesh</code></a>:
 3D Mesh (geometry data), contains vertex attributes (like position, UVs, normals)</li>
 <li><a href="https://docs.rs/bevy/0.11.0/bevy/render/render_resource/struct.Shader.html"><code>Shader</code></a>:
 GPU shader code, in one of the supported languages (WGSL/SPIR-V/GLSL)</li>
 <li><a href="https://docs.rs/bevy/0.11.0/bevy/sprite/struct.ColorMaterial.html"><code>ColorMaterial</code></a>:
-Basic &quot;2D material&quot;: contains color, optionally an image</li>
+Basic "2D material": contains color, optionally an image</li>
 <li><a href="https://docs.rs/bevy/0.11.0/bevy/pbr/struct.StandardMaterial.html"><code>StandardMaterial</code></a>:
-&quot;3D material&quot; with support for Physically-Based Rendering</li>
+"3D material" with support for Physically-Based Rendering</li>
 <li><a href="https://docs.rs/bevy/0.11.0/bevy/animation/struct.AnimationClip.html"><code>AnimationClip</code></a>:
 Data for a single animation sequence, can be used with <a href="https://docs.rs/bevy/0.11.0/bevy/animation/struct.AnimationPlayer.html"><code>AnimationPlayer</code></a></li>
 <li><a href="https://docs.rs/bevy/0.11.0/bevy/text/struct.Font.html"><code>Font</code></a>:
@@ -340,39 +340,39 @@ for each one can be enabled/disabled using <a href="/setup/bevy-config.html">car
 are enabled by default, many are not.</p>
 <p>Image formats (loaded as <a href="https://docs.rs/bevy/0.11.0/bevy/render/texture/struct.Image.html"><code>Image</code></a> assets):</p>
 <div class="table-wrapper"><table><thead><tr><th>Format</th><th>Cargo feature</th><th>Default?</th><th>Filename extensions</th></tr></thead><tbody>
-<tr><td>PNG</td><td><code>&quot;png&quot;</code></td><td>Yes</td><td><code>.png</code></td></tr>
-<tr><td>HDR</td><td><code>&quot;hdr&quot;</code></td><td>Yes</td><td><code>.hdr</code></td></tr>
-<tr><td>KTX2</td><td><code>&quot;ktx2&quot;</code></td><td>Yes</td><td><code>.ktx2</code></td></tr>
-<tr><td>KTX2+zstd</td><td><code>&quot;ktx2&quot;, &quot;zstd&quot;</code></td><td>Yes</td><td><code>.ktx2</code></td></tr>
-<tr><td>JPEG</td><td><code>&quot;jpeg&quot;</code></td><td>No</td><td><code>.jpg</code>, <code>.jpeg</code></td></tr>
-<tr><td>WebP</td><td><code>&quot;webp&quot;</code></td><td>No</td><td><code>.webp</code></td></tr>
-<tr><td>OpenEXR</td><td><code>&quot;exr&quot;</code></td><td>No</td><td><code>.exr</code></td></tr>
-<tr><td>TGA</td><td><code>&quot;tga&quot;</code></td><td>No</td><td><code>.tga</code></td></tr>
-<tr><td>PNM</td><td><code>&quot;pnm&quot;</code></td><td>No</td><td><code>.pam</code>, <code>.pbm</code>, <code>.pgm</code>, <code>.ppm</code></td></tr>
-<tr><td>BMP</td><td><code>&quot;bmp&quot;</code></td><td>No</td><td><code>.bmp</code></td></tr>
-<tr><td>DDS</td><td><code>&quot;dds&quot;</code></td><td>No</td><td><code>.dds</code></td></tr>
-<tr><td>KTX2+zlib</td><td><code>&quot;ktx2&quot;, &quot;zlib&quot;</code></td><td>No</td><td><code>.ktx2</code></td></tr>
-<tr><td>Basis</td><td><code>&quot;basis-universal&quot;</code></td><td>No</td><td><code>.basis</code></td></tr>
+<tr><td>PNG</td><td><code>"png"</code></td><td>Yes</td><td><code>.png</code></td></tr>
+<tr><td>HDR</td><td><code>"hdr"</code></td><td>Yes</td><td><code>.hdr</code></td></tr>
+<tr><td>KTX2</td><td><code>"ktx2"</code></td><td>Yes</td><td><code>.ktx2</code></td></tr>
+<tr><td>KTX2+zstd</td><td><code>"ktx2", "zstd"</code></td><td>Yes</td><td><code>.ktx2</code></td></tr>
+<tr><td>JPEG</td><td><code>"jpeg"</code></td><td>No</td><td><code>.jpg</code>, <code>.jpeg</code></td></tr>
+<tr><td>WebP</td><td><code>"webp"</code></td><td>No</td><td><code>.webp</code></td></tr>
+<tr><td>OpenEXR</td><td><code>"exr"</code></td><td>No</td><td><code>.exr</code></td></tr>
+<tr><td>TGA</td><td><code>"tga"</code></td><td>No</td><td><code>.tga</code></td></tr>
+<tr><td>PNM</td><td><code>"pnm"</code></td><td>No</td><td><code>.pam</code>, <code>.pbm</code>, <code>.pgm</code>, <code>.ppm</code></td></tr>
+<tr><td>BMP</td><td><code>"bmp"</code></td><td>No</td><td><code>.bmp</code></td></tr>
+<tr><td>DDS</td><td><code>"dds"</code></td><td>No</td><td><code>.dds</code></td></tr>
+<tr><td>KTX2+zlib</td><td><code>"ktx2", "zlib"</code></td><td>No</td><td><code>.ktx2</code></td></tr>
+<tr><td>Basis</td><td><code>"basis-universal"</code></td><td>No</td><td><code>.basis</code></td></tr>
 </tbody></table>
 </div>
 <p>Audio formats (loaded as <a href="https://docs.rs/bevy/0.11.0/bevy/audio/struct.AudioSource.html"><code>AudioSource</code></a> assets):</p>
 <div class="table-wrapper"><table><thead><tr><th>Format</th><th>Cargo feature</th><th>Default?</th><th>Filename extensions</th></tr></thead><tbody>
-<tr><td>OGG Vorbis</td><td><code>&quot;vorbis&quot;</code></td><td>Yes</td><td><code>.ogg</code>, <code>.oga</code>, <code>.spx</code></td></tr>
-<tr><td>FLAC</td><td><code>&quot;flac&quot;</code></td><td>No</td><td><code>.flac</code></td></tr>
-<tr><td>WAV</td><td><code>&quot;wav&quot;</code></td><td>No</td><td><code>.wav</code></td></tr>
-<tr><td>MP3</td><td><code>&quot;mp3&quot;</code></td><td>No</td><td><code>.mp3</code></td></tr>
+<tr><td>OGG Vorbis</td><td><code>"vorbis"</code></td><td>Yes</td><td><code>.ogg</code>, <code>.oga</code>, <code>.spx</code></td></tr>
+<tr><td>FLAC</td><td><code>"flac"</code></td><td>No</td><td><code>.flac</code></td></tr>
+<tr><td>WAV</td><td><code>"wav"</code></td><td>No</td><td><code>.wav</code></td></tr>
+<tr><td>MP3</td><td><code>"mp3"</code></td><td>No</td><td><code>.mp3</code></td></tr>
 </tbody></table>
 </div>
 <p>3D asset (model or scene) formats:</p>
 <div class="table-wrapper"><table><thead><tr><th>Format</th><th>Cargo feature</th><th>Default?</th><th>Filename extensions</th></tr></thead><tbody>
-<tr><td>GLTF</td><td><code>&quot;bevy_gltf&quot;</code></td><td>Yes</td><td><code>.gltf</code>, <code>.glb</code></td></tr>
+<tr><td>GLTF</td><td><code>"bevy_gltf"</code></td><td>Yes</td><td><code>.gltf</code>, <code>.glb</code></td></tr>
 </tbody></table>
 </div>
 <p>Shader formats (loaded as <a href="https://docs.rs/bevy/0.11.0/bevy/render/render_resource/struct.Shader.html"><code>Shader</code></a> assets):</p>
 <div class="table-wrapper"><table><thead><tr><th>Format</th><th>Cargo feature</th><th>Default?</th><th>Filename extensions</th></tr></thead><tbody>
 <tr><td>WGSL</td><td>n/a</td><td>Yes</td><td><code>.wgsl</code></td></tr>
-<tr><td>GLSL</td><td><code>&quot;shader_format_glsl&quot;</code></td><td>No</td><td><code>.vert</code>, <code>.frag</code>, <code>.comp</code></td></tr>
-<tr><td>SPIR-V</td><td><code>&quot;shader_format_spirv&quot;</code></td><td>No</td><td><code>.spv</code></td></tr>
+<tr><td>GLSL</td><td><code>"shader_format_glsl"</code></td><td>No</td><td><code>.vert</code>, <code>.frag</code>, <code>.comp</code></td></tr>
+<tr><td>SPIR-V</td><td><code>"shader_format_spirv"</code></td><td>No</td><td><code>.spv</code></td></tr>
 </tbody></table>
 </div>
 <p>Font formats (loaded as <a href="https://docs.rs/bevy/0.11.0/bevy/text/struct.Font.html"><code>Font</code></a> assets):</p>
@@ -507,18 +507,18 @@ Add this to a 3D camera to enable SSAO</li>
 3D Object/Primitive: a Mesh and a custom Material to draw it with</li>
 <li><a href="https://docs.rs/bevy/0.11.0/bevy/pbr/type.PbrBundle.html"><code>PbrBundle</code></a>:
 <code>MaterialMeshBundle</code> with the default Physically-Based Material (<a href="https://docs.rs/bevy/0.11.0/bevy/pbr/struct.StandardMaterial.html"><code>StandardMaterial</code></a>)</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/pbr/struct.DirectionalLightBundle.html"><code>DirectionalLightBundle</code></a>: 
+<li><a href="https://docs.rs/bevy/0.11.0/bevy/pbr/struct.DirectionalLightBundle.html"><code>DirectionalLightBundle</code></a>:
 3D directional light (like the sun)</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/pbr/struct.PointLightBundle.html"><code>PointLightBundle</code></a>: 
+<li><a href="https://docs.rs/bevy/0.11.0/bevy/pbr/struct.PointLightBundle.html"><code>PointLightBundle</code></a>:
 3D point light (like a lamp or candle)</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/pbr/struct.SpotLightBundle.html"><code>SpotLightBundle</code></a>: 
+<li><a href="https://docs.rs/bevy/0.11.0/bevy/pbr/struct.SpotLightBundle.html"><code>SpotLightBundle</code></a>:
 3D spot light (like a projector or flashlight)</li>
 </ul>
 <p>Bevy 2D:</p>
 <ul>
 <li><a href="https://docs.rs/bevy/0.11.0/bevy/core_pipeline/core_2d/struct.Camera2dBundle.html"><code>Camera2dBundle</code></a>:
 2D camera, uses orthographic projection + other special configuration for 2D</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/sprite/struct.SpriteBundle.html"><code>SpriteBundle</code></a>: 
+<li><a href="https://docs.rs/bevy/0.11.0/bevy/sprite/struct.SpriteBundle.html"><code>SpriteBundle</code></a>:
 2D sprite (<a href="https://docs.rs/bevy/0.11.0/bevy/render/texture/struct.Image.html"><code>Image</code></a> asset type)</li>
 <li><a href="https://docs.rs/bevy/0.11.0/bevy/sprite/struct.SpriteSheetBundle.html"><code>SpriteSheetBundle</code></a>:
 2D sprite (<a href="https://docs.rs/bevy/0.11.0/bevy/sprite/struct.TextureAtlas.html"><code>TextureAtlas</code></a> asset type)</li>
@@ -552,7 +552,7 @@ Global renderer background color to clear the window at the start of each frame<
 <li><a href="https://docs.rs/bevy/0.11.0/bevy/audio/struct.GlobalVolume.html"><code>GlobalVolume</code></a>:
 The overall volume for playing audio</li>
 <li><a href="https://docs.rs/bevy/0.11.0/bevy/pbr/struct.AmbientLight.html"><code>AmbientLight</code></a>:
-Global renderer &quot;fake lighting&quot;, so that shadows don't look too dark / black</li>
+Global renderer "fake lighting", so that shadows don't look too dark / black</li>
 <li><a href="https://docs.rs/bevy/0.11.0/bevy/render/view/enum.Msaa.html"><code>Msaa</code></a>:
 Global renderer setting for Multi-Sample Anti-Aliasing (some platforms might only support the values 1 and 4)</li>
 <li><a href="https://docs.rs/bevy/0.11.0/bevy/ui/struct.UiScale.html"><code>UiScale</code></a>:

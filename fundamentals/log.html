@@ -189,7 +189,7 @@
 <p>You may have noticed how, when you run your Bevy project, you get messages
 in your console window. For example:</p>
 <pre><code>2022-06-12T13:28:25.445644Z  WARN wgpu_hal::vulkan::instance: Unable to find layer: VK_LAYER_KHRONOS_validation
-2022-06-12T13:28:25.565795Z  INFO bevy_render::renderer: AdapterInfo { name: &quot;AMD Radeon RX 6600 XT&quot;, vendor: 4098, device: 29695, device_type: DiscreteGpu, backend: Vulkan }
+2022-06-12T13:28:25.565795Z  INFO bevy_render::renderer: AdapterInfo { name: "AMD Radeon RX 6600 XT", vendor: 4098, device: 29695, device_type: DiscreteGpu, backend: Vulkan }
 2022-06-12T13:28:25.565795Z  INFO mygame: Entered new map area.
 </code></pre>
 <p>Log messages like this can come from Bevy, dependencies (like wgpu), and
@@ -219,11 +219,11 @@ message. The syntax is exactly the same as with Rust's <code>println</code>. See
 <a href="https://doc.rust-lang.org/std/fmt/"><code>std::fmt</code></a> documentation for more details.</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>error!(&quot;Unknown condition!&quot;);
-warn!(&quot;Something unusual happened!&quot;);
-info!(&quot;Entered game level: {}&quot;, level_id);
-debug!(&quot;x: {}, state: {:?}&quot;, x, state);
-trace!(&quot;entity transform: {:?}&quot;, transform);
+</span>error!("Unknown condition!");
+warn!("Something unusual happened!");
+info!("Entered game level: {}", level_id);
+debug!("x: {}, state: {:?}", x, state);
+trace!("entity transform: {:?}", transform);
 <span class="boring">}</span></code></pre></pre>
 <h2 id="filtering-messages"><a class="header" href="#filtering-messages">Filtering messages</a></h2>
 <p>To control what messages you would like to see, you can configure Bevy's
@@ -233,7 +233,7 @@ trace!(&quot;entity transform: {:?}&quot;, transform);
 </span>use bevy::log::LogPlugin;
 
 app.add_plugins(DefaultPlugins.set(LogPlugin {
-    filter: &quot;info,wgpu_core=warn,wgpu_hal=warn,mygame=debug&quot;.into(),
+    filter: "info,wgpu_core=warn,wgpu_hal=warn,mygame=debug".into(),
     level: bevy::log::Level::DEBUG,
 }));
 <span class="boring">}</span></code></pre></pre>
@@ -248,18 +248,18 @@ below that level will be ignored and most of the performance overhead avoided.</
 <h3 id="environment-variable"><a class="header" href="#environment-variable">Environment Variable</a></h3>
 <p>You can override the filter string when running your app, using the <code>RUST_LOG</code>
 environment variable.</p>
-<pre><code class="language-sh">RUST_LOG=&quot;warn,mygame=debug&quot; ./mygame
+<pre><code class="language-sh">RUST_LOG="warn,mygame=debug" ./mygame
 </code></pre>
 <p>Note that other Rust projects, such as <code>cargo</code>, also use the same
 environment variable to control their logging. This can lead to unexpected
 consequences. For example, doing:</p>
-<pre><code class="language-sh">RUST_LOG=&quot;debug&quot; cargo run
+<pre><code class="language-sh">RUST_LOG="debug" cargo run
 </code></pre>
 <p>will cause your console to also be filled with debug messages from <code>cargo</code>.</p>
 <h3 id="different-settings-for-debug-and-release-builds"><a class="header" href="#different-settings-for-debug-and-release-builds">Different settings for debug and release builds</a></h3>
 <p>If you want to do different things in your Rust code for debug/release
 builds, an easy way to achieve it is using conditional compilation on
-&quot;debug assertions&quot;.</p>
+"debug assertions".</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
 </span>use bevy::log::LogPlugin;
@@ -268,14 +268,14 @@ builds, an easy way to achieve it is using conditional compilation on
 #[cfg(debug_assertions)]
 app.add_plugins(DefaultPlugins.set(LogPlugin {
     level: bevy::log::Level::DEBUG,
-    filter: &quot;debug,wgpu_core=warn,wgpu_hal=warn,mygame=debug&quot;.into(),
+    filter: "debug,wgpu_core=warn,wgpu_hal=warn,mygame=debug".into(),
 }));
 
 // this code is compiled only if debug assertions are disabled (release mode)
 #[cfg(not(debug_assertions))]
 app.add_plugins(DefaultPlugins.set(LogPlugin {
     level: bevy::log::Level::INFO,
-    filter: &quot;info,wgpu_core=warn,wgpu_hal=warn&quot;.into(),
+    filter: "info,wgpu_core=warn,wgpu_hal=warn".into(),
 }));
 <span class="boring">}</span></code></pre></pre>
 <p>This is a good reason why <a href="/pitfalls/performance.html">you should not use release mode during development

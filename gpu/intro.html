@@ -196,10 +196,10 @@ and has its own <a href="/programming/app-builder.html">schedule</a>, with <a hr
 <a href="/programming/systems.html">systems</a>.</p>
 <p>The plan is that, in a future Bevy version, the renderer will run in parallel
 with all the normal app logic, allowing for greater performance. This is
-called &quot;pipelined rendering&quot;: rendering the previous frame at the same time
+called "pipelined rendering": rendering the previous frame at the same time
 as the app is processing the next frame update.</p>
 <p>Every frame, the two parts are synchronized in a special <a href="/programming/schedules.html">stage</a>
-called &quot;Extract&quot;. The Extract stage has access to both <a href="/programming/world.html">ECS Worlds</a>,
+called "Extract". The Extract stage has access to both <a href="/programming/world.html">ECS Worlds</a>,
 allowing it to copy data from the main World into the render World.</p>
 <p>From then on, the renderer only has access to the render World, and can only
 use data that is stored there.</p>
@@ -222,7 +222,7 @@ with regard to one another.</p>
 <p>The Bevy rendering framework can accomodate you working at various different
 levels of abstraction, depending on how much you want to integrate with the
 Bevy ecosystem and built-in features, vs. have more direct control over the GPU.</p>
-<p>For most things, you would be best served by the &quot;high-level&quot; or &quot;mid-level&quot; APIs.</p>
+<p>For most things, you would be best served by the "high-level" or "mid-level" APIs.</p>
 <h3 id="low-level"><a class="header" href="#low-level">Low-Level</a></h3>
 <p>Bevy works directly with <a href="https://github.com/gfx-rs/wgpu"><code>wgpu</code></a>, a Rust-based cross-platform
 graphics API. It is the abstraction layer over the GPU APIs of the underlying
@@ -242,7 +242,7 @@ going beyond the limitations of the web platform.</p>
 </div>
 <p>On GLES3 and WebGL2, some renderer features are unsupported and performance is worse.</p>
 <p>WebGPU is experimental and few browsers support it.</p>
-<p><code>wgpu</code> forms the &quot;lowest level&quot; of Bevy rendering. If you really need the
+<p><code>wgpu</code> forms the "lowest level" of Bevy rendering. If you really need the
 most direct control over the GPU, you can pretty much use <code>wgpu</code> directly,
 from within the Bevy render framework.</p>
 <h3 id="mid-level"><a class="header" href="#mid-level">Mid-Level</a></h3>
@@ -263,7 +263,7 @@ reuse the GPU memory allocation, and free it when it becomes unused.</p>
 <p>For using data from <a href="/assets.html">assets</a>, Bevy provides the <a href="/TODO.html">Render
 Asset</a> abstraction to help with extracting the data from
 different <a href="/builtins.html#assets">asset types</a>.</p>
-<p>Bevy can manage all the &quot;objects to draw&quot; using <a href="/TODO.html">phases</a>,
+<p>Bevy can manage all the "objects to draw" using <a href="/TODO.html">phases</a>,
 which sort and draw <a href="/TODO.html">phase items</a>. This way, Bevy
 can sort each object to render, relative to everything else in the scene,
 for optimal performance and correct transparency (if any).</p>

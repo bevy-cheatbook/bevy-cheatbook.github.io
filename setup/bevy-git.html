@@ -190,12 +190,12 @@ versions of bevy.</p>
 <p>If you are <em>not</em> using any 3rd-party plugins and just want to use the bevy
 main development branch:</p>
 <pre><code class="language-toml">[dependencies]
-bevy = { git = &quot;https://github.com/bevyengine/bevy&quot; }
+bevy = { git = "https://github.com/bevyengine/bevy" }
 </code></pre>
 <p>However, if you <em>are</em> working with external plugins, you should read the rest
 of this page. You will likely need to do more to make everything compatible.</p>
 <h2 id="should-you-use-bleeding-edge-bevy-what-version-of-bevy-should-you-use"><a class="header" href="#should-you-use-bleeding-edge-bevy-what-version-of-bevy-should-you-use">Should you use bleeding-edge Bevy? What version of Bevy should you use?</a></h2>
-<p>Bevy follows a &quot;train release&quot; model, with loose deadlines. Every 3 months,
+<p>Bevy follows a "train release" model, with loose deadlines. Every 3 months,
 a new major release is prepared, which will contain all new developments
 (features, fixes, etc.) since the last release. The release date is not
 strict and is often delayed by a few weeks to tie up loose ends.</p>
@@ -243,35 +243,35 @@ a different Bevy version/commit from your project.</p>
 <p>If you are using any 3rd-party plugins, please consider forking them, so you can
 edit their <code>Cargo.toml</code> and have control over how everything is configured.</p>
 <h2 id="cargo-patches"><a class="header" href="#cargo-patches">Cargo Patches</a></h2>
-<p>In some cases, you might be able to use &quot;cargo patches&quot; to locally override
+<p>In some cases, you might be able to use "cargo patches" to locally override
 dependencies. For example, you might be able to point plugins to use your
 fork of bevy, without forking and editing the plugin's <code>Cargo.toml</code>, by
 doing something like this:</p>
 <pre><code class="language-toml"># replace the bevy git URL source with ours
-[patch.&quot;https://github.com/bevyengine/bevy&quot;]
+[patch."https://github.com/bevyengine/bevy"]
 # if we have our own fork
-bevy = { git = &quot;https://github.com/me/bevy&quot; }
+bevy = { git = "https://github.com/me/bevy" }
 # if we want to use a local path
-bevy = { path = &quot;../bevy&quot; }
+bevy = { path = "../bevy" }
 # some plugins might depend on individual bevy crates,
 # instead of all of bevy, which means we need to patch
 # every individual bevy crate specifically:
-bevy_ecs = { path = &quot;../bevy/crates/bevy_ecs&quot; }
-bevy_app = { path = &quot;../bevy/crates/bevy_app&quot; }
+bevy_ecs = { path = "../bevy/crates/bevy_ecs" }
+bevy_app = { path = "../bevy/crates/bevy_app" }
 # ...
 
 # replace released versions of crates (crates.io source) with ours
 [patch.crates-io]
-bevy_some_plugin = { git = &quot;https://github.com/me/bevy_some_plugin&quot;, branch = &quot;bevy_main&quot; }
+bevy_some_plugin = { git = "https://github.com/me/bevy_some_plugin", branch = "bevy_main" }
 # also replace bevy itself
-bevy = { path = &quot;../bevy&quot; }
+bevy = { path = "../bevy" }
 # ...
 </code></pre>
 <h2 id="updating-bevy"><a class="header" href="#updating-bevy">Updating Bevy</a></h2>
 <p>It is recommended that you specify a known-good Bevy commit in your
 <code>Cargo.toml</code>, so that you can be sure that you only update it when you
 actually want to do so, avoiding unwanted breakage.</p>
-<pre><code class="language-toml">bevy = { git = &quot;https://github.com/bevyengine/bevy&quot;, rev = &quot;7a1bd34e&quot; }
+<pre><code class="language-toml">bevy = { git = "https://github.com/bevyengine/bevy", rev = "7a1bd34e" }
 </code></pre>
 <p>When you change anything, be sure to run:</p>
 <pre><code class="language-sh">cargo update

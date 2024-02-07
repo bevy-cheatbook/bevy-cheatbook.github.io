@@ -244,7 +244,7 @@ you can use one of the following to ensure you don't miss them:</p>
 component and forget the others, because you don't use a bundle), your
 entities will not render!</p>
 <h3 id="visibility-1"><a class="header" href="#visibility-1"><code>Visibility</code></a></h3>
-<p><a href="https://docs.rs/bevy/0.12.0/bevy/render/view/enum.Visibility.html"><code>Visibility</code></a> is the &quot;user-facing toggle&quot;. This is where
+<p><a href="https://docs.rs/bevy/0.12.0/bevy/render/view/enum.Visibility.html"><code>Visibility</code></a> is the "user-facing toggle". This is where
 you specify what you want for the current entity:</p>
 <ul>
 <li><code>Inherited</code> (default): show/hide depending on <a href="/fundamentals/hierarchy.html">parent</a></li>
@@ -261,8 +261,8 @@ visibility-related components, things will behave as if there was no parent.</p>
 current entity would have based on its <a href="/fundamentals/hierarchy.html">parent</a>'s visibility.</p>
 <p>The value of <a href="https://docs.rs/bevy/0.12.0/bevy/render/view/struct.InheritedVisibility.html"><code>InheritedVisibility</code></a> should
 be considered read-only. It is managed internally by Bevy, in a manner
-similar to <a href="/fundamentals/transforms.html#transform-propagation">transform propagation</a>. A &quot;visibility
-propagation&quot; <a href="/programming/systems.html">system</a> runs in the <a href="https://docs.rs/bevy/0.12.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a>
+similar to <a href="/fundamentals/transforms.html#transform-propagation">transform propagation</a>. A "visibility
+propagation" <a href="/programming/systems.html">system</a> runs in the <a href="https://docs.rs/bevy/0.12.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a>
 <a href="/programming/schedules.html">schedule</a>.</p>
 <p>If you want to read the up-to-date value for the current frame, you should
 <a href="/programming/app-builder.html">add</a> your <a href="/programming/systems.html">system</a> to the <a href="https://docs.rs/bevy/0.12.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a>
@@ -275,7 +275,7 @@ fn debug_player_visibility(
 ) {
     let vis = query.single();
 
-    debug!(&quot;Button visibility: {:?}&quot;, vis.get());
+    debug!("Button visibility: {:?}", vis.get());
 }</code></pre>
 <pre><code class="language-rust no_run noplayground">use bevy::render::view::VisibilitySystems;
 
@@ -288,10 +288,10 @@ app.add_systems(PostUpdate,
 decision made by Bevy about whether this entity needs to be rendered.</p>
 <p>The value of <a href="https://docs.rs/bevy/0.12.0/bevy/render/view/struct.ViewVisibility.html"><code>ViewVisibility</code></a> is read-only. It
 is managed internally by Bevy.</p>
-<p>It is used for &quot;culling&quot;: if the entity is not in the range of
+<p>It is used for "culling": if the entity is not in the range of
 any Camera or Light, it does not need to be rendered, so Bevy will hide it
 to improve performance.</p>
-<p>Every frame, after &quot;visibility propagation&quot;, Bevy will check what entities
+<p>Every frame, after "visibility propagation", Bevy will check what entities
 can be seen by what view (camera or light), and store the outcome in these
 components.</p>
 <p>If you want to read the up-to-date value for the current frame, you should
@@ -304,7 +304,7 @@ fn debug_balloon_visibility(
 ) {
     for vis in query.iter() {
         if vis.get() {
-            debug!(&quot;Balloon will be rendered.&quot;);
+            debug!("Balloon will be rendered.");
         }
     }
 }</code></pre>

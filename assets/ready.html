@@ -202,9 +202,9 @@ struct AssetsLoading(Vec&lt;HandleUntyped&gt;);
 
 fn setup(server: Res&lt;AssetServer&gt;, mut loading: ResMut&lt;AssetsLoading&gt;) {
     // we can have different asset types
-    let font: Handle&lt;Font&gt; = server.load(&quot;my_font.ttf&quot;);
-    let menu_bg: Handle&lt;Image&gt; = server.load(&quot;menu.png&quot;);
-    let scene: Handle&lt;Scene&gt; = server.load(&quot;level01.gltf#Scene0&quot;);
+    let font: Handle&lt;Font&gt; = server.load("my_font.ttf");
+    let menu_bg: Handle&lt;Image&gt; = server.load("menu.png");
+    let scene: Handle&lt;Scene&gt; = server.load("level01.gltf#Scene0");
 
     // add them all to our collection for tracking
     loading.0.push(font.clone_untyped());

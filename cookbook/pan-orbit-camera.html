@@ -190,13 +190,10 @@ Initial work by <a href="https://github.com/bevy-cheatbook/bevy-cookbook/pull/2"
 <p>This is a camera controller similar to the ones in 3D editors like Blender.</p>
 <p>Use the right mouse button to rotate, middle button to pan, scroll wheel to
 move inwards/outwards.</p>
-<p>This is largely shown for illustrative purposes, as an example
-to learn from. In your projects, you may want to try the
-[<code>bevy_config_cam</code>][project::bevy_config_cam] plugin.</p>
 <pre><code class="language-rust no_run noplayground">/// Tags an entity as capable of panning and orbiting.
 #[derive(Component)]
 struct PanOrbitCamera {
-    /// The &quot;focus point&quot; to orbit around. It is automatically updated when panning the camera
+    /// The "focus point" to orbit around. It is automatically updated when panning the camera
     pub focus: Vec3,
     pub radius: f32,
     pub upside_down: bool,
@@ -249,7 +246,7 @@ fn pan_orbit_camera(
     for (mut pan_orbit, mut transform, projection) in query.iter_mut() {
         if orbit_button_changed {
             // only check for upside down when orbiting started or ended this frame
-            // if the camera is &quot;upside&quot; down, panning horizontally would be inverted, so invert the input to make it correct
+            // if the camera is "upside" down, panning horizontally would be inverted, so invert the input to make it correct
             let up = transform.rotation * Vec3::Y;
             pan_orbit.upside_down = up.y &lt;= 0.0;
         }

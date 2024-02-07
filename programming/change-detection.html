@@ -225,7 +225,7 @@ fn debug_stats_change(
 ) {
     for (health, xp) in query.iter() {
         eprintln!(
-            &quot;hp: {}+{}, xp: {}&quot;,
+            "hp: {}+{}, xp: {}",
             health.hp, health.extra, xp.0
         );
     }
@@ -236,7 +236,7 @@ fn debug_new_hostiles(
     query: Query&lt;(Entity, &amp;Health), Added&lt;Enemy&gt;&gt;,
 ) {
     for (entity, health) in query.iter() {
-        eprintln!(&quot;Entity {:?} is now an enemy! HP: {}&quot;, entity, health.hp);
+        eprintln!("Entity {:?} is now an enemy! HP: {}", entity, health.hp);
     }
 }</code></pre>
 <h3 id="checking"><a class="header" href="#checking">Checking</a></h3>

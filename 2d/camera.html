@@ -275,7 +275,7 @@ commands.spawn((
 <p>You can set the <a href="https://docs.rs/bevy/0.12.0/bevy/render/camera/enum.ScalingMode.html"><code>ScalingMode</code></a> according to how you want to
 handle window size / resolution.</p>
 <p>The default for Bevy 2D cameras is to have 1 screen pixel correspond to 1 world
-unit, thus allowing you to think of everything in &quot;pixels&quot;. When the window is
+unit, thus allowing you to think of everything in "pixels". When the window is
 resized, that causes more or less content to be seen.</p>
 <p>If you want to keep this window resizing behavior, but change the mapping of screen
 pixels to world units, use <code>ScalingMode::WindowSize(x)</code> with a value other than <code>1.0</code>.
@@ -298,7 +298,7 @@ commands.spawn((
     MyCameraMarker,
 ));</code></pre>
 <h3 id="zooming"><a class="header" href="#zooming">Zooming</a></h3>
-<p>To &quot;zoom&quot; in 2D, you can change the orthographic projection's <code>scale</code>. This
+<p>To "zoom" in 2D, you can change the orthographic projection's <code>scale</code>. This
 allows you to just scale everything by some factor, regardless of the
 <a href="https://docs.rs/bevy/0.12.0/bevy/render/camera/enum.ScalingMode.html"><code>ScalingMode</code></a> behavior.</p>
 <pre><code class="language-rust no_run noplayground">fn zoom_scale(
@@ -325,7 +325,7 @@ pixel art.</p>
     // 6 screen pixels to world/game pixel
     projection.scaling_mode = ScalingMode::WindowSize(6.0);
 }</code></pre>
-<p>Consider having a list of predefined &quot;zoom levels&quot; / scale values, so that you
+<p>Consider having a list of predefined "zoom levels" / scale values, so that you
 can make sure your game always looks good.</p>
 <p>If you are making a pixel-art game, you want to make sure the default texture
 filtering mode is set to Nearest (and not Linear), if you want your pixels

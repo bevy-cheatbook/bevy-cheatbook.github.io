@@ -212,13 +212,13 @@ alongside your game's EXE.</p>
 <p>By default, when you run a Bevy app (or any Rust program for that matter)
 on Windows, a Console window also shows up. To disable this,
 place this Rust attribute at the top of your <code>main.rs</code>:</p>
-<pre><code class="language-rust no_run noplayground">#![windows_subsystem = &quot;windows&quot;]</code></pre>
+<pre><code class="language-rust no_run noplayground">#![windows_subsystem = "windows"]</code></pre>
 <p>This tells Windows that your executable is a graphical application, not a
 command-line program. Windows will know not display a console.</p>
 <p>However, the console can be useful for development, to see log messages.
 You can disable it only for release builds, and leave it enabled in debug
 builds, like this:</p>
-<pre><code class="language-rust no_run noplayground">#![cfg_attr(not(debug_assertions), windows_subsystem = &quot;windows&quot;)]</code></pre>
+<pre><code class="language-rust no_run noplayground">#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]</code></pre>
 <h2 id="creating-an-icon-for-your-app"><a class="header" href="#creating-an-icon-for-your-app">Creating an icon for your app</a></h2>
 <p>There are two places where you might want to put your application icon:</p>
 <ul>
@@ -230,19 +230,19 @@ builds, like this:</p>
 <p>The EXE icon can be set using a cargo build script.</p>
 <p>Add a build dependency of <code>embed_resources</code> to your <code>Cargo.toml</code> allow embedding assets into your compiled executables</p>
 <pre><code class="language-toml">[build-dependencies]
-embed-resource = &quot;1.6.3&quot;
+embed-resource = "1.6.3"
 </code></pre>
 <p>Create a <code>build.rs</code> file in your project folder:</p>
 <pre><code class="language-rust no_run noplayground">extern crate embed_resource;
 
 fn main() {
-    let target = std::env::var(&quot;TARGET&quot;).unwrap();
-    if target.contains(&quot;windows&quot;) {
-        embed_resource::compile(&quot;icon.rc&quot;);
+    let target = std::env::var("TARGET").unwrap();
+    if target.contains("windows") {
+        embed_resource::compile("icon.rc");
     }
 }</code></pre>
 <p>Create a <code>icon.rc</code> file in your project folder:</p>
-<pre><code>app_icon ICON &quot;icon.ico&quot;
+<pre><code>app_icon ICON "icon.ico"
 </code></pre>
 <p>Create your icon as <code>icon.ico</code> in your project folder.</p>
 <h3 id="setting-the-window-icon"><a class="header" href="#setting-the-window-icon">Setting the Window Icon</a></h3>

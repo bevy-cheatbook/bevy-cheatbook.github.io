@@ -264,11 +264,11 @@ anyway). Just install the <code>lld</code> package from your Linux distro.</p>
 (that were installed with <code>xwin</code> in <a href="#microsoft-windows-sdks">the previous step</a>).</p>
 <p>Add this to <code>.cargo/config.toml</code> (in your home folder or in your bevy project):</p>
 <pre><code class="language-toml">[target.x86_64-pc-windows-msvc]
-linker = &quot;lld&quot;
+linker = "lld"
 rustflags = [
-  &quot;-Lnative=/home/me/.xwin/crt/lib/x86_64&quot;,
-  &quot;-Lnative=/home/me/.xwin/sdk/lib/um/x86_64&quot;,
-  &quot;-Lnative=/home/me/.xwin/sdk/lib/ucrt/x86_64&quot;
+  "-Lnative=/home/me/.xwin/crt/lib/x86_64",
+  "-Lnative=/home/me/.xwin/sdk/lib/um/x86_64",
+  "-Lnative=/home/me/.xwin/sdk/lib/ucrt/x86_64"
 ]
 </code></pre>
 <p>Note: you need to specify the correct full absolute paths to the SDK files,

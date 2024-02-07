@@ -200,12 +200,12 @@ sets up for your <a href="/programming/app-builder.html">App</a>.</p>
 <h2 id="entities--components"><a class="header" href="#entities--components">Entities / Components</a></h2>
 <p>Conceptually, you can think of it by analogy with tables, like in a database or
 spreadsheet. Your different data types (<a href="/programming/ec.html#components">Components</a>) are like
-the &quot;columns&quot; of a table, and there can be arbitrarily many &quot;rows&quot;
+the "columns" of a table, and there can be arbitrarily many "rows"
 (<a href="/programming/ec.html#entities">Entities</a>) containing values / instances of various components.
 The <a href="https://docs.rs/bevy/0.12.0/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> ID is like the row number. It's an integer index
 that lets you find specific component values.</p>
 <p>Component types that are empty <code>struct</code>s (contain no data) are called <a href="/programming/ec.html#components">marker
-components</a>. They are useful as &quot;tags&quot; to identify
+components</a>. They are useful as "tags" to identify
 specific entities, or enable certain behaviors. For example, you could use them
 to identify the player entity, to mark enemies that are currently chasing the
 player, to select entities to be despawned at the end of the level, etc.</p>
@@ -228,8 +228,8 @@ create a <code>Health</code> component for your game. You could then have many e
 representing different things in your game, such as the player, NPCs, or
 monsters, all of which can have a <code>Health</code> value (as well as other relevant
 components).</p>
-<p>The typical and obvious pattern is to use entities to represent &quot;objects in the
-game/scene&quot;, such as the camera, the player, enemies, lights, props, UI
+<p>The typical and obvious pattern is to use entities to represent "objects in the
+game/scene", such as the camera, the player, enemies, lights, props, UI
 elements, and other things. However, you are not limited to that. The ECS is a
 general-purpose data structure. You can create entities and components to store
 any data. For example, you could create an entity to store a bunch of settings
@@ -271,7 +271,7 @@ systems might be running. These operations can be buffered/deferred using
 also get <a href="/programming/world.html">direct World access</a> using <a href="/programming/exclusive.html">exclusive
 systems</a>, if you want to perform such operations
 immediately (but without multithreading).</p>
-<p><a href="/programming/bundle.html">Bundles</a> serve as &quot;templates&quot; for common sets of components, to
+<p><a href="/programming/bundle.html">Bundles</a> serve as "templates" for common sets of components, to
 help you when you spawn new entities, so you don't accidentally forget anything.</p>
 <pre><code class="language-rust no_run noplayground">// Marker for the player
 #[derive(Component)]
@@ -296,7 +296,7 @@ fn spawn_player(
         // give it a 2D sprite to render on-screen
         // (Bevy's SpriteBundle lets us add everything necessary)
         SpriteBundle {
-            texture: asset_server.load(&quot;player.png&quot;),
+            texture: asset_server.load("player.png"),
             transform: Transform::from_xyz(25.0, 50.0, 0.0),
             // use the default values for all other components in the bundle
             ..Default::default()
@@ -304,8 +304,8 @@ fn spawn_player(
     ));
 }</code></pre>
 <h3 id="comparison-with-object-oriented-programming"><a class="header" href="#comparison-with-object-oriented-programming">Comparison with Object-Oriented Programming</a></h3>
-<p>Object-Oriented programming teaches you to think of everything as &quot;objects&quot;,
-where each object is an instance of a &quot;class&quot;. The class specifies the data
+<p>Object-Oriented programming teaches you to think of everything as "objects",
+where each object is an instance of a "class". The class specifies the data
 and functionality for all objects of that type, in one place. Every object
 of that class has the same data (with different values) and the same
 associated functionality.</p>
@@ -341,7 +341,7 @@ allows the CPU to access and cache it efficiently.</p>
 Archetype, which may require Bevy to copy the data to a different location.</p>
 <p><a href="/patterns/component-storage.html">Learn more about Bevy's component storage.</a></p>
 <p>Entity IDs can also be reused. The <a href="https://docs.rs/bevy/0.12.0/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> type is actually two
-integers: the ID and a &quot;generation&quot;. After you despawn some entities, their IDs can
+integers: the ID and a "generation". After you despawn some entities, their IDs can
 be reused for newly-spawned entities, but Bevy will increase the generation value.</p>
 <h2 id="resources"><a class="header" href="#resources">Resources</a></h2>
 <p>If there is only one global instance (singleton) of something, and it is

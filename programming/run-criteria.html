@@ -234,7 +234,7 @@ fn main() {
         .add_system_set(
             SystemSet::new()
                 .with_run_criteria(run_if_connected)
-                .before(&quot;input&quot;)
+                .before("input")
                 .with_system(server_session)
                 .with_system(fetch_server_updates)
         )
@@ -244,7 +244,7 @@ fn main() {
         .add_system_set(
             SystemSet::new()
                 .with_run_criteria(run_if_host)
-                .before(&quot;input&quot;)
+                .before("input")
                 .with_system(host_session)
                 .with_system(host_player_movement)
                 .with_system(host_enemy_ai)
@@ -255,7 +255,7 @@ fn main() {
         .add_system(water_animation)
         .add_system_set(
             SystemSet::new()
-                .label(&quot;input&quot;)
+                .label("input")
                 .with_system(keyboard_input)
                 .with_system(gamepad_input)
         )
@@ -264,7 +264,7 @@ fn main() {
 <h2 id="known-pitfalls"><a class="header" href="#known-pitfalls">Known Pitfalls</a></h2>
 <h3 id="combining-multiple-run-criteria"><a class="header" href="#combining-multiple-run-criteria">Combining Multiple Run Criteria</a></h3>
 <p>It is not possible to make a system that is conditional on multiple run
-criteria. Bevy has a <code>.pipe</code> method that allows you to &quot;chain&quot; run criteria,
+criteria. Bevy has a <code>.pipe</code> method that allows you to "chain" run criteria,
 which could let you modify the output of a run criteria, but this is very
 limiting in practice.</p>
 <p>Consider using <a href="https://github.com/IyesGames/iyes_loopless"><code>iyes_loopless</code></a>. It allows you to
