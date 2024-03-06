@@ -2545,7 +2545,7 @@ more.</p>
 latency), often for the worse. The effects of the player's input might be
 shown on screen delayed by one frame. It might be compensated by the faster
 framerate, or it might not be. Here is a diagram to visualize what happens:</p>
-<p><img src="setup//img/pipelined-latency.png" alt="Timeline comparing pipelined and non-pipelined rendering. In the pipelined case, one additional frame is displayed before the effects of the mouse click can be seen on-screen." /></p>
+<p><img src="setup/../img/pipelined-latency.png" alt="Timeline comparing pipelined and non-pipelined rendering. In the pipelined case, one additional frame is displayed before the effects of the mouse click can be seen on-screen." /></p>
 <p>The actual mouse click happens in-between frames. In both cases, frame #4 is
 when the input is detected by Bevy. In the pipelined case, rendering
 of the previous frame is done in parallel, so an additional frame without
@@ -3195,7 +3195,7 @@ place other sprites at increasing positive Z coordinates to layer them on top.</
 hand to visualize the 3 axes: thumb=X, index=Y, middle=Z.</p>
 <p>It is the same as Godot, Maya, and OpenGL. Compared to Unity, the Z axis
 is inverted.</p>
-<p><img src="fundamentals//img/handedness.png" alt="Chart comparing coordinate system orientation in different game engines and 3D software" /></p>
+<p><img src="fundamentals/../img/handedness.png" alt="Chart comparing coordinate system orientation in different game engines and 3D software" /></p>
 <p>(graphic modifed and used with permission; original by <a href="https://twitter.com/FreyaHolmer">@FreyaHolmer</a>)</p>
 <h2 id="ui"><a class="header" href="#ui">UI</a></h2>
 <p>For UI, Bevy follows the same convention as most other UI toolkits, the Web, etc.</p>
@@ -4434,7 +4434,7 @@ commands.spawn((
 Pay attention to the quality/smoothness of the green color gradient on the
 ground plane. In games with photorealistic graphics, similar situations can
 arise in the sky, in dark rooms, or lights glowing with a bloom effect.</p>
-<p><img src="graphics//img/dithering.png" alt="Visual comparison of a scene simple cube on a flat green plane, with dithering disabled/enabled." /></p>
+<p><img src="graphics/../img/dithering.png" alt="Visual comparison of a scene simple cube on a flat green plane, with dithering disabled/enabled." /></p>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="graphics//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-12">0.12</a></th><th>(outdated!)</th></tr></thead><tbody>
 </tbody></table>
 </div>
@@ -4522,9 +4522,9 @@ BloomSettings {
 };</code></pre>
 <h2 id="visualization"><a class="header" href="#visualization">Visualization</a></h2>
 <p>Here is an example of Bloom in 3D:</p>
-<p><img src="graphics//img/bloom_3d.png" alt="The Bloom effect on street lamps." /></p>
+<p><img src="graphics/../img/bloom_3d.png" alt="The Bloom effect on street lamps." /></p>
 <p>And here is a 2D example:</p>
-<p><img src="graphics//img/bloom_2d.png" alt="The Bloom effect on a simple hexagon." /></p>
+<p><img src="graphics/../img/bloom_2d.png" alt="The Bloom effect on a simple hexagon." /></p>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>(any)</th></tr></thead><tbody>
 </tbody></table>
 </div>
@@ -4801,7 +4801,7 @@ and flatter, "zoomed in". You can see less on-screen.</p>
     },
     MyCameraMarker,
 ));</code></pre>
-<p><img src="3d//img/camera-3d-fov.png" alt="Side-by-side comparison of different FOV values." /></p>
+<p><img src="3d/../img/camera-3d-fov.png" alt="Side-by-side comparison of different FOV values." /></p>
 <p>In the above image, we are halving/doubling the FOV and doubling/halving
 how far away the camera is positioned, to compensate. Note how you can see
 pretty much the same 3D content, but the higher FOV looks more stretched
@@ -4825,11 +4825,11 @@ precision for both nearby and far away objects, avoiding visual artifacts.</p>
 }</code></pre>
 <p>If the camera does not move, decreasing the FOV makes everything appear closer
 and increasing it makes everything appear more distant:</p>
-<p><img src="3d//img/camera-3d-fov-zoom.png" alt="Side-by-side comparison of a &quot;zoomed in&quot; (small FOV) and a &quot;zoomed out&quot; (large FOV) 3D scene" /></p>
+<p><img src="3d/../img/camera-3d-fov-zoom.png" alt="Side-by-side comparison of a &quot;zoomed in&quot; (small FOV) and a &quot;zoomed out&quot; (large FOV) 3D scene" /></p>
 <p>Contrast this with moving the camera itself (using the
 <a href="3d//fundamentals/transforms.html">transform</a>) closer or further away, while keeping the FOV the
 same:</p>
-<p><img src="3d//img/camera-3d-position.png" alt="Side-by-side comparison of a camera positioned nearer to vs. further away from a 3D scene" /></p>
+<p><img src="3d/../img/camera-3d-position.png" alt="Side-by-side comparison of a camera positioned nearer to vs. further away from a 3D scene" /></p>
 <p>In some applications (such as 3D editors), moving the camera might be preferable,
 instead of changing the FOV.</p>
 <h3 id="orthographic-projections"><a class="header" href="#orthographic-projections">Orthographic Projections</a></h3>
@@ -4864,7 +4864,7 @@ commands.spawn((
     },
     MyCameraMarker,
 ));</code></pre>
-<p><img src="3d//img/camera-3d-orthographic.png" alt="Visualization of a 3D scene with orthographic projection" /></p>
+<p><img src="3d/../img/camera-3d-orthographic.png" alt="Visualization of a 3D scene with orthographic projection" /></p>
 <h4 id="zooming-2"><a class="header" href="#zooming-2">Zooming</a></h4>
 <p>To "zoom", change the orthographic projection's scale. The scale determines
 how much of the scene is visible.</p>
@@ -4880,7 +4880,7 @@ how much of the scene is visible.</p>
     // zoom out
     ortho.scale *= 1.25;
 }</code></pre>
-<p><img src="3d//img/camera-3d-orthographic-zoom.png" alt="Side-by-side comparison of different orthographic projection scale in 3D" /></p>
+<p><img src="3d/../img/camera-3d-orthographic-zoom.png" alt="Side-by-side comparison of different orthographic projection scale in 3D" /></p>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="3d//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
 </tbody></table>
 </div>
@@ -9058,7 +9058,7 @@ use data that is stored there.</p>
 frame, store it in resources. Dynamic data that could change every frame
 should be copied into the render world in the Extract stage, and typically
 stored using entities and components.</p>
-<p><img src="gpu//img/pipelined-rendering.png" alt="Diagram of pipelined rendering timings in app-bound and render-bound cases" /></p>
+<p><img src="gpu/../img/pipelined-rendering.png" alt="Diagram of pipelined rendering timings in app-bound and render-bound cases" /></p>
 <h2 id="core-architecture"><a class="header" href="#core-architecture">Core Architecture</a></h2>
 <p>The renderer operates in multiple <a href="gpu//gpu/stages.html">render stages</a>. This
 is how the work that needs to be performed on the CPU is managed.</p>
@@ -9151,7 +9151,7 @@ is structured in a sequence of "render stages":</p>
 explains the intended behavior, which will land in a future Bevy version. You
 have to understand it, because any custom rendering code you write will have to
 work with it in mind.</p>
-<p><img src="gpu//img/pipelined-rendering.png" alt="Diagram of pipelined rendering timings in app-bound and render-bound cases" /></p>
+<p><img src="gpu/../img/pipelined-rendering.png" alt="Diagram of pipelined rendering timings in app-bound and render-bound cases" /></p>
 <p>Every frame, <a href="gpu/stages.html#extract">Extract</a> serves as the synchronization point.</p>
 <p>When the Render Schedule completes, it will start again, but Extract will
 wait for the App Schedule, if it has not completed yet. The App Schedule

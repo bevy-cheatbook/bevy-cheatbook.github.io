@@ -363,7 +363,7 @@ more.</p>
 latency), often for the worse. The effects of the player's input might be
 shown on screen delayed by one frame. It might be compensated by the faster
 framerate, or it might not be. Here is a diagram to visualize what happens:</p>
-<p><img src="/img/pipelined-latency.png" alt="Timeline comparing pipelined and non-pipelined rendering. In the pipelined case, one additional frame is displayed before the effects of the mouse click can be seen on-screen." /></p>
+<p><img src="../img/pipelined-latency.png" alt="Timeline comparing pipelined and non-pipelined rendering. In the pipelined case, one additional frame is displayed before the effects of the mouse click can be seen on-screen." /></p>
 <p>The actual mouse click happens in-between frames. In both cases, frame #4 is
 when the input is detected by Bevy. In the pipelined case, rendering
 of the previous frame is done in parallel, so an additional frame without
