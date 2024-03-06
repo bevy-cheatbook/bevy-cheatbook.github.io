@@ -420,18 +420,18 @@ easily re-enable it later.</p>
 <p>This is an overview of different scenarios where you would need more than one
 camera entity.</p>
 <h3 id="multiple-windows"><a class="header" href="#multiple-windows">Multiple Windows</a></h3>
-<p>Official example: <a href="https://github.com/bevyengine/bevy/blob/main/examples/window/multiple_windows.rs"><code>multiple_windows</code></a>.</p>
+<p>Official example: <a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/window/multiple_windows.rs"><code>multiple_windows</code></a>.</p>
 <p>If you want to create a Bevy app with multiple windows, you need to spawn
 multiple cameras, one for each window, and set their render targets
 respectively. Then, you can use your cameras to control what to display in each
 window.</p>
 <h3 id="split-screen"><a class="header" href="#split-screen">Split-Screen</a></h3>
-<p>Official example: <a href="https://github.com/bevyengine/bevy/blob/main/examples/3d/split_screen.rs"><code>split_screen</code></a>.</p>
+<p>Official example: <a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/3d/split_screen.rs"><code>split_screen</code></a>.</p>
 <p>You can set the camera <a href="#viewport">viewport</a> to only render to a part of the
 render target. This way, a camera can be made to render one half of the screen
 (or any other area). Use a separate camera for each view in a split-screen game.</p>
 <h3 id="overlays"><a class="header" href="#overlays">Overlays</a></h3>
-<p>Official example: <a href="https://github.com/bevyengine/bevy/blob/main/examples/3d/two_passes.rs"><code>two_passes</code></a>.</p>
+<p>Official example: <a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/3d/two_passes.rs"><code>two_passes</code></a>.</p>
 <p>You might want to render multiple "layers" (passes) to the same render target.
 An example of this might be an overlay/HUD to be displayed on top of the
 main game.</p>
@@ -449,7 +449,7 @@ it on the other camera.</p>
 by each camera.</p>
 <h3 id="render-to-image"><a class="header" href="#render-to-image">Render to Image</a></h3>
 <p>(aka Render to Texture)</p>
-<p>Official example: <a href="https://github.com/bevyengine/bevy/blob/main/examples/3d/render_to_texture.rs"><code>render_to_texture</code></a>.</p>
+<p>Official example: <a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/3d/render_to_texture.rs"><code>render_to_texture</code></a>.</p>
 <p>If you want to generate an image in memory, you can output to an <code>Image</code> asset.</p>
 <p>This is useful for intermediate steps in games, such as rendering a minimap or
 the gun in a shooter game. You can then use that image as part of the final

@@ -239,7 +239,7 @@ independent learning resource for the Bevy community.</p>
 <p><a href="https://github.com/sponsors/cart"><button class="ghsponsors-button">GitHub Sponsors</button></a></p>
 <p>If you like the Bevy Game Engine, you should consider donating to the project.</p>
 <h2 id="license"><a class="header" href="#license">License</a></h2>
-<p>Copyright © 2021-2023 Ida (IyesGames)</p>
+<p>Copyright © 2021-2024 Ida Borisova (IyesGames)</p>
 <p>All code in the book is provided under the
 <a href="https://github.com/bevy-cheatbook/mit-0">MIT-0 License</a>.
 At your option, you may also use it under the regular MIT License.</p>
@@ -266,7 +266,9 @@ accepts your contribution, the MIT-0 license applies.</p>
 <p>Development of this book is hosted on <a href="https://github.com/bevy-cheatbook/bevy-cheatbook">GitHub</a>.</p>
 <p>Please file GitHub Issues for any wrong/confusing/misleading information,
 as well as suggestions for new content you'd like to be added to the book.</p>
-<p>Contributions are accepted, with some limitations.</p>
+<p>Please do not create PRs. Or if you do, be prepared for them to be ignored
+or closed if I find that they take up too much of my time or don't help me
+enough.</p>
 <p>See the <a href="/contributing.html">Contributing</a> section for all the details.</p>
 <h2 id="stability-warning"><a class="header" href="#stability-warning">Stability Warning</a></h2>
 <p>Bevy is still a new and experimental game engine! It has only been public
@@ -3213,13 +3215,13 @@ conventions as UI, as described above.</p>
 </div>
 <h1 id="transforms"><a class="header" href="#transforms">Transforms</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/main/examples/transforms/transform.rs"><code>transform</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/main/examples/transforms/translation.rs"><code>translation</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/main/examples/2d/rotation.rs"><code>rotation</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/main/examples/transforms/3d_rotation.rs"><code>3d_rotation</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/main/examples/transforms/scale.rs"><code>scale</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/main/examples/2d/move_sprite.rs"><code>move_sprite</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/main/examples/3d/parenting.rs"><code>parenting</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/transforms/transform.rs"><code>transform</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/transforms/translation.rs"><code>translation</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/2d/rotation.rs"><code>rotation</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/transforms/3d_rotation.rs"><code>3d_rotation</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/transforms/scale.rs"><code>scale</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/2d/move_sprite.rs"><code>move_sprite</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/3d/parenting.rs"><code>parenting</code></a>,
 anything that spawns 2D or 3D objects.</p>
 <hr />
 <p>First, a quick definition, if you are new to game development:</p>
@@ -3406,7 +3408,7 @@ of using <a href="https://docs.rs/bevy/0.12.0/bevy/transform/helper/struct.Trans
 </div>
 <h1 id="visibility"><a class="header" href="#visibility">Visibility</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/main/examples/3d/parenting.rs"><code>parenting</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/3d/parenting.rs"><code>parenting</code></a>.</p>
 <hr />
 <p>Visibility is used to control if something is to be rendered or not. If you
 want an entity to exist in the world, just not be displayed, you can hide it.</p>
@@ -3703,7 +3705,7 @@ fn jump_duration(
 </div>
 <h1 id="logging-console-messages"><a class="header" href="#logging-console-messages">Logging, Console Messages</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/main/examples/app/logs.rs"><code>logs</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/app/logs.rs"><code>logs</code></a>.</p>
 <hr />
 <p>You may have noticed how, when you run your Bevy project, you get messages
 in your console window. For example:</p>
@@ -4250,18 +4252,18 @@ easily re-enable it later.</p>
 <p>This is an overview of different scenarios where you would need more than one
 camera entity.</p>
 <h3 id="multiple-windows"><a class="header" href="#multiple-windows">Multiple Windows</a></h3>
-<p>Official example: <a href="https://github.com/bevyengine/bevy/blob/main/examples/window/multiple_windows.rs"><code>multiple_windows</code></a>.</p>
+<p>Official example: <a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/window/multiple_windows.rs"><code>multiple_windows</code></a>.</p>
 <p>If you want to create a Bevy app with multiple windows, you need to spawn
 multiple cameras, one for each window, and set their render targets
 respectively. Then, you can use your cameras to control what to display in each
 window.</p>
 <h3 id="split-screen"><a class="header" href="#split-screen">Split-Screen</a></h3>
-<p>Official example: <a href="https://github.com/bevyengine/bevy/blob/main/examples/3d/split_screen.rs"><code>split_screen</code></a>.</p>
+<p>Official example: <a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/3d/split_screen.rs"><code>split_screen</code></a>.</p>
 <p>You can set the camera <a href="graphics/camera.html#viewport">viewport</a> to only render to a part of the
 render target. This way, a camera can be made to render one half of the screen
 (or any other area). Use a separate camera for each view in a split-screen game.</p>
 <h3 id="overlays"><a class="header" href="#overlays">Overlays</a></h3>
-<p>Official example: <a href="https://github.com/bevyengine/bevy/blob/main/examples/3d/two_passes.rs"><code>two_passes</code></a>.</p>
+<p>Official example: <a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/3d/two_passes.rs"><code>two_passes</code></a>.</p>
 <p>You might want to render multiple "layers" (passes) to the same render target.
 An example of this might be an overlay/HUD to be displayed on top of the
 main game.</p>
@@ -4279,7 +4281,7 @@ it on the other camera.</p>
 by each camera.</p>
 <h3 id="render-to-image"><a class="header" href="#render-to-image">Render to Image</a></h3>
 <p>(aka Render to Texture)</p>
-<p>Official example: <a href="https://github.com/bevyengine/bevy/blob/main/examples/3d/render_to_texture.rs"><code>render_to_texture</code></a>.</p>
+<p>Official example: <a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/3d/render_to_texture.rs"><code>render_to_texture</code></a>.</p>
 <p>If you want to generate an image in memory, you can output to an <code>Image</code> asset.</p>
 <p>This is useful for intermediate steps in games, such as rendering a minimap or
 the gun in a shooter game. You can then use that image as part of the final
@@ -5329,8 +5331,8 @@ to the user.</p>
 </div>
 <h1 id="mouse"><a class="header" href="#mouse">Mouse</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/input/mouse_input.rs"><code>mouse_input</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/input/mouse_input_events.rs"><code>mouse_input_events</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.11.3/examples/input/mouse_input.rs"><code>mouse_input</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.11.3/examples/input/mouse_input_events.rs"><code>mouse_input_events</code></a>.</p>
 <hr />
 <h2 id="mouse-buttons"><a class="header" href="#mouse-buttons">Mouse Buttons</a></h2>
 <p>Similar to <a href="input//input/keyboard.html">keyboard input</a>, mouse buttons are available as an
@@ -5517,8 +5519,8 @@ fn touchpad_gestures(
 </div>
 <h1 id="text--character-input"><a class="header" href="#text--character-input">Text / Character Input</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/input/char_input_events.rs"><code>char_input_events</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/input/text_input.rs"><code>text_input</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.11.3/examples/input/char_input_events.rs"><code>char_input_events</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.11.3/examples/input/text_input.rs"><code>text_input</code></a>.</p>
 <hr />
 <p>Use this (<em>not</em> <a href="input//input/keyboard.html">keyboard input</a>) if you want to implement
 text input in a Bevy app. This way, everything works as the user expects
@@ -6010,7 +6012,7 @@ cameras.</p>
 </div>
 <h1 id="grabbing-the-mouse"><a class="header" href="#grabbing-the-mouse">Grabbing the Mouse</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/main/examples/input/mouse_grab.rs"><code>mouse_grab</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/input/mouse_grab.rs"><code>mouse_grab</code></a>.</p>
 <hr />
 <p>For some genres of games, you want to the mouse to be restricted to the window,
 to prevent it from leaving the window during gameplay.</p>
@@ -6518,23 +6520,23 @@ with development!</p>
 </div>
 <h1 id="playing-sounds"><a class="header" href="#playing-sounds">Playing Sounds</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/main/examples/audio/audio.rs"><code>audio</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/main/examples/audio/audio_control.rs"><code>audio_control</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/audio/audio.rs"><code>audio</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/audio/audio_control.rs"><code>audio_control</code></a>.</p>
 <p>TODO</p>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="audio//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-12">0.12</a></th><th>(outdated!)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="spatial-audio"><a class="header" href="#spatial-audio">Spatial Audio</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/main/examples/audio/spatial_audio_2d.rs"><code>spatial_audio_2d</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/main/examples/audio/spatial_audio_3d.rs"><code>spatial_audio_3d</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/audio/spatial_audio_2d.rs"><code>spatial_audio_2d</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/audio/spatial_audio_3d.rs"><code>spatial_audio_3d</code></a>.</p>
 <p>TODO</p>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="audio//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-12">0.12</a></th><th>(outdated!)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="custom-audio-streams"><a class="header" href="#custom-audio-streams">Custom Audio Streams</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/main/examples/audio/decodable.rs"><code>decodable</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/audio/decodable.rs"><code>decodable</code></a>.</p>
 <p>TODO</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="bevy-ui-framework"><a class="header" href="#bevy-ui-framework">Bevy UI Framework</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>(any)</th></tr></thead><tbody>
@@ -6560,10 +6562,10 @@ Framework</a> chapter.</p>
 <p>This page will try to teach you the general ECS mindset/paradigm.</p>
 <hr />
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/main/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
 <p>Also check out the complete game examples:
-<a href="https://github.com/bevyengine/bevy/blob/main/examples/games/alien_cake_addict.rs"><code>alien_cake_addict</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/main/examples/games/breakout.rs"><code>breakout</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/games/alien_cake_addict.rs"><code>alien_cake_addict</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/games/breakout.rs"><code>breakout</code></a>.</p>
 <hr />
 <p>ECS is a programming paradigm that separates data and behavior. Bevy will store
 all of <a href="programming//programming/intro-data.html">your data</a> and manage all of <a href="programming//programming/intro-code.html">your individual pieces
@@ -6961,8 +6963,8 @@ app.add_systems(Update, (
 <h1 id="the-app"><a class="header" href="#the-app">The App</a></h1>
 <p>Relevant official examples: All of them ;)</p>
 <p>In particular, check out the complete game examples:
-<a href="https://github.com/bevyengine/bevy/blob/main/examples/games/alien_cake_addict.rs"><code>alien_cake_addict</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/main/examples/games/breakout.rs"><code>breakout</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/games/alien_cake_addict.rs"><code>alien_cake_addict</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/games/breakout.rs"><code>breakout</code></a>.</p>
 <hr />
 <p>To enter the Bevy runtime, you need to configure an <a href="https://docs.rs/bevy/0.12.0/bevy/app/struct.App.html"><code>App</code></a>. The app
 is how you define the structure of all the things that make up your project:
@@ -7049,9 +7051,9 @@ quit automatically.</p>
 </div>
 <h1 id="systems"><a class="header" href="#systems">Systems</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/main/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/main/examples/ecs/startup_system.rs"><code>startup_system</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/main/examples/ecs/system_param.rs"><code>system_param</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/ecs/startup_system.rs"><code>startup_system</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/ecs/system_param.rs"><code>system_param</code></a>.</p>
 <hr />
 <p>Systems are pieces of functionality, which are run by Bevy. They are typically
 implemented using regular Rust functions.</p>
@@ -7123,7 +7125,7 @@ sets</a>, <a href="programming//programming/states.html">states</a>.</p>
 </div>
 <h1 id="resources-2"><a class="header" href="#resources-2">Resources</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/main/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
 <hr />
 <p>Resources allow you to store a single global instance of some data type,
 independently of <a href="programming//programming/intro-data.html#entities--components">entities</a>.</p>
@@ -7270,7 +7272,7 @@ system that touches it will run on the main thread.</p>
 </tbody></table>
 </div>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/main/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
 <hr />
 <h1 id="entities"><a class="header" href="#entities">Entities</a></h1>
 <p><a href="programming//programming/intro-data.html">See here for more explanation on how storing data in the ECS works.</a></p>
@@ -7396,7 +7398,7 @@ fn die(
 </tbody></table>
 </div>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/main/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
 <hr />
 <h1 id="bundles-1"><a class="header" href="#bundles-1">Bundles</a></h1>
 <p>You can think of Bundles like "templates" or "blueprints" for creating entities.
@@ -7677,7 +7679,7 @@ fn despawn_all_enemies(
 </div>
 <h1 id="events-1"><a class="header" href="#events-1">Events</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.11.0/examples/ecs/event.rs"><code>event</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.11.3/examples/ecs/event.rs"><code>event</code></a>.</p>
 <hr />
 <p>Send data between systems! Let your <a href="programming//programming/systems.html">systems</a> communicate with each other!</p>
 <p>Like <a href="programming//programming/res.html">resources</a> or <a href="programming//programming/ec.html#components">components</a>, events are
@@ -10650,10 +10652,6 @@ a typo or small mistake, or a bug in some code example, that's fine.</p>
 <p>If you are adding or changing any of the book content, your PR will probably be
 ignored or closed. I will probably treat it like I do issues: go do the thing
 myself eventually, and then close your PR.</p>
-<p>PRs create more work for me. They make life harder, not easier. Every time
-someone has made a PR before, I've had to basically rewrite it / redo
-the work myself. And also figure out how to respond to the author. And
-also wrangle merge conflicts and git branches. Please don't. I'm tired.</p>
 <h2 id="licensing"><a class="header" href="#licensing">Licensing</a></h2>
 <p>To avoid complications with copyright and licensing, you agree to provide
 any contributions you make to the project under the <a href="https://github.com/bevy-cheatbook/mit-0">MIT-0 No Attribution
