@@ -189,7 +189,7 @@ such as <a href="/programming/system-order.html">ordering</a> and <a href="/prog
 to serve as a label/identifier. For simple use cases, create an empty <code>struct</code>.
 If you need to create multiple related sets, create an <code>enum</code>. Every variant
 of the <code>enum</code> is a separate system set.</p>
-<p>You need to derive <code>SystemSet</code> + an assortment of required standard Rust traits:</p>
+<p>You need to derive <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/trait.SystemSet.html"><code>SystemSet</code></a> + an assortment of required standard Rust traits:</p>
 <pre><code class="language-rust no_run noplayground">#[derive(SystemSet, Debug, Clone, PartialEq, Eq, Hash)]
 struct MyAudioSet;
 

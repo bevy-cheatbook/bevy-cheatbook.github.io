@@ -179,12 +179,12 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="states"><a class="header" href="#states">States</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/state.rs"><code>state</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.13.0/examples/ecs/state.rs"><code>state</code></a>.</p>
 <hr />
 <p>States allow you to structure the runtime "flow" of your app.</p>
 <p>This is how you can implement things like:</p>
@@ -195,175 +195,239 @@
 <li>…</li>
 </ul>
 <p>In every state, you can have different <a href="/programming/systems.html">systems</a> running. You
-can also add one-shot setup and cleanup systems to run when entering or
-exiting a state.</p>
-<p>To use states, define an enum type and add <a href="/programming/system-sets.html">system sets</a>
-to your <a href="/programming/app-builder.html">app builder</a>:</p>
-<pre><code class="language-rust no_run noplayground">#[derive(Debug, Clone, Eq, PartialEq, Hash)]
-enum AppState {
+can also add setup and cleanup systems to run when entering or exiting a state.</p>
+<hr />
+<p>To use states, first define an <code>enum</code> type. You need to derive
+<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/trait.States.html"><code>States</code></a> + an assortment of required standard Rust traits:</p>
+<pre><code class="language-rust no_run noplayground">#[derive(States, Debug, Clone, PartialEq, Eq, Hash)]
+enum MyAppState {
+    LoadingScreen,
     MainMenu,
     InGame,
-    Paused,
 }
 
-fn main() {
-    App::new()
-        .add_plugins(DefaultPlugins)
+#[derive(States, Default, Debug, Clone, PartialEq, Eq, Hash)]
+enum MyGameModeState {
+    #[default]
+    NotInGame,
+    Singleplayer,
+    Multiplayer,
+}
 
-        // add the app state type
-        .add_state(AppState::MainMenu)
-
-        // add systems to run regardless of state, as usual
-        .add_system(play_music)
-
-        // systems to run only in the main menu
-        .add_system_set(
-            SystemSet::on_update(AppState::MainMenu)
-                .with_system(handle_ui_buttons)
-        )
-
-        // setup when entering the state
-        .add_system_set(
-            SystemSet::on_enter(AppState::MainMenu)
-                .with_system(setup_menu)
-        )
-
-        // cleanup when exiting the state
-        .add_system_set(
-            SystemSet::on_exit(AppState::MainMenu)
-                .with_system(close_menu)
-        )
-        .run();
+#[derive(States, Default, Debug, Clone, PartialEq, Eq, Hash)]
+enum MyPausedState {
+    #[default]
+    Paused,
+    Running,
 }</code></pre>
-<p>It is OK to have multiple system sets for the same state.</p>
-<p>This is useful when you want to place <a href="/programming/labels.html">labels</a> and use <a href="/programming/system-order.html">explicit
-system ordering</a>.</p>
-<p>This can also be useful with <a href="/programming/plugins.html">Plugins</a>. Each plugin can add
-its own set of systems to the same state.</p>
-<p>States are implemented using <a href="/programming/run-criteria.html">run criteria</a> under the hood.
-These special system set constructors are really just helpers to automatically
-add the state management run criteria.</p>
+<p>Note: you can have multiple orthogonal states! Create multiple types
+if you want to track multiple things independently!</p>
+<p>You then need to register the state type(s) in the <a href="/programming/app-builder.html">app builder</a>:</p>
+<pre><code class="language-rust no_run noplayground">// Specify the initial value:
+app.insert_state(MyAppState::LoadingScreen);
+
+// Or use the default (if the type impls Default):
+app.init_state::&lt;MyGameModeState&gt;();
+app.init_state::&lt;MyPausedState&gt;();</code></pre>
+<h2 id="running-different-systems-for-different-states"><a class="header" href="#running-different-systems-for-different-states">Running Different Systems for Different States</a></h2>
+<p>If you want some <a href="/programming/systems.html">systems</a> to only run in specific states,
+Bevy offers an <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/common_conditions/fn.in_state.html"><code>in_state</code></a> <a href="/programming/run-criteria.html">run condition</a>. Add it
+to your systems. You probably want to create <a href="/programming/system-sets.html">system sets</a>
+to help you group many systems and control them at once.</p>
+<pre><code class="language-rust no_run noplayground">// configure some system sets to help us manage our systems
+// (note: it is per-schedule, so we also need it for FixedUpdate
+// if we plan to use fixed timestep)
+app.configure_sets(Update, (
+    MyMainMenuSet
+        .run_if(in_state(MyAppState::MainMenu)),
+    MyGameplaySet
+        // note: you can check for a combination of different states
+        .run_if(in_state(MyAppState::InGame))
+        .run_if(in_state(MyPausedState::Running)),
+));
+app.configure_sets(FixedUpdate, (
+    // configure the same set here, so we can use it in both
+    // FixedUpdate and Update
+    MyGameplaySet
+        .run_if(in_state(MyAppState::InGame))
+        .run_if(in_state(MyPausedState::Running)),
+    // configure a bunch of different sets only for FixedUpdate
+    MySingleplayerSet
+        // inherit configuration from MyGameplaySet and add extras
+        .in_set(MyGameplaySet)
+        .run_if(in_state(MyGameModeState::Singleplayer)),
+    MyMultiplayerSet
+        .in_set(MyGameplaySet)
+        .run_if(in_state(MyGameModeState::Multiplayer)),
+));
+
+// now we can easily add our different systems
+app.add_systems(Update, (
+    update_loading_progress_bar
+        .run_if(in_state(MyAppState::LoadingScreen)),
+    (
+        handle_main_menu_ui_input,
+        play_main_menu_sounds,
+    ).in_set(MyMainMenuSet),
+    (
+        camera_movement,
+        play_game_music,
+    ).in_set(MyGameplaySet),
+));
+app.add_systems(FixedUpdate, (
+    (
+        player_movement,
+        enemy_ai,
+    ).in_set(MySingleplayerSet),
+    (
+        player_net_sync,
+        enemy_net_sync,
+    ).in_set(MyMultiplayerSet),
+));
+
+// of course, if we need some global (state-independent)
+// setup to run on app startup, we can still use Startup as usual
+app.add_systems(Startup, (
+    load_settings,
+    setup_window_icon,
+));</code></pre>
+<p>Bevy also creates special <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.OnEnter.html"><code>OnEnter</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.OnExit.html"><code>OnExit</code></a>,
+and <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.OnTransition.html"><code>OnTransition</code></a> <a href="/programming/schedules.html">schedules</a> for each
+possible value of your state type. Use them to perform setup and cleanup for
+specific states. Any systems you add to them will run once every time the state
+is changed to/from the respective values.</p>
+<pre><code class="language-rust no_run noplayground">// do the respective setup and cleanup on state transitions
+app.add_systems(OnEnter(MyAppState::LoadingScreen), (
+    start_load_assets,
+    spawn_progress_bar,
+));
+app.add_systems(OnExit(MyAppState::LoadingScreen), (
+    despawn_loading_screen,
+));
+app.add_systems(OnEnter(MyAppState::MainMenu), (
+    setup_main_menu_ui,
+    setup_main_menu_camera,
+));
+app.add_systems(OnExit(MyAppState::MainMenu), (
+    despawn_main_menu,
+));
+app.add_systems(OnEnter(MyAppState::InGame), (
+    spawn_game_map,
+    setup_game_camera,
+    spawn_enemies,
+));
+app.add_systems(OnEnter(MyGameModeState::Singleplayer), (
+    setup_singleplayer,
+));
+app.add_systems(OnEnter(MyGameModeState::Multiplayer), (
+    setup_multiplayer,
+));
+// ...</code></pre>
+<h3 id="with-plugins"><a class="header" href="#with-plugins">With Plugins</a></h3>
+<p>This can also be useful with <a href="/programming/plugins.html">Plugins</a>. You can set up all the state
+types for your project in one place, and then your different plugins can just add
+their systems to the relevant states.</p>
+<p>You can also make plugins that are configurable, so that it is possible to specify
+what state they should add their systems to:</p>
+<pre><code class="language-rust no_run noplayground">pub struct MyPlugin&lt;S: States&gt; {
+    pub state: S,
+}
+
+impl&lt;S: States&gt; Plugin for MyPlugin&lt;S&gt; {
+    fn build(&amp;self, app: &amp;mut App) {
+        app.add_systems(Update, (
+            my_plugin_system1,
+            my_plugin_system2,
+            // ...
+        ).run_if(in_state(self.state.clone())));
+    }
+}</code></pre>
+<p>Now you can configure the plugin when adding it to the app:</p>
+<pre><code class="language-rust no_run noplayground">app.add_plugins(MyPlugin {
+    state: MyAppState::InGame,
+});</code></pre>
+<p>When you are just using <a href="/programming/plugins.html">plugins</a> to help with internal
+organization of your project, and you know what systems should go into each
+state, you probably don't need to bother with making the plugin configurable
+as shown above. Just hardcode the states / add things to the correct states
+directly.</p>
 <h2 id="controlling-states"><a class="header" href="#controlling-states">Controlling States</a></h2>
-<p>Inside of systems, you can check and control the state using the
-<a href="https://docs.rs/bevy/0.9.1/bevy/ecs/schedule/struct.State.html"><code>State&lt;T&gt;</code></a> resource:</p>
-<pre><code class="language-rust no_run noplayground">fn play_music(
-    app_state: Res&lt;State&lt;AppState&gt;&gt;,
-    // ...
+<p>Inside of systems, you can check the current state using the
+<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.State.html"><code>State&lt;T&gt;</code></a> <a href="/programming/res.html">resource</a>:</p>
+<pre><code class="language-rust no_run noplayground">fn debug_current_gamemode_state(state: Res&lt;State&lt;MyGameModeState&gt;&gt;) {
+    eprintln!("Current state: {:?}", state.get());
+}</code></pre>
+<p>To change to another state, you can use the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.NextState.html"><code>NextState&lt;T&gt;</code></a>:</p>
+<pre><code class="language-rust no_run noplayground">fn toggle_pause_game(
+    state: Res&lt;State&lt;MyPausedState&gt;&gt;,
+    mut next_state: ResMut&lt;NextState&lt;MyPausedState&gt;&gt;,
 ) {
-    match app_state.current() {
-        AppState::MainMenu =&gt; {
-            // TODO: play menu music
-        }
-        AppState::InGame =&gt; {
-            // TODO: play game music
-        }
-        AppState::Paused =&gt; {
-            // TODO: play pause screen music
-        }
+    match state.get() {
+        MyPausedState::Paused =&gt; next_state.set(MyPausedState::Running),
+        MyPausedState::Running =&gt; next_state.set(MyPausedState::Paused),
     }
-}</code></pre>
-<p>To change to another state:</p>
-<pre><code class="language-rust no_run noplayground">fn enter_game(mut app_state: ResMut&lt;State&lt;AppState&gt;&gt;) {
-    app_state.set(AppState::InGame).unwrap();
-    // ^ this can fail if we are already in the target state
-    // or if another state change is already queued
-}</code></pre>
-<p>After the systems of the current state complete, Bevy will transition to
-the next state you set.</p>
-<p>You can do arbitrarily many state transitions in a single frame update. Bevy
-will handle all of them and execute all the relevant systems (before moving
-on to the next <a href="/programming/schedules.html">stage</a>).</p>
-<h2 id="state-stack"><a class="header" href="#state-stack">State Stack</a></h2>
-<p>Instead of completely transitioning from one state to another, you can also
-overlay states, forming a stack.</p>
-<p>This is how you can implement things like a "game paused" screen, or an
-overlay menu, with the game world still visible / running in the background.</p>
-<p>You can have some systems that are still running even when the state is
-"inactive" (that is, in the background, with other states running on top). You
-can also add one-shot systems to run when "pausing" or "resuming" the state.</p>
-<p>In your <a href="/programming/app-builder.html">app builder</a>:</p>
-<pre><code class="language-rust no_run noplayground">        // player movement only when actively playing
-        .add_system_set(
-            SystemSet::on_update(AppState::InGame)
-                .with_system(player_movement)
-        )
-        // player idle animation while paused
-        .add_system_set(
-            SystemSet::on_inactive_update(AppState::InGame)
-                .with_system(player_idle)
-        )
-        // animations both while paused and while active
-        .add_system_set(
-            SystemSet::on_in_stack_update(AppState::InGame)
-                .with_system(animate_trees)
-                .with_system(animate_water)
-        )
-        // things to do when becoming inactive
-        .add_system_set(
-            SystemSet::on_pause(AppState::InGame)
-                .with_system(hide_enemies)
-        )
-        // things to do when becoming active again
-        .add_system_set(
-            SystemSet::on_resume(AppState::InGame)
-                .with_system(reset_player)
-        )
-        // setup when first entering the game
-        .add_system_set(
-            SystemSet::on_enter(AppState::InGame)
-                .with_system(setup_player)
-                .with_system(setup_map)
-        )
-        // cleanup when finally exiting the game
-        .add_system_set(
-            SystemSet::on_exit(AppState::InGame)
-                .with_system(despawn_player)
-                .with_system(despawn_map)
-        )</code></pre>
-<p>To manage states like this, use <code>push</code>/<code>pop</code>:</p>
-<pre><code class="language-rust no_run noplayground">    // to go into the pause screen
-    app_state.push(AppState::Paused).unwrap();
-    // to go back into the game
-    app_state.pop().unwrap();</code></pre>
-<p>(using <code>.set</code> as shown before replaces the active state at the top of the stack)</p>
-<h2 id="known-pitfalls-and-limitations"><a class="header" href="#known-pitfalls-and-limitations">Known Pitfalls and Limitations</a></h2>
-<h3 id="combining-with-other-run-criteria"><a class="header" href="#combining-with-other-run-criteria">Combining with Other Run Criteria</a></h3>
-<p>Because states are implemented using <a href="/programming/run-criteria.html">run criteria</a>,
-they cannot be combined with other uses of run criteria, such as <a href="/fundamentals/fixed-timestep.html">fixed
-timestep</a>.</p>
-<p>If you try to add another run criteria to your system set, it would replace
-Bevy's state-management run criteria! This would make the system set no
-longer constrained to run as part of a state!</p>
-<p>Consider using <a href="https://github.com/IyesGames/iyes_loopless"><code>iyes_loopless</code></a>, which does not
-have such limitations.</p>
-<h3 id="multiple-stages"><a class="header" href="#multiple-stages">Multiple Stages</a></h3>
-<p>Bevy states cannot work across multiple <a href="/programming/schedules.html">stages</a>. Workarounds
-are available, but they are broken and buggy.</p>
-<p>This is a huge limitation in practice, as it greatly limits how you can use
-<a href="/programming/commands.html">commands</a>. Not being able to use Commands is a big deal,
-as you cannot do things like spawn entities and operate on them during the
-same frame, among other important use cases.</p>
-<p>Consider using <a href="https://github.com/IyesGames/iyes_loopless"><code>iyes_loopless</code></a>, which does not
-have such limitations.</p>
-<h3 id="with-input"><a class="header" href="#with-input">With Input</a></h3>
-<p>If you want to use <a href="https://docs.rs/bevy/0.9.1/bevy/input/struct.Input.html"><code>Input&lt;T&gt;</code></a> to trigger state transitions using
-a button/key press, you need to clear the input manually by calling <code>.reset</code>:</p>
-<pre><code class="language-rust no_run noplayground">fn esc_to_menu(
-    mut keys: ResMut&lt;Input&lt;KeyCode&gt;&gt;,
-    mut app_state: ResMut&lt;State&lt;AppState&gt;&gt;,
+}
+
+// if you have multiple states that must be set correctly,
+// don't forget to manage them all
+fn new_game_multiplayer(
+    mut next_app: ResMut&lt;NextState&lt;MyAppState&gt;&gt;,
+    mut next_mode: ResMut&lt;NextState&lt;MyGameModeState&gt;&gt;,
 ) {
-    if keys.just_pressed(KeyCode::Escape) {
-        app_state.set(AppState::MainMenu).unwrap();
-        keys.reset(KeyCode::Escape);
-    }
+    next_app.set(MyAppState::InGame);
+    next_mode.set(MyGameModeState::Multiplayer);
 }</code></pre>
-<p>(note that this requires <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.ResMut.html"><code>ResMut</code></a>)</p>
-<p>Not doing this can cause <a href="https://github.com/bevyengine/bevy/issues/1700">issues</a>.</p>
-<p><a href="https://github.com/IyesGames/iyes_loopless"><code>iyes_loopless</code></a> does not have this issue.</p>
+<p>This will queue up state transitions to be performed during the next frame
+update cycle.</p>
+<h2 id="state-transitions"><a class="header" href="#state-transitions">State Transitions</a></h2>
+<p>Every frame update, a <a href="/programming/schedules.html">schedule</a> called
+<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.StateTransition.html"><code>StateTransition</code></a> runs. There, Bevy will check if
+any new state is queued up in <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.NextState.html"><code>NextState&lt;T&gt;</code></a> and perform
+the transition for you.</p>
+<p>The transition involves several steps:</p>
+<ul>
+<li>A <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.StateTransitionEvent.html"><code>StateTransitionEvent</code></a> <a href="/programming/events.html">event</a> is sent.</li>
+<li>The <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.OnExit.html"><code>OnExit(old_state)</code></a> <a href="/programming/schedules.html">schedule</a> is run.</li>
+<li>The <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.OnTransition.html"><code>OnTransition { from: old_state, to: new_state }</code></a> <a href="/programming/schedules.html">schedule</a> is run.</li>
+<li>The <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.OnEnter.html"><code>OnEnter(new_state)</code></a> <a href="/programming/schedules.html">schedule</a> is run.</li>
+</ul>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.StateTransitionEvent.html"><code>StateTransitionEvent</code></a> is useful in any
+<a href="/programming/systems.html">systems</a> that run regardless of state, but want to know if a
+transition has occurred. You can use it to detect state transitions.</p>
+<p>The <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.StateTransition.html"><code>StateTransition</code></a> <a href="/programming/schedules.html">schedule</a> runs
+after <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PreUpdate.html"><code>PreUpdate</code></a> (which contains Bevy engine internals),
+but before <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedMain.html"><code>FixedMain</code></a> (<a href="/fundamentals/fixed-timestep.html">fixed timestep</a>)
+and <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a>, where your game's <a href="/programming/systems.html">systems</a>
+usually live.</p>
+<p>Therefore, state transitions happen before your game logic for the current frame.</p>
+<p>If doing state transitions once per frame is not enough for
+you, you can add additional transition points, by adding Bevy's
+<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/fn.apply_state_transition.html"><code>apply_state_transition</code></a> <a href="/programming/systems.html">system</a>
+wherever you like.</p>
+<pre><code class="language-rust no_run noplayground">// Example: also do state transitions for MyPausedState
+// before MyGameplaySet on each fixed timestep run
+app.add_systems(
+    FixedUpdate,
+    apply_state_transition::&lt;MyPausedState&gt;
+        .before(MyGameplaySet)
+);</code></pre>
+<h2 id="known-pitfalls"><a class="header" href="#known-pitfalls">Known Pitfalls</a></h2>
+<h3 id="system-set-configuration-is-per-schedule"><a class="header" href="#system-set-configuration-is-per-schedule">System set configuration is per-schedule!</a></h3>
+<p>This is the same general caveat that applies any time you configure [system sets][cb::set].</p>
+<p>Note that <code>app.configure_sets()</code> is <em>per-<a href="/programming/schedules.html">schedule</a>!</em> If you configure some sets
+in one <a href="/programming/schedules.html">schedule</a>, that configuration does not carry over to other schedules.</p>
+<p>Because states are so schedule-heavy, you have to be especially careful. Don't assume
+that just because you configured a set, you can use it anywhere.</p>
+<p>For example, your sets from <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a>
+and <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a> will not work in
+<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.OnEnter.html"><code>OnEnter</code></a>/<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.OnExit.html"><code>OnExit</code></a> for your various state
+transitions.</p>
 <h3 id="events"><a class="header" href="#events">Events</a></h3>
+<p>This is the same general caveat that applies to any <a href="/programming/systems.html">systems</a> with
+<a href="/programming/run-criteria.html">run conditions</a> that want to receive <a href="/programming/events.html">events</a>.</p>
 <p>When receiving <a href="/programming/events.html">events</a> in systems that don't run all the time, such
-as during a pause state, you will miss any events that are sent during the frames
-when the receiving systems are not running!</p>
+as during a pause state, you will miss any events that are sent while when
+the receiving systems are not running!</p>
 <p>To mitigate this, you could implement a <a href="/patterns/manual-event-clear.html">custom cleanup
 strategy</a>, to manually manage the lifetime of the relevant
 event types.</p>
