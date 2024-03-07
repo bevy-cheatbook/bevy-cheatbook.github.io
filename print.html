@@ -8226,65 +8226,221 @@ all the scheduling logic that Bevy normally does when running systems.</p>
 efficiently, such as information about all the stored components, entities,
 archeypes.</p>
 <pre><code class="language-rust no_run noplayground">// TODO: write code example</code></pre>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
-<h1 id="stages"><a class="header" href="#stages">Stages</a></h1>
-<p>All <a href="programming//programming/systems.html">systems</a> to be run by Bevy are contained in stages. Every
-frame update, Bevy executes each stage, in order. Within each stage, Bevy's
-scheduling algorithm can run many systems in parallel, using multiple CPU
-cores for good performance.</p>
-<p>The boundaries between stages are effectively hard synchronization points.
-They ensure that all systems of the previous stage have completed before any
-systems of the next stage begin, and that there is a moment in time when no
-systems are in-progress.</p>
-<p>This makes it possible/safe to apply <a href="programming//programming/commands.html">Commands</a>. Any operations
-performed by systems using <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a> are applied at the
-end of that stage.</p>
-<p>By default, when you add your systems, they are added to
-<a href="https://docs.rs/bevy/0.9.1/bevy/app/enum.CoreStage.html"><code>CoreStage::Update</code></a>. Startup systems are added to
-<a href="https://docs.rs/bevy/0.9.1/bevy/app/enum.StartupStage.html"><code>StartupStage::Startup</code></a>.</p>
-<p>Bevy's internal systems are in the other stages, to ensure they are ordered
-correctly relative to your game logic.</p>
-<p>If you want to add your own systems to any of Bevy's internal stages, you
-need to beware of potential unexpected interactions with Bevy's own internal
-systems. Remember: Bevy's internals are implemented using ordinary systems
+<h1 id="schedules-2"><a class="header" href="#schedules-2">Schedules</a></h1>
+<p>See also: <a href="programming//programming/intro-code.html">ECS Intro: Your Code</a>, for a general overview
+of Bevy's scheduling framework.</p>
+<hr />
+<p>All <a href="programming//programming/systems.html">systems</a> to be run by Bevy are contained and organized using
+schedules. A schedule is a collection of systems, with metadata for how they
+should run, and an associated executor algorithm to run the systems.</p>
+<h2 id="scheduling-systems"><a class="header" href="#scheduling-systems">Scheduling Systems</a></h2>
+<p>If you want a <a href="programming//programming/systems.html">system</a> to be run by Bevy, you need to add it to a
+schedule. Writing a new Rust function and forgetting to add it / register it
+with Bevy is a common mistake.</p>
+<p>Whenever you add a system, you specify what schedule to put it in:</p>
+<pre><code class="language-rust no_run noplayground">// add something to the Update schedule (runs every frame)
+app.add_systems(Update, camera_movement);
+
+// add something to the Startup schedule (runs once at app startup)
+app.add_systems(Startup, setup_camera);</code></pre>
+<h3 id="per-system-configuration"><a class="header" href="#per-system-configuration">Per-System Configuration</a></h3>
+<p>You can add metadata to your systems, to affect how they will be run.</p>
+<p>This can include:</p>
+<ul>
+<li><a href="programming//programming/run-criteria.html">Run Conditions</a> to control if a system should run</li>
+<li><a href="programming//programming/system-order.html">Ordering Dependencies</a>, if a system should run before/after specific other systems in the same schedule</li>
+<li><a href="programming//programming/system-sets.html">System Sets</a> to group systems together, so common configuration can be applied to all of them</li>
+</ul>
+<p>When the schedule runs, the executor algorithm will honor all of this
+configuration when determining if a system is ready to run. A system is ready
+when all of the following is true:</p>
+<ul>
+<li>No other currently-running system is accessing any of the same data mutably (as per the <a href="programming//builtins.html#systemparams">system parameters</a>)</li>
+<li>All of the systems <a href="programming//programming/system-order.html">ordered</a> "before" have finished or have been skipped due to run conditions</li>
+<li>The system's <a href="programming//programming/run-criteria.html">run conditions</a> all return true</li>
+</ul>
+<p>When a system becomes ready, it will be run on an available CPU thread. Systems
+run in a non-deterministic order by default! A system might run at different
+times every frame. If you care about its relationship to other systems, add
+<a href="programming//programming/system-order.html">ordering dependencies</a>.</p>
+<h3 id="dynamically-addingremoving-systems"><a class="header" href="#dynamically-addingremoving-systems">Dynamically Adding/Removing Systems</a></h3>
+<p>Bevy's schedules do not (yet?) support adding and removing systems at runtime.
+You need to configure everything ahead of time.</p>
+<p>You should add all systems you might want to run, and then control them using
+<a href="programming//programming/run-criteria.html">run conditions</a>. That is the mechanism for disabling them if they
+shouldn't run.</p>
+<h2 id="bevys-app-structure"><a class="header" href="#bevys-app-structure">Bevy's App Structure</a></h2>
+<p>Bevy has three primary/foundational schedules: <code>Main</code>, <code>Extract</code>, <code>Render</code>. There
+are also other schedules, which are managed and run within <code>Main</code>.</p>
+<p>In a normal Bevy app, the <code>Main</code>+<code>Extract</code>+<code>Render</code> schedules are run repeatedly
+in a loop. Together, they produce one frame of your game. Every time <code>Main</code>
+runs, it runs a sequence of other schedules. On its first run, it also first
+runs a sequence of "startup" schedules.</p>
+<p>Most Bevy users only have to deal with the sub-schedules of <code>Main</code>. <code>Extract</code>
+and <code>Render</code> are only relevant to graphics developers who want to develop
+new/custom rendering features for the engine. This page is only focused on
+<code>Main</code>. If you want to learn more about <code>Extract</code> and <code>Render</code>, <a href="programming//gpu/intro.html">see this
+page about Bevy's rendering architecture</a>.</p>
+<h2 id="the-main-schedule"><a class="header" href="#the-main-schedule">The Main Schedule</a></h2>
+<p><code>Main</code> is where all the application logic runs. It is a sort of meta-schedule,
+whose job is to run other schedules in a specific order. You should not add
+any custom systems directly to <code>Main</code>. You should add your systems to the various
+schedules managed by <code>Main</code>.</p>
+<p>Bevy provides the following schedules, to organize all the systems:</p>
+<ul>
+<li><a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.First.html"><code>First</code></a>,
+<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PreUpdate.html"><code>PreUpdate</code></a>,
+<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.StateTransition.html"><code>StateTransition</code></a>,
+<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.RunFixedMainLoop.html"><code>RunFixedMainLoop</code></a>,
+<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a>,
+<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a>,
+<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Last.html"><code>Last</code></a>
+<ul>
+<li>These schedules are run by <code>Main</code> every time it runs</li>
+</ul>
+</li>
+<li><code>PreStartup</code>, <code>Startup</code>, <code>PostStartup</code>
+<ul>
+<li>These schedules are run by <code>Main</code> once, the first time it runs</li>
+</ul>
+</li>
+<li><a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedMain.html"><code>FixedMain</code></a>
+<ul>
+<li>The <a href="programming//fundamentals/fixed-timestep.html">fixed timestep</a> equivalent of the <code>Main</code> schedule.</li>
+<li>Run by <code>RunFixedMainLoop</code> as many times as needed, to catch up to the fixed timestep interval.</li>
+</ul>
+</li>
+<li><a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedFirst.html"><code>FixedFirst</code></a>,
+<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedPreUpdate.html"><code>FixedPreUpdate</code></a>,
+<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a>,
+<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedPostUpdate.html"><code>FixedPostUpdate</code></a>,
+<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedLast.html"><code>FixedLast</code></a>
+<ul>
+<li>The <a href="programming//fundamentals/fixed-timestep.html">fixed timestep</a> equivalents of the <code>Main</code> sub-schedules.</li>
+</ul>
+</li>
+<li><code>OnEnter(…)</code>/<code>OnExit(…)</code>/<code>OnTransition(…)</code>
+<ul>
+<li>These schedules are run by <code>StateTransition</code> on <a href="programming//programming/states.html">state</a> changes</li>
+</ul>
+</li>
+</ul>
+<p>The intended places for most user systems (your game logic) are <code>Update</code>,
+<code>FixedUpdate</code>, <code>Startup</code>, and the <a href="programming//programming/states.html">state</a> transition schedules.</p>
+<p><code>Update</code> is for your usual game logic that should run every frame. <code>Startup</code> is
+useful to perform initialization tasks, before the first normal frame update
+loop. <code>FixedUpdate</code> is if you want to use a <a href="programming//fundamentals/fixed-timestep.html">fixed timestep</a>.</p>
+<p>The other schedules are intended for engine-internal functionality. Splitting
+them like that ensures that Bevy's internal engine systems will run correctly
+with respect to your systems, without any configuration on your part.
+Remember: Bevy's internals are implemented using ordinary systems
 and ECS, just like your own stuff!</p>
-<p>You can add your own additional stages. For example, if we want our debug
-systems to run after our game logic:</p>
-<pre><code class="language-rust no_run noplayground">fn main() {
-    // label for our debug stage
-    static DEBUG: &amp;str = "debug";
+<p>If you are developing plugins to be used by other people, you might be
+interested in adding functionality to <code>PreUpdate</code>/<code>PostUpdate</code> (or the <code>Fixed</code>
+equivalents), so it can run alongside other "engine systems". Also consider
+<code>PreStartup</code> and <code>PostStartup</code> if you have startup systems that should be
+separated from your users' startup systems.</p>
+<p><code>First</code> and <code>Last</code> exist only for special edge cases, if you really need to
+ensure something runs before/after <em>everything</em> else, including all the normal
+"engine-internal" code.</p>
+<h2 id="configuring-schedules"><a class="header" href="#configuring-schedules">Configuring Schedules</a></h2>
+<p>Bevy also offers some features that can be configured at the schedule level.</p>
+<h3 id="single-threaded-schedules"><a class="header" href="#single-threaded-schedules">Single-Threaded Schedules</a></h3>
+<p>If you consider multi-threading to not be working well for you, for whatever reason,
+you can disable it per-schedule.</p>
+<p>In a single-threaded schedule, systems will run one at a time, on the main
+thread.  However, the same "readiness" algorithm is still applied and so
+systems can run in an undefined order. You should still specify <a href="programming//programming/system-order.html">ordering
+dependencies</a> where you need determinism.</p>
+<pre><code class="language-rust no_run noplayground">// Make FixedUpdate run single-threaded
+app.edit_schedule(FixedUpdate, |schedule| {
+    schedule.set_executor_kind(ExecutorKind::SingleThreaded);
 
-    App::new()
-        .add_plugins(DefaultPlugins)
+    // or alternatively: Simple will apply Commands after every system
+    schedule.set_executor_kind(ExecutorKind::Simple);
+});</code></pre>
+<h3 id="ambiguity-detection"><a class="header" href="#ambiguity-detection">Ambiguity Detection</a></h3>
+<p>The Ambiguity Detector is an optional Bevy feature that can help you debug issues
+related to non-determinism.</p>
+<pre><code class="language-rust no_run noplayground">// Enable ambiguity warnings for the Update schedule
+app.edit_schedule(Update, |schedule| {
+    schedule.set_build_settings(ScheduleBuildSettings {
+        ambiguity_detection: LogLevel::Warn,
+        ..default()
+    });
+});</code></pre>
+<p>It will print warnings for any combination of systems where at least one of
+them accesses some piece of data (<a href="programming//programming/res.html">resource</a> or
+<a href="programming//programming/ec.html#components">component</a>) mutably, but the others don't have explicit
+<a href="programming//programming/system-order.html">ordering dependencies</a> on that system.</p>
+<p>Such situations might indicate a bug, because you don't know if the systems that
+read the data would run before or after the system that mutates the data.</p>
+<p>It is up to you to decide if you care about this, on a case-by-case basis.</p>
+<h3 id="deferred-application"><a class="header" href="#deferred-application">Deferred Application</a></h3>
+<p>Normally, Bevy will automatically manage where <a href="programming//programming/commands.html">Commands</a>
+and other deferred operations get applied. If <a href="programming//programming/systems.html">systems</a> have
+<a href="programming//programming/system-order.html">ordering dependencies</a> on one another, Bevy will make
+sure to apply any pending deferred operations from the first system before
+the second system runs.</p>
+<p>If you would like to disable this automatic behavior and manually manage
+the sync points, you can do that.</p>
+<pre><code class="language-rust no_run noplayground">app.edit_schedule(Update, |schedule| {
+    schedule.set_build_settings(ScheduleBuildSettings {
+        auto_insert_apply_deferred: false,
+        ..default()
+    });
+});</code></pre>
+<p>Now, to manually create sync points, add special <code>apply_deferred</code> systems
+where you like them:</p>
+<pre><code class="language-rust no_run noplayground">app.add_systems(
+    Update,
+    apply_deferred
+        .after(MyGameplaySet)
+        .before(MyUiSet)
+);
+app.add_systems(Update, (
+    (
+        system_a,
+        apply_deferred,
+        system_b,
+    ).chain(),
+));</code></pre>
+<h2 id="main-schedule-configuration"><a class="header" href="#main-schedule-configuration">Main Schedule Configuration</a></h2>
+<p>The order of schedules to be run by <code>Main</code> every frame is configured in
+the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.MainScheduleOrder.html"><code>MainScheduleOrder</code></a> <a href="programming//programming/res.html">resource</a>.
+For advanced use cases, if Bevy's predefined schedules don't work for your
+needs, you can change it.</p>
+<h3 id="creating-a-new-custom-schedule"><a class="header" href="#creating-a-new-custom-schedule">Creating a New Custom Schedule</a></h3>
+<p>As an example, let's say we want to add an additional schedule, that runs every
+frame (like <code>Update</code>), but runs before <a href="programming//fundamentals/fixed-timestep.html">fixed timestep</a>.</p>
+<p>First, we need to create a name/label for our new schedule, by creating a Rust
+type (a <code>struct</code> or <code>enum</code>) and deriving <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/trait.ScheduleLabel.html"><code>ScheduleLabel</code></a></p>
+<ul>
+<li>an assortment of required standard Rust traits.</li>
+</ul>
+<pre><code class="language-rust no_run noplayground">#[derive(ScheduleLabel, Debug, Clone, PartialEq, Eq, Hash)]
+struct PrepareUpdate;</code></pre>
+<p>Now, we can init the schedule in the <a href="programming//programming/app-builder.html">app</a>, add it to
+<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.MainScheduleOrder.html"><code>MainScheduleOrder</code></a> to make it run every frame
+where we like it, and add some systems to it!</p>
+<pre><code class="language-rust no_run noplayground">// Ensure the schedule has been created
+// (this is technically optional; Bevy will auto-init
+// the schedule the first time it is used)
+app.init_schedule(PrepareUpdate);
 
-        // add DEBUG stage after Bevy's Update
-        // also make it single-threaded
-        .add_stage_after(CoreStage::Update, DEBUG, SystemStage::single_threaded())
+// Add it to the MainScheduleOrder so it runs every frame
+// as part of the Main schedule. We want our PrepareUpdate
+// schedule to run after StateTransition.
+app.world.resource_mut::&lt;MainScheduleOrder&gt;()
+    .insert_after(StateTransition, PrepareUpdate);
 
-        // systems are added to the `CoreStage::Update` stage by default
-        .add_system(player_gather_xp)
-        .add_system(player_take_damage)
-
-        // add our debug systems
-        .add_system_to_stage(DEBUG, debug_player_hp)
-        .add_system_to_stage(DEBUG, debug_stats_change)
-        .add_system_to_stage(DEBUG, debug_new_hostiles)
-
-        .run();
-}</code></pre>
-<p>If you need to manage when your systems run, relative to one another, it
-is generally preferable to avoid using stages, and to use <a href="programming//programming/system-order.html">explicit system
-ordering</a> instead. Stages limit parallel execution and
-the performance of your game.</p>
-<p>However, stages can make it easier to organize things, when you really want
-to be sure that all previous systems have completed. Stages are also the
-only way to apply <a href="programming//programming/commands.html">Commands</a>.</p>
-<p>If you have systems that need to rely on the actions that other systems have
-performed by using <a href="programming//programming/commands.html">Commands</a>, and need to do so during the
-same frame, placing those systems into separate stages is the only way to
-accomplish that.</p>
+// Now we can add some systems to our new schedule!
+app.add_systems(PrepareUpdate, (
+    my_weird_custom_stuff,
+));</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
 </tbody></table>
 </div>
