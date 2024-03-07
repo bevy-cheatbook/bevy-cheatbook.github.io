@@ -8409,10 +8409,44 @@ on-demand, so that they only run sometimes.</p>
 <p>RCs are Rust functions that return a value of type <code>bool</code>. They can accept
 any <a href="programming//builtins.html#systemparams">system parameters</a>, like a normal system, but
 they must all be read-only (immutable).</p>
-<pre><code class="language-rust no_run noplayground">{{#include ../code013/src/programming/rc.rs:fn}}</code></pre>
+<pre><code class="language-rust no_run noplayground">fn run_if_player_alive(
+    q_player: Query&lt;&amp;Health, With&lt;Player&gt;&gt;,
+) -&gt; bool {
+    let health = q_player.single();
+    health.hp &gt; 0.0
+}
+
+fn run_if_connected(
+    mode: Res&lt;MyMultiplayerMode&gt;,
+    session: Res&lt;MyNetworkSession&gt;,
+) -&gt; bool
+{
+    *mode != MyMultiplayerMode::Local &amp;&amp; session.is_connected()
+}
+
+fn run_if_enemies_present(
+    q_enemies: Query&lt;(), With&lt;Enemy&gt;&gt;,
+) -&gt; bool {
+    !q_enemies.is_empty()
+}</code></pre>
 <p>RCs can be applied to individual <a href="programming//programming/systems.html">systems</a> or to entire <a href="programming//programming/system-sets.html">system
 sets</a>.</p>
-<pre><code class="language-rust no_run noplayground">{{#include ../code013/src/programming/rc.rs:app}}</code></pre>
+<pre><code class="language-rust no_run noplayground">app.configure_sets(Update,
+    MyPlayerSet
+        .run_if(run_if_player_alive)
+);
+
+app.add_systems(Update, (
+    player_input,
+    player_movement,
+    player_alert_enemies
+        .run_if(run_if_enemies_present)
+).in_set(MyPlayerSet));
+
+app.add_systems(Update,
+    manage_multiplayer_server
+        .run_if(run_if_connected)
+);</code></pre>
 <p>When applied to a single <a href="programming//programming/systems.html">system</a>, Bevy will evaluate the RC at
 the last moment, right before the system would otherwise be ready to run. If
 you add the same RC to multiple systems, Bevy will evaluate it separately
