@@ -179,14 +179,14 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="changing-the-background-color"><a class="header" href="#changing-the-background-color">Changing the Background Color</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/window/clear_color.rs"><code>clear_color</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.13.0/examples/window/clear_color.rs"><code>clear_color</code></a>.</p>
 <hr />
-<p>Use the <a href="https://docs.rs/bevy/0.9.1/bevy/core_pipeline/clear_color/struct.ClearColor.html"><code>ClearColor</code></a> <a href="/programming/res.html">resource</a> to choose the
+<p>Use the <a href="https://docs.rs/bevy/0.13.0/bevy/render/camera/struct.ClearColor.html"><code>ClearColor</code></a> <a href="/programming/res.html">resource</a> to choose the
 default background color. This color will be used as the default for all
 <a href="/graphics/camera.html">cameras</a>, unless overriden.</p>
 <p>Note that the window will be black if no cameras exist. You must spawn at
@@ -194,25 +194,25 @@ least one camera.</p>
 <pre><code class="language-rust no_run noplayground">fn setup(
     mut commands: Commands,
 ) {
+    // this camera will use the default color
     commands.spawn(Camera2dBundle::default());
 }
 
 fn main() {
     App::new()
-        // set the global default
-        .insert_resource(ClearColor(Color::rgb(0.9, 0.3, 0.6)))
         .add_plugins(DefaultPlugins)
-        .add_startup_system(setup)
+        // set the global default clear color
+        .insert_resource(ClearColor(Color::rgb(0.9, 0.3, 0.6)))
+        .add_systems(Startup, setup)
         .run();
 }</code></pre>
-<p>To override the default and use a different color for a specific
-camera, you can set it using the <a href="https://docs.rs/bevy/0.9.1/bevy/core_pipeline/core_2d/struct.Camera2d.html"><code>Camera2d</code></a> or
-<a href="https://docs.rs/bevy/0.9.1/bevy/core_pipeline/core_3d/struct.Camera3d.html"><code>Camera3d</code></a> components.</p>
-<pre><code class="language-rust no_run noplayground">use bevy::core_pipeline::clear_color::ClearColorConfig;
+<p>To override the default and use a different color for a specific camera,
+you can set it using the <a href="https://docs.rs/bevy/0.13.0/bevy/render/camera/struct.Camera.html"><code>Camera</code></a> <a href="/programming/ec.html#components">component</a>.</p>
+<pre><code class="language-rust no_run noplayground">use bevy::render::camera::ClearColorConfig;
 
 // configure the background color (if any), for a specific camera (3D)
 commands.spawn(Camera3dBundle {
-    camera_3d: Camera3d {
+    camera: Camera {
         // clear the whole viewport with the given color
         clear_color: ClearColorConfig::Custom(Color::rgb(0.8, 0.4, 0.2)),
         ..Default::default()
@@ -222,10 +222,11 @@ commands.spawn(Camera3dBundle {
 
 // configure the background color (if any), for a specific camera (2D)
 commands.spawn(Camera2dBundle {
-    camera_2d: Camera2d {
+    camera: Camera {
         // disable clearing completely (pixels stay as they are)
         // (preserves output from previous frame or camera/pass)
         clear_color: ClearColorConfig::None,
+        ..Default::default()
     },
     ..Default::default()
 });</code></pre>

@@ -179,43 +179,131 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="system-sets"><a class="header" href="#system-sets">System Sets</a></h1>
 <p>System Sets allow you to easily apply common properties to multiple systems,
-for purposes such as <a href="/programming/labels.html">labeling</a>, <a href="/programming/system-order.html">ordering</a>,
-<a href="/programming/run-criteria.html">run criteria</a>, and <a href="/programming/states.html">states</a>.</p>
-<pre><code class="language-rust no_run noplayground">fn main() {
-    App::new()
-        .add_plugins(DefaultPlugins)
+such as <a href="/programming/system-order.html">ordering</a> and <a href="/programming/run-criteria.html">run conditions</a>.</p>
+<p>To create a system set, you must first create a Rust type (<code>struct</code> or <code>enum</code>)
+to serve as a label/identifier. For simple use cases, create an empty <code>struct</code>.
+If you need to create multiple related sets, create an <code>enum</code>. Every variant
+of the <code>enum</code> is a separate system set.</p>
+<p>You need to derive <code>SystemSet</code> + an assortment of required standard Rust traits:</p>
+<pre><code class="language-rust no_run noplayground">#[derive(SystemSet, Debug, Clone, PartialEq, Eq, Hash)]
+struct MyAudioSet;
 
-        // group our input handling systems into a set
-        .add_system_set(
-            SystemSet::new()
-                .label("input")
-                .with_system(keyboard_input)
-                .with_system(gamepad_input)
-        )
+#[derive(SystemSet, Debug, Clone, PartialEq, Eq, Hash)]
+struct MyInputSet;
 
-        // our "net" systems should run before "input"
-        .add_system_set(
-            SystemSet::new()
-                .label("net")
-                .before("input")
-                // individual systems can still have
-                // their own labels (and ordering)
-                .with_system(server_session.label("session"))
-                .with_system(server_updates.after("session"))
-        )
+#[derive(SystemSet, Debug, Clone, PartialEq, Eq, Hash)]
+enum MyInputKindSet {
+    Touch,
+    Mouse,
+    Gamepad,
+}
 
-        // some ungrouped systems
-        .add_system(player_movement.after("input"))
-        .add_system(session_ui.after("session"))
-        .add_system(smoke_particles)
-
-        .run();
+#[derive(SystemSet, Debug, Clone, PartialEq, Eq, Hash)]
+enum MyGameplaySet {
+    Player,
+    Enemies,
 }</code></pre>
+<p>Now, you can apply the set to your systems using <code>.in_set()</code>:</p>
+<pre><code class="language-rust no_run noplayground">app.add_systems(Update, (
+    (
+        play_music
+            .run_if(music_enabled),
+        play_ui_sounds,
+    ).in_set(MyAudioSet),
+    (
+        player_movement,
+        player_animation
+            .after(player_movement),
+        player_level_up,
+        player_footsteps
+            .in_set(MyAudioSet),
+    ).in_set(MyGameplaySet::Player),
+    (
+        enemy_movement,
+        enemy_ai,
+        enemy_footsteps
+            .in_set(MyAudioSet),
+    ).in_set(MyGameplaySet::Enemies),
+    (
+        (
+            mouse_cursor_tracking,
+            mouse_clicks,
+        ).in_set(MyInputKindSet::Mouse),
+        (
+            gamepad_cursor_tracking,
+            gamepad_buttons,
+        ).in_set(MyInputKindSet::Gamepad),
+        (
+            touch_gestures,
+        ).in_set(MyInputKindSet::Touch),
+    ).in_set(MyInputSet),
+));</code></pre>
+<p>You can add <a href="/programming/run-criteria.html">run conditions</a> and <a href="/programming/system-order.html">ordering
+dependencies</a> on your set using <code>.configure_sets</code>:</p>
+<pre><code class="language-rust no_run noplayground">app.configure_sets(Update, (
+    MyAudioSet
+        .run_if(audio_enabled),
+    MyGameplaySet::Player
+        .after(MyInputSet)
+        .run_if(player_is_alive),
+    MyGameplaySet::Enemies
+        .run_if(enemies_present),
+    MyInputKindSet::Touch
+        .run_if(touchscreen_enabled),
+    MyInputKindSet::Mouse
+        .run_if(mouse_enabled),
+    MyInputKindSet::Gamepad
+        .run_if(gamepad_connected),
+));</code></pre>
+<p>Anything you add to the set will automatically be applied to all systems
+belonging to the set.</p>
+<p>A system can belong to multiple different sets, and will inherit all the
+properties from all of them. You can also add additional properties to
+individual systems.</p>
+<p>All of this combined gives you a lot of flexibility and control over how your systems run.</p>
+<h2 id="usage-advice"><a class="header" href="#usage-advice">Usage Advice</a></h2>
+<p>The main use case of system sets is to group together related systems, so you can
+manage them more easily as a group.</p>
+<p>Some examples:</p>
+<ul>
+<li>A set for all your audio-related systems, so you can disable them all if sound is muted.</li>
+<li>A set for all your touchscreen input systems, so you can disable them all if there is no touchscreen.</li>
+<li>A set for all your input handling systems, so you can order them to run before gameplay systems.</li>
+</ul>
+<h3 id="with-plugins"><a class="header" href="#with-plugins">With Plugins</a></h3>
+<p>System sets are also very useful together with <a href="/programming/plugins.html">plugins</a>. When you are writing
+a plugin, you can expose (make <code>pub</code>) some system set types, to allow users of your
+plugin to control how things in your plugin run, or how their things run in relation to
+your plugin. This way, you don't have to expose any of your individual systems.</p>
+<p>Some examples:</p>
+<ul>
+<li>You are making a physics plugin. Make a set for your whole plugin, so your users can
+easily order their systems to run before/after physics. They can also easily control
+whether your physics runs at all, by adding an extra run condition to your set.</li>
+<li>You are using plugins for internal organization in your project. You have an UI plugin.
+Create a system set for the systems that need to update UI state from gameplay state,
+so that you can easily add ordering dependencies between UI and gameplay. Other plugins
+/ places in your code now don't need to know about the internals of your UI plugin.</li>
+</ul>
+<h2 id="common-pitfalls"><a class="header" href="#common-pitfalls">Common Pitfalls</a></h2>
+<p>WARNING! System set configuration is stored <em>per-<a href="/programming/schedules.html">schedule</a>!</em> Notice how
+we had to specify <code>.configure_sets(Update, ...)</code>. It can be very easy to configure your
+sets once and then just assume you can use them anywhere, but that is not true.</p>
+<p>If you try to use them in a <a href="/programming/schedules.html">schedule</a> other than the one
+where you configured them, your code will compile and run (Bevy silently
+initializes the sets in each schedule), but will not work correctly, as they
+will not have any of your configurations.</p>
+<p>Some common scenarios where this can occur:</p>
+<ul>
+<li>You configure your set in <code>Update</code> and try to also use it in <code>FixedUpdate</code>, or vice versa.</li>
+<li>You try to use your sets in the <code>OnEnter</code>/<code>OnExit</code> schedules of various <a href="/programming/states.html">app states</a>.</li>
+<li>You add a system to <code>PostUpdate</code> or <code>PreUpdate</code>.</li>
+</ul>
 
                     </main>
 

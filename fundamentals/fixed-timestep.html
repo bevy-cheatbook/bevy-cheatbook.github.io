@@ -179,79 +179,162 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="fixed-timestep"><a class="header" href="#fixed-timestep">Fixed Timestep</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/fixed_timestep.rs"><code>fixed_timestep</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.13.0/examples/ecs/fixed_timestep.rs"><code>fixed_timestep</code></a>.</p>
 <hr />
-<p>If you need something to happen at fixed time intervals (a common use case
-is Physics updates), you can add the respective <a href="/programming/systems.html">systems</a> to
-your <a href="/programming/app-builder.html">app</a> using Bevy's <a href="https://docs.rs/bevy/0.9.1/bevy/time/struct.FixedTimestep.html"><code>FixedTimestep</code></a>
-<a href="/programming/run-criteria.html">Run Criteria</a>.</p>
-<pre><code class="language-rust no_run noplayground">use bevy::time::FixedTimestep;
+<p>If you need to run some <a href="/programming/systems.html">systems</a> at a fixed rate, independent
+of the display frame rate, Bevy provides a solution.</p>
+<pre><code class="language-rust no_run noplayground">// These systems will run every frame
+// (at the framerate being rendered to your screen)
+app.add_systems(Update, (
+    camera_movement,
+    animation,
+    juicy_explosions,
+));
 
-// The timestep says how many times to run the SystemSet every second
-// For TIMESTEP_1, it's once every second
-// For TIMESTEP_2, it's twice every second
+// These systems will run as many times as needed
+// as to maintain a fixed rate on average
+app.add_systems(FixedUpdate, (
+    physics_collisions,
+    enemy_ai,
+    gameplay_simulation,
+));</code></pre>
+<p>Every frame update, Bevy will run the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a>
+schedule as many times as needed to catch up. If the game is running slow,
+it might run multiple times. If the game is running fast, it might be skipped.</p>
+<p>This happens before the regular <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a> schedule runs for that frame,
+but after <a href="/programming/states.html">state transitions</a>.</p>
+<p>The default fixed timestep interval is 64 Hz. If you want something else,
+you can configure it as follows:</p>
+<pre><code class="language-rust no_run noplayground">// Set the Fixed Timestep interval to 96 Hz
+app.insert_resource(Time::&lt;Fixed&gt;::from_hz(96.0));
 
-const TIMESTEP_1_PER_SECOND: f64 = 60.0 / 60.0;
-const TIMESTEP_2_PER_SECOND: f64 = 30.0 / 60.0;
+// Set the Fixed Timestep interval to 250 milliseconds
+app.insert_resource(Time::&lt;Fixed&gt;::from_seconds(0.25));</code></pre>
+<h2 id="checking-the-time"><a class="header" href="#checking-the-time">Checking the Time</a></h2>
+<p>Just use <a href="https://docs.rs/bevy/0.13.0/bevy/time/struct.Time.html"><code>Res&lt;Time&gt;</code></a> as normal. When your system is running in
+<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a>, Bevy will automatically detect that,
+and all the timing information (such as delta) will represent the fixed
+timestep instead of the display frame rate.</p>
+<pre><code class="language-rust no_run noplayground">fn print_time_delta(time: Res&lt;Time&gt;) {
+    // If we add this system to `Update`, this will print the time delta
+    // between subsequent frames (the display frame rate)
 
-fn main() {
-    App::new()
-        .add_plugins(DefaultPlugins)
-        .add_system_set(
-            SystemSet::new()
-                // This prints out "hello world" once every second
-                .with_run_criteria(FixedTimestep::step(TIMESTEP_1_PER_SECOND))
-                .with_system(slow_timestep)
-        )
-        .add_system_set(
-            SystemSet::new()
-                // This prints out "goodbye world" twice every second
-                .with_run_criteria(FixedTimestep::step(TIMESTEP_2_PER_SECOND))
-                .with_system(fast_timestep)
-        )
-        .run();
+    // If we add this system to `FixedUpdate`, this will always print the
+    // same value (equal to the fixed timestep interval).
+
+    println!("Elapsed seconds: {}", time.delta_seconds());
 }
 
-fn slow_timestep() {
-    println!("hello world");
+// This system will access the Fixed time
+// regardless of what schedule it runs in
+fn print_fixed_time_info(time_fixed: Res&lt;Time&lt;Fixed&gt;&gt;) {
+    // `Time&lt;Fixed&gt;` gives us some additional methods, such as checking
+    // the overstep (partial timestep / amount of extra time accumulated)
+    println!(
+        "Time remaining until the next fixed update run: {}",
+        time_fixed.delta_seconds() - time_fixed.overstep().as_secs_f32()
+    );
 }
 
-fn fast_timestep() {
-    println!("goodbye world");
+// This system will access the regular frame time regardless
+// of what schedule it runs in
+fn check_virtual_time(time_fixed: Res&lt;Time&lt;Virtual&gt;&gt;) {
+    // ...
 }</code></pre>
-<h2 id="state"><a class="header" href="#state">State</a></h2>
-<p>You can check the current state of the fixed timestep trackers, by accessing
-the <a href="https://docs.rs/bevy/0.9.1/bevy/time/struct.FixedTimesteps.html"><code>FixedTimesteps</code></a> <a href="/programming/res.html">resource</a>. This lets
-you know how much time remains until the next time it triggers, or how much
-it has overstepped. You need to label your fixed timesteps.</p>
-<p>See the <a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/fixed_timestep.rs">official example</a>, which illustrates this.</p>
-<h2 id="caveats"><a class="header" href="#caveats">Caveats</a></h2>
-<p>The major problem with Bevy's fixed timestep comes from the fact that
-it is implemented using <a href="/programming/run-criteria.html">Run Criteria</a>. It cannot be
-combined with other run criteria, such as <a href="/programming/states.html">states</a>. This makes
-it unusable for most projects, which need to rely on states for things
-like implementing the main menu / loading screen / etc. Consider using
-<a href="https://github.com/IyesGames/iyes_loopless"><code>iyes_loopless</code></a>, which does not have this problem.</p>
-<p>Also, note that your <a href="/programming/systems.html">systems</a> are still called as part of the
-regular frame-update cycle, along with all of the normal systems. So, the
-timing is not exact.</p>
-<p>The <a href="https://docs.rs/bevy/0.9.1/bevy/time/struct.FixedTimestep.html"><code>FixedTimestep</code></a> run criteria simply checks how much
-time passed since the last time your systems were ran, and decides whether
-to run them during the current frame, or not, or run them multiple times,
-as needed.</p>
-<h3 id="danger-lost-events"><a class="header" href="#danger-lost-events"><strong>Danger!</strong> Lost events!</a></h3>
-<p>By default, Bevy's <a href="/programming/events.html">events</a> are <em>not reliable!</em> They only persist
-for 2 frames, after which they are lost. If your fixed-timestep systems
-receive events, beware that you may miss some events if the framerate is
-higher than 2x the fixed timestep.</p>
-<p>One way around that is to use <a href="/patterns/manual-event-clear.html">events with manual
-clearing</a>. This gives you control over how long events
-persist, but can also leak / waste memory if you forget to clear them.</p>
+<p>If you need to access the regular frame-time from a system running under
+fixed timestep, you can use <code>Res&lt;Time&lt;Virtual&gt;&gt;</code> instead. <code>Res&lt;Time&lt;Real&gt;&gt;</code>
+gives you the real (wall-clock) time, without pausing or scaling.</p>
+<p>If you need to access the fixed-timestep-time from a system running outside
+of fixed timestep, you can use <code>Res&lt;Time&lt;Fixed&gt;&gt;</code> instead.</p>
+<h2 id="should-i-put-my-systems-in-update-or-fixedupdate"><a class="header" href="#should-i-put-my-systems-in-update-or-fixedupdate">Should I put my systems in <code>Update</code> or <code>FixedUpdate</code>?</a></h2>
+<p>The purpose of fixed timestep is to make gameplay code behave predictably
+and reliably. Things such as physics and simulation work best if they are
+computed with fixed time intervals, as that avoids floating point errors
+from accumulating and glitchy behavior from variable framerate.</p>
+<p>The following things should probably be done in <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a>:</p>
+<ul>
+<li>Physics and collision detection</li>
+<li>Networking / netcode</li>
+<li>AI for enemies and NPCs (pathfinding, decisions, etc.)</li>
+<li>Spawning/despawning gameplay-related entities</li>
+<li>Other simulation and decision-making</li>
+</ul>
+<p>However, anything that directly affects what is displayed on-screen should
+run per-frame, in order to look smooth. If you do movement or animation under
+fixed timestep, it will look choppy, especially on high-refresh-rate screens.</p>
+<p>The following things should probably be done in <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a>:</p>
+<ul>
+<li>Camera movement and controls</li>
+<li>Animations</li>
+<li>UI</li>
+<li>Visual effects</li>
+<li>Anything that is part of your game's graphics/visuals or interactivity</li>
+<li><a href="/programming/states.html">App state</a> transitions</li>
+</ul>
+<h3 id="bridging-the-gap"><a class="header" href="#bridging-the-gap">Bridging the Gap</a></h3>
+<p>Sometimes there is a logical conflict:</p>
+<p>For something like player movement, you want it to be computed reliably as part
+of your gameplay/physics simulation, but you also want it to look smooth on-screen.</p>
+<p>For input handling, you want it to be responsive and handled every frame, but
+you also have game mechanics that need to respond to it.</p>
+<p>The most elegant solution to both of these problems is to handle synchonization
+yourself using custom types.</p>
+<h4 id="movement"><a class="header" href="#movement">Movement</a></h4>
+<p>For player (and other) movement, you could create your own custom component
+type to use instead of <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>. Implement your player
+movement using your own types. Then have a system in <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a>
+to sync/update <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> from that, with some
+interpolation to make it look smooth.</p>
+<pre><code class="language-rust no_run noplayground">// TODO show how to do this</code></pre>
+<h4 id="input-handling"><a class="header" href="#input-handling">Input Handling</a></h4>
+<p>If you use <code>Res&lt;ButtonInput&lt;...&gt;&gt;</code> and <code>.just_pressed</code>/<code>.just_released</code>
+to check for key/button presses, beware that the state is updated once per
+frame. This API is not reliable inside <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a>. Use
+<a href="/programming/events.html">events</a> for input handling instead, or roll your own abstractions.</p>
+<p>One way to do this is to put your input handling systems
+in <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PreUpdate.html"><code>PreUpdate</code></a>, order them after the
+<a href="https://docs.rs/bevy/0.13.0/bevy/input/struct.InputSystem.html"><code>bevy::input::InputSystem</code></a> <a href="/programming/system-sets.html">set</a>, and do
+your input handling there. Convert it into your own custom <a href="/programming/events.html">event</a>
+types or some other useful representation, which you can then handle from
+your gameplay code in <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a>.</p>
+<pre><code class="language-rust no_run noplayground">// TODO show how to do this</code></pre>
+<h2 id="timing-caveats"><a class="header" href="#timing-caveats">Timing Caveats</a></h2>
+<p>Fixed timestep does not run in real-world time! You cannot rely on it for timing!</p>
+<p>For example, if you try to play audio from it, or send network packets, you will
+notice that they don't actually occur at the fixed timestep interval. They will
+not be evenly spaced!</p>
+<p>Your <a href="/programming/systems.html">systems</a> are still called as part of the regular frame-update
+cycle. Every frame update, Bevy will run the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedMain.html"><code>FixedMain</code></a>
+<a href="/programming/schedules.html">schedule</a> as many times as needed to catch up.</p>
+<p>This means if you specify, for example, a 60 Hz fixed timestep interval, your
+systems will not actually run in 1/60 second intervals in real time.</p>
+<p>What will happen is the following:</p>
+<ul>
+<li>If the display frame rate is faster than the timestep, some frame update cycles
+will skip the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedMain.html"><code>FixedMain</code></a> schedule entirely.</li>
+<li>If the display frame rate is slower than the timestep, some frame update cycles
+will run the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedMain.html"><code>FixedMain</code></a> multiple times.</li>
+</ul>
+<p>In any case, <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedMain.html"><code>FixedMain</code></a> will run right before [<code>Update</code>], where
+your per-frame systems live.</p>
+<h2 id="additional-schedules"><a class="header" href="#additional-schedules">Additional Schedules</a></h2>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a> is actually part of a larger <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedMain.html"><code>FixedMain</code></a>
+<a href="/programming/schedules.html">schedule</a>, which also contains other <a href="/programming/schedules.html">schedules</a>:</p>
+<ul>
+<li><a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedFirst.html"><code>FixedFirst</code></a></li>
+<li><a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedPreUpdate.html"><code>FixedPreUpdate</code></a></li>
+<li><a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a></li>
+<li><a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedPostUpdate.html"><code>FixedPostUpdate</code></a></li>
+<li><a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedLast.html"><code>FixedLast</code></a></li>
+</ul>
+<p>They are analogous to the <a href="/programming/schedules.html">schedules</a> in <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Main.html"><code>Main</code></a>,
+that run every frame update. They can be used for analogous purposes (to
+contain "engine systems" from Bevy and plugins).</p>
 
                     </main>
 

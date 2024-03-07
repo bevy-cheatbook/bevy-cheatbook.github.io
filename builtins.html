@@ -281,10 +281,10 @@ Helper for generic system abstractions, to avoid lifetime annotations</li>
 Full <a href="/programming/world.html">direct access to the ECS World</a></li>
 <li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a>:
 Data <a href="/programming/local.html">local</a> to the system</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.SystemState.html"><code>SystemState&lt;P&gt;</code></a>:
+<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.SystemState.html"><code>&amp;mut SystemState&lt;P&gt;</code></a>:
 Emulates a regular system, allowing you to easily access data from the World.
 <code>P</code> are the system parameters.</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/query/struct.QueryState.html"><code>QueryState&lt;Q, F = ()&gt;</code></a>:
+<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/query/struct.QueryState.html"><code>&amp;mut QueryState&lt;Q, F = ()&gt;</code></a>:
 Allows you to perform queries on the World, similar to a <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.Query.html"><code>Query</code></a>
 in regular systems.</li>
 </ul>

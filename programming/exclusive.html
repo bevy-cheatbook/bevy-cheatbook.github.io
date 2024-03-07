@@ -179,25 +179,24 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="exclusive-systems"><a class="header" href="#exclusive-systems">Exclusive Systems</a></h1>
 <p>Exclusive systems are <a href="/programming/systems.html">systems</a> that Bevy will not run in parallel
 with any other system. They can have <a href="/programming/world.html">full unrestricted access</a>
-to the whole ECS <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/world/struct.World.html"><code>World</code></a>, by taking a <code>&amp;mut World</code> parameter.</p>
+to the whole ECS <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>World</code></a>, by taking a <code>&amp;mut World</code> parameter.</p>
 <p>Inside of an exclusive system, you have full control over all data stored
 in the ECS. You can do whatever you want.</p>
-<p>Note that exclusive systems can limit performance, as they prevent
-multi-threading (nothing else runs at the same time).</p>
 <p>Some example situations where exclusive systems are useful:</p>
 <ul>
 <li>Dump various entities and components to a file, to implement things like
 saving and loading of game save files, or scene export from an editor</li>
-<li>Directly spawn/despawn <a href="/programming/intro-data.html#entities--components">entities</a>, or create/remove <a href="/programming/res.html">resources</a>,
+<li>Directly spawn/despawn <a href="/programming/intro-data.html#entities--components">entities</a>, or insert/remove <a href="/programming/res.html">resources</a>,
 immediately with no delay (unlike when using <a href="/programming/commands.html"><code>Commands</code></a>
 from a regular system)</li>
-<li>Run arbitrary systems with your own scheduling algorithm</li>
+<li>Run arbitrary <a href="/programming/systems.html">systems</a> and <a href="/programming/schedules.html">schedules</a> with your
+own custom control flow logic</li>
 <li>…</li>
 </ul>
 <p>See the <a href="/programming/world.html">direct World access page</a> to learn more about how to do
@@ -206,33 +205,124 @@ such things.</p>
     // we can do anything with any data in the Bevy ECS here!
 }</code></pre>
 <p>You need to add exclusive systems to the <a href="/programming/app-builder.html">App</a>, just like
-regular systems, but you must call <code>.exclusive_system()</code> on them.</p>
-<p>They cannot be ordered in-between regular parallel systems. Exclusive systems
-always run at one of the following places:</p>
+regular systems. All scheduling APIs (<a href="/programming/system-order.html">ordering</a>, <a href="/programming/run-criteria.html">run
+conditions</a>, <a href="/programming/system-sets.html">sets</a>) are supported and work the same
+as with regular systems.</p>
+<pre><code class="language-rust no_run noplayground">app.add_systems(Update,
+    do_crazy_things
+        .run_if(needs_crazy_things)
+        .after(do_regular_things)
+        .before(other_things)
+);</code></pre>
+<h2 id="exclusive-system-parameters"><a class="header" href="#exclusive-system-parameters">Exclusive System Parameters</a></h2>
+<p>There are a few other things, besides <code>&amp;mut World</code>, that can be used as
+parameters for exclusive systems:</p>
 <ul>
-<li><code>.at_start()</code>: at the beginning of a <a href="/programming/schedules.html">stage</a></li>
-<li><code>.at_end()</code>: at the end of a <a href="/programming/schedules.html">stage</a>,
-after <a href="/programming/commands.html">commands</a> from regular systems have been applied</li>
-<li><code>.before_commands()</code>: after all the regular systems in a <a href="/programming/schedules.html">stage</a>,
-but before <a href="/programming/commands.html">commands</a> are applied</li>
+<li><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>&amp;mut World</code></a>:
+Full <a href="/programming/world.html">direct access to the ECS World</a></li>
+<li><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a>:
+Data <a href="/programming/local.html">local</a> to the system</li>
+<li><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.SystemState.html"><code>&amp;mut SystemState&lt;P&gt;</code></a>:
+Emulates a regular system, allowing you to easily access data from the World.
+<code>P</code> are the system parameters.</li>
+<li><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/query/struct.QueryState.html"><code>&amp;mut QueryState&lt;Q, F = ()&gt;</code></a>:
+Allows you to perform queries on the World, similar to a <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Query.html"><code>Query</code></a>
+in regular systems.</li>
 </ul>
-<p>(if you don't specify anything, the default is assumed <code>.at_start()</code>)</p>
-<pre><code class="language-rust no_run noplayground">fn main() {
-    App::new()
-        .add_plugins(DefaultPlugins)
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.SystemState.html"><code>SystemState</code></a> can be used to emulate a normal system.
+You can put regular system parameters inside. This allows you to access the
+<code>World</code> as you would from a normal system, but you can confine it to a
+specific scope inside your function body, making it more flexible.</p>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/query/struct.QueryState.html"><code>QueryState</code></a> is the same thing, but for a single query.
+It is a simpler alternative to <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.SystemState.html"><code>SystemState</code></a> for when
+you just need to be able to query for some data.</p>
+<pre><code class="language-rust no_run noplayground">use bevy::ecs::system::SystemState;
 
-        // this will run at the start of CoreStage::Update (the default stage)
-        .add_system(do_crazy_things)
+fn spawn_particles_for_enemies(
+    world: &amp;mut World,
+    // behaves sort of like a query in a regular system
+    q_enemies: &amp;mut QueryState&lt;&amp;Transform, With&lt;Enemy&gt;&gt;,
+    // emulates a regular system with an arbitrary set of parameters
+    params: &amp;mut SystemState&lt;(
+        ResMut&lt;MyGameSettings&gt;,
+        ResMut&lt;MyParticleTracker&gt;,
+        Query&lt;&amp;mut Transform, With&lt;Player&gt;&gt;,
+        EventReader&lt;MyDamageEvent&gt;,
+    )&gt;,
+    // local resource, just like in a regular system
+    mut has_run_once: Local&lt;bool&gt;,
+) {
+    // note: unlike with a regular Query, we need to provide the world as an argument.
+    // The world will only be "locked" for the duration of this loop
+    for transform in q_enemies.iter(world) {
+        // TODO: do something with the transforms
+    }
 
-        // this will run at the end of CoreStage::PostUpdate
-        .add_system_to_stage(
-            CoreStage::PostUpdate,
-            some_more_things
-                .at_end()
-        )
+    // create a scope where we can access our things like a regular system
+    {
+        let (mut settings, mut tracker, mut q_player, mut evr) =
+            params.get_mut(world);
 
-        .run();
+        // TODO: do things with our resources, query, events, ...
+    }
+
+    // we are now free to directly spawn entities
+    // because the World is no longer used by anything
+    // (the SystemState and the QueryState are no longer accessing it)
+
+    world.spawn_batch((0..10000) // efficiently spawn 10000 particles
+        .map(|_| SpriteBundle {
+            // ...
+            ..Default::default()
+        })
+    );
+
+    // and, of course, we can use our Local
+    *has_run_once = true;
 }</code></pre>
+<h2 id="performance-considerations"><a class="header" href="#performance-considerations">Performance Considerations</a></h2>
+<p>Exclusive systems, by definition, limit parallelism and multi-threading, as
+nothing else can access the same ECS World while they run. The whole schedule
+needs to come to a stop, to accomodate the exclusive system. This can easily
+introduce a performance bottleneck.</p>
+<p>Generally speaking, you should avoid using exclusive systems, unless you need
+to do something that is only possible with them.</p>
+<p>On the other hand, they can have less overhead (by avoiding
+<a href="/programming/commands.html">Commands</a>), and so can be faster for some use cases.</p>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a> has a lot of overhead, as it needs to store your
+data in a queue and then process / copy it into the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>World</code></a>
+later. Directly spawning entities into the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>World</code></a> is much
+more efficient.</p>
+<p>Some examples for when exclusive systems can be faster:</p>
+<ul>
+<li>You want to spawn/despawn a ton of entities.
+<ul>
+<li>Example: Setup/cleanup for your whole game map.</li>
+</ul>
+</li>
+<li>You want to do it every frame.
+<ul>
+<li>Example: Managing hordes of enemies.</li>
+</ul>
+</li>
+</ul>
+<p>You can think of it this way: in order to apply Commands, Bevy effectively
+needs to run an "exclusive system" internally to do it for you. Normally,
+that is hidden / automatic. By just writing an exclusive system yourself,
+you are saving on the additional regular system that you would normally run.</p>
+<p>On the other hand, if you have a system that runs every frame, but only
+needs to manage entities every once in a while, then Commands are likely
+to be more performant, because, by making your system a normal system,
+you avoid making it a bottleneck for parallelism.</p>
+<p>Some examples for when normal systems can be faster:</p>
+<ul>
+<li>You need to check some stuff every frame, and maybe spawn/despawn something sometimes.
+<ul>
+<li>Example: Despawn enemies when they reach 0 HP.</li>
+<li>Example: Add/remove some UI elements depending on what is happening in-game.</li>
+</ul>
+</li>
+</ul>
 
                     </main>
 

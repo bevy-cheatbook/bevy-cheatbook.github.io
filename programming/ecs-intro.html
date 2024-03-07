@@ -179,17 +179,17 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-12">0.12</a></th><th>(outdated!)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="ecs-programming-introduction"><a class="header" href="#ecs-programming-introduction">ECS Programming Introduction</a></h1>
 <p>This page will try to teach you the general ECS mindset/paradigm.</p>
 <hr />
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.13.0/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
 <p>Also check out the complete game examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/games/alien_cake_addict.rs"><code>alien_cake_addict</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/games/breakout.rs"><code>breakout</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.13.0/examples/games/alien_cake_addict.rs"><code>alien_cake_addict</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.13.0/examples/games/breakout.rs"><code>breakout</code></a>.</p>
 <hr />
 <p>ECS is a programming paradigm that separates data and behavior. Bevy will store
 all of <a href="/programming/intro-data.html">your data</a> and manage all of <a href="/programming/intro-code.html">your individual pieces
@@ -206,6 +206,8 @@ regardless of whether that's the player, an NPC, or a monster, or a vehicle</li>
 <p>Of course, when you need specialized behavior only for specific entities (say,
 player movement, which only applies to the player), that is naturally easy to
 express, too.</p>
+<p>If you are familiar with database programming, you will feel right at home. ECS
+is conceptually very similar to a lightweight in-memory database.</p>
 <p><a href="/programming/intro-data.html">Read more about how to represent your data.</a></p>
 <p><a href="/programming/intro-code.html">Read more about how to represent your functionality.</a></p>
 

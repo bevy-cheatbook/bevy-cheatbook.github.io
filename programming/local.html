@@ -179,24 +179,28 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="local-resources"><a class="header" href="#local-resources">Local Resources</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.13.0/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
 <hr />
 <p>Local resources allow you to have per-<a href="/programming/systems.html">system</a> data. This data
-is not stored in the ECS World, but rather together with your system.</p>
-<p><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a> is a system parameter similar to
-<a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a>, which gives you full mutable access to an
+is not stored in the ECS World, but rather together with your system.
+Nothing outside of your system can access it. The value will be kept across
+subsequent runs of the system.</p>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a> is a system parameter similar to
+<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a>, which gives you full mutable access to an
 instance of some data type, that is independent from entities and components.</p>
-<p><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Res.html"><code>Res&lt;T&gt;</code></a>/<a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a> refer to a single global
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Res.html"><code>Res&lt;T&gt;</code></a>/<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a> refer to a single global
 instance of the type, shared between all systems. On the other hand, every
-<a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a> parameter is a separate instance, exclusively for
+<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a> parameter is a separate instance, exclusively for
 that system.</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Default)]
-struct MyState;
+struct MyState {
+    // ...
+}
 
 fn my_system1(mut local: Local&lt;MyState&gt;) {
     // you can do anything you want with the local here
@@ -206,16 +210,18 @@ fn my_system2(mut local: Local&lt;MyState&gt;) {
     // the local in this system is a different instance
 }</code></pre>
 <p>The type must implement <a href="https://doc.rust-lang.org/stable/std/default/trait.Default.html"><code>Default</code></a> or
-<a href="https://docs.rs/bevy/0.9.1/bevy/ecs/world/trait.FromWorld.html"><code>FromWorld</code></a>. It is automatically initialized.</p>
-<p>A system can have multiple <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Local.html"><code>Local</code></a>s of the same type.</p>
+<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/trait.FromWorld.html"><code>FromWorld</code></a>. It is automatically initialized.
+It is not possible to specify a custom initial value.</p>
+<p>A system can have multiple <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Local.html"><code>Local</code></a>s of the same type.</p>
 <h2 id="specify-an-initial-value"><a class="header" href="#specify-an-initial-value">Specify an initial value</a></h2>
-<p><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a> is always automatically initialized using the
-default value for the type.</p>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a> is always automatically initialized using the
+default value for the type. If that doesn't work for you, there is an
+alternative way to pass data into a system.</p>
 <p>If you need specific data, you can use a closure instead. Rust closures
 that take system parameters are valid Bevy systems, just like standalone
 functions. Using a closure allows you to "move data into the function".</p>
 <p>This example shows how to initialize some data to configure a system,
-without using <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a>:</p>
+without using <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a>:</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Default)]
 struct MyConfig {
     magic: usize,
@@ -237,43 +243,50 @@ fn main() {
 
     App::new()
         .add_plugins(DefaultPlugins)
+
         // create a "move closure", so we can use the `config`
         // variable that we created above
-        .add_system(move |cmd: Commands, res: Res&lt;MyStuff&gt;| {
-            // call our function from inside the closure
+
+        // Note: we specify the regular system parameters we need.
+        // The closure needs to be a valid Bevy system.
+        .add_systems(Update, move |cmd: Commands, res: Res&lt;MyStuff&gt;| {
+            // call our function from inside the closure,
+            // passing in the system params + our custom value
             my_system(cmd, res, &amp;config);
         })
         .run();
 }</code></pre>
 <p>Another way to accomplish the same thing is to "return" the system
-from "constructor" helper, that creates it:</p>
+from "constructor" helper function that creates it:</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Default)]
 struct MyConfig {
     magic: usize,
 }
 
-fn main() {
-    // create a "constructor" closure, which can initialize
-    // our data and move it into a closure that bevy can run as a system
-    let constructor = || {
-        // create the `MyConfig`
-        let config = MyConfig {
-            magic: 420,
-        };
-
-        // this is the actual system that bevy will run
-        move |mut commands: Commands, res: Res&lt;MyStuff&gt;| {
-            // we can use `config` here, the value from above will be "moved in"
-            // we can also use our system params: `commands`, `res`
-        }
+// create a "constructor" function, which can initialize
+// our data and move it into a closure that Bevy can run as a system
+fn my_system_constructor() -&gt; impl FnMut(Commands, Res&lt;MyStuff&gt;) {
+    // create the `MyConfig`
+    let config = MyConfig {
+        magic: 420,
     };
 
+    // this is the actual system that bevy will run
+    move |mut commands, res| {
+        // we can use `config` here, the value from above will be "moved in"
+        // we can also use our system params: `commands`, `res`
+    }
+}
+
+fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
+
         // note the parentheses `()`
         // we are calling the "constructor" we made above,
         // which will return the actual system that gets added to bevy
-        .add_system(constructor())
+        .add_systems(Update, my_system_constructor())
+
         .run();
 }</code></pre>
 

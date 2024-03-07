@@ -179,24 +179,20 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="commands"><a class="header" href="#commands">Commands</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.13.0/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
 <hr />
-<p>Use <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a> to spawn/despawn entities, add/remove
-components on existing entities, manage resources.</p>
-<p>These actions do not take effect immediately; they are queued to be performed
-later when it is safe to do so. See: <a href="/programming/schedules.html">stages</a>.</p>
-<p>(if you are not using stages, that means your other <a href="/programming/systems.html">systems</a>
-will see them on the next frame update)</p>
+<p>Use <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a> to spawn/despawn entities, add/remove
+components on existing entities, manage resources, from your <a href="/programming/systems.html">systems</a>.</p>
 <pre><code class="language-rust no_run noplayground">fn spawn_things(
     mut commands: Commands,
 ) {
     // manage resources
-    commands.insert_resource(MyResource);
+    commands.insert_resource(MyResource::new());
     commands.remove_resource::&lt;MyResource&gt;();
 
     // create a new entity using `spawn`,
@@ -254,6 +250,30 @@ fn despawn_all_enemies(
     }
 }
 </code></pre>
+<h2 id="when-do-these-actions-get-applied"><a class="header" href="#when-do-these-actions-get-applied">When do these actions get applied?</a></h2>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a> do not take effect immediately, because
+it wouldn't be safe to modify the data layout in memory when other
+<a href="/programming/systems.html">systems</a> could be running in parallel. When you do anything using
+<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>, it gets queued to be applied later when it is
+safe to do so.</p>
+<p>Within the same schedule, you can add <code>.before()</code>/<code>.after()</code> <a href="/programming/system-order.html">ordering
+constraints</a> to your systems, and Bevy will automatically
+make sure that Commands get applied in-between if necessary, so that the
+second system can see the changes made by the first system.</p>
+<pre><code class="language-rust no_run noplayground">app.add_systems(Update, spawn_new_enemies_if_needed);
+
+// This system will see any newly-spawned enemies when it runs,
+// because Bevy will make sure to apply the first system's Commands
+// (thanks to the explicit `.after()` dependency)
+app.add_systems(Update, enemy_ai.after(spawn_new_enemies_if_needed));</code></pre>
+<p>If you do not have explicit ordering dependencies, it is undefined when
+Commands will be applied. It is possible that some systems will only
+see the changes on the next frame update!</p>
+<p>Otherwise, Commands are normally applied at the end of every
+<a href="/programming/schedules.html">schedule</a>. <a href="/programming/systems.html">Systems</a> that live in different
+schedules will see the changes. For example, Bevy's engine systems (that
+live in <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a>) will see the entities you spawn in your systems (that
+live in <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a>).</p>
 
                     </main>
 

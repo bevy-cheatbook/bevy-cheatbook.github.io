@@ -179,11 +179,11 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-12">0.12</a></th><th>(outdated!)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.13.0/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
 <hr />
 <h1 id="entities"><a class="header" href="#entities">Entities</a></h1>
 <p><a href="/programming/intro-data.html">See here for more explanation on how storing data in the ECS works.</a></p>
@@ -193,7 +193,7 @@ store a value of that type.</p>
 <p>Technically, an entity is just a simple integer ID (imagine the "row number" in
 a table/spreadsheet) that can be used to find related data values (in different
 "columns" of that table).</p>
-<p>In Bevy, <a href="https://docs.rs/bevy/0.12.0/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> is this value. It consists of two integers:
+<p>In Bevy, <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> is this value. It consists of two integers:
 the ID and the "generation" (allowing IDs to be reused, after you despawn old
 entities).</p>
 <p>You can create ("spawn") new entities and destroy ("despawn") entities using
@@ -222,7 +222,7 @@ entities).</p>
 <h1 id="components"><a class="header" href="#components">Components</a></h1>
 <p>Components are the data associated with entities.</p>
 <p>To create a new component type, simply define a Rust <code>struct</code> or <code>enum</code>, and
-derive the <a href="https://docs.rs/bevy/0.12.0/bevy/ecs/component/trait.Component.html"><code>Component</code></a> trait.</p>
+derive the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/component/trait.Component.html"><code>Component</code></a> trait.</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Component)]
 struct Health {
     hp: f32,
@@ -262,8 +262,9 @@ struct Player;
 struct Friendly;</code></pre>
 <h2 id="accessing-components"><a class="header" href="#accessing-components">Accessing Components</a></h2>
 <p>Components can be accessed from <a href="/programming/systems.html">systems</a>, using <a href="/programming/queries.html">queries</a>.</p>
-<p>You can think of the query as the "specification" for the data you want to access.
-It will search for entities that match and give you access to the data.</p>
+<p>You can think of the query as the "specification" for the data you want
+to access. It gives you access to specific component values from entities
+that match the query's signature.</p>
 <pre><code class="language-rust no_run noplayground">fn level_up_player(
     // get the relevant data. some components read-only, some mutable
     mut query_player: Query&lt;(&amp;PlayerName, &amp;mut PlayerXp, &amp;mut Health), With&lt;Player&gt;&gt;,

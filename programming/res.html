@@ -179,12 +179,12 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-12">0.12</a></th><th>(outdated!)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="resources"><a class="header" href="#resources">Resources</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.13.0/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
 <hr />
 <p>Resources allow you to store a single global instance of some data type,
 independently of <a href="/programming/intro-data.html#entities--components">entities</a>.</p>
@@ -193,7 +193,7 @@ as configuration / settings. Resources make it easy for you to access such data
 from anywhere.</p>
 <hr />
 <p>To create a new resource type, simply define a Rust <code>struct</code> or <code>enum</code>, and
-derive the <a href="https://docs.rs/bevy/0.12.0/bevy/ecs/system/trait.Resource.html"><code>Resource</code></a> trait, similar to
+derive the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/trait.Resource.html"><code>Resource</code></a> trait, similar to
 <a href="/programming/ec.html#components">components</a> and <a href="/programming/events.html">events</a>.</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Resource)]
 struct GoalsReached {
@@ -221,11 +221,11 @@ custom types.</p>
 }</code></pre>
 <h2 id="managing-resources"><a class="header" href="#managing-resources">Managing Resources</a></h2>
 <p>If you need to create/remove resources at runtime, you can do so using
-<a href="/programming/commands.html">commands</a> (<a href="https://docs.rs/bevy/0.12.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>):</p>
+<a href="/programming/commands.html">commands</a> (<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>):</p>
 <pre><code class="language-rust no_run noplayground">fn my_setup(mut commands: Commands, /* ... */) {
-    // add (or overwrite) resource, using the provided data
+    // add (or overwrite if existing) a resource, with the given value
     commands.insert_resource(GoalsReached { main_goal: false, bonus: 100 });
-    // ensure resource exists (creating if necessary)
+    // ensure resource exists (create it with its default value if necessary)
     commands.init_resource::&lt;MyFancyResource&gt;();
     // remove a resource (if it exists)
     commands.remove_resource::&lt;MyOtherResource&gt;();
@@ -252,6 +252,8 @@ resources that are meant to always exist from the start.</p>
     .init_resource::&lt;MyFancyResource&gt;()
     // ...</code></pre>
 <h2 id="resource-initialization"><a class="header" href="#resource-initialization">Resource Initialization</a></h2>
+<p>If you want to be able to use <code>.init_resource</code> to create your resource,
+here is how you can provide the default value.</p>
 <p>Implement <a href="https://doc.rust-lang.org/stable/std/default/trait.Default.html"><code>Default</code></a> for simple resources:</p>
 <pre><code class="language-rust no_run noplayground">// simple derive, to set all fields to their defaults
 #[derive(Resource, Default)]
@@ -278,22 +280,28 @@ enum GameMode {
     Singleplayer,
     Multiplayer,
 }</code></pre>
-<p>For resources that need complex initialization, implement <a href="https://docs.rs/bevy/0.12.0/bevy/ecs/world/trait.FromWorld.html"><code>FromWorld</code></a>:</p>
+<p>For resources that need complex initialization, implement <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/trait.FromWorld.html"><code>FromWorld</code></a>:</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Resource)]
 struct MyFancyResource { /* stuff */ }
 
 impl FromWorld for MyFancyResource {
     fn from_world(world: &amp;mut World) -&gt; Self {
         // You have full access to anything in the ECS World from here.
-        // For example, you can access (and mutate!) other resources:
-        let mut x = world.resource_mut::&lt;MyOtherResource&gt;();
-        x.do_mut_stuff();
+
+        // For example, you can access (and mutate!) other things:
+        {
+            let mut x = world.resource_mut::&lt;MyOtherResource&gt;();
+            x.do_mut_stuff();
+        }
+
+        // You can load assets:
+        let font: Handle&lt;Font&gt; = world.resource::&lt;AssetServer&gt;().load("myfont.ttf");
 
         MyFancyResource { /* stuff */ }
     }
 }</code></pre>
 <p>Beware: it can be easy to get yourself into a mess of unmaintainable code
-if you overuse <a href="https://docs.rs/bevy/0.12.0/bevy/ecs/world/trait.FromWorld.html"><code>FromWorld</code></a> to do complex things.</p>
+if you overuse <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/trait.FromWorld.html"><code>FromWorld</code></a> to do complex things.</p>
 <h2 id="usage-advice"><a class="header" href="#usage-advice">Usage Advice</a></h2>
 <p>The choice of when to use <a href="/programming/intro-data.html#entities--components">entities/components</a> vs. resources is
 typically about how you want to access the <a href="/programming/intro-data.html">data</a>: globally

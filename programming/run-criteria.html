@@ -179,101 +179,69 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
-<h1 id="run-criteria"><a class="header" href="#run-criteria">Run Criteria</a></h1>
-<p>Run Criteria are a mechanism for controlling if Bevy should run specific
-<a href="/programming/systems.html">systems</a>, at runtime. This is how you can make functionality
-that only runs under certain conditions.</p>
-<p>Run Criteria can be applied to individual <a href="/programming/systems.html">systems</a>, <a href="/programming/system-sets.html">system
-sets</a>, and <a href="/programming/schedules.html">stages</a>.</p>
-<p>Run Criteria are Bevy systems that return a value of type <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/schedule/enum.ShouldRun.html"><code>enum ShouldRun</code></a>. They can accept any <a href="/builtins.html#systemparams">system
-parameters</a>, like a normal system.</p>
-<p>This example shows how run criteria might be used to implement different
-multiplayer modes:</p>
-<pre><code class="language-rust no_run noplayground">use bevy::ecs::schedule::ShouldRun;
-
-#[derive(Debug, PartialEq, Eq)]
-#[derive(Resource)]
-enum MultiplayerKind {
-    Client,
-    Host,
-    Local,
+<h1 id="run-conditions"><a class="header" href="#run-conditions">Run Conditions</a></h1>
+<p>Run Conditions (RC) are a mechanism for controlling if Bevy should run specific
+<a href="/programming/systems.html">systems</a>, at runtime. This allows you to enable/disable systems
+on-demand, so that they only run sometimes.</p>
+<p>RCs are Rust functions that return a value of type <code>bool</code>. They can accept
+any <a href="/builtins.html#systemparams">system parameters</a>, like a normal system, but
+they must all be read-only (immutable).</p>
+<pre><code class="language-rust no_run noplayground">fn run_if_player_alive(
+    q_player: Query&lt;&amp;Health, With&lt;Player&gt;&gt;,
+) -&gt; bool {
+    let health = q_player.single();
+    health.hp &gt; 0.0
 }
 
 fn run_if_connected(
-    mode: Res&lt;MultiplayerKind&gt;,
+    mode: Res&lt;MyMultiplayerMode&gt;,
     session: Res&lt;MyNetworkSession&gt;,
-) -&gt; ShouldRun
+) -&gt; bool
 {
-    if *mode == MultiplayerKind::Client &amp;&amp; session.is_connected() {
-        ShouldRun::Yes
-    } else {
-        ShouldRun::No
-    }
+    *mode != MyMultiplayerMode::Local &amp;&amp; session.is_connected()
 }
 
-fn run_if_host(
-    mode: Res&lt;MultiplayerKind&gt;,
-) -&gt; ShouldRun
-{
-    if *mode == MultiplayerKind::Host || *mode == MultiplayerKind::Local {
-        ShouldRun::Yes
-    } else {
-        ShouldRun::No
-    }
-}
-
-fn main() {
-    App::new()
-        .add_plugins(DefaultPlugins)
-
-        // if we are currently connected to a server,
-        // activate our client systems
-        .add_system_set(
-            SystemSet::new()
-                .with_run_criteria(run_if_connected)
-                .before("input")
-                .with_system(server_session)
-                .with_system(fetch_server_updates)
-        )
-
-        // if we are hosting the game,
-        // activate our game hosting systems
-        .add_system_set(
-            SystemSet::new()
-                .with_run_criteria(run_if_host)
-                .before("input")
-                .with_system(host_session)
-                .with_system(host_player_movement)
-                .with_system(host_enemy_ai)
-        )
-
-        // other systems in our game
-        .add_system(smoke_particles)
-        .add_system(water_animation)
-        .add_system_set(
-            SystemSet::new()
-                .label("input")
-                .with_system(keyboard_input)
-                .with_system(gamepad_input)
-        )
-        .run();
+fn run_if_enemies_present(
+    q_enemies: Query&lt;(), With&lt;Enemy&gt;&gt;,
+) -&gt; bool {
+    !q_enemies.is_empty()
 }</code></pre>
+<p>RCs can be applied to individual <a href="/programming/systems.html">systems</a> or to entire <a href="/programming/system-sets.html">system
+sets</a>.</p>
+<pre><code class="language-rust no_run noplayground">app.configure_sets(Update,
+    MyPlayerSet
+        .run_if(run_if_player_alive)
+);
+
+app.add_systems(Update, (
+    player_input,
+    player_movement,
+    player_alert_enemies
+        .run_if(run_if_enemies_present)
+).in_set(MyPlayerSet));
+
+app.add_systems(Update,
+    manage_multiplayer_server
+        .run_if(run_if_connected)
+);</code></pre>
+<p>When applied to a single <a href="/programming/systems.html">system</a>, Bevy will evaluate the RC at
+the last moment, right before the system would otherwise be ready to run. If
+you add the same RC to multiple systems, Bevy will evaluate it separately
+for each one.</p>
+<p>When applied to a <a href="/programming/system-sets.html">set</a>, the run condition will only be
+evaluated once, before Bevy runs any system from the set, and if it returns
+false, the entire set will be skipped.</p>
+<p>Any given system can be governed by any number of RCs. You can add multiple RCs
+to one system, and it will also inherit the RCs of any <a href="/programming/system-sets.html">sets</a>
+it belongs to. Bevy will evaluate all the RCs, and the system will only run
+if all of them return <code>true</code>.</p>
 <h2 id="known-pitfalls"><a class="header" href="#known-pitfalls">Known Pitfalls</a></h2>
-<h3 id="combining-multiple-run-criteria"><a class="header" href="#combining-multiple-run-criteria">Combining Multiple Run Criteria</a></h3>
-<p>It is not possible to make a system that is conditional on multiple run
-criteria. Bevy has a <code>.pipe</code> method that allows you to "chain" run criteria,
-which could let you modify the output of a run criteria, but this is very
-limiting in practice.</p>
-<p>Consider using <a href="https://github.com/IyesGames/iyes_loopless"><code>iyes_loopless</code></a>. It allows you to
-use any number of run conditions to control your systems, and does not prevent
-you from using <a href="/programming/states.html">states</a> or <a href="/fundamentals/fixed-timestep.html">fixed timestep</a>.</p>
-<h3 id="events"><a class="header" href="#events">Events</a></h3>
-<p>When receiving <a href="/programming/events.html">events</a> in systems that don't run every frame,
-you will miss any events that are sent during the frames when the receiving
-systems are not running!</p>
+<p>When receiving <a href="/programming/events.html">events</a> in systems that don't run every frame
+update, you can miss some events that are sent while the receiving systems
+are not running!</p>
 <p>To mitigate this, you could implement a <a href="/patterns/manual-event-clear.html">custom cleanup
 strategy</a>, to manually manage the lifetime of the relevant
 event types.</p>

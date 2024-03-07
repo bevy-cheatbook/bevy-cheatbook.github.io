@@ -179,21 +179,21 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-12">0.12</a></th><th>(outdated!)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="the-app"><a class="header" href="#the-app">The App</a></h1>
 <p>Relevant official examples: All of them ;)</p>
 <p>In particular, check out the complete game examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/games/alien_cake_addict.rs"><code>alien_cake_addict</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/v0.12.1/examples/games/breakout.rs"><code>breakout</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.13.0/examples/games/alien_cake_addict.rs"><code>alien_cake_addict</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.13.0/examples/games/breakout.rs"><code>breakout</code></a>.</p>
 <hr />
-<p>To enter the Bevy runtime, you need to configure an <a href="https://docs.rs/bevy/0.12.0/bevy/app/struct.App.html"><code>App</code></a>. The app
+<p>To enter the Bevy runtime, you need to configure an <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.App.html"><code>App</code></a>. The app
 is how you define the structure of all the things that make up your project:
 <a href="/programming/plugins.html">plugins</a>, <a href="/programming/systems.html">systems</a> (and their configuration/metadata:
 <a href="/programming/run-criteria.html">run conditions</a>, <a href="/programming/system-order.html">ordering</a>, <a href="/programming/system-sets.html">sets</a>),
 <a href="/programming/events.html">event</a> types, <a href="/programming/states.html">states</a>, <a href="/programming/schedules.html">schedules</a>…</p>
-<p>You typically create your <a href="https://docs.rs/bevy/0.12.0/bevy/app/struct.App.html"><code>App</code></a> in your project's <code>main</code> function.
+<p>You typically create your <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.App.html"><code>App</code></a> in your project's <code>main</code> function.
 However, you don't have to add everything from there. If you want to add things
 to your app from multiple places (like other Rust files or crates), use
 <a href="/programming/plugins.html">plugins</a>. As your project grows, you will need to do that to keep
@@ -203,6 +203,9 @@ everything organized.</p>
         // Bevy itself:
         .add_plugins(DefaultPlugins)
 
+        // Plugins from our game/project:
+        .add_plugins(ui::MyUiPlugin)
+
         // events:
         .add_event::&lt;LevelUpEvent&gt;()
 
@@ -211,7 +214,7 @@ everything organized.</p>
 
         // systems to run each frame:
         .add_systems(Update, (
-            player_level_up,
+            camera_follow_player,
             debug_levelups,
             debug_stats_change,
         ))
@@ -225,16 +228,15 @@ multiple things at once.</p>
 <p><a href="/programming/ec.html#components">Component</a> types do not need to be registered.</p>
 <p>Schedules cannot <a href="https://github.com/bevyengine/bevy/issues/279">(yet)</a> be modified at runtime; all
 <a href="/programming/systems.html">systems</a> you want to run must be added/configured in the
-<a href="https://docs.rs/bevy/0.12.0/bevy/app/struct.App.html"><code>App</code></a> ahead of time. You can control individual systems using <a href="/programming/run-criteria.html">run
-conditions</a>. You can also <a href="/patterns/schedule-dynamic.html">dynamically enable/disable entire
-schedules</a> using the
-<a href="https://docs.rs/bevy/0.12.0/bevy/app/struct.MainScheduleOrder.html"><code>MainScheduleOrder</code></a> <a href="/programming/res.html">resource</a>.</p>
+<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.App.html"><code>App</code></a> ahead of time. You can control individual systems using <a href="/programming/run-criteria.html">run
+conditions</a>. You can also dynamically enable/disable entire schedules
+using the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.MainScheduleOrder.html"><code>MainScheduleOrder</code></a> <a href="/programming/res.html">resource</a>.</p>
 <h2 id="builtin-bevy-functionality"><a class="header" href="#builtin-bevy-functionality">Builtin Bevy Functionality</a></h2>
 <p>The Bevy game engine's own functionality is represented as a <a href="/programming/plugins.html#plugin-groups">plugin group</a>.
 Every typical Bevy app must first add it, using either:</p>
 <ul>
-<li><a href="https://docs.rs/bevy/0.12.0/bevy/struct.DefaultPlugins.html"><code>DefaultPlugins</code></a> if you are making a full game/app</li>
-<li><a href="https://docs.rs/bevy/0.12.0/bevy/struct.MinimalPlugins.html"><code>MinimalPlugins</code></a> for something like a headless server.</li>
+<li><a href="https://docs.rs/bevy/0.13.0/bevy/struct.DefaultPlugins.html"><code>DefaultPlugins</code></a> if you are making a full game/app.</li>
+<li><a href="https://docs.rs/bevy/0.13.0/bevy/struct.MinimalPlugins.html"><code>MinimalPlugins</code></a> for something like a headless server.</li>
 </ul>
 <h2 id="setting-up-data"><a class="header" href="#setting-up-data">Setting up data</a></h2>
 <p>Normally, you can set up <a href="/programming/intro-data.html">your data</a> from
@@ -257,7 +259,7 @@ app.init_resource::&lt;MyFancyResource&gt;();
 // (in this example, to spawn an entity, but you can do anything)
 app.world.spawn(SomeBundle::default());</code></pre>
 <h2 id="quitting-the-app"><a class="header" href="#quitting-the-app">Quitting the App</a></h2>
-<p>To cleanly shut down bevy, send an <a href="https://docs.rs/bevy/0.12.0/bevy/app/struct.AppExit.html"><code>AppExit</code></a>
+<p>To cleanly shut down bevy, send an <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.AppExit.html"><code>AppExit</code></a>
 <a href="/programming/events.html">event</a> from any <a href="/programming/systems.html">system</a>:</p>
 <pre><code class="language-rust no_run noplayground">use bevy::app::AppExit;
 

@@ -179,22 +179,22 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-11">0.11</a></th><th>(outdated!)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="events"><a class="header" href="#events">Events</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.11.3/examples/ecs/event.rs"><code>event</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.13.0/examples/ecs/event.rs"><code>event</code></a>.</p>
 <hr />
 <p>Send data between systems! Let your <a href="/programming/systems.html">systems</a> communicate with each other!</p>
 <p>Like <a href="/programming/res.html">resources</a> or <a href="/programming/ec.html#components">components</a>, events are
 simple Rust <code>struct</code>s or <code>enum</code>s. When creating a new event type, derive
-the <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/event/trait.Event.html"><code>Event</code></a> trait.</p>
+the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/event/trait.Event.html"><code>Event</code></a> trait.</p>
 <p>Then, any <a href="/programming/systems.html">system</a> can send (broadcast) values of that type,
 and any system can receive those events.</p>
 <ul>
-<li>To send events, use an <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/event/struct.EventWriter.html"><code>EventWriter&lt;T&gt;</code></a>.</li>
-<li>To receive events, use an <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/event/struct.EventReader.html"><code>EventReader&lt;T&gt;</code></a>.</li>
+<li>To send events, use an <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/event/struct.EventWriter.html"><code>EventWriter&lt;T&gt;</code></a>.</li>
+<li>To receive events, use an <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/event/struct.EventReader.html"><code>EventReader&lt;T&gt;</code></a>.</li>
 </ul>
 <p>Every reader tracks the events it has read independently, so you can handle
 the same events from multiple <a href="/programming/systems.html">systems</a>.</p>
@@ -215,7 +215,7 @@ fn player_level_up(
 fn debug_levelups(
     mut ev_levelup: EventReader&lt;LevelUpEvent&gt;,
 ) {
-    for ev in ev_levelup.iter() {
+    for ev in ev_levelup.read() {
         eprintln!("Entity {:?} leveled up!", ev.0);
     }
 }</code></pre>
@@ -236,35 +236,38 @@ and do their respective things. If the <code>player_level_up</code> system had s
 checked the player XP and managed the player level directly, without going via
 events, it would be unwieldy for future development of the game.</p>
 <h2 id="how-it-all-works"><a class="header" href="#how-it-all-works">How it all works</a></h2>
-<p>When you register an event type, Bevy will create an <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/event/struct.Events.html"><code>Events&lt;T&gt;</code></a>
+<p>When you register an event type, Bevy will create an <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/event/struct.Events.html"><code>Events&lt;T&gt;</code></a>
 <a href="/programming/res.html">resource</a>, which acts as the backing storage for the event queue. Bevy
-also adds an "event maintenance" <a href="/programming/systems.html">system</a> to clear events every
-frame, preventing them from accumulating and using up memory.</p>
-<p>The events storage is double-buffered, meaning that events stay for one extra
-frame after the frame when they were sent. This gives your systems a chance to
-read the events on the next frame, if they did not get a chance during the
-current frame.</p>
+also adds an "event maintenance" <a href="/programming/systems.html">system</a> to clear events periodically,
+preventing them from accumulating and using up memory.</p>
+<p>Bevy ensures that events are kept around for at least two frame update cycles,
+or two <a href="/fundamentals/fixed-timestep.html">fixed timestep</a> cycles, whichever is longer. After
+that, they are silently dropped. This gives your systems enough opportunity
+to handle them, assuming your systems are running all the time. Beware when
+adding <a href="/programming/run-criteria.html">run conditions</a> to your systems, as you might miss some events
+when your systems are not running!</p>
 <p>If you don't like this, <a href="/patterns/manual-event-clear.html">you can have manual control over when events are
 cleared</a> (at the risk of leaking / wasting memory if you
 forget to clear them).</p>
-<p>The <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/event/struct.EventWriter.html"><code>EventWriter&lt;T&gt;</code></a> system parameter is just syntax sugar
-for mutably accessing the <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/event/struct.Events.html"><code>Events&lt;T&gt;</code></a> <a href="/programming/res.html">resource</a> to
-add events to the queue. The <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/event/struct.EventReader.html"><code>EventReader&lt;T&gt;</code></a> is a little
+<p>The <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/event/struct.EventWriter.html"><code>EventWriter&lt;T&gt;</code></a> system parameter is just syntax sugar
+for mutably accessing the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/event/struct.Events.html"><code>Events&lt;T&gt;</code></a> <a href="/programming/res.html">resource</a> to
+add events to the queue. The <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/event/struct.EventReader.html"><code>EventReader&lt;T&gt;</code></a> is a little
 more complex: it accesses the events storage immutably, but also stores an
 integer counter to keep track of how many events you have read. This is why it
 also needs the <code>mut</code> keyword.</p>
 <h2 id="possible-pitfalls"><a class="header" href="#possible-pitfalls">Possible Pitfalls</a></h2>
-<p>Beware of frame delay / 1-frame-lag. This can occur if Bevy runs the receiving
-system before the sending system. The receiving system will only get a chance
-to receive the events on the next frame update. If you need to ensure that
-events are handled immediately / during the same frame, you can use <a href="/programming/system-order.html">explicit
+<p>Beware of frame delay / 1-frame-lag. This can occur if Bevy runs the
+receiving system before the sending system. The receiving system will only
+get a chance to receive the events the next time it runs. If you need to
+ensure that events are handled immediately / on time, you can use <a href="/programming/system-order.html">explicit
 system ordering</a>.</p>
-<p>Beware of lost events if you do not read events every frame, or at least once
-every other frame update. A common situation where this can occur is when
-using a <a href="/fundamentals/fixed-timestep.html">fixed timestep</a> or <a href="/programming/run-criteria.html">run conditions</a>.</p>
-<p>If you want events to persist for longer than two frames, you can <a href="/patterns/manual-event-clear.html">implement a
-custom cleanup/management strategy</a>. However, you can only do
-this for your own event types. There is no solution for Bevy's
+<p>If your systems have <a href="/programming/run-criteria.html">run conditions</a>, beware that they might miss
+some events when they are not running! If your system does not check for events
+at least once every other frame or <a href="/fundamentals/fixed-timestep.html">fixed timestep</a>, the
+events will be lost.</p>
+<p>If you want events to persist for longer than that, you can <a href="/patterns/manual-event-clear.html">implement a
+custom cleanup/management strategy</a>. However, you can
+only do this for your own event types. There is no solution for Bevy's
 <a href="/builtins.html#events">built-in</a> types.</p>
 
                     </main>

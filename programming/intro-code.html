@@ -179,7 +179,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-12">0.12</a></th><th>(outdated!)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="intro-your-code"><a class="header" href="#intro-your-code">Intro: Your Code</a></h1>
@@ -194,7 +194,7 @@ access to whatever parts of <a href="/programming/intro-data.html">your data</a>
 is a Rust function (<code>fn</code>) you write, which accepts <a href="/builtins.html#systemparams">special parameter
 types</a> to indicate what <a href="/programming/intro-data.html">data</a> it needs to
 access. Think of the function signature as a "specification" for what to fetch
-from the ECS <a href="https://docs.rs/bevy/0.12.0/bevy/ecs/world/struct.World.html"><code>World</code></a>.</p>
+from the ECS <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>World</code></a>.</p>
 <p>Here is what a <a href="/programming/systems.html">system</a> might look like. Note how, just by looking
 at the function parameters, we know <em>exactly</em> what <a href="/programming/intro-data.html">data</a>
 can be accessed.</p>
@@ -218,12 +218,12 @@ with any other systems.  Systems that do not conflict (don't access any of the
 same data mutably) will be automatically <a href="/programming/system-order.html">run in parallel</a>
 on different CPU threads. This way, you get multithreading, utilizing modern
 multi-core CPU hardware effectively, with no extra effort from you!</p>
-<p>For best parallelism performance, it is recommended that you keep your
-functionality and <a href="/programming/intro-data.html">your data</a> granular. Create many small
-systems, each one with a narrowly-scoped purpose and accessing only the data it
-needs. This gives Bevy more opportunities for parallelism. Putting too much
-functionality in one system, or too much data in a single
-<a href="/programming/ec.html#components">component</a> or <a href="/programming/res.html">resource</a> <code>struct</code>, limits parallelism.</p>
+<p>For best parallelism, it is recommended that you keep your functionality and
+<a href="/programming/intro-data.html">your data</a> granular. Split up your systems, so each
+one has a narrowly-scoped purpose and access to only the data it needs. This
+gives Bevy more opportunities for parallelism. Putting too much functionality
+in one system, or too much data in a single <a href="/programming/ec.html#components">component</a> or
+<a href="/programming/res.html">resource</a> <code>struct</code>, limits parallelism.</p>
 <p>Bevy's parallelism is non-deterministic by default. Your systems might run in a
 different and unpredictable order relative to one another, unless you add
 <a href="/programming/system-order.html">ordering</a> dependencies to constrain it.</p>
@@ -240,7 +240,7 @@ you might need this additonal power.</p>
 }</code></pre>
 <h2 id="schedules"><a class="header" href="#schedules">Schedules</a></h2>
 <p>Bevy stores systems inside of <a href="/programming/schedules.html">schedules</a>
-(<a href="https://docs.rs/bevy/0.12.0/bevy/ecs/schedule/struct.Schedule.html"><code>Schedule</code></a>). The schedule contains the systems and all
+(<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.Schedule.html"><code>Schedule</code></a>). The schedule contains the systems and all
 relevant metadata to organize them, telling Bevy when and how to run them. Bevy
 <a href="/programming/app-builder.html">Apps</a> typically contain many schedules. Each one is a collection of
 systems to be invoked in different scenarios (every frame update, <a href="/fundamentals/fixed-timestep.html">fixed
