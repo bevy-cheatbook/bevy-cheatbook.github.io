@@ -253,13 +253,12 @@ you can use one of the following to ensure you don't miss them:</p>
     ));
 }</code></pre>
 <h3 id="transform"><a class="header" href="#transform"><code>Transform</code></a></h3>
-<p><a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> is what you typically work with. It is
-a <code>struct</code> containing the translation, rotation, and scale. To read or
-manipulate these values, access it from your <a href="/programming/systems.html">systems</a> using a
-<a href="/programming/queries.html">query</a>.</p>
-<p>If the entity has a <a href="/fundamentals/hierarchy.html">parent</a>, the <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>
-component is relative to the parent. This means that the child object will
-move/rotate/scale along with the parent.</p>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> is what you typically work with. It is a <code>struct</code> containing the
+translation, rotation, and scale. To read or manipulate these values, access it
+from your <a href="/programming/systems.html">systems</a> using a <a href="/programming/queries.html">query</a>.</p>
+<p>If the entity has a <a href="/fundamentals/hierarchy.html">parent</a>, the <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> component is
+relative to the parent. This means that the child object will move/rotate/scale
+along with the parent.</p>
 <pre><code class="language-rust no_run noplayground">fn inflate_balloons(
     mut query: Query&lt;&amp;mut Transform, With&lt;Balloon&gt;&gt;,
     keyboard: Res&lt;ButtonInput&lt;KeyCode&gt;&gt;,
@@ -286,19 +285,18 @@ fn throwable_fly(
     }
 }</code></pre>
 <h3 id="globaltransform"><a class="header" href="#globaltransform"><code>GlobalTransform</code></a></h3>
-<p><a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> represents the absolute global
-position in the world.</p>
-<p>If the entity does not have a <a href="/fundamentals/hierarchy.html">parent</a>, then this will match
-the <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>.</p>
-<p>The value of <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> is calculated/managed
-internally by Bevy (<a href="#transform-propagation">"transform propagation"</a>).</p>
-<p>Unlike <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>, the translation/rotation/scale are not
-accessible directly. The data is stored in an optimized way (using <code>Affine3A</code>)
-and it is possible to have complex transformations in a hierarchy that cannot
-be represented as a simple transform. For example, a combination of rotation
-and scale across multiple parents, resulting in shearing.</p>
-<p>If you want to try to convert a <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> back
-into a workable translation/rotation/scale representation, you can try the methods:</p>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> represents the absolute global position in the world.</p>
+<p>If the entity does not have a <a href="/fundamentals/hierarchy.html">parent</a>, then this will match the
+<a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>.</p>
+<p>The value of <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> is calculated/managed internally by Bevy
+(<a href="#transform-propagation">"transform propagation"</a>).</p>
+<p>Unlike <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>, the translation/rotation/scale are not accessible
+directly. The data is stored in an optimized way (using <a href="https://docs.rs/bevy/0.13.0/bevy/math/struct.Affine3A.html"><code>Affine3A</code></a>) and it is
+possible to have complex transformations in a hierarchy that cannot be
+represented as a simple transform. For example, a combination of rotation and
+scale across multiple parents, resulting in shearing.</p>
+<p>If you want to try to convert a <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> back into a workable
+translation/rotation/scale representation, you can try the methods:</p>
 <ul>
 <li><code>.translation()</code></li>
 <li><code>.to_scale_rotation_translation()</code> (may be invalid)</li>
@@ -306,16 +304,13 @@ into a workable translation/rotation/scale representation, you can try the metho
 </ul>
 <h2 id="transform-propagation"><a class="header" href="#transform-propagation">Transform Propagation</a></h2>
 <p>The two components are synchronized by a bevy-internal system (the "transform
-propagation system"), which runs in the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a>
-<a href="/programming/schedules.html">schedule</a>.</p>
-<p>Beware: When you mutate the <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>, the
-<a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> is not updated immediately. They
-will be out-of-sync until the transform propagation system runs.</p>
-<p>If you need to work with <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a>
-directly, you should <a href="/programming/app-builder.html">add</a> your
-<a href="/programming/systems.html">system</a> to the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a>
-<a href="/programming/schedules.html">schedule</a> and <a href="/programming/system-order.html">order it after</a>
-<a href="https://docs.rs/bevy/0.13.0/bevy/transform/enum.TransformSystem.html"><code>TransformSystem::TransformPropagate</code></a>.</p>
+propagation system"), which runs in the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a> <a href="/programming/schedules.html">schedule</a>.</p>
+<p>Beware: When you mutate the <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>, the <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> is not
+updated immediately. They will be out-of-sync until the transform propagation
+system runs.</p>
+<p>If you need to work with <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> directly, you should <a href="/programming/app-builder.html">add</a>
+your <a href="/programming/systems.html">system</a> to the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a> <a href="/programming/schedules.html">schedule</a> and
+<a href="/programming/system-order.html">order it after</a> <a href="https://docs.rs/bevy/0.13.0/bevy/transform/enum.TransformSystem.html"><code>TransformSystem::TransformPropagate</code></a>.</p>
 <pre><code class="language-rust no_run noplayground">/// Print the up-to-date global coordinates of the player
 fn debug_globaltransform(
     query: Query&lt;&amp;GlobalTransform, With&lt;Player&gt;&gt;,
@@ -333,17 +328,16 @@ app.add_systems(PostUpdate,
         .after(TransformSystem::TransformPropagate)
 );</code></pre>
 <h2 id="transformhelper"><a class="header" href="#transformhelper"><code>TransformHelper</code></a></h2>
-<p>If you need to get an up-to-date <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a>
-in a <a href="/programming/systems.html">system</a> that has to run before transform propagation,
-you can use the special <a href="https://docs.rs/bevy/0.13.0/bevy/transform/helper/struct.TransformHelper.html"><code>TransformHelper</code></a> system parameter.</p>
-<p>It allows you to compute a specific entity's
-<a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> immediately, on demand.</p>
-<p>An example of where this could be useful might be a system to make
-a camera follow an entity on-screen. You need to update the camera's
-<a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> (which means you have to do it before Bevy's
-transform propagation, so it can account for the camera's new transform),
-but you also need to know the current up-to-date position of the entity you
-are following.</p>
+<p>If you need to get an up-to-date <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> in a <a href="/programming/systems.html">system</a>
+that has to run before transform propagation, you can use the special
+<a href="https://docs.rs/bevy/0.13.0/bevy/transform/helper/struct.TransformHelper.html"><code>TransformHelper</code></a> system parameter.</p>
+<p>It allows you to compute a specific entity's <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> immediately, on
+demand.</p>
+<p>An example of where this could be useful might be a system to make a camera
+follow an entity on-screen. You need to update the camera's <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> (which
+means you have to do it before Bevy's transform propagation, so it can account
+for the camera's new transform), but you also need to know the current
+up-to-date position of the entity you are following.</p>
 <pre><code class="language-rust no_run noplayground">fn camera_look_follow(
     q_target: Query&lt;Entity, With&lt;MySpecialMarker&gt;&gt;,
     mut transform_params: ParamSet&lt;(
@@ -361,19 +355,17 @@ are following.</p>
     // get camera transform and make it look at the global translation
     transform_params.p1().single_mut().look_at(global.translation(), Vec3::Y);
 }</code></pre>
-<p>Internally, <a href="https://docs.rs/bevy/0.13.0/bevy/transform/helper/struct.TransformHelper.html"><code>TransformHelper</code></a> behaves like two
-read-only <a href="/programming/queries.html">queries</a>. It needs access to the <a href="https://docs.rs/bevy/0.13.0/bevy/hierarchy/struct.Parent.html"><code>Parent</code></a>
-and <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> components to do its job. It would
-conflict with our other <code>&amp;mut Transform</code> query. That's why we have to use a
-<a href="/programming/paramset.html">param set</a> in the example above.</p>
-<p>Note: if you over-use <a href="https://docs.rs/bevy/0.13.0/bevy/transform/helper/struct.TransformHelper.html"><code>TransformHelper</code></a>, it
-could become a performance issue. It calculates the global transform
-for you, but it does not update the data stored in the entity's
-<a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a>. Bevy will still do the same
+<p>Internally, <a href="https://docs.rs/bevy/0.13.0/bevy/transform/helper/struct.TransformHelper.html"><code>TransformHelper</code></a> behaves like two read-only <a href="/programming/queries.html">queries</a>.
+It needs access to the <a href="https://docs.rs/bevy/0.13.0/bevy/hierarchy/struct.Parent.html"><code>Parent</code></a> and <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> components to do its job. It
+would conflict with our other <code>&amp;mut Transform</code> query. That's why we have to use
+a <a href="/programming/paramset.html">param set</a> in the example above.</p>
+<p>Note: if you over-use <a href="https://docs.rs/bevy/0.13.0/bevy/transform/helper/struct.TransformHelper.html"><code>TransformHelper</code></a>, it could become a performance issue.
+It calculates the global transform for you, but it does not update the data
+stored in the entity's <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a>. Bevy will still do the same
 computation again later, during transform propagation. It leads to repetitive
-work. If your system can run after transform propagation, so it can just
-read the value after Bevy updates it, you should prefer to do that instead
-of using <a href="https://docs.rs/bevy/0.13.0/bevy/transform/helper/struct.TransformHelper.html"><code>TransformHelper</code></a>.</p>
+work. If your system can run after transform propagation, so it can just read
+the value after Bevy updates it, you should prefer to do that instead of using
+<a href="https://docs.rs/bevy/0.13.0/bevy/transform/helper/struct.TransformHelper.html"><code>TransformHelper</code></a>.</p>
 
                     </main>
 

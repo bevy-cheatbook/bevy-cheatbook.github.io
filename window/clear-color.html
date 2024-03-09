@@ -186,9 +186,9 @@
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.13.0/examples/window/clear_color.rs"><code>clear_color</code></a>.</p>
 <hr />
-<p>Use the <a href="https://docs.rs/bevy/0.13.0/bevy/render/camera/struct.ClearColor.html"><code>ClearColor</code></a> <a href="/programming/res.html">resource</a> to choose the
-default background color. This color will be used as the default for all
-<a href="/graphics/camera.html">cameras</a>, unless overriden.</p>
+<p>Use the <a href="https://docs.rs/bevy/0.13.0/bevy/render/camera/struct.ClearColor.html"><code>ClearColor</code></a> <a href="/programming/res.html">resource</a> to choose the default background
+color. This color will be used as the default for all <a href="/graphics/camera.html">cameras</a>,
+unless overriden.</p>
 <p>Note that the window will be black if no cameras exist. You must spawn at
 least one camera.</p>
 <pre><code class="language-rust no_run noplayground">fn setup(
@@ -206,8 +206,8 @@ fn main() {
         .add_systems(Startup, setup)
         .run();
 }</code></pre>
-<p>To override the default and use a different color for a specific camera,
-you can set it using the <a href="https://docs.rs/bevy/0.13.0/bevy/render/camera/struct.Camera.html"><code>Camera</code></a> <a href="/programming/ec.html#components">component</a>.</p>
+<p>To override the default and use a different color for a specific camera, you can
+set it using the <a href="https://docs.rs/bevy/0.13.0/bevy/render/camera/struct.Camera.html"><code>Camera</code></a> <a href="/programming/ec.html#components">component</a>.</p>
 <pre><code class="language-rust no_run noplayground">use bevy::render::camera::ClearColorConfig;
 
 // configure the background color (if any), for a specific camera (3D)
@@ -230,11 +230,10 @@ commands.spawn(Camera2dBundle {
     },
     ..Default::default()
 });</code></pre>
-<p>All of these locations (the components on specific cameras, the global
-default resource) can be mutated at runtime, and bevy will use your new color.
-Changing the default color using the resource will apply the new color to all
-existing cameras that do not specify a custom color, not just newly-spawned
-cameras.</p>
+<p>All of these locations (the components on specific cameras, the global default
+resource) can be mutated at runtime, and bevy will use your new color. Changing
+the default color using the resource will apply the new color to all existing
+cameras that do not specify a custom color, not just newly-spawned cameras.</p>
 
                     </main>
 

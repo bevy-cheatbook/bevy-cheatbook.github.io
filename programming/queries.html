@@ -239,9 +239,8 @@ fn query_entities(q: Query&lt;(Entity, /* ... */)&gt;) {
 }</code></pre>
 <p>If you know that the query is expected to only ever match a single entity, you
 can use <code>single</code>/<code>single_mut</code> (panic on error) or <code>get_single</code>/<code>get_single_mut</code>
-(return <a href="https://doc.rust-lang.org/stable/std/result/enum.Result.html"><code>Result</code></a>). These methods ensure that there exists exactly
-one candidate entity that can match your query, and will produce an error
-otherwise.</p>
+(return <a href="https://doc.rust-lang.org/stable/std/result/enum.Result.html"><code>Result</code></a>). These methods ensure that there exists exactly one
+candidate entity that can match your query, and will produce an error otherwise.</p>
 <pre><code class="language-rust no_run noplayground">fn query_player(mut q: Query&lt;(&amp;Player, &amp;mut Transform)&gt;) {
     let (player, mut transform) = q.single_mut();
 

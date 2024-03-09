@@ -277,16 +277,15 @@ Helper for generic system abstractions, to avoid lifetime annotations</li>
 </ul>
 <p>In <a href="/programming/exclusive.html">exclusive systems</a>:</p>
 <ul>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/world/struct.World.html"><code>&amp;mut World</code></a>:
+<li>[<code>&amp;mut World</code>]:
 Full <a href="/programming/world.html">direct access to the ECS World</a></li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a>:
+<li>[<code>Local&lt;T&gt;</code>]:
 Data <a href="/programming/local.html">local</a> to the system</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.SystemState.html"><code>&amp;mut SystemState&lt;P&gt;</code></a>:
+<li>[<code>&amp;mut SystemState&lt;P&gt;</code>][<code>SystemState</code>]:
 Emulates a regular system, allowing you to easily access data from the World.
 <code>P</code> are the system parameters.</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/query/struct.QueryState.html"><code>&amp;mut QueryState&lt;Q, F = ()&gt;</code></a>:
-Allows you to perform queries on the World, similar to a <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.Query.html"><code>Query</code></a>
-in regular systems.</li>
+<li>[<code>&amp;mut QueryState&lt;Q, F = ()&gt;</code>][<code>QueryState</code>]:
+Allows you to perform queries on the World, similar to a [<code>Query</code>] in regular systems.</li>
 </ul>
 <p>Your function can have a maximum of 16 total parameters. If you need more,
 group them into tuples to work around the limit. Tuples can contain up to

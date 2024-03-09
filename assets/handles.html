@@ -217,8 +217,8 @@ even if you are still holding some weak handles.</p>
 <p>Bevy also has a <a href="https://docs.rs/bevy/0.9.1/bevy/asset/struct.HandleUntyped.html"><code>HandleUntyped</code></a> type. Use this type
 of handle if you need to be able to refer to any asset, regardless of the
 asset type.</p>
-<p>This allows you to store a collection (such as <a href="https://doc.rust-lang.org/stable/std/vec/struct.Vec.html"><code>Vec</code></a> or
-<a href="https://doc.rust-lang.org/stable/std/collections/struct.HashMap.html"><code>HashMap</code></a>) containing assets of mixed types.</p>
+<p>This allows you to store a collection (such as <a href="https://doc.rust-lang.org/stable/std/vec/struct.Vec.html"><code>Vec</code></a> or <a href="https://doc.rust-lang.org/stable/std/collections/struct.HashMap.html"><code>HashMap</code></a>)
+containing assets of mixed types.</p>
 <p>You can create an untyped handle using <code>.clone_untyped()</code> on an existing
 handle.</p>
 <p>Just like regular handles, untyped handles can be strong or weak.</p>

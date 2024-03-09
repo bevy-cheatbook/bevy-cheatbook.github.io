@@ -241,11 +241,11 @@ you can use one of the following to ensure you don't miss them:</p>
     ));
 }</code></pre>
 <p>If you don't do this correctly (say, you manually add just the <code>Visibility</code>
-component and forget the others, because you don't use a bundle), your
-entities will not render!</p>
+component and forget the others, because you don't use a bundle), your entities
+will not render!</p>
 <h3 id="visibility-1"><a class="header" href="#visibility-1"><code>Visibility</code></a></h3>
-<p><a href="https://docs.rs/bevy/0.13.0/bevy/render/view/enum.Visibility.html"><code>Visibility</code></a> is the "user-facing toggle". This is where
-you specify what you want for the current entity:</p>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/render/view/enum.Visibility.html"><code>Visibility</code></a> is the "user-facing toggle". This is where you specify what you
+want for the current entity:</p>
 <ul>
 <li><code>Inherited</code> (default): show/hide depending on <a href="/fundamentals/hierarchy.html">parent</a></li>
 <li><code>Visible</code>: always show the entity, regardless of parent</li>
@@ -257,13 +257,12 @@ or <code>Hidden</code>.</p>
 <p>If an entity has a parent, but the parent entity is missing the
 visibility-related components, things will behave as if there was no parent.</p>
 <h3 id="inheritedvisibility"><a class="header" href="#inheritedvisibility"><code>InheritedVisibility</code></a></h3>
-<p><a href="https://docs.rs/bevy/0.13.0/bevy/render/view/struct.InheritedVisibility.html"><code>InheritedVisibility</code></a> represents the state the
-current entity would have based on its <a href="/fundamentals/hierarchy.html">parent</a>'s visibility.</p>
-<p>The value of <a href="https://docs.rs/bevy/0.13.0/bevy/render/view/struct.InheritedVisibility.html"><code>InheritedVisibility</code></a> should
-be considered read-only. It is managed internally by Bevy, in a manner
-similar to <a href="/fundamentals/transforms.html#transform-propagation">transform propagation</a>. A "visibility
-propagation" <a href="/programming/systems.html">system</a> runs in the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a>
-<a href="/programming/schedules.html">schedule</a>.</p>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/render/view/struct.InheritedVisibility.html"><code>InheritedVisibility</code></a> represents the state the current entity would have based
+on its <a href="/fundamentals/hierarchy.html">parent</a>'s visibility.</p>
+<p>The value of <a href="https://docs.rs/bevy/0.13.0/bevy/render/view/struct.InheritedVisibility.html"><code>InheritedVisibility</code></a> should be considered read-only. It is
+managed internally by Bevy, in a manner similar to <a href="/fundamentals/transforms.html#transform-propagation">transform
+propagation</a>. A "visibility propagation"
+<a href="/programming/systems.html">system</a> runs in the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a> <a href="/programming/schedules.html">schedule</a>.</p>
 <p>If you want to read the up-to-date value for the current frame, you should
 <a href="/programming/app-builder.html">add</a> your <a href="/programming/systems.html">system</a> to the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a>
 <a href="/programming/schedules.html">schedule</a> and <a href="/programming/system-order.html">order it after</a>
@@ -284,10 +283,9 @@ app.add_systems(PostUpdate,
         .after(VisibilitySystems::VisibilityPropagate)
 );</code></pre>
 <h3 id="viewvisibility"><a class="header" href="#viewvisibility"><code>ViewVisibility</code></a></h3>
-<p><a href="https://docs.rs/bevy/0.13.0/bevy/render/view/struct.ViewVisibility.html"><code>ViewVisibility</code></a> represents the actual final
-decision made by Bevy about whether this entity needs to be rendered.</p>
-<p>The value of <a href="https://docs.rs/bevy/0.13.0/bevy/render/view/struct.ViewVisibility.html"><code>ViewVisibility</code></a> is read-only. It
-is managed internally by Bevy.</p>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/render/view/struct.ViewVisibility.html"><code>ViewVisibility</code></a> represents the actual final decision made by Bevy about
+whether this entity needs to be rendered.</p>
+<p>The value of <a href="https://docs.rs/bevy/0.13.0/bevy/render/view/struct.ViewVisibility.html"><code>ViewVisibility</code></a> is read-only. It is managed internally by Bevy.</p>
 <p>It is used for "culling": if the entity is not in the range of
 any Camera or Light, it does not need to be rendered, so Bevy will hide it
 to improve performance.</p>

@@ -245,10 +245,10 @@ cases, you should use regular parallel systems.</p>
 common mistake! If you run your project and your new code doesn't seem to be
 running, make sure you added the system!</p>
 <p>The above is enough for simple projects.</p>
-<p>Systems are contained in <a href="/programming/schedules.html">schedules</a>. <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a> is the
-schedule where you typically add any systems you want to run every frame.
-<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Startup.html"><code>Startup</code></a> is where you typically add systems that should run
-only once on app startup. There are also <a href="/builtins.html#schedules">other possibilities</a>.</p>
+<p>Systems are contained in <a href="/programming/schedules.html">schedules</a>. <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a> is the schedule
+where you typically add any systems you want to run every frame. <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Startup.html"><code>Startup</code></a> is
+where you typically add systems that should run only once on app startup. There
+are also <a href="/builtins.html#schedules">other possibilities</a>.</p>
 <p>As your project grows more complex, you might want to make use of some of the
 powerful tools that Bevy offers for managing when/how your systems run, such as:
 <a href="/programming/system-order.html">explicit ordering</a>, <a href="/programming/run-criteria.html">run conditions</a>, <a href="/programming/system-sets.html">system

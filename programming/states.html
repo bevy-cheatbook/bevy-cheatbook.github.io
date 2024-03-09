@@ -391,19 +391,17 @@ the transition for you.</p>
 <li>The <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.OnTransition.html"><code>OnTransition { from: old_state, to: new_state }</code></a> <a href="/programming/schedules.html">schedule</a> is run.</li>
 <li>The <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.OnEnter.html"><code>OnEnter(new_state)</code></a> <a href="/programming/schedules.html">schedule</a> is run.</li>
 </ul>
-<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.StateTransitionEvent.html"><code>StateTransitionEvent</code></a> is useful in any
-<a href="/programming/systems.html">systems</a> that run regardless of state, but want to know if a
-transition has occurred. You can use it to detect state transitions.</p>
-<p>The <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.StateTransition.html"><code>StateTransition</code></a> <a href="/programming/schedules.html">schedule</a> runs
-after <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PreUpdate.html"><code>PreUpdate</code></a> (which contains Bevy engine internals),
-but before <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedMain.html"><code>FixedMain</code></a> (<a href="/fundamentals/fixed-timestep.html">fixed timestep</a>)
-and <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a>, where your game's <a href="/programming/systems.html">systems</a>
-usually live.</p>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.StateTransitionEvent.html"><code>StateTransitionEvent</code></a> is useful in any <a href="/programming/systems.html">systems</a> that run
+regardless of state, but want to know if a transition has occurred. You can use
+it to detect state transitions.</p>
+<p>The <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.StateTransition.html"><code>StateTransition</code></a> <a href="/programming/schedules.html">schedule</a> runs after <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PreUpdate.html"><code>PreUpdate</code></a> (which
+contains Bevy engine internals), but before <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedMain.html"><code>FixedMain</code></a> (<a href="/fundamentals/fixed-timestep.html">fixed
+timestep</a>) and <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a>, where your game's
+<a href="/programming/systems.html">systems</a> usually live.</p>
 <p>Therefore, state transitions happen before your game logic for the current frame.</p>
-<p>If doing state transitions once per frame is not enough for
-you, you can add additional transition points, by adding Bevy's
-<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/fn.apply_state_transition.html"><code>apply_state_transition</code></a> <a href="/programming/systems.html">system</a>
-wherever you like.</p>
+<p>If doing state transitions once per frame is not enough for you, you can add
+additional transition points, by adding Bevy's <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/fn.apply_state_transition.html"><code>apply_state_transition</code></a>
+<a href="/programming/systems.html">system</a> wherever you like.</p>
 <pre><code class="language-rust no_run noplayground">// Example: also do state transitions for MyPausedState
 // before MyGameplaySet on each fixed timestep run
 app.add_systems(
@@ -413,15 +411,13 @@ app.add_systems(
 );</code></pre>
 <h2 id="known-pitfalls"><a class="header" href="#known-pitfalls">Known Pitfalls</a></h2>
 <h3 id="system-set-configuration-is-per-schedule"><a class="header" href="#system-set-configuration-is-per-schedule">System set configuration is per-schedule!</a></h3>
-<p>This is the same general caveat that applies any time you configure [system sets][cb::set].</p>
+<p>This is the same general caveat that applies any time you configure <a href="/programming/system-sets.html">system sets</a>.</p>
 <p>Note that <code>app.configure_sets()</code> is <em>per-<a href="/programming/schedules.html">schedule</a>!</em> If you configure some sets
 in one <a href="/programming/schedules.html">schedule</a>, that configuration does not carry over to other schedules.</p>
 <p>Because states are so schedule-heavy, you have to be especially careful. Don't assume
 that just because you configured a set, you can use it anywhere.</p>
-<p>For example, your sets from <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a>
-and <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a> will not work in
-<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.OnEnter.html"><code>OnEnter</code></a>/<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.OnExit.html"><code>OnExit</code></a> for your various state
-transitions.</p>
+<p>For example, your sets from <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a> and <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a> will not work in
+<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.OnEnter.html"><code>OnEnter</code></a>/<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.OnExit.html"><code>OnExit</code></a> for your various state transitions.</p>
 <h3 id="events"><a class="header" href="#events">Events</a></h3>
 <p>This is the same general caveat that applies to any <a href="/programming/systems.html">systems</a> with
 <a href="/programming/run-criteria.html">run conditions</a> that want to receive <a href="/programming/events.html">events</a>.</p>

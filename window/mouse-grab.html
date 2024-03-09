@@ -188,6 +188,15 @@
 <hr />
 <p>For some genres of games, you want to the mouse to be restricted to the window,
 to prevent it from leaving the window during gameplay.</p>
+<p>There are two variations on this behavior (<a href="https://docs.rs/bevy/0.13.0/bevy/window/enum.CursorGrabMode.html"><code>CursorGrabMode</code></a>):</p>
+<ul>
+<li><code>Confined</code> allows the cursor to be moved, but only within the bounds of the window.</li>
+<li><code>Locked</code> fixes the cursor in place and does not allow it to move.
+<ul>
+<li>Relative <a href="/input/mouse.html#mouse-motion">mouse motion</a> <a href="/programming/events.html">events</a> still work.</li>
+</ul>
+</li>
+</ul>
 <p>To grab the cursor:</p>
 <pre><code class="language-rust no_run noplayground">use bevy::window::{CursorGrabMode, PrimaryWindow};
 

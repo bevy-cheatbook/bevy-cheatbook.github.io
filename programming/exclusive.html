@@ -185,7 +185,7 @@
 <h1 id="exclusive-systems"><a class="header" href="#exclusive-systems">Exclusive Systems</a></h1>
 <p>Exclusive systems are <a href="/programming/systems.html">systems</a> that Bevy will not run in parallel
 with any other system. They can have <a href="/programming/world.html">full unrestricted access</a>
-to the whole ECS <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>World</code></a>, by taking a <code>&amp;mut World</code> parameter.</p>
+to the whole ECS <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>World</code></a>, by taking a <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>&amp;mut World</code></a> parameter.</p>
 <p>Inside of an exclusive system, you have full control over all data stored
 in the ECS. You can do whatever you want.</p>
 <p>Some example situations where exclusive systems are useful:</p>
@@ -193,7 +193,7 @@ in the ECS. You can do whatever you want.</p>
 <li>Dump various entities and components to a file, to implement things like
 saving and loading of game save files, or scene export from an editor</li>
 <li>Directly spawn/despawn <a href="/programming/intro-data.html#entities--components">entities</a>, or insert/remove <a href="/programming/res.html">resources</a>,
-immediately with no delay (unlike when using <a href="/programming/commands.html"><code>Commands</code></a>
+immediately with no delay (unlike when using <a href="/programming/commands.html">Commands</a>
 from a regular system)</li>
 <li>Run arbitrary <a href="/programming/systems.html">systems</a> and <a href="/programming/schedules.html">schedules</a> with your
 own custom control flow logic</li>
@@ -215,7 +215,7 @@ as with regular systems.</p>
         .before(other_things)
 );</code></pre>
 <h2 id="exclusive-system-parameters"><a class="header" href="#exclusive-system-parameters">Exclusive System Parameters</a></h2>
-<p>There are a few other things, besides <code>&amp;mut World</code>, that can be used as
+<p>There are a few other things, besides <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>&amp;mut World</code></a>, that can be used as
 parameters for exclusive systems:</p>
 <ul>
 <li><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>&amp;mut World</code></a>:
@@ -226,16 +226,15 @@ Data <a href="/programming/local.html">local</a> to the system</li>
 Emulates a regular system, allowing you to easily access data from the World.
 <code>P</code> are the system parameters.</li>
 <li><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/query/struct.QueryState.html"><code>&amp;mut QueryState&lt;Q, F = ()&gt;</code></a>:
-Allows you to perform queries on the World, similar to a <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Query.html"><code>Query</code></a>
-in regular systems.</li>
+Allows you to perform queries on the World, similar to a <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Query.html"><code>Query</code></a> in regular systems.</li>
 </ul>
-<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.SystemState.html"><code>SystemState</code></a> can be used to emulate a normal system.
-You can put regular system parameters inside. This allows you to access the
-<code>World</code> as you would from a normal system, but you can confine it to a
-specific scope inside your function body, making it more flexible.</p>
-<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/query/struct.QueryState.html"><code>QueryState</code></a> is the same thing, but for a single query.
-It is a simpler alternative to <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.SystemState.html"><code>SystemState</code></a> for when
-you just need to be able to query for some data.</p>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.SystemState.html"><code>SystemState</code></a> can be used to emulate a normal system.  You can put regular
+system parameters inside. This allows you to access the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>World</code></a> as you would
+from a normal system, but you can confine it to a specific scope inside your
+function body, making it more flexible.</p>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/query/struct.QueryState.html"><code>QueryState</code></a> is the same thing, but for a single query.  It is a simpler
+alternative to <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.SystemState.html"><code>SystemState</code></a> for when you just need to be able to query for
+some data.</p>
 <pre><code class="language-rust no_run noplayground">use bevy::ecs::system::SystemState;
 
 fn spawn_particles_for_enemies(
@@ -289,10 +288,9 @@ introduce a performance bottleneck.</p>
 to do something that is only possible with them.</p>
 <p>On the other hand, they can have less overhead (by avoiding
 <a href="/programming/commands.html">Commands</a>), and so can be faster for some use cases.</p>
-<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a> has a lot of overhead, as it needs to store your
-data in a queue and then process / copy it into the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>World</code></a>
-later. Directly spawning entities into the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>World</code></a> is much
-more efficient.</p>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a> has a lot of overhead, as it needs to store your data in a queue
+and then process / copy it into the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>World</code></a> later. Directly spawning entities
+into the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>World</code></a> is much more efficient.</p>
 <p>Some examples for when exclusive systems can be faster:</p>
 <ul>
 <li>You want to spawn/despawn a ton of entities.

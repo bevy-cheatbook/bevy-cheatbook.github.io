@@ -219,19 +219,17 @@ let thing = thing.into_inner();</code></pre>
 you don't modify the data afterwards, the component gets marked as changed.</p>
 <h2 id="explanation"><a class="header" href="#explanation">Explanation</a></h2>
 <p>Bevy typically gives you access to your data via special wrapper types (like
-<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Res.html"><code>Res&lt;T&gt;</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a>, and <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.Mut.html"><code>Mut&lt;T&gt;</code></a>
-(when <a href="/programming/queries.html">querying</a> for components mutably)). This lets Bevy track
-access to the data.</p>
-<p>These are "smart pointer" types that use the Rust <a href="https://doc.rust-lang.org/stable/std/ops/trait.Deref.html"><code>Deref</code></a>
-trait to dereference to your data. They usually work seamlessly and you
-don't even notice them.</p>
-<p>However, in a sense, they are opaque to the compiler. The Rust language
-allows fields of a struct to be borrowed individually, when you have direct
-access to the struct, but this does not work when it is wrapped in another type.</p>
-<p>The "reborrow" trick shown above, effectively converts the wrapper
-into a regular Rust reference. <code>*thing</code> dereferences the wrapper via
-<a href="https://doc.rust-lang.org/stable/std/ops/trait.DerefMut.html"><code>DerefMut</code></a>, and then <code>&amp;mut</code> borrows it mutably. You now have
-<code>&amp;mut MyStuff</code> instead of <code>Mut&lt;MyStuff&gt;</code>.</p>
+<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Res.html"><code>Res&lt;T&gt;</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a>, and <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.Mut.html"><code>Mut&lt;T&gt;</code></a> (when <a href="/programming/queries.html">querying</a> for
+components mutably)). This lets Bevy track access to the data.</p>
+<p>These are "smart pointer" types that use the Rust <a href="https://doc.rust-lang.org/stable/std/ops/trait.Deref.html"><code>Deref</code></a> trait to dereference
+to your data. They usually work seamlessly and you don't even notice them.</p>
+<p>However, in a sense, they are opaque to the compiler. The Rust language allows
+fields of a struct to be borrowed individually, when you have direct access to
+the struct, but this does not work when it is wrapped in another type.</p>
+<p>The "reborrow" trick shown above, effectively converts the wrapper into a
+regular Rust reference. <code>*thing</code> dereferences the wrapper via <a href="https://doc.rust-lang.org/stable/std/ops/trait.DerefMut.html"><code>DerefMut</code></a>, and
+then <code>&amp;mut</code> borrows it mutably. You now have <code>&amp;mut MyStuff</code> instead of
+<code>Mut&lt;MyStuff&gt;</code>.</p>
 
                     </main>
 

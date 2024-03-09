@@ -388,9 +388,8 @@ fn detect_removals(
 <a href="/programming/commands.html"><code>Commands::entity()</code></a> or <a href="/programming/queries.html"><code>Query::get()</code></a>.)</p>
 <h2 id="resources-1"><a class="header" href="#resources-1">Resources</a></h2>
 <p>Bevy does not provide any API for detecting when <a href="/programming/res.html">resources</a> are removed.</p>
-<p>You can work around this using <a href="https://doc.rust-lang.org/stable/std/option/enum.Option.html"><code>Option</code></a> and a separate
-<a href="/programming/local.html"><code>Local</code></a> system parameter, effectively implementing your own
-detection.</p>
+<p>You can work around this using <a href="https://doc.rust-lang.org/stable/std/option/enum.Option.html"><code>Option</code></a> and a separate <a href="/programming/local.html"><code>Local</code></a>
+system parameter, effectively implementing your own detection.</p>
 <pre><code class="language-rust no_run noplayground">fn detect_removed_res(
     my_res: Option&lt;Res&lt;MyResource&gt;&gt;,
     mut my_res_existed: Local&lt;bool&gt;,

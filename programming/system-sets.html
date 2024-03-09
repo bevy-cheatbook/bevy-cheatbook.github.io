@@ -300,9 +300,9 @@ initializes the sets in each schedule), but will not work correctly, as they
 will not have any of your configurations.</p>
 <p>Some common scenarios where this can occur:</p>
 <ul>
-<li>You configure your set in <code>Update</code> and try to also use it in <code>FixedUpdate</code>, or vice versa.</li>
-<li>You try to use your sets in the <code>OnEnter</code>/<code>OnExit</code> schedules of various <a href="/programming/states.html">app states</a>.</li>
-<li>You add a system to <code>PostUpdate</code> or <code>PreUpdate</code>.</li>
+<li>You configure your set in <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a> and try to also use it in <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a>, or vice versa.</li>
+<li>You try to use your sets in the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.OnEnter.html"><code>OnEnter</code></a>/<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.OnExit.html"><code>OnExit</code></a> schedules of various <a href="/programming/states.html">app states</a>.</li>
+<li>You add a system to <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a> or <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PreUpdate.html"><code>PreUpdate</code></a>.</li>
 </ul>
 
                     </main>

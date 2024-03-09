@@ -206,7 +206,8 @@ you might need multiple, consider using <a href="/programming/intro-data.html#en
 resources to access various features of the engine. They work just like your own
 custom types.</p>
 <h2 id="accessing-resources"><a class="header" href="#accessing-resources">Accessing Resources</a></h2>
-<p>To access the value of a resource from <a href="/programming/systems.html">systems</a>, use <code>Res</code>/<code>ResMut</code>:</p>
+<p>To access the value of a resource from <a href="/programming/systems.html">systems</a>, use
+<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Res.html"><code>Res</code></a>/<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut</code></a>:</p>
 <pre><code class="language-rust no_run noplayground">fn my_system(
     // these will panic if the resources don't exist
     mut goals: ResMut&lt;GoalsReached&gt;,

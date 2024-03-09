@@ -226,8 +226,7 @@ fn main() {
         .add_systems(Startup, set_window_icon)
         .run();
 }</code></pre>
-<p>Note: that <a href="https://docs.rs/bevy/0.13.0/bevy/winit/struct.WinitWindows.html"><code>WinitWindows</code></a> is a <a href="/programming/non-send.html">non-send
-resource</a>.</p>
+<p>Note: that <a href="https://docs.rs/bevy/0.13.0/bevy/winit/struct.WinitWindows.html"><code>WinitWindows</code></a> is a <a href="/programming/non-send.html">non-send resource</a>.</p>
 <p>Note: you need to add <code>winit</code> and <code>image</code> to your project's dependencies,
 and they must be the same versions as used by Bevy. As of Bevy 0.13, that
 should be <code>winit = "0.29"</code> and <code>image = "0.24"</code>. If you don't know which

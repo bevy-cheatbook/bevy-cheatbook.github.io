@@ -195,7 +195,7 @@ on your entities. The Rust compiler will give an error if you do not set all
 the fields of a struct, thus helping you make sure your code is correct.</p>
 <p>Bevy provides many <a href="/builtins.html#bundles">built-in bundle types</a> that you can use
 to spawn common kinds of entities.</p>
-<p>Here is how to create your own bundle:</p>
+<p>To create your own bundle, derive <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/bundle/trait.Bundle.html"><code>Bundle</code></a> on a <code>struct</code>:</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Bundle)]
 struct PlayerBundle {
     xp: PlayerXp,

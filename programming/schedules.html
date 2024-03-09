@@ -189,10 +189,12 @@ of Bevy's scheduling framework.</p>
 <p>All <a href="/programming/systems.html">systems</a> to be run by Bevy are contained and organized using
 schedules. A schedule is a collection of systems, with metadata for how they
 should run, and an associated executor algorithm to run the systems.</p>
+<p>A Bevy app has many different schedules for different purposes, to run them
+in different situations.</p>
 <h2 id="scheduling-systems"><a class="header" href="#scheduling-systems">Scheduling Systems</a></h2>
 <p>If you want a <a href="/programming/systems.html">system</a> to be run by Bevy, you need to add it to a
-schedule. Writing a new Rust function and forgetting to add it / register it
-with Bevy is a common mistake.</p>
+schedule via the <a href="/programming/app-builder.html">app builder</a>. Writing a new Rust function and
+forgetting to add it / register it with Bevy is a common mistake.</p>
 <p>Whenever you add a system, you specify what schedule to put it in:</p>
 <pre><code class="language-rust no_run noplayground">// add something to the Update schedule (runs every frame)
 app.add_systems(Update, camera_movement);
@@ -226,77 +228,67 @@ You need to configure everything ahead of time.</p>
 <a href="/programming/run-criteria.html">run conditions</a>. That is the mechanism for disabling them if they
 shouldn't run.</p>
 <h2 id="bevys-app-structure"><a class="header" href="#bevys-app-structure">Bevy's App Structure</a></h2>
-<p>Bevy has three primary/foundational schedules: <code>Main</code>, <code>Extract</code>, <code>Render</code>. There
-are also other schedules, which are managed and run within <code>Main</code>.</p>
-<p>In a normal Bevy app, the <code>Main</code>+<code>Extract</code>+<code>Render</code> schedules are run repeatedly
-in a loop. Together, they produce one frame of your game. Every time <code>Main</code>
+<p>Bevy has three primary/foundational schedules: <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Main.html"><code>Main</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/render/struct.Extract.html"><code>Extract</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/render/struct.Render.html"><code>Render</code></a>.
+There are also other schedules, which are managed and run within <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Main.html"><code>Main</code></a>.</p>
+<p>In a normal Bevy app, the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Main.html"><code>Main</code></a>+<a href="https://docs.rs/bevy/0.13.0/bevy/render/struct.Extract.html"><code>Extract</code></a>+<a href="https://docs.rs/bevy/0.13.0/bevy/render/struct.Render.html"><code>Render</code></a> schedules are run repeatedly
+in a loop. Together, they produce one frame of your game. Every time <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Main.html"><code>Main</code></a>
 runs, it runs a sequence of other schedules. On its first run, it also first
 runs a sequence of "startup" schedules.</p>
-<p>Most Bevy users only have to deal with the sub-schedules of <code>Main</code>. <code>Extract</code>
-and <code>Render</code> are only relevant to graphics developers who want to develop
-new/custom rendering features for the engine. This page is only focused on
-<code>Main</code>. If you want to learn more about <code>Extract</code> and <code>Render</code>, <a href="/gpu/intro.html">see this
-page about Bevy's rendering architecture</a>.</p>
+<p>Most Bevy users only have to deal with the sub-schedules of <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Main.html"><code>Main</code></a>.
+<a href="https://docs.rs/bevy/0.13.0/bevy/render/struct.Extract.html"><code>Extract</code></a> and <a href="https://docs.rs/bevy/0.13.0/bevy/render/struct.Render.html"><code>Render</code></a> are only relevant to graphics developers who want to
+develop new/custom rendering features for the engine. This page is only focused
+on <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Main.html"><code>Main</code></a>. If you want to learn more about <a href="https://docs.rs/bevy/0.13.0/bevy/render/struct.Extract.html"><code>Extract</code></a> and <a href="https://docs.rs/bevy/0.13.0/bevy/render/struct.Render.html"><code>Render</code></a>, <a href="/gpu/intro.html">see
+this page about Bevy's rendering architecture</a>.</p>
 <h2 id="the-main-schedule"><a class="header" href="#the-main-schedule">The Main Schedule</a></h2>
-<p><code>Main</code> is where all the application logic runs. It is a sort of meta-schedule,
-whose job is to run other schedules in a specific order. You should not add
-any custom systems directly to <code>Main</code>. You should add your systems to the various
-schedules managed by <code>Main</code>.</p>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Main.html"><code>Main</code></a> is where all the application logic runs. It is a sort of meta-schedule,
+whose job is to run other schedules in a specific order. You should not add any
+custom systems directly to <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Main.html"><code>Main</code></a>. You should add your systems to the various
+schedules managed by <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Main.html"><code>Main</code></a>.</p>
 <p>Bevy provides the following schedules, to organize all the systems:</p>
 <ul>
-<li><a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.First.html"><code>First</code></a>,
-<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PreUpdate.html"><code>PreUpdate</code></a>,
-<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.StateTransition.html"><code>StateTransition</code></a>,
-<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.RunFixedMainLoop.html"><code>RunFixedMainLoop</code></a>,
-<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a>,
-<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a>,
-<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Last.html"><code>Last</code></a>
+<li><a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.First.html"><code>First</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PreUpdate.html"><code>PreUpdate</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.StateTransition.html"><code>StateTransition</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.RunFixedMainLoop.html"><code>RunFixedMainLoop</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Last.html"><code>Last</code></a>
 <ul>
-<li>These schedules are run by <code>Main</code> every time it runs</li>
+<li>These schedules are run by <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Main.html"><code>Main</code></a> every time it runs</li>
 </ul>
 </li>
-<li><code>PreStartup</code>, <code>Startup</code>, <code>PostStartup</code>
+<li><a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PreStartup.html"><code>PreStartup</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Startup.html"><code>Startup</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PostStartup.html"><code>PostStartup</code></a>
 <ul>
-<li>These schedules are run by <code>Main</code> once, the first time it runs</li>
+<li>These schedules are run by <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Main.html"><code>Main</code></a> once, the first time it runs</li>
 </ul>
 </li>
 <li><a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedMain.html"><code>FixedMain</code></a>
 <ul>
-<li>The <a href="/fundamentals/fixed-timestep.html">fixed timestep</a> equivalent of the <code>Main</code> schedule.</li>
-<li>Run by <code>RunFixedMainLoop</code> as many times as needed, to catch up to the fixed timestep interval.</li>
+<li>The <a href="/fundamentals/fixed-timestep.html">fixed timestep</a> equivalent of the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Main.html"><code>Main</code></a> schedule.</li>
+<li>Run by <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.RunFixedMainLoop.html"><code>RunFixedMainLoop</code></a> as many times as needed, to catch up to the fixed timestep interval.</li>
 </ul>
 </li>
-<li><a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedFirst.html"><code>FixedFirst</code></a>,
-<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedPreUpdate.html"><code>FixedPreUpdate</code></a>,
-<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a>,
-<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedPostUpdate.html"><code>FixedPostUpdate</code></a>,
-<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedLast.html"><code>FixedLast</code></a>
+<li><a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedFirst.html"><code>FixedFirst</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedPreUpdate.html"><code>FixedPreUpdate</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedPostUpdate.html"><code>FixedPostUpdate</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedLast.html"><code>FixedLast</code></a>
 <ul>
-<li>The <a href="/fundamentals/fixed-timestep.html">fixed timestep</a> equivalents of the <code>Main</code> sub-schedules.</li>
+<li>The <a href="/fundamentals/fixed-timestep.html">fixed timestep</a> equivalents of the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Main.html"><code>Main</code></a> sub-schedules.</li>
 </ul>
 </li>
-<li><code>OnEnter(…)</code>/<code>OnExit(…)</code>/<code>OnTransition(…)</code>
+<li><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.OnEnter.html"><code>OnEnter(…)</code></a>/<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.OnExit.html"><code>OnExit(…)</code></a>/<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.OnTransition.html"><code>OnTransition(…)</code></a>
 <ul>
-<li>These schedules are run by <code>StateTransition</code> on <a href="/programming/states.html">state</a> changes</li>
+<li>These schedules are run by <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.StateTransition.html"><code>StateTransition</code></a> on <a href="/programming/states.html">state</a> changes</li>
 </ul>
 </li>
 </ul>
-<p>The intended places for most user systems (your game logic) are <code>Update</code>,
-<code>FixedUpdate</code>, <code>Startup</code>, and the <a href="/programming/states.html">state</a> transition schedules.</p>
-<p><code>Update</code> is for your usual game logic that should run every frame. <code>Startup</code> is
+<p>The intended places for most user systems (your game logic) are <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a>,
+<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Startup.html"><code>Startup</code></a>, and the <a href="/programming/states.html">state</a> transition schedules.</p>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a> is for your usual game logic that should run every frame. <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Startup.html"><code>Startup</code></a> is
 useful to perform initialization tasks, before the first normal frame update
-loop. <code>FixedUpdate</code> is if you want to use a <a href="/fundamentals/fixed-timestep.html">fixed timestep</a>.</p>
+loop. <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a> is if you want to use a <a href="/fundamentals/fixed-timestep.html">fixed timestep</a>.</p>
 <p>The other schedules are intended for engine-internal functionality. Splitting
 them like that ensures that Bevy's internal engine systems will run correctly
 with respect to your systems, without any configuration on your part.
 Remember: Bevy's internals are implemented using ordinary systems
 and ECS, just like your own stuff!</p>
 <p>If you are developing plugins to be used by other people, you might be
-interested in adding functionality to <code>PreUpdate</code>/<code>PostUpdate</code> (or the <code>Fixed</code>
+interested in adding functionality to <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PreUpdate.html"><code>PreUpdate</code></a>/<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a> (or the <code>Fixed</code>
 equivalents), so it can run alongside other "engine systems". Also consider
-<code>PreStartup</code> and <code>PostStartup</code> if you have startup systems that should be
+<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PreStartup.html"><code>PreStartup</code></a> and <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PostStartup.html"><code>PostStartup</code></a> if you have startup systems that should be
 separated from your users' startup systems.</p>
-<p><code>First</code> and <code>Last</code> exist only for special edge cases, if you really need to
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.First.html"><code>First</code></a> and <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Last.html"><code>Last</code></a> exist only for special edge cases, if you really need to
 ensure something runs before/after <em>everything</em> else, including all the normal
 "engine-internal" code.</p>
 <h2 id="configuring-schedules"><a class="header" href="#configuring-schedules">Configuring Schedules</a></h2>
@@ -346,7 +338,7 @@ the sync points, you can do that.</p>
         ..default()
     });
 });</code></pre>
-<p>Now, to manually create sync points, add special <code>apply_deferred</code> systems
+<p>Now, to manually create sync points, add special [<code>apply_deferred</code>] systems
 where you like them:</p>
 <pre><code class="language-rust no_run noplayground">app.add_systems(
     Update,
@@ -362,23 +354,20 @@ app.add_systems(Update, (
     ).chain(),
 ));</code></pre>
 <h2 id="main-schedule-configuration"><a class="header" href="#main-schedule-configuration">Main Schedule Configuration</a></h2>
-<p>The order of schedules to be run by <code>Main</code> every frame is configured in
-the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.MainScheduleOrder.html"><code>MainScheduleOrder</code></a> <a href="/programming/res.html">resource</a>.
-For advanced use cases, if Bevy's predefined schedules don't work for your
-needs, you can change it.</p>
+<p>The order of schedules to be run by <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Main.html"><code>Main</code></a> every frame is configured in the
+<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.MainScheduleOrder.html"><code>MainScheduleOrder</code></a> <a href="/programming/res.html">resource</a>. For advanced use cases, if Bevy's
+predefined schedules don't work for your needs, you can change it.</p>
 <h3 id="creating-a-new-custom-schedule"><a class="header" href="#creating-a-new-custom-schedule">Creating a New Custom Schedule</a></h3>
 <p>As an example, let's say we want to add an additional schedule, that runs every
-frame (like <code>Update</code>), but runs before <a href="/fundamentals/fixed-timestep.html">fixed timestep</a>.</p>
+frame (like <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a>), but runs before <a href="/fundamentals/fixed-timestep.html">fixed timestep</a>.</p>
 <p>First, we need to create a name/label for our new schedule, by creating a Rust
-type (a <code>struct</code> or <code>enum</code>) and deriving <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/trait.ScheduleLabel.html"><code>ScheduleLabel</code></a></p>
-<ul>
-<li>an assortment of required standard Rust traits.</li>
-</ul>
+type (a <code>struct</code> or <code>enum</code>) and deriving <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/trait.ScheduleLabel.html"><code>ScheduleLabel</code></a> + an assortment of
+required standard Rust traits.</p>
 <pre><code class="language-rust no_run noplayground">#[derive(ScheduleLabel, Debug, Clone, PartialEq, Eq, Hash)]
 struct PrepareUpdate;</code></pre>
 <p>Now, we can init the schedule in the <a href="/programming/app-builder.html">app</a>, add it to
-<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.MainScheduleOrder.html"><code>MainScheduleOrder</code></a> to make it run every frame
-where we like it, and add some systems to it!</p>
+<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.MainScheduleOrder.html"><code>MainScheduleOrder</code></a> to make it run every frame where we like it, and add some
+systems to it!</p>
 <pre><code class="language-rust no_run noplayground">// Ensure the schedule has been created
 // (this is technically optional; Bevy will auto-init
 // the schedule the first time it is used)

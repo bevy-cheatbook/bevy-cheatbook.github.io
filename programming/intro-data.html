@@ -325,11 +325,10 @@ monolithic <code>struct Player</code> containing all the fields / properties of 
 In Bevy, this is considered bad practice, because doing it that way can make it
 more difficult to work with your data and limit performance. Instead, you should
 make things granular, when different pieces of data may be accessed independently.</p>
-<p>For example, represent the player in your game as an entity, composed
-of separate component types (separate <code>struct</code>s) for things like the
-health, XP, or whatever is relevant to your game. You can also attach
-standard Bevy components like <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> (<a href="/fundamentals/transforms.html">transforms
-explained</a>) to it.</p>
+<p>For example, represent the player in your game as an entity, composed of
+separate component types (separate <code>struct</code>s) for things like the health, XP, or
+whatever is relevant to your game. You can also attach standard Bevy components
+like <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> (<a href="/fundamentals/transforms.html">transforms explained</a>) to it.</p>
 <p>Then, each piece of functionality (each <a href="/programming/systems.html">system</a>) can just
 <a href="/programming/queries.html">query</a> for the data it needs. Common functionality (like a
 health/damage system) can be applied to any entity with the matching components,
@@ -339,9 +338,9 @@ you can use a <a href="/programming/ec.html#marker-components">marker component<
 to narrow down your query (using a <a href="/programming/queries.html#query-filters">query filter</a> like
 <code>With&lt;Player&gt;</code>).</p>
 <p>However, if some data always makes sense to be accessed together, then you
-should put it in a single <code>struct</code>. For example, Bevy's
-<a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> or <a href="https://docs.rs/bevy/0.13.0/bevy/render/color/enum.Color.html"><code>Color</code></a>. With these types, the
-fields are not likely to be useful independently.</p>
+should put it in a single <code>struct</code>. For example, Bevy's <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> or
+<a href="https://docs.rs/bevy/0.13.0/bevy/render/color/enum.Color.html"><code>Color</code></a>. With these types, the fields are not likely to be useful
+independently.</p>
 <h3 id="additional-internal-details"><a class="header" href="#additional-internal-details">Additional Internal Details</a></h3>
 <p>The set / combination of components that a given entity has is called the
 entity's Archetype. Bevy keeps track of that internally, to organize the

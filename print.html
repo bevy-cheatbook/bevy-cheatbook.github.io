@@ -418,16 +418,15 @@ Helper for generic system abstractions, to avoid lifetime annotations</li>
 </ul>
 <p>In <a href="/programming/exclusive.html">exclusive systems</a>:</p>
 <ul>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/world/struct.World.html"><code>&amp;mut World</code></a>:
+<li>[<code>&amp;mut World</code>]:
 Full <a href="/programming/world.html">direct access to the ECS World</a></li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a>:
+<li>[<code>Local&lt;T&gt;</code>]:
 Data <a href="/programming/local.html">local</a> to the system</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.SystemState.html"><code>&amp;mut SystemState&lt;P&gt;</code></a>:
+<li>[<code>&amp;mut SystemState&lt;P&gt;</code>][<code>SystemState</code>]:
 Emulates a regular system, allowing you to easily access data from the World.
 <code>P</code> are the system parameters.</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/query/struct.QueryState.html"><code>&amp;mut QueryState&lt;Q, F = ()&gt;</code></a>:
-Allows you to perform queries on the World, similar to a <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.Query.html"><code>Query</code></a>
-in regular systems.</li>
+<li>[<code>&amp;mut QueryState&lt;Q, F = ()&gt;</code>][<code>QueryState</code>]:
+Allows you to perform queries on the World, similar to a [<code>Query</code>] in regular systems.</li>
 </ul>
 <p>Your function can have a maximum of 16 total parameters. If you need more,
 group them into tuples to work around the limit. Tuples can contain up to
@@ -1915,7 +1914,7 @@ about additional external dev tools that may be helpful.</p>
 <h2 id="whats-next"><a class="header" href="#whats-next">What's Next?</a></h2>
 <p>Have a look at the <a href="setup//tutorial.html">guided tutorial</a> page of this book,
 and Bevy's <a href="https://github.com/bevyengine/bevy/tree/latest/examples#examples">official examples</a>.</p>
-<p>Check out the <a href="https://docs.rs/bevy/0.13.0/bevy/asset/struct.Assets.html">Bevy Assets Website</a> to find other tutorials
+<p>Check out the <a href="https://bevyengine.org/assets">Bevy Assets Website</a> to find other tutorials
 and learning resources from the community, and <a href="setup//setup/unofficial-plugins.html">plugins</a>
 to use in your project.</p>
 <p>Join the community on <a href="https://discord.gg/bevy">Discord</a> to chat with us!</p>
@@ -3093,19 +3092,17 @@ let thing = thing.into_inner();</code></pre>
 you don't modify the data afterwards, the component gets marked as changed.</p>
 <h2 id="explanation"><a class="header" href="#explanation">Explanation</a></h2>
 <p>Bevy typically gives you access to your data via special wrapper types (like
-<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Res.html"><code>Res&lt;T&gt;</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a>, and <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.Mut.html"><code>Mut&lt;T&gt;</code></a>
-(when <a href="pitfalls//programming/queries.html">querying</a> for components mutably)). This lets Bevy track
-access to the data.</p>
-<p>These are "smart pointer" types that use the Rust <a href="https://doc.rust-lang.org/stable/std/ops/trait.Deref.html"><code>Deref</code></a>
-trait to dereference to your data. They usually work seamlessly and you
-don't even notice them.</p>
-<p>However, in a sense, they are opaque to the compiler. The Rust language
-allows fields of a struct to be borrowed individually, when you have direct
-access to the struct, but this does not work when it is wrapped in another type.</p>
-<p>The "reborrow" trick shown above, effectively converts the wrapper
-into a regular Rust reference. <code>*thing</code> dereferences the wrapper via
-<a href="https://doc.rust-lang.org/stable/std/ops/trait.DerefMut.html"><code>DerefMut</code></a>, and then <code>&amp;mut</code> borrows it mutably. You now have
-<code>&amp;mut MyStuff</code> instead of <code>Mut&lt;MyStuff&gt;</code>.</p>
+<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Res.html"><code>Res&lt;T&gt;</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a>, and <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.Mut.html"><code>Mut&lt;T&gt;</code></a> (when <a href="pitfalls//programming/queries.html">querying</a> for
+components mutably)). This lets Bevy track access to the data.</p>
+<p>These are "smart pointer" types that use the Rust <a href="https://doc.rust-lang.org/stable/std/ops/trait.Deref.html"><code>Deref</code></a> trait to dereference
+to your data. They usually work seamlessly and you don't even notice them.</p>
+<p>However, in a sense, they are opaque to the compiler. The Rust language allows
+fields of a struct to be borrowed individually, when you have direct access to
+the struct, but this does not work when it is wrapped in another type.</p>
+<p>The "reborrow" trick shown above, effectively converts the wrapper into a
+regular Rust reference. <code>*thing</code> dereferences the wrapper via <a href="https://doc.rust-lang.org/stable/std/ops/trait.DerefMut.html"><code>DerefMut</code></a>, and
+then <code>&amp;mut</code> borrows it mutably. You now have <code>&amp;mut MyStuff</code> instead of
+<code>Mut&lt;MyStuff&gt;</code>.</p>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="pitfalls//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
@@ -3118,8 +3115,8 @@ function. However, that's not what you want.</p>
 <p>Your game systems are run by Bevy's parallel scheduler, which means that they
 could be called at vastly different instants every frame! This will result in
 inconsistent / jittery timings and make your game misbehave or look stuttery.</p>
-<p>Bevy's <a href="https://docs.rs/bevy/0.13.0/bevy/time/struct.Time.html"><code>Time</code></a> gives you timing information that is consistent
-throughout the frame update cycle. It is intended to be used for game logic.</p>
+<p>Bevy's <a href="https://docs.rs/bevy/0.13.0/bevy/time/struct.Time.html"><code>Time</code></a> gives you timing information that is consistent throughout the
+frame update cycle. It is intended to be used for game logic.</p>
 <p>This is not Bevy-specific, but applies to game development in general. Always
 get your time from your game engine, not from your programming language or
 operating system.</p>
@@ -3288,13 +3285,12 @@ you can use one of the following to ensure you don't miss them:</p>
     ));
 }</code></pre>
 <h3 id="transform"><a class="header" href="#transform"><code>Transform</code></a></h3>
-<p><a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> is what you typically work with. It is
-a <code>struct</code> containing the translation, rotation, and scale. To read or
-manipulate these values, access it from your <a href="fundamentals//programming/systems.html">systems</a> using a
-<a href="fundamentals//programming/queries.html">query</a>.</p>
-<p>If the entity has a <a href="fundamentals//fundamentals/hierarchy.html">parent</a>, the <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>
-component is relative to the parent. This means that the child object will
-move/rotate/scale along with the parent.</p>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> is what you typically work with. It is a <code>struct</code> containing the
+translation, rotation, and scale. To read or manipulate these values, access it
+from your <a href="fundamentals//programming/systems.html">systems</a> using a <a href="fundamentals//programming/queries.html">query</a>.</p>
+<p>If the entity has a <a href="fundamentals//fundamentals/hierarchy.html">parent</a>, the <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> component is
+relative to the parent. This means that the child object will move/rotate/scale
+along with the parent.</p>
 <pre><code class="language-rust no_run noplayground">fn inflate_balloons(
     mut query: Query&lt;&amp;mut Transform, With&lt;Balloon&gt;&gt;,
     keyboard: Res&lt;ButtonInput&lt;KeyCode&gt;&gt;,
@@ -3321,19 +3317,18 @@ fn throwable_fly(
     }
 }</code></pre>
 <h3 id="globaltransform"><a class="header" href="#globaltransform"><code>GlobalTransform</code></a></h3>
-<p><a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> represents the absolute global
-position in the world.</p>
-<p>If the entity does not have a <a href="fundamentals//fundamentals/hierarchy.html">parent</a>, then this will match
-the <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>.</p>
-<p>The value of <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> is calculated/managed
-internally by Bevy (<a href="fundamentals/transforms.html#transform-propagation">"transform propagation"</a>).</p>
-<p>Unlike <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>, the translation/rotation/scale are not
-accessible directly. The data is stored in an optimized way (using <code>Affine3A</code>)
-and it is possible to have complex transformations in a hierarchy that cannot
-be represented as a simple transform. For example, a combination of rotation
-and scale across multiple parents, resulting in shearing.</p>
-<p>If you want to try to convert a <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> back
-into a workable translation/rotation/scale representation, you can try the methods:</p>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> represents the absolute global position in the world.</p>
+<p>If the entity does not have a <a href="fundamentals//fundamentals/hierarchy.html">parent</a>, then this will match the
+<a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>.</p>
+<p>The value of <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> is calculated/managed internally by Bevy
+(<a href="fundamentals/transforms.html#transform-propagation">"transform propagation"</a>).</p>
+<p>Unlike <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>, the translation/rotation/scale are not accessible
+directly. The data is stored in an optimized way (using <a href="https://docs.rs/bevy/0.13.0/bevy/math/struct.Affine3A.html"><code>Affine3A</code></a>) and it is
+possible to have complex transformations in a hierarchy that cannot be
+represented as a simple transform. For example, a combination of rotation and
+scale across multiple parents, resulting in shearing.</p>
+<p>If you want to try to convert a <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> back into a workable
+translation/rotation/scale representation, you can try the methods:</p>
 <ul>
 <li><code>.translation()</code></li>
 <li><code>.to_scale_rotation_translation()</code> (may be invalid)</li>
@@ -3341,16 +3336,13 @@ into a workable translation/rotation/scale representation, you can try the metho
 </ul>
 <h2 id="transform-propagation"><a class="header" href="#transform-propagation">Transform Propagation</a></h2>
 <p>The two components are synchronized by a bevy-internal system (the "transform
-propagation system"), which runs in the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a>
-<a href="fundamentals//programming/schedules.html">schedule</a>.</p>
-<p>Beware: When you mutate the <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>, the
-<a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> is not updated immediately. They
-will be out-of-sync until the transform propagation system runs.</p>
-<p>If you need to work with <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a>
-directly, you should <a href="fundamentals//programming/app-builder.html">add</a> your
-<a href="fundamentals//programming/systems.html">system</a> to the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a>
-<a href="fundamentals//programming/schedules.html">schedule</a> and <a href="fundamentals//programming/system-order.html">order it after</a>
-<a href="https://docs.rs/bevy/0.13.0/bevy/transform/enum.TransformSystem.html"><code>TransformSystem::TransformPropagate</code></a>.</p>
+propagation system"), which runs in the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a> <a href="fundamentals//programming/schedules.html">schedule</a>.</p>
+<p>Beware: When you mutate the <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>, the <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> is not
+updated immediately. They will be out-of-sync until the transform propagation
+system runs.</p>
+<p>If you need to work with <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> directly, you should <a href="fundamentals//programming/app-builder.html">add</a>
+your <a href="fundamentals//programming/systems.html">system</a> to the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a> <a href="fundamentals//programming/schedules.html">schedule</a> and
+<a href="fundamentals//programming/system-order.html">order it after</a> <a href="https://docs.rs/bevy/0.13.0/bevy/transform/enum.TransformSystem.html"><code>TransformSystem::TransformPropagate</code></a>.</p>
 <pre><code class="language-rust no_run noplayground">/// Print the up-to-date global coordinates of the player
 fn debug_globaltransform(
     query: Query&lt;&amp;GlobalTransform, With&lt;Player&gt;&gt;,
@@ -3368,17 +3360,16 @@ app.add_systems(PostUpdate,
         .after(TransformSystem::TransformPropagate)
 );</code></pre>
 <h2 id="transformhelper"><a class="header" href="#transformhelper"><code>TransformHelper</code></a></h2>
-<p>If you need to get an up-to-date <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a>
-in a <a href="fundamentals//programming/systems.html">system</a> that has to run before transform propagation,
-you can use the special <a href="https://docs.rs/bevy/0.13.0/bevy/transform/helper/struct.TransformHelper.html"><code>TransformHelper</code></a> system parameter.</p>
-<p>It allows you to compute a specific entity's
-<a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> immediately, on demand.</p>
-<p>An example of where this could be useful might be a system to make
-a camera follow an entity on-screen. You need to update the camera's
-<a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> (which means you have to do it before Bevy's
-transform propagation, so it can account for the camera's new transform),
-but you also need to know the current up-to-date position of the entity you
-are following.</p>
+<p>If you need to get an up-to-date <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> in a <a href="fundamentals//programming/systems.html">system</a>
+that has to run before transform propagation, you can use the special
+<a href="https://docs.rs/bevy/0.13.0/bevy/transform/helper/struct.TransformHelper.html"><code>TransformHelper</code></a> system parameter.</p>
+<p>It allows you to compute a specific entity's <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a> immediately, on
+demand.</p>
+<p>An example of where this could be useful might be a system to make a camera
+follow an entity on-screen. You need to update the camera's <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> (which
+means you have to do it before Bevy's transform propagation, so it can account
+for the camera's new transform), but you also need to know the current
+up-to-date position of the entity you are following.</p>
 <pre><code class="language-rust no_run noplayground">fn camera_look_follow(
     q_target: Query&lt;Entity, With&lt;MySpecialMarker&gt;&gt;,
     mut transform_params: ParamSet&lt;(
@@ -3396,19 +3387,17 @@ are following.</p>
     // get camera transform and make it look at the global translation
     transform_params.p1().single_mut().look_at(global.translation(), Vec3::Y);
 }</code></pre>
-<p>Internally, <a href="https://docs.rs/bevy/0.13.0/bevy/transform/helper/struct.TransformHelper.html"><code>TransformHelper</code></a> behaves like two
-read-only <a href="fundamentals//programming/queries.html">queries</a>. It needs access to the <a href="https://docs.rs/bevy/0.13.0/bevy/hierarchy/struct.Parent.html"><code>Parent</code></a>
-and <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> components to do its job. It would
-conflict with our other <code>&amp;mut Transform</code> query. That's why we have to use a
-<a href="fundamentals//programming/paramset.html">param set</a> in the example above.</p>
-<p>Note: if you over-use <a href="https://docs.rs/bevy/0.13.0/bevy/transform/helper/struct.TransformHelper.html"><code>TransformHelper</code></a>, it
-could become a performance issue. It calculates the global transform
-for you, but it does not update the data stored in the entity's
-<a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a>. Bevy will still do the same
+<p>Internally, <a href="https://docs.rs/bevy/0.13.0/bevy/transform/helper/struct.TransformHelper.html"><code>TransformHelper</code></a> behaves like two read-only <a href="fundamentals//programming/queries.html">queries</a>.
+It needs access to the <a href="https://docs.rs/bevy/0.13.0/bevy/hierarchy/struct.Parent.html"><code>Parent</code></a> and <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> components to do its job. It
+would conflict with our other <code>&amp;mut Transform</code> query. That's why we have to use
+a <a href="fundamentals//programming/paramset.html">param set</a> in the example above.</p>
+<p>Note: if you over-use <a href="https://docs.rs/bevy/0.13.0/bevy/transform/helper/struct.TransformHelper.html"><code>TransformHelper</code></a>, it could become a performance issue.
+It calculates the global transform for you, but it does not update the data
+stored in the entity's <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.GlobalTransform.html"><code>GlobalTransform</code></a>. Bevy will still do the same
 computation again later, during transform propagation. It leads to repetitive
-work. If your system can run after transform propagation, so it can just
-read the value after Bevy updates it, you should prefer to do that instead
-of using <a href="https://docs.rs/bevy/0.13.0/bevy/transform/helper/struct.TransformHelper.html"><code>TransformHelper</code></a>.</p>
+work. If your system can run after transform propagation, so it can just read
+the value after Bevy updates it, you should prefer to do that instead of using
+<a href="https://docs.rs/bevy/0.13.0/bevy/transform/helper/struct.TransformHelper.html"><code>TransformHelper</code></a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="fundamentals//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
@@ -3471,11 +3460,11 @@ you can use one of the following to ensure you don't miss them:</p>
     ));
 }</code></pre>
 <p>If you don't do this correctly (say, you manually add just the <code>Visibility</code>
-component and forget the others, because you don't use a bundle), your
-entities will not render!</p>
+component and forget the others, because you don't use a bundle), your entities
+will not render!</p>
 <h3 id="visibility-1"><a class="header" href="#visibility-1"><code>Visibility</code></a></h3>
-<p><a href="https://docs.rs/bevy/0.13.0/bevy/render/view/enum.Visibility.html"><code>Visibility</code></a> is the "user-facing toggle". This is where
-you specify what you want for the current entity:</p>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/render/view/enum.Visibility.html"><code>Visibility</code></a> is the "user-facing toggle". This is where you specify what you
+want for the current entity:</p>
 <ul>
 <li><code>Inherited</code> (default): show/hide depending on <a href="fundamentals//fundamentals/hierarchy.html">parent</a></li>
 <li><code>Visible</code>: always show the entity, regardless of parent</li>
@@ -3487,13 +3476,12 @@ or <code>Hidden</code>.</p>
 <p>If an entity has a parent, but the parent entity is missing the
 visibility-related components, things will behave as if there was no parent.</p>
 <h3 id="inheritedvisibility"><a class="header" href="#inheritedvisibility"><code>InheritedVisibility</code></a></h3>
-<p><a href="https://docs.rs/bevy/0.13.0/bevy/render/view/struct.InheritedVisibility.html"><code>InheritedVisibility</code></a> represents the state the
-current entity would have based on its <a href="fundamentals//fundamentals/hierarchy.html">parent</a>'s visibility.</p>
-<p>The value of <a href="https://docs.rs/bevy/0.13.0/bevy/render/view/struct.InheritedVisibility.html"><code>InheritedVisibility</code></a> should
-be considered read-only. It is managed internally by Bevy, in a manner
-similar to <a href="fundamentals//fundamentals/transforms.html#transform-propagation">transform propagation</a>. A "visibility
-propagation" <a href="fundamentals//programming/systems.html">system</a> runs in the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a>
-<a href="fundamentals//programming/schedules.html">schedule</a>.</p>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/render/view/struct.InheritedVisibility.html"><code>InheritedVisibility</code></a> represents the state the current entity would have based
+on its <a href="fundamentals//fundamentals/hierarchy.html">parent</a>'s visibility.</p>
+<p>The value of <a href="https://docs.rs/bevy/0.13.0/bevy/render/view/struct.InheritedVisibility.html"><code>InheritedVisibility</code></a> should be considered read-only. It is
+managed internally by Bevy, in a manner similar to <a href="fundamentals//fundamentals/transforms.html#transform-propagation">transform
+propagation</a>. A "visibility propagation"
+<a href="fundamentals//programming/systems.html">system</a> runs in the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a> <a href="fundamentals//programming/schedules.html">schedule</a>.</p>
 <p>If you want to read the up-to-date value for the current frame, you should
 <a href="fundamentals//programming/app-builder.html">add</a> your <a href="fundamentals//programming/systems.html">system</a> to the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a>
 <a href="fundamentals//programming/schedules.html">schedule</a> and <a href="fundamentals//programming/system-order.html">order it after</a>
@@ -3514,10 +3502,9 @@ app.add_systems(PostUpdate,
         .after(VisibilitySystems::VisibilityPropagate)
 );</code></pre>
 <h3 id="viewvisibility"><a class="header" href="#viewvisibility"><code>ViewVisibility</code></a></h3>
-<p><a href="https://docs.rs/bevy/0.13.0/bevy/render/view/struct.ViewVisibility.html"><code>ViewVisibility</code></a> represents the actual final
-decision made by Bevy about whether this entity needs to be rendered.</p>
-<p>The value of <a href="https://docs.rs/bevy/0.13.0/bevy/render/view/struct.ViewVisibility.html"><code>ViewVisibility</code></a> is read-only. It
-is managed internally by Bevy.</p>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/render/view/struct.ViewVisibility.html"><code>ViewVisibility</code></a> represents the actual final decision made by Bevy about
+whether this entity needs to be rendered.</p>
+<p>The value of <a href="https://docs.rs/bevy/0.13.0/bevy/render/view/struct.ViewVisibility.html"><code>ViewVisibility</code></a> is read-only. It is managed internally by Bevy.</p>
 <p>It is used for "culling": if the entity is not in the range of
 any Camera or Light, it does not need to be rendered, so Bevy will hide it
 to improve performance.</p>
@@ -3956,11 +3943,11 @@ app.add_systems(FixedUpdate, (
     enemy_ai,
     gameplay_simulation,
 ));</code></pre>
-<p>Every frame update, Bevy will run the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a>
-schedule as many times as needed to catch up. If the game is running slow,
-it might run multiple times. If the game is running fast, it might be skipped.</p>
-<p>This happens before the regular <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a> schedule runs for that frame,
-but after <a href="fundamentals//programming/states.html">state transitions</a>.</p>
+<p>Every frame update, Bevy will run the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a> schedule as many times as
+needed to catch up. If the game is running slow, it might run multiple times. If
+the game is running fast, it might be skipped.</p>
+<p>This happens before the regular <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a> schedule runs for that frame, but
+after <a href="fundamentals//programming/states.html">state transitions</a>.</p>
 <p>The default fixed timestep interval is 64 Hz. If you want something else,
 you can configure it as follows:</p>
 <pre><code class="language-rust no_run noplayground">// Set the Fixed Timestep interval to 96 Hz
@@ -3970,9 +3957,9 @@ app.insert_resource(Time::&lt;Fixed&gt;::from_hz(96.0));
 app.insert_resource(Time::&lt;Fixed&gt;::from_seconds(0.25));</code></pre>
 <h2 id="checking-the-time"><a class="header" href="#checking-the-time">Checking the Time</a></h2>
 <p>Just use <a href="https://docs.rs/bevy/0.13.0/bevy/time/struct.Time.html"><code>Res&lt;Time&gt;</code></a> as normal. When your system is running in
-<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a>, Bevy will automatically detect that,
-and all the timing information (such as delta) will represent the fixed
-timestep instead of the display frame rate.</p>
+<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a>, Bevy will automatically detect that, and all the timing
+information (such as delta) will represent the fixed timestep instead of the
+display frame rate.</p>
 <pre><code class="language-rust no_run noplayground">fn print_time_delta(time: Res&lt;Time&gt;) {
     // If we add this system to `Update`, this will print the time delta
     // between subsequent frames (the display frame rate)
@@ -4038,23 +4025,22 @@ you also have game mechanics that need to respond to it.</p>
 <p>The most elegant solution to both of these problems is to handle synchonization
 yourself using custom types.</p>
 <h4 id="movement"><a class="header" href="#movement">Movement</a></h4>
-<p>For player (and other) movement, you could create your own custom component
-type to use instead of <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>. Implement your player
-movement using your own types. Then have a system in <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a>
-to sync/update <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> from that, with some
-interpolation to make it look smooth.</p>
+<p>For player (and other) movement, you could create your own custom component type
+to use instead of <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>. Implement your player movement using your own
+types. Then have a system in <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a> to sync/update <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> from that,
+with some interpolation to make it look smooth.</p>
 <pre><code class="language-rust no_run noplayground">// TODO show how to do this</code></pre>
 <h4 id="input-handling"><a class="header" href="#input-handling">Input Handling</a></h4>
-<p>If you use <code>Res&lt;ButtonInput&lt;...&gt;&gt;</code> and <code>.just_pressed</code>/<code>.just_released</code>
-to check for key/button presses, beware that the state is updated once per
-frame. This API is not reliable inside <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a>. Use
-<a href="fundamentals//programming/events.html">events</a> for input handling instead, or roll your own abstractions.</p>
-<p>One way to do this is to put your input handling systems
-in <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PreUpdate.html"><code>PreUpdate</code></a>, order them after the
-<a href="https://docs.rs/bevy/0.13.0/bevy/input/struct.InputSystem.html"><code>bevy::input::InputSystem</code></a> <a href="fundamentals//programming/system-sets.html">set</a>, and do
-your input handling there. Convert it into your own custom <a href="fundamentals//programming/events.html">event</a>
-types or some other useful representation, which you can then handle from
-your gameplay code in <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a>.</p>
+<p>If you use <a href="https://docs.rs/bevy/0.13.0/bevy/input/struct.ButtonInput.html"><code>Res&lt;ButtonInput&lt;...&gt;&gt;</code></a> and
+<code>.just_pressed</code>/<code>.just_released</code> to check for key/button presses, beware that
+the state is updated once per frame. This API is not reliable inside
+<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a>. Use <a href="fundamentals//programming/events.html">events</a> for input handling instead, or roll
+your own abstractions.</p>
+<p>One way to do this is to put your input handling systems in <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PreUpdate.html"><code>PreUpdate</code></a>, order
+them after Bevy's <a href="https://docs.rs/bevy/0.13.0/bevy/input/struct.InputSystem.html"><code>InputSystem</code></a> <a href="fundamentals//programming/system-sets.html">set</a>, and do your input
+handling there. Convert it into your own custom <a href="fundamentals//programming/events.html">event</a> types or some
+other useful representation, which you can then handle from your gameplay code
+in <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a>.</p>
 <pre><code class="language-rust no_run noplayground">// TODO show how to do this</code></pre>
 <h2 id="timing-caveats"><a class="header" href="#timing-caveats">Timing Caveats</a></h2>
 <p>Fixed timestep does not run in real-world time! You cannot rely on it for timing!</p>
@@ -4073,8 +4059,8 @@ will skip the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedMain.htm
 <li>If the display frame rate is slower than the timestep, some frame update cycles
 will run the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedMain.html"><code>FixedMain</code></a> multiple times.</li>
 </ul>
-<p>In any case, <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedMain.html"><code>FixedMain</code></a> will run right before [<code>Update</code>], where
-your per-frame systems live.</p>
+<p>In any case, <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedMain.html"><code>FixedMain</code></a> will run right before
+<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a>, where your per-frame systems live.</p>
 <h2 id="additional-schedules"><a class="header" href="#additional-schedules">Additional Schedules</a></h2>
 <p><a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a> is actually part of a larger <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedMain.html"><code>FixedMain</code></a>
 <a href="fundamentals//programming/schedules.html">schedule</a>, which also contains other <a href="fundamentals//programming/schedules.html">schedules</a>:</p>
@@ -4085,9 +4071,9 @@ your per-frame systems live.</p>
 <li><a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedPostUpdate.html"><code>FixedPostUpdate</code></a></li>
 <li><a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedLast.html"><code>FixedLast</code></a></li>
 </ul>
-<p>They are analogous to the <a href="fundamentals//programming/schedules.html">schedules</a> in <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Main.html"><code>Main</code></a>,
-that run every frame update. They can be used for analogous purposes (to
-contain "engine systems" from Bevy and plugins).</p>
+<p>They are analogous to the <a href="fundamentals//programming/schedules.html">schedules</a> in <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Main.html"><code>Main</code></a>, that run every
+frame update. They can be used for analogous purposes (to contain "engine
+systems" from Bevy and plugins).</p>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="fundamentals//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
@@ -6053,9 +6039,9 @@ knowing the cursor position.</p>
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.13.0/examples/window/clear_color.rs"><code>clear_color</code></a>.</p>
 <hr />
-<p>Use the <a href="https://docs.rs/bevy/0.13.0/bevy/render/camera/struct.ClearColor.html"><code>ClearColor</code></a> <a href="window//programming/res.html">resource</a> to choose the
-default background color. This color will be used as the default for all
-<a href="window//graphics/camera.html">cameras</a>, unless overriden.</p>
+<p>Use the <a href="https://docs.rs/bevy/0.13.0/bevy/render/camera/struct.ClearColor.html"><code>ClearColor</code></a> <a href="window//programming/res.html">resource</a> to choose the default background
+color. This color will be used as the default for all <a href="window//graphics/camera.html">cameras</a>,
+unless overriden.</p>
 <p>Note that the window will be black if no cameras exist. You must spawn at
 least one camera.</p>
 <pre><code class="language-rust no_run noplayground">fn setup(
@@ -6073,8 +6059,8 @@ fn main() {
         .add_systems(Startup, setup)
         .run();
 }</code></pre>
-<p>To override the default and use a different color for a specific camera,
-you can set it using the <a href="https://docs.rs/bevy/0.13.0/bevy/render/camera/struct.Camera.html"><code>Camera</code></a> <a href="window//programming/ec.html#components">component</a>.</p>
+<p>To override the default and use a different color for a specific camera, you can
+set it using the <a href="https://docs.rs/bevy/0.13.0/bevy/render/camera/struct.Camera.html"><code>Camera</code></a> <a href="window//programming/ec.html#components">component</a>.</p>
 <pre><code class="language-rust no_run noplayground">use bevy::render::camera::ClearColorConfig;
 
 // configure the background color (if any), for a specific camera (3D)
@@ -6097,11 +6083,10 @@ commands.spawn(Camera2dBundle {
     },
     ..Default::default()
 });</code></pre>
-<p>All of these locations (the components on specific cameras, the global
-default resource) can be mutated at runtime, and bevy will use your new color.
-Changing the default color using the resource will apply the new color to all
-existing cameras that do not specify a custom color, not just newly-spawned
-cameras.</p>
+<p>All of these locations (the components on specific cameras, the global default
+resource) can be mutated at runtime, and bevy will use your new color. Changing
+the default color using the resource will apply the new color to all existing
+cameras that do not specify a custom color, not just newly-spawned cameras.</p>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="window//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
@@ -6111,6 +6096,15 @@ cameras.</p>
 <hr />
 <p>For some genres of games, you want to the mouse to be restricted to the window,
 to prevent it from leaving the window during gameplay.</p>
+<p>There are two variations on this behavior (<a href="https://docs.rs/bevy/0.13.0/bevy/window/enum.CursorGrabMode.html"><code>CursorGrabMode</code></a>):</p>
+<ul>
+<li><code>Confined</code> allows the cursor to be moved, but only within the bounds of the window.</li>
+<li><code>Locked</code> fixes the cursor in place and does not allow it to move.
+<ul>
+<li>Relative <a href="window//input/mouse.html#mouse-motion">mouse motion</a> <a href="window//programming/events.html">events</a> still work.</li>
+</ul>
+</li>
+</ul>
 <p>To grab the cursor:</p>
 <pre><code class="language-rust no_run noplayground">use bevy::window::{CursorGrabMode, PrimaryWindow};
 
@@ -6209,8 +6203,7 @@ fn main() {
         .add_systems(Startup, set_window_icon)
         .run();
 }</code></pre>
-<p>Note: that <a href="https://docs.rs/bevy/0.13.0/bevy/winit/struct.WinitWindows.html"><code>WinitWindows</code></a> is a <a href="window//programming/non-send.html">non-send
-resource</a>.</p>
+<p>Note: that <a href="https://docs.rs/bevy/0.13.0/bevy/winit/struct.WinitWindows.html"><code>WinitWindows</code></a> is a <a href="window//programming/non-send.html">non-send resource</a>.</p>
 <p>Note: you need to add <code>winit</code> and <code>image</code> to your project's dependencies,
 and they must be the same versions as used by Bevy. As of Bevy 0.13, that
 should be <code>winit = "0.29"</code> and <code>image = "0.24"</code>. If you don't know which
@@ -6270,8 +6263,8 @@ even if you are still holding some weak handles.</p>
 <p>Bevy also has a <a href="https://docs.rs/bevy/0.9.1/bevy/asset/struct.HandleUntyped.html"><code>HandleUntyped</code></a> type. Use this type
 of handle if you need to be able to refer to any asset, regardless of the
 asset type.</p>
-<p>This allows you to store a collection (such as <a href="https://doc.rust-lang.org/stable/std/vec/struct.Vec.html"><code>Vec</code></a> or
-<a href="https://doc.rust-lang.org/stable/std/collections/struct.HashMap.html"><code>HashMap</code></a>) containing assets of mixed types.</p>
+<p>This allows you to store a collection (such as <a href="https://doc.rust-lang.org/stable/std/vec/struct.Vec.html"><code>Vec</code></a> or <a href="https://doc.rust-lang.org/stable/std/collections/struct.HashMap.html"><code>HashMap</code></a>)
+containing assets of mixed types.</p>
 <p>You can create an untyped handle using <code>.clone_untyped()</code> on an existing
 handle.</p>
 <p>Just like regular handles, untyped handles can be strong or weak.</p>
@@ -6827,11 +6820,10 @@ monolithic <code>struct Player</code> containing all the fields / properties of 
 In Bevy, this is considered bad practice, because doing it that way can make it
 more difficult to work with your data and limit performance. Instead, you should
 make things granular, when different pieces of data may be accessed independently.</p>
-<p>For example, represent the player in your game as an entity, composed
-of separate component types (separate <code>struct</code>s) for things like the
-health, XP, or whatever is relevant to your game. You can also attach
-standard Bevy components like <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> (<a href="programming//fundamentals/transforms.html">transforms
-explained</a>) to it.</p>
+<p>For example, represent the player in your game as an entity, composed of
+separate component types (separate <code>struct</code>s) for things like the health, XP, or
+whatever is relevant to your game. You can also attach standard Bevy components
+like <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> (<a href="programming//fundamentals/transforms.html">transforms explained</a>) to it.</p>
 <p>Then, each piece of functionality (each <a href="programming//programming/systems.html">system</a>) can just
 <a href="programming//programming/queries.html">query</a> for the data it needs. Common functionality (like a
 health/damage system) can be applied to any entity with the matching components,
@@ -6841,9 +6833,9 @@ you can use a <a href="programming//programming/ec.html#marker-components">marke
 to narrow down your query (using a <a href="programming//programming/queries.html#query-filters">query filter</a> like
 <code>With&lt;Player&gt;</code>).</p>
 <p>However, if some data always makes sense to be accessed together, then you
-should put it in a single <code>struct</code>. For example, Bevy's
-<a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> or <a href="https://docs.rs/bevy/0.13.0/bevy/render/color/enum.Color.html"><code>Color</code></a>. With these types, the
-fields are not likely to be useful independently.</p>
+should put it in a single <code>struct</code>. For example, Bevy's <a href="https://docs.rs/bevy/0.13.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> or
+<a href="https://docs.rs/bevy/0.13.0/bevy/render/color/enum.Color.html"><code>Color</code></a>. With these types, the fields are not likely to be useful
+independently.</p>
 <h3 id="additional-internal-details"><a class="header" href="#additional-internal-details">Additional Internal Details</a></h3>
 <p>The set / combination of components that a given entity has is called the
 entity's Archetype. Bevy keeps track of that internally, to organize the
@@ -7074,14 +7066,14 @@ app.add_systems(Update, (
 <a href="https://github.com/bevyengine/bevy/blob/v0.13.0/examples/games/alien_cake_addict.rs"><code>alien_cake_addict</code></a>,
 <a href="https://github.com/bevyengine/bevy/blob/v0.13.0/examples/games/breakout.rs"><code>breakout</code></a>.</p>
 <hr />
-<p>To enter the Bevy runtime, you need to configure an <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.App.html"><code>App</code></a>. The app
-is how you define the structure of all the things that make up your project:
+<p>To enter the Bevy runtime, you need to configure an <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.App.html"><code>App</code></a>. The app is how you
+define the structure of all the things that make up your project:
 <a href="programming//programming/plugins.html">plugins</a>, <a href="programming//programming/systems.html">systems</a> (and their configuration/metadata:
 <a href="programming//programming/run-criteria.html">run conditions</a>, <a href="programming//programming/system-order.html">ordering</a>, <a href="programming//programming/system-sets.html">sets</a>),
 <a href="programming//programming/events.html">event</a> types, <a href="programming//programming/states.html">states</a>, <a href="programming//programming/schedules.html">schedules</a>…</p>
-<p>You typically create your <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.App.html"><code>App</code></a> in your project's <code>main</code> function.
-However, you don't have to add everything from there. If you want to add things
-to your app from multiple places (like other Rust files or crates), use
+<p>You typically create your <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.App.html"><code>App</code></a> in your project's <code>main</code> function.  However,
+you don't have to add everything from there. If you want to add things to your
+app from multiple places (like other Rust files or crates), use
 <a href="programming//programming/plugins.html">plugins</a>. As your project grows, you will need to do that to keep
 everything organized.</p>
 <pre><code class="language-rust no_run noplayground">fn main() {
@@ -7112,11 +7104,11 @@ everything organized.</p>
 <p>Note: use tuples with <code>add_systems</code>/<code>add_plugins</code>/<code>configure_sets</code> to add
 multiple things at once.</p>
 <p><a href="programming//programming/ec.html#components">Component</a> types do not need to be registered.</p>
-<p>Schedules cannot <a href="https://github.com/bevyengine/bevy/issues/279">(yet)</a> be modified at runtime; all
-<a href="programming//programming/systems.html">systems</a> you want to run must be added/configured in the
-<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.App.html"><code>App</code></a> ahead of time. You can control individual systems using <a href="programming//programming/run-criteria.html">run
-conditions</a>. You can also dynamically enable/disable entire schedules
-using the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.MainScheduleOrder.html"><code>MainScheduleOrder</code></a> <a href="programming//programming/res.html">resource</a>.</p>
+<p>Schedules cannot [(yet)] be modified at runtime; all <a href="programming//programming/systems.html">systems</a> you
+want to run must be added/configured in the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.App.html"><code>App</code></a> ahead of time. You can
+control individual systems using <a href="programming//programming/run-criteria.html">run conditions</a>. You can also
+dynamically enable/disable entire schedules using the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.MainScheduleOrder.html"><code>MainScheduleOrder</code></a>
+<a href="programming//programming/res.html">resource</a>.</p>
 <h2 id="builtin-bevy-functionality"><a class="header" href="#builtin-bevy-functionality">Builtin Bevy Functionality</a></h2>
 <p>The Bevy game engine's own functionality is represented as a <a href="programming//programming/plugins.html#plugin-groups">plugin group</a>.
 Every typical Bevy app must first add it, using either:</p>
@@ -7145,8 +7137,8 @@ app.init_resource::&lt;MyFancyResource&gt;();
 // (in this example, to spawn an entity, but you can do anything)
 app.world.spawn(SomeBundle::default());</code></pre>
 <h2 id="quitting-the-app"><a class="header" href="#quitting-the-app">Quitting the App</a></h2>
-<p>To cleanly shut down bevy, send an <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.AppExit.html"><code>AppExit</code></a>
-<a href="programming//programming/events.html">event</a> from any <a href="programming//programming/systems.html">system</a>:</p>
+<p>To cleanly shut down bevy, send an <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.AppExit.html"><code>AppExit</code></a> <a href="programming//programming/events.html">event</a> from any
+<a href="programming//programming/systems.html">system</a>:</p>
 <pre><code class="language-rust no_run noplayground">use bevy::app::AppExit;
 
 fn exit_system(mut exit: EventWriter&lt;AppExit&gt;) {
@@ -7222,10 +7214,10 @@ cases, you should use regular parallel systems.</p>
 common mistake! If you run your project and your new code doesn't seem to be
 running, make sure you added the system!</p>
 <p>The above is enough for simple projects.</p>
-<p>Systems are contained in <a href="programming//programming/schedules.html">schedules</a>. <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a> is the
-schedule where you typically add any systems you want to run every frame.
-<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Startup.html"><code>Startup</code></a> is where you typically add systems that should run
-only once on app startup. There are also <a href="programming//builtins.html#schedules">other possibilities</a>.</p>
+<p>Systems are contained in <a href="programming//programming/schedules.html">schedules</a>. <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a> is the schedule
+where you typically add any systems you want to run every frame. <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Startup.html"><code>Startup</code></a> is
+where you typically add systems that should run only once on app startup. There
+are also <a href="programming//builtins.html#schedules">other possibilities</a>.</p>
 <p>As your project grows more complex, you might want to make use of some of the
 powerful tools that Bevy offers for managing when/how your systems run, such as:
 <a href="programming//programming/system-order.html">explicit ordering</a>, <a href="programming//programming/run-criteria.html">run conditions</a>, <a href="programming//programming/system-sets.html">system
@@ -7257,7 +7249,8 @@ you might need multiple, consider using <a href="programming//programming/intro-
 resources to access various features of the engine. They work just like your own
 custom types.</p>
 <h2 id="accessing-resources"><a class="header" href="#accessing-resources">Accessing Resources</a></h2>
-<p>To access the value of a resource from <a href="programming//programming/systems.html">systems</a>, use <code>Res</code>/<code>ResMut</code>:</p>
+<p>To access the value of a resource from <a href="programming//programming/systems.html">systems</a>, use
+<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Res.html"><code>Res</code></a>/<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut</code></a>:</p>
 <pre><code class="language-rust no_run noplayground">fn my_system(
     // these will panic if the resources don't exist
     mut goals: ResMut&lt;GoalsReached&gt;,
@@ -7529,7 +7522,7 @@ on your entities. The Rust compiler will give an error if you do not set all
 the fields of a struct, thus helping you make sure your code is correct.</p>
 <p>Bevy provides many <a href="programming//builtins.html#bundles">built-in bundle types</a> that you can use
 to spawn common kinds of entities.</p>
-<p>Here is how to create your own bundle:</p>
+<p>To create your own bundle, derive <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/bundle/trait.Bundle.html"><code>Bundle</code></a> on a <code>struct</code>:</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Bundle)]
 struct PlayerBundle {
     xp: PlayerXp,
@@ -7670,9 +7663,8 @@ fn query_entities(q: Query&lt;(Entity, /* ... */)&gt;) {
 }</code></pre>
 <p>If you know that the query is expected to only ever match a single entity, you
 can use <code>single</code>/<code>single_mut</code> (panic on error) or <code>get_single</code>/<code>get_single_mut</code>
-(return <a href="https://doc.rust-lang.org/stable/std/result/enum.Result.html"><code>Result</code></a>). These methods ensure that there exists exactly
-one candidate entity that can match your query, and will produce an error
-otherwise.</p>
+(return <a href="https://doc.rust-lang.org/stable/std/result/enum.Result.html"><code>Result</code></a>). These methods ensure that there exists exactly one
+candidate entity that can match your query, and will produce an error otherwise.</p>
 <pre><code class="language-rust no_run noplayground">fn query_player(mut q: Query&lt;(&amp;Player, &amp;mut Transform)&gt;) {
     let (player, mut transform) = q.single_mut();
 
@@ -7725,8 +7717,8 @@ the first part of the query (as shown previously), instead of using a filter.</p
 <p>Relevant official examples:
 <a href="https://github.com/bevyengine/bevy/blob/v0.13.0/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
 <hr />
-<p>Use <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a> to spawn/despawn entities, add/remove
-components on existing entities, manage resources, from your <a href="programming//programming/systems.html">systems</a>.</p>
+<p>Use <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a> to spawn/despawn entities, add/remove components on existing
+entities, manage resources, from your <a href="programming//programming/systems.html">systems</a>.</p>
 <pre><code class="language-rust no_run noplayground">fn spawn_things(
     mut commands: Commands,
 ) {
@@ -7790,29 +7782,28 @@ fn despawn_all_enemies(
 }
 </code></pre>
 <h2 id="when-do-these-actions-get-applied"><a class="header" href="#when-do-these-actions-get-applied">When do these actions get applied?</a></h2>
-<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a> do not take effect immediately, because
-it wouldn't be safe to modify the data layout in memory when other
-<a href="programming//programming/systems.html">systems</a> could be running in parallel. When you do anything using
-<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>, it gets queued to be applied later when it is
-safe to do so.</p>
-<p>Within the same schedule, you can add <code>.before()</code>/<code>.after()</code> <a href="programming//programming/system-order.html">ordering
-constraints</a> to your systems, and Bevy will automatically
-make sure that Commands get applied in-between if necessary, so that the
-second system can see the changes made by the first system.</p>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a> do not take effect immediately, because it wouldn't be safe to
+modify the data layout in memory when other <a href="programming//programming/systems.html">systems</a> could be
+running in parallel. When you do anything using <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>, it gets queued to
+be applied later when it is safe to do so.</p>
+<p>Within the same <a href="programming//programming/schedules.html">schedule</a>, you can add <code>.before()</code>/<code>.after()</code>
+<a href="programming//programming/system-order.html">ordering constraints</a> to your systems, and Bevy will
+automatically make sure that Commands get applied in-between if necessary, so
+that the second system can see the changes made by the first system.</p>
 <pre><code class="language-rust no_run noplayground">app.add_systems(Update, spawn_new_enemies_if_needed);
 
 // This system will see any newly-spawned enemies when it runs,
 // because Bevy will make sure to apply the first system's Commands
 // (thanks to the explicit `.after()` dependency)
 app.add_systems(Update, enemy_ai.after(spawn_new_enemies_if_needed));</code></pre>
-<p>If you do not have explicit ordering dependencies, it is undefined when
-Commands will be applied. It is possible that some systems will only
-see the changes on the next frame update!</p>
+<p>If you do not have explicit ordering dependencies, it is undefined when Commands
+will be applied. It is possible that some systems will only see the changes on
+the next frame update!</p>
 <p>Otherwise, Commands are normally applied at the end of every
-<a href="programming//programming/schedules.html">schedule</a>. <a href="programming//programming/systems.html">Systems</a> that live in different
-schedules will see the changes. For example, Bevy's engine systems (that
-live in <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a>) will see the entities you spawn in your systems (that
-live in <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a>).</p>
+<a href="programming//programming/schedules.html">schedule</a>. <a href="programming//programming/systems.html">Systems</a> that live in different schedules
+will see the changes. For example, Bevy's engine systems (that live in
+<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a>) will see the entities you spawn in your systems (that live in
+<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a>).</p>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
@@ -7883,12 +7874,11 @@ when your systems are not running!</p>
 <p>If you don't like this, <a href="programming//patterns/manual-event-clear.html">you can have manual control over when events are
 cleared</a> (at the risk of leaking / wasting memory if you
 forget to clear them).</p>
-<p>The <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/event/struct.EventWriter.html"><code>EventWriter&lt;T&gt;</code></a> system parameter is just syntax sugar
-for mutably accessing the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/event/struct.Events.html"><code>Events&lt;T&gt;</code></a> <a href="programming//programming/res.html">resource</a> to
-add events to the queue. The <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/event/struct.EventReader.html"><code>EventReader&lt;T&gt;</code></a> is a little
-more complex: it accesses the events storage immutably, but also stores an
-integer counter to keep track of how many events you have read. This is why it
-also needs the <code>mut</code> keyword.</p>
+<p>The <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/event/struct.EventWriter.html"><code>EventWriter&lt;T&gt;</code></a> system parameter is just syntax sugar for mutably
+accessing the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/event/struct.Events.html"><code>Events&lt;T&gt;</code></a> <a href="programming//programming/res.html">resource</a> to add events to the queue. The
+<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/event/struct.EventReader.html"><code>EventReader&lt;T&gt;</code></a> is a little more complex: it accesses the events storage
+immutably, but also stores an integer counter to keep track of how many events
+you have read. This is why it also needs the <code>mut</code> keyword.</p>
 <h2 id="possible-pitfalls"><a class="header" href="#possible-pitfalls">Possible Pitfalls</a></h2>
 <p>Beware of frame delay / 1-frame-lag. This can occur if Bevy runs the
 receiving system before the sending system. The receiving system will only
@@ -7914,13 +7904,12 @@ only do this for your own event types. There is no solution for Bevy's
 is not stored in the ECS World, but rather together with your system.
 Nothing outside of your system can access it. The value will be kept across
 subsequent runs of the system.</p>
-<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a> is a system parameter similar to
-<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a>, which gives you full mutable access to an
-instance of some data type, that is independent from entities and components.</p>
-<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Res.html"><code>Res&lt;T&gt;</code></a>/<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a> refer to a single global
-instance of the type, shared between all systems. On the other hand, every
-<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a> parameter is a separate instance, exclusively for
-that system.</p>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a> is a system parameter similar to <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a>, which gives you
+full mutable access to an instance of some data type, that is independent from
+entities and components.</p>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Res.html"><code>Res&lt;T&gt;</code></a>/<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a> refer to a single global instance of the type, shared
+between all systems. On the other hand, every <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a> parameter is a
+separate instance, exclusively for that system.</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Default)]
 struct MyState {
     // ...
@@ -7933,19 +7922,18 @@ fn my_system1(mut local: Local&lt;MyState&gt;) {
 fn my_system2(mut local: Local&lt;MyState&gt;) {
     // the local in this system is a different instance
 }</code></pre>
-<p>The type must implement <a href="https://doc.rust-lang.org/stable/std/default/trait.Default.html"><code>Default</code></a> or
-<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/trait.FromWorld.html"><code>FromWorld</code></a>. It is automatically initialized.
-It is not possible to specify a custom initial value.</p>
+<p>The type must implement <a href="https://doc.rust-lang.org/stable/std/default/trait.Default.html"><code>Default</code></a> or <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/trait.FromWorld.html"><code>FromWorld</code></a>. It is automatically
+initialized.  It is not possible to specify a custom initial value.</p>
 <p>A system can have multiple <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Local.html"><code>Local</code></a>s of the same type.</p>
 <h2 id="specify-an-initial-value"><a class="header" href="#specify-an-initial-value">Specify an initial value</a></h2>
-<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a> is always automatically initialized using the
-default value for the type. If that doesn't work for you, there is an
-alternative way to pass data into a system.</p>
-<p>If you need specific data, you can use a closure instead. Rust closures
-that take system parameters are valid Bevy systems, just like standalone
-functions. Using a closure allows you to "move data into the function".</p>
-<p>This example shows how to initialize some data to configure a system,
-without using <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a>:</p>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a> is always automatically initialized using the default value for the
+type. If that doesn't work for you, there is an alternative way to pass data
+into a system.</p>
+<p>If you need specific data, you can use a closure instead. Rust closures that
+take system parameters are valid Bevy systems, just like standalone functions.
+Using a closure allows you to "move data into the function".</p>
+<p>This example shows how to initialize some data to configure a system, without
+using <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a>:</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Default)]
 struct MyConfig {
     magic: usize,
@@ -7980,8 +7968,8 @@ fn main() {
         })
         .run();
 }</code></pre>
-<p>Another way to accomplish the same thing is to "return" the system
-from "constructor" helper function that creates it:</p>
+<p>Another way to accomplish the same thing is to "return" the system from
+"constructor" helper function that creates it:</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Default)]
 struct MyConfig {
     magic: usize,
@@ -8019,7 +8007,7 @@ fn main() {
 <h1 id="exclusive-systems-1"><a class="header" href="#exclusive-systems-1">Exclusive Systems</a></h1>
 <p>Exclusive systems are <a href="programming//programming/systems.html">systems</a> that Bevy will not run in parallel
 with any other system. They can have <a href="programming//programming/world.html">full unrestricted access</a>
-to the whole ECS <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>World</code></a>, by taking a <code>&amp;mut World</code> parameter.</p>
+to the whole ECS <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>World</code></a>, by taking a <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>&amp;mut World</code></a> parameter.</p>
 <p>Inside of an exclusive system, you have full control over all data stored
 in the ECS. You can do whatever you want.</p>
 <p>Some example situations where exclusive systems are useful:</p>
@@ -8027,7 +8015,7 @@ in the ECS. You can do whatever you want.</p>
 <li>Dump various entities and components to a file, to implement things like
 saving and loading of game save files, or scene export from an editor</li>
 <li>Directly spawn/despawn <a href="programming//programming/intro-data.html#entities--components">entities</a>, or insert/remove <a href="programming//programming/res.html">resources</a>,
-immediately with no delay (unlike when using <a href="programming//programming/commands.html"><code>Commands</code></a>
+immediately with no delay (unlike when using <a href="programming//programming/commands.html">Commands</a>
 from a regular system)</li>
 <li>Run arbitrary <a href="programming//programming/systems.html">systems</a> and <a href="programming//programming/schedules.html">schedules</a> with your
 own custom control flow logic</li>
@@ -8049,7 +8037,7 @@ as with regular systems.</p>
         .before(other_things)
 );</code></pre>
 <h2 id="exclusive-system-parameters"><a class="header" href="#exclusive-system-parameters">Exclusive System Parameters</a></h2>
-<p>There are a few other things, besides <code>&amp;mut World</code>, that can be used as
+<p>There are a few other things, besides <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>&amp;mut World</code></a>, that can be used as
 parameters for exclusive systems:</p>
 <ul>
 <li><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>&amp;mut World</code></a>:
@@ -8060,16 +8048,15 @@ Data <a href="programming//programming/local.html">local</a> to the system</li>
 Emulates a regular system, allowing you to easily access data from the World.
 <code>P</code> are the system parameters.</li>
 <li><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/query/struct.QueryState.html"><code>&amp;mut QueryState&lt;Q, F = ()&gt;</code></a>:
-Allows you to perform queries on the World, similar to a <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Query.html"><code>Query</code></a>
-in regular systems.</li>
+Allows you to perform queries on the World, similar to a <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Query.html"><code>Query</code></a> in regular systems.</li>
 </ul>
-<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.SystemState.html"><code>SystemState</code></a> can be used to emulate a normal system.
-You can put regular system parameters inside. This allows you to access the
-<code>World</code> as you would from a normal system, but you can confine it to a
-specific scope inside your function body, making it more flexible.</p>
-<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/query/struct.QueryState.html"><code>QueryState</code></a> is the same thing, but for a single query.
-It is a simpler alternative to <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.SystemState.html"><code>SystemState</code></a> for when
-you just need to be able to query for some data.</p>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.SystemState.html"><code>SystemState</code></a> can be used to emulate a normal system.  You can put regular
+system parameters inside. This allows you to access the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>World</code></a> as you would
+from a normal system, but you can confine it to a specific scope inside your
+function body, making it more flexible.</p>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/query/struct.QueryState.html"><code>QueryState</code></a> is the same thing, but for a single query.  It is a simpler
+alternative to <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.SystemState.html"><code>SystemState</code></a> for when you just need to be able to query for
+some data.</p>
 <pre><code class="language-rust no_run noplayground">use bevy::ecs::system::SystemState;
 
 fn spawn_particles_for_enemies(
@@ -8123,10 +8110,9 @@ introduce a performance bottleneck.</p>
 to do something that is only possible with them.</p>
 <p>On the other hand, they can have less overhead (by avoiding
 <a href="programming//programming/commands.html">Commands</a>), and so can be faster for some use cases.</p>
-<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a> has a lot of overhead, as it needs to store your
-data in a queue and then process / copy it into the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>World</code></a>
-later. Directly spawning entities into the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>World</code></a> is much
-more efficient.</p>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a> has a lot of overhead, as it needs to store your data in a queue
+and then process / copy it into the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>World</code></a> later. Directly spawning entities
+into the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>World</code></a> is much more efficient.</p>
 <p>Some examples for when exclusive systems can be faster:</p>
 <ul>
 <li>You want to spawn/despawn a ton of entities.
@@ -8236,10 +8222,12 @@ of Bevy's scheduling framework.</p>
 <p>All <a href="programming//programming/systems.html">systems</a> to be run by Bevy are contained and organized using
 schedules. A schedule is a collection of systems, with metadata for how they
 should run, and an associated executor algorithm to run the systems.</p>
+<p>A Bevy app has many different schedules for different purposes, to run them
+in different situations.</p>
 <h2 id="scheduling-systems"><a class="header" href="#scheduling-systems">Scheduling Systems</a></h2>
 <p>If you want a <a href="programming//programming/systems.html">system</a> to be run by Bevy, you need to add it to a
-schedule. Writing a new Rust function and forgetting to add it / register it
-with Bevy is a common mistake.</p>
+schedule via the <a href="programming//programming/app-builder.html">app builder</a>. Writing a new Rust function and
+forgetting to add it / register it with Bevy is a common mistake.</p>
 <p>Whenever you add a system, you specify what schedule to put it in:</p>
 <pre><code class="language-rust no_run noplayground">// add something to the Update schedule (runs every frame)
 app.add_systems(Update, camera_movement);
@@ -8273,77 +8261,67 @@ You need to configure everything ahead of time.</p>
 <a href="programming//programming/run-criteria.html">run conditions</a>. That is the mechanism for disabling them if they
 shouldn't run.</p>
 <h2 id="bevys-app-structure"><a class="header" href="#bevys-app-structure">Bevy's App Structure</a></h2>
-<p>Bevy has three primary/foundational schedules: <code>Main</code>, <code>Extract</code>, <code>Render</code>. There
-are also other schedules, which are managed and run within <code>Main</code>.</p>
-<p>In a normal Bevy app, the <code>Main</code>+<code>Extract</code>+<code>Render</code> schedules are run repeatedly
-in a loop. Together, they produce one frame of your game. Every time <code>Main</code>
+<p>Bevy has three primary/foundational schedules: <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Main.html"><code>Main</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/render/struct.Extract.html"><code>Extract</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/render/struct.Render.html"><code>Render</code></a>.
+There are also other schedules, which are managed and run within <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Main.html"><code>Main</code></a>.</p>
+<p>In a normal Bevy app, the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Main.html"><code>Main</code></a>+<a href="https://docs.rs/bevy/0.13.0/bevy/render/struct.Extract.html"><code>Extract</code></a>+<a href="https://docs.rs/bevy/0.13.0/bevy/render/struct.Render.html"><code>Render</code></a> schedules are run repeatedly
+in a loop. Together, they produce one frame of your game. Every time <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Main.html"><code>Main</code></a>
 runs, it runs a sequence of other schedules. On its first run, it also first
 runs a sequence of "startup" schedules.</p>
-<p>Most Bevy users only have to deal with the sub-schedules of <code>Main</code>. <code>Extract</code>
-and <code>Render</code> are only relevant to graphics developers who want to develop
-new/custom rendering features for the engine. This page is only focused on
-<code>Main</code>. If you want to learn more about <code>Extract</code> and <code>Render</code>, <a href="programming//gpu/intro.html">see this
-page about Bevy's rendering architecture</a>.</p>
+<p>Most Bevy users only have to deal with the sub-schedules of <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Main.html"><code>Main</code></a>.
+<a href="https://docs.rs/bevy/0.13.0/bevy/render/struct.Extract.html"><code>Extract</code></a> and <a href="https://docs.rs/bevy/0.13.0/bevy/render/struct.Render.html"><code>Render</code></a> are only relevant to graphics developers who want to
+develop new/custom rendering features for the engine. This page is only focused
+on <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Main.html"><code>Main</code></a>. If you want to learn more about <a href="https://docs.rs/bevy/0.13.0/bevy/render/struct.Extract.html"><code>Extract</code></a> and <a href="https://docs.rs/bevy/0.13.0/bevy/render/struct.Render.html"><code>Render</code></a>, <a href="programming//gpu/intro.html">see
+this page about Bevy's rendering architecture</a>.</p>
 <h2 id="the-main-schedule"><a class="header" href="#the-main-schedule">The Main Schedule</a></h2>
-<p><code>Main</code> is where all the application logic runs. It is a sort of meta-schedule,
-whose job is to run other schedules in a specific order. You should not add
-any custom systems directly to <code>Main</code>. You should add your systems to the various
-schedules managed by <code>Main</code>.</p>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Main.html"><code>Main</code></a> is where all the application logic runs. It is a sort of meta-schedule,
+whose job is to run other schedules in a specific order. You should not add any
+custom systems directly to <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Main.html"><code>Main</code></a>. You should add your systems to the various
+schedules managed by <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Main.html"><code>Main</code></a>.</p>
 <p>Bevy provides the following schedules, to organize all the systems:</p>
 <ul>
-<li><a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.First.html"><code>First</code></a>,
-<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PreUpdate.html"><code>PreUpdate</code></a>,
-<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.StateTransition.html"><code>StateTransition</code></a>,
-<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.RunFixedMainLoop.html"><code>RunFixedMainLoop</code></a>,
-<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a>,
-<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a>,
-<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Last.html"><code>Last</code></a>
+<li><a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.First.html"><code>First</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PreUpdate.html"><code>PreUpdate</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.StateTransition.html"><code>StateTransition</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.RunFixedMainLoop.html"><code>RunFixedMainLoop</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Last.html"><code>Last</code></a>
 <ul>
-<li>These schedules are run by <code>Main</code> every time it runs</li>
+<li>These schedules are run by <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Main.html"><code>Main</code></a> every time it runs</li>
 </ul>
 </li>
-<li><code>PreStartup</code>, <code>Startup</code>, <code>PostStartup</code>
+<li><a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PreStartup.html"><code>PreStartup</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Startup.html"><code>Startup</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PostStartup.html"><code>PostStartup</code></a>
 <ul>
-<li>These schedules are run by <code>Main</code> once, the first time it runs</li>
+<li>These schedules are run by <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Main.html"><code>Main</code></a> once, the first time it runs</li>
 </ul>
 </li>
 <li><a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedMain.html"><code>FixedMain</code></a>
 <ul>
-<li>The <a href="programming//fundamentals/fixed-timestep.html">fixed timestep</a> equivalent of the <code>Main</code> schedule.</li>
-<li>Run by <code>RunFixedMainLoop</code> as many times as needed, to catch up to the fixed timestep interval.</li>
+<li>The <a href="programming//fundamentals/fixed-timestep.html">fixed timestep</a> equivalent of the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Main.html"><code>Main</code></a> schedule.</li>
+<li>Run by <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.RunFixedMainLoop.html"><code>RunFixedMainLoop</code></a> as many times as needed, to catch up to the fixed timestep interval.</li>
 </ul>
 </li>
-<li><a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedFirst.html"><code>FixedFirst</code></a>,
-<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedPreUpdate.html"><code>FixedPreUpdate</code></a>,
-<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a>,
-<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedPostUpdate.html"><code>FixedPostUpdate</code></a>,
-<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedLast.html"><code>FixedLast</code></a>
+<li><a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedFirst.html"><code>FixedFirst</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedPreUpdate.html"><code>FixedPreUpdate</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedPostUpdate.html"><code>FixedPostUpdate</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedLast.html"><code>FixedLast</code></a>
 <ul>
-<li>The <a href="programming//fundamentals/fixed-timestep.html">fixed timestep</a> equivalents of the <code>Main</code> sub-schedules.</li>
+<li>The <a href="programming//fundamentals/fixed-timestep.html">fixed timestep</a> equivalents of the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Main.html"><code>Main</code></a> sub-schedules.</li>
 </ul>
 </li>
-<li><code>OnEnter(…)</code>/<code>OnExit(…)</code>/<code>OnTransition(…)</code>
+<li><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.OnEnter.html"><code>OnEnter(…)</code></a>/<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.OnExit.html"><code>OnExit(…)</code></a>/<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.OnTransition.html"><code>OnTransition(…)</code></a>
 <ul>
-<li>These schedules are run by <code>StateTransition</code> on <a href="programming//programming/states.html">state</a> changes</li>
+<li>These schedules are run by <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.StateTransition.html"><code>StateTransition</code></a> on <a href="programming//programming/states.html">state</a> changes</li>
 </ul>
 </li>
 </ul>
-<p>The intended places for most user systems (your game logic) are <code>Update</code>,
-<code>FixedUpdate</code>, <code>Startup</code>, and the <a href="programming//programming/states.html">state</a> transition schedules.</p>
-<p><code>Update</code> is for your usual game logic that should run every frame. <code>Startup</code> is
+<p>The intended places for most user systems (your game logic) are <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a>,
+<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a>, <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Startup.html"><code>Startup</code></a>, and the <a href="programming//programming/states.html">state</a> transition schedules.</p>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a> is for your usual game logic that should run every frame. <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Startup.html"><code>Startup</code></a> is
 useful to perform initialization tasks, before the first normal frame update
-loop. <code>FixedUpdate</code> is if you want to use a <a href="programming//fundamentals/fixed-timestep.html">fixed timestep</a>.</p>
+loop. <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a> is if you want to use a <a href="programming//fundamentals/fixed-timestep.html">fixed timestep</a>.</p>
 <p>The other schedules are intended for engine-internal functionality. Splitting
 them like that ensures that Bevy's internal engine systems will run correctly
 with respect to your systems, without any configuration on your part.
 Remember: Bevy's internals are implemented using ordinary systems
 and ECS, just like your own stuff!</p>
 <p>If you are developing plugins to be used by other people, you might be
-interested in adding functionality to <code>PreUpdate</code>/<code>PostUpdate</code> (or the <code>Fixed</code>
+interested in adding functionality to <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PreUpdate.html"><code>PreUpdate</code></a>/<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a> (or the <code>Fixed</code>
 equivalents), so it can run alongside other "engine systems". Also consider
-<code>PreStartup</code> and <code>PostStartup</code> if you have startup systems that should be
+<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PreStartup.html"><code>PreStartup</code></a> and <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PostStartup.html"><code>PostStartup</code></a> if you have startup systems that should be
 separated from your users' startup systems.</p>
-<p><code>First</code> and <code>Last</code> exist only for special edge cases, if you really need to
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.First.html"><code>First</code></a> and <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Last.html"><code>Last</code></a> exist only for special edge cases, if you really need to
 ensure something runs before/after <em>everything</em> else, including all the normal
 "engine-internal" code.</p>
 <h2 id="configuring-schedules"><a class="header" href="#configuring-schedules">Configuring Schedules</a></h2>
@@ -8393,7 +8371,7 @@ the sync points, you can do that.</p>
         ..default()
     });
 });</code></pre>
-<p>Now, to manually create sync points, add special <code>apply_deferred</code> systems
+<p>Now, to manually create sync points, add special [<code>apply_deferred</code>] systems
 where you like them:</p>
 <pre><code class="language-rust no_run noplayground">app.add_systems(
     Update,
@@ -8409,23 +8387,20 @@ app.add_systems(Update, (
     ).chain(),
 ));</code></pre>
 <h2 id="main-schedule-configuration"><a class="header" href="#main-schedule-configuration">Main Schedule Configuration</a></h2>
-<p>The order of schedules to be run by <code>Main</code> every frame is configured in
-the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.MainScheduleOrder.html"><code>MainScheduleOrder</code></a> <a href="programming//programming/res.html">resource</a>.
-For advanced use cases, if Bevy's predefined schedules don't work for your
-needs, you can change it.</p>
+<p>The order of schedules to be run by <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Main.html"><code>Main</code></a> every frame is configured in the
+<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.MainScheduleOrder.html"><code>MainScheduleOrder</code></a> <a href="programming//programming/res.html">resource</a>. For advanced use cases, if Bevy's
+predefined schedules don't work for your needs, you can change it.</p>
 <h3 id="creating-a-new-custom-schedule"><a class="header" href="#creating-a-new-custom-schedule">Creating a New Custom Schedule</a></h3>
 <p>As an example, let's say we want to add an additional schedule, that runs every
-frame (like <code>Update</code>), but runs before <a href="programming//fundamentals/fixed-timestep.html">fixed timestep</a>.</p>
+frame (like <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a>), but runs before <a href="programming//fundamentals/fixed-timestep.html">fixed timestep</a>.</p>
 <p>First, we need to create a name/label for our new schedule, by creating a Rust
-type (a <code>struct</code> or <code>enum</code>) and deriving <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/trait.ScheduleLabel.html"><code>ScheduleLabel</code></a></p>
-<ul>
-<li>an assortment of required standard Rust traits.</li>
-</ul>
+type (a <code>struct</code> or <code>enum</code>) and deriving <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/trait.ScheduleLabel.html"><code>ScheduleLabel</code></a> + an assortment of
+required standard Rust traits.</p>
 <pre><code class="language-rust no_run noplayground">#[derive(ScheduleLabel, Debug, Clone, PartialEq, Eq, Hash)]
 struct PrepareUpdate;</code></pre>
 <p>Now, we can init the schedule in the <a href="programming//programming/app-builder.html">app</a>, add it to
-<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.MainScheduleOrder.html"><code>MainScheduleOrder</code></a> to make it run every frame
-where we like it, and add some systems to it!</p>
+<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.MainScheduleOrder.html"><code>MainScheduleOrder</code></a> to make it run every frame where we like it, and add some
+systems to it!</p>
 <pre><code class="language-rust no_run noplayground">// Ensure the schedule has been created
 // (this is technically optional; Bevy will auto-init
 // the schedule the first time it is used)
@@ -8456,26 +8431,6 @@ system's function signature (the types of the parameters it takes).</p>
 <p>In such situations, the order is <em>nondeterministic</em> by default. Bevy takes
 no regard for when each system will run, and the order could even change
 every frame!</p>
-<h2 id="does-it-even-matter"><a class="header" href="#does-it-even-matter">Does it even matter?</a></h2>
-<p>In many cases, you don't need to worry about this.</p>
-<p>However, sometimes you need to rely on specific systems to run in a particular
-order. For example:</p>
-<ul>
-<li>Maybe the logic you wrote in one of your systems needs any modifications
-done to that data by another system to always happen first?</li>
-<li>One system needs to receive <a href="programming//programming/events.html">events</a> sent by another system.</li>
-<li>You are using <a href="programming//programming/change-detection.html">change detection</a>.</li>
-</ul>
-<p>In such situations, systems running in the wrong order typically causes
-their behavior to be delayed until the next frame. In rare cases, depending
-on your game logic, it may even result in more serious logic bugs!</p>
-<p>It is up to you to decide if this is important.</p>
-<p>With many things in typical games, such as juicy visual effects, it probably
-doesn't matter if they get delayed by a frame. It might not be worthwhile
-to bother with it. If you don't care, leaving the order ambiguous may also
-result in better performance.</p>
-<p>On the other hand, for things like handling the player input controls,
-this would result in annoying lag or worse, so you should probably fix it.</p>
 <h2 id="explicit-system-ordering"><a class="header" href="#explicit-system-ordering">Explicit System Ordering</a></h2>
 <p>If a specific system must always run before or after some other systems,
 you can add ordering constraints:</p>
@@ -8498,6 +8453,26 @@ app.add_systems(Update, (
 <p><code>.before</code>/<code>.after</code> may be used as many times as you need on one system.</p>
 <p>If you need to apply the same ordering constraints to many systems,
 consider using <a href="programming//programming/system-sets.html">system sets</a>.</p>
+<h2 id="does-it-even-matter"><a class="header" href="#does-it-even-matter">Does it even matter?</a></h2>
+<p>In many cases, you don't need to worry about this.</p>
+<p>However, sometimes you need to rely on specific systems to run in a particular
+order. For example:</p>
+<ul>
+<li>Maybe the logic you wrote in one of your systems needs any modifications
+done to that data by another system to always happen first?</li>
+<li>One system needs to receive <a href="programming//programming/events.html">events</a> sent by another system.</li>
+<li>You are using <a href="programming//programming/change-detection.html">change detection</a>.</li>
+</ul>
+<p>In such situations, systems running in the wrong order typically causes
+their behavior to be delayed until the next frame. In rare cases, depending
+on your game logic, it may even result in more serious logic bugs!</p>
+<p>It is up to you to decide if this is important.</p>
+<p>With many things in typical games, such as juicy visual effects, it probably
+doesn't matter if they get delayed by a frame. It might not be worthwhile
+to bother with it. If you don't care, leaving the order ambiguous may also
+result in better performance.</p>
+<p>On the other hand, for things like handling the player input controls,
+this would result in annoying lag or worse, so you should probably fix it.</p>
 <h2 id="circular-dependencies"><a class="header" href="#circular-dependencies">Circular Dependencies</a></h2>
 <p>If you have multiple systems mutually depending on each other, then it is
 clearly impossible to resolve the situation completely like that.</p>
@@ -8691,9 +8666,9 @@ initializes the sets in each schedule), but will not work correctly, as they
 will not have any of your configurations.</p>
 <p>Some common scenarios where this can occur:</p>
 <ul>
-<li>You configure your set in <code>Update</code> and try to also use it in <code>FixedUpdate</code>, or vice versa.</li>
-<li>You try to use your sets in the <code>OnEnter</code>/<code>OnExit</code> schedules of various <a href="programming//programming/states.html">app states</a>.</li>
-<li>You add a system to <code>PostUpdate</code> or <code>PreUpdate</code>.</li>
+<li>You configure your set in <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a> and try to also use it in <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a>, or vice versa.</li>
+<li>You try to use your sets in the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.OnEnter.html"><code>OnEnter</code></a>/<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.OnExit.html"><code>OnExit</code></a> schedules of various <a href="programming//programming/states.html">app states</a>.</li>
+<li>You add a system to <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a> or <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PreUpdate.html"><code>PreUpdate</code></a>.</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
@@ -8907,19 +8882,17 @@ the transition for you.</p>
 <li>The <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.OnTransition.html"><code>OnTransition { from: old_state, to: new_state }</code></a> <a href="programming//programming/schedules.html">schedule</a> is run.</li>
 <li>The <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.OnEnter.html"><code>OnEnter(new_state)</code></a> <a href="programming//programming/schedules.html">schedule</a> is run.</li>
 </ul>
-<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.StateTransitionEvent.html"><code>StateTransitionEvent</code></a> is useful in any
-<a href="programming//programming/systems.html">systems</a> that run regardless of state, but want to know if a
-transition has occurred. You can use it to detect state transitions.</p>
-<p>The <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.StateTransition.html"><code>StateTransition</code></a> <a href="programming//programming/schedules.html">schedule</a> runs
-after <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PreUpdate.html"><code>PreUpdate</code></a> (which contains Bevy engine internals),
-but before <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedMain.html"><code>FixedMain</code></a> (<a href="programming//fundamentals/fixed-timestep.html">fixed timestep</a>)
-and <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a>, where your game's <a href="programming//programming/systems.html">systems</a>
-usually live.</p>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.StateTransitionEvent.html"><code>StateTransitionEvent</code></a> is useful in any <a href="programming//programming/systems.html">systems</a> that run
+regardless of state, but want to know if a transition has occurred. You can use
+it to detect state transitions.</p>
+<p>The <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.StateTransition.html"><code>StateTransition</code></a> <a href="programming//programming/schedules.html">schedule</a> runs after <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PreUpdate.html"><code>PreUpdate</code></a> (which
+contains Bevy engine internals), but before <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedMain.html"><code>FixedMain</code></a> (<a href="programming//fundamentals/fixed-timestep.html">fixed
+timestep</a>) and <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a>, where your game's
+<a href="programming//programming/systems.html">systems</a> usually live.</p>
 <p>Therefore, state transitions happen before your game logic for the current frame.</p>
-<p>If doing state transitions once per frame is not enough for
-you, you can add additional transition points, by adding Bevy's
-<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/fn.apply_state_transition.html"><code>apply_state_transition</code></a> <a href="programming//programming/systems.html">system</a>
-wherever you like.</p>
+<p>If doing state transitions once per frame is not enough for you, you can add
+additional transition points, by adding Bevy's <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/fn.apply_state_transition.html"><code>apply_state_transition</code></a>
+<a href="programming//programming/systems.html">system</a> wherever you like.</p>
 <pre><code class="language-rust no_run noplayground">// Example: also do state transitions for MyPausedState
 // before MyGameplaySet on each fixed timestep run
 app.add_systems(
@@ -8929,15 +8902,13 @@ app.add_systems(
 );</code></pre>
 <h2 id="known-pitfalls-2"><a class="header" href="#known-pitfalls-2">Known Pitfalls</a></h2>
 <h3 id="system-set-configuration-is-per-schedule"><a class="header" href="#system-set-configuration-is-per-schedule">System set configuration is per-schedule!</a></h3>
-<p>This is the same general caveat that applies any time you configure [system sets][cb::set].</p>
+<p>This is the same general caveat that applies any time you configure <a href="programming//programming/system-sets.html">system sets</a>.</p>
 <p>Note that <code>app.configure_sets()</code> is <em>per-<a href="programming//programming/schedules.html">schedule</a>!</em> If you configure some sets
 in one <a href="programming//programming/schedules.html">schedule</a>, that configuration does not carry over to other schedules.</p>
 <p>Because states are so schedule-heavy, you have to be especially careful. Don't assume
 that just because you configured a set, you can use it anywhere.</p>
-<p>For example, your sets from <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a>
-and <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a> will not work in
-<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.OnEnter.html"><code>OnEnter</code></a>/<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.OnExit.html"><code>OnExit</code></a> for your various state
-transitions.</p>
+<p>For example, your sets from <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a> and <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a> will not work in
+<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.OnEnter.html"><code>OnEnter</code></a>/<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/struct.OnExit.html"><code>OnExit</code></a> for your various state transitions.</p>
 <h3 id="events-2"><a class="header" href="#events-2">Events</a></h3>
 <p>This is the same general caveat that applies to any <a href="programming//programming/systems.html">systems</a> with
 <a href="programming//programming/run-criteria.html">run conditions</a> that want to receive <a href="programming//programming/events.html">events</a>.</p>
@@ -9295,9 +9266,8 @@ fn detect_removals(
 <a href="programming//programming/commands.html"><code>Commands::entity()</code></a> or <a href="programming//programming/queries.html"><code>Query::get()</code></a>.)</p>
 <h2 id="resources-4"><a class="header" href="#resources-4">Resources</a></h2>
 <p>Bevy does not provide any API for detecting when <a href="programming//programming/res.html">resources</a> are removed.</p>
-<p>You can work around this using <a href="https://doc.rust-lang.org/stable/std/option/enum.Option.html"><code>Option</code></a> and a separate
-<a href="programming//programming/local.html"><code>Local</code></a> system parameter, effectively implementing your own
-detection.</p>
+<p>You can work around this using <a href="https://doc.rust-lang.org/stable/std/option/enum.Option.html"><code>Option</code></a> and a separate <a href="programming//programming/local.html"><code>Local</code></a>
+system parameter, effectively implementing your own detection.</p>
 <pre><code class="language-rust no_run noplayground">fn detect_removed_res(
     my_res: Option&lt;Res&lt;MyResource&gt;&gt;,
     mut my_res_existed: Local&lt;bool&gt;,
@@ -9391,7 +9361,7 @@ same data.</p>
 <p>The two <a href="programming//programming/queries.html">queries</a> are both trying to mutably access <code>Health</code>. They
 have different <a href="programming//programming/queries.html#query-filters">filters</a>, but what if there are entities that
 have both <code>Player</code> and <code>Enemy</code> components? If we know that shouldn't happen, we
-can add <code>Without</code> filters, but what if it is actually valid for our game?</p>
+can add <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/query/struct.Without.html"><code>Without</code></a> filters, but what if it is actually valid for our game?</p>
 <p>Such code will compile (Rust cannot know about Bevy ECS semantics), but will
 result in a runtime panic. When Bevy tries to run the system, it will panic with
 a message about conflicting system parameters:</p>
@@ -9445,17 +9415,16 @@ thread-pool, making use of many CPU cores. However, you might need to ensure
 that some code always runs on the "main thread", or access data that is not
 safe to access in a multithreaded way.</p>
 <h2 id="non-send-systems-and-data-access"><a class="header" href="#non-send-systems-and-data-access">Non-Send Systems and Data Access</a></h2>
-<p>To do this, you can use a <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.NonSend.html"><code>NonSend&lt;T&gt;</code></a> /
-<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.NonSendMut.html"><code>NonSendMut&lt;T&gt;</code></a> system parameter. This behaves just like
-<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Res.html"><code>Res&lt;T&gt;</code></a> / <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a>, letting you access an
-ECS <a href="programming//programming/res.html">resource</a> (single global instance of some data), except that
-the presence of such a parameter forces the Bevy scheduler to always run the
-<a href="programming//programming/systems.html">system</a> on the main thread. This ensures that data never has
-to be sent between threads or accessed from different threads.</p>
-<p>One example of such a resource is <a href="https://docs.rs/bevy/0.13.0/bevy/winit/struct.WinitWindows.html"><code>WinitWindows</code></a> in Bevy.
-This is the low-level layer behind the <a href="programming//window/props.html">window entities</a> that you
-typically use for window management. It gives you more direct access to OS
-window management functionality.</p>
+<p>To do this, you can use a <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.NonSend.html"><code>NonSend&lt;T&gt;</code></a> / <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.NonSendMut.html"><code>NonSendMut&lt;T&gt;</code></a> system parameter.
+This behaves just like <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Res.html"><code>Res&lt;T&gt;</code></a> / <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a>, letting you access an ECS
+<a href="programming//programming/res.html">resource</a> (single global instance of some data), except that the
+presence of such a parameter forces the Bevy scheduler to always run the
+<a href="programming//programming/systems.html">system</a> on the main thread. This ensures that data never has to be
+sent between threads or accessed from different threads.</p>
+<p>One example of such a resource is <a href="https://docs.rs/bevy/0.13.0/bevy/winit/struct.WinitWindows.html"><code>WinitWindows</code></a> in Bevy.  This is the
+low-level layer behind the <a href="programming//window/props.html">window entities</a> that you typically use
+for window management. It gives you more direct access to OS window management
+functionality.</p>
 <pre><code class="language-rust no_run noplayground">fn setup_raw_window(
     q_primary: Query&lt;Entity, With&lt;PrimaryWindow&gt;&gt;,
     mut windows: NonSend&lt;WinitWindows&gt;
@@ -9468,16 +9437,13 @@ window management functionality.</p>
 // and ensure it runs on the main thread
 app.add_systems(Startup, setup_raw_window);</code></pre>
 <h2 id="custom-non-send-resources"><a class="header" href="#custom-non-send-resources">Custom Non-Send Resources</a></h2>
-<p>Normally, to insert <a href="programming//programming/res.html">resources</a>, their types must be
-<a href="https://doc.rust-lang.org/stable/std/marker/trait.Send.html"><code>Send</code></a>.</p>
-<p>Bevy tracks non-Send resources separately, to ensure that they
-can only be accessed using <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.NonSend.html"><code>NonSend&lt;T&gt;</code></a> /
-<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.NonSendMut.html"><code>NonSendMut&lt;T&gt;</code></a>.</p>
+<p>Normally, to insert <a href="programming//programming/res.html">resources</a>, their types must be <a href="https://doc.rust-lang.org/stable/std/marker/trait.Send.html"><code>Send</code></a>.</p>
+<p>Bevy tracks non-Send resources separately, to ensure that they can only be
+accessed using <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.NonSend.html"><code>NonSend&lt;T&gt;</code></a> / <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.NonSendMut.html"><code>NonSendMut&lt;T&gt;</code></a>.</p>
 <p>It is not possible to insert non-send resources using
-<a href="programming//programming/commands.html"><code>Commands</code></a>, only using <a href="programming//programming/world.html">direct World access</a>.
-This means that you have to initialize them in an <a href="programming//programming/exclusive.html">exclusive
-system</a>, <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/trait.FromWorld.html"><code>FromWorld</code></a> impl,
-or from the <a href="programming//programming/app-builder.html">app builder</a>.</p>
+<a href="programming//programming/commands.html"><code>Commands</code></a>, only using <a href="programming//programming/world.html">direct World access</a>. This
+means that you have to initialize them in an <a href="programming//programming/exclusive.html">exclusive system</a>,
+<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/trait.FromWorld.html"><code>FromWorld</code></a> impl, or from the <a href="programming//programming/app-builder.html">app builder</a>.</p>
 <pre><code class="language-rust no_run noplayground">fn setup_platform_audio(world: &amp;mut World) {
     // assuming `OSAudioMagic` is some primitive that is not thread-safe
     let instance = OSAudioMagic::init();
