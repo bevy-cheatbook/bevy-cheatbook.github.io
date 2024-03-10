@@ -9400,12 +9400,12 @@ system parameter, effectively implementing your own detection.</p>
 }</code></pre>
 <p>Note that, since this detection is local to your system, it does not have
 to happen during the same frame update.</p>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="system-piping"><a class="header" href="#system-piping">System Piping</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/system_piping.rs"><code>system_piping</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.13.0/examples/ecs/system_piping.rs"><code>system_piping</code></a>.</p>
 <hr />
 <p>You can compose a single Bevy <a href="programming//programming/systems.html">system</a> from multiple Rust functions.</p>
 <p>You can make functions that can take an input and produce an output, and be
@@ -9415,31 +9415,35 @@ blocks. This way, you can reuse some common code/logic in multiple systems.</p>
 <p>Note that system piping is <em>not</em> a way of communicating between systems.
 If you want to pass data between systems, you should use <a href="programming//programming/events.html">Events</a>
 instead.</p>
+<p>Your functions will be combined and Bevy will treat them as if they were a
+single big <a href="programming//programming/systems.html">system</a> with all the combined system parameters for
+data access.</p>
 <h2 id="example-handling-results"><a class="header" href="#example-handling-results">Example: Handling <a href="https://doc.rust-lang.org/stable/std/result/enum.Result.html"><code>Result</code></a>s</a></h2>
 <p>One useful application of system piping is to be able to return errors (allowing
 the use of Rust's <code>?</code> operator) and then have a separate function for handling
 them:</p>
 <pre><code class="language-rust no_run noplayground">fn net_receive(mut netcode: ResMut&lt;MyNetProto&gt;) -&gt; std::io::Result&lt;()&gt; {
-    netcode.receive_updates()?;
+    netcode.send_updates(/* ... */)?;
+    netcode.receive_updates(/* ... */)?;
 
     Ok(())
 }
 
-fn handle_io_errors(In(result): In&lt;std::io::Result&lt;()&gt;&gt;) {
+fn handle_io_errors(
+    In(result): In&lt;std::io::Result&lt;()&gt;&gt;,
+    // we can also have regular system parameters
+    mut commands: Commands,
+) {
     if let Err(e) = result {
         eprintln!("I/O error occurred: {}", e);
+        // Maybe spawn some error UI or something?
+        commands.spawn((/* ... */));
     }
 }</code></pre>
-<p>Such functions cannot be <a href="programming//programming/app-builder.html">registered</a> individually as systems (Bevy
-doesn't know what to do with the input/output). By "piping" them together, we
-create a valid system that we can add:</p>
-<pre><code class="language-rust no_run noplayground">fn main() {
-    App::new()
-        // ...
-        .add_system(net_receive.pipe(handle_io_errors))
-        // ...
-        .run();
-}</code></pre>
+<p>Such functions cannot be <a href="programming//programming/app-builder.html">added</a> individually as systems (Bevy
+doesn't know what to do with the input/output). By "piping" them together,
+we create a valid system that we can add:</p>
+<pre><code class="language-rust no_run noplayground">app.add_systems(FixedUpdate, net_receive.pipe(handle_io_errors));</code></pre>
 <h2 id="performance-warning"><a class="header" href="#performance-warning">Performance Warning</a></h2>
 <p>Beware that Bevy treats the whole chain as if it was a single big system, with
 all the combined system parameters and their respective data access
