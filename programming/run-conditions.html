@@ -238,6 +238,26 @@ false, the entire set will be skipped.</p>
 to one system, and it will also inherit the RCs of any <a href="/programming/system-sets.html">sets</a>
 it belongs to. Bevy will evaluate all the RCs, and the system will only run
 if all of them return <code>true</code>.</p>
+<h2 id="common-conditions"><a class="header" href="#common-conditions">Common Conditions</a></h2>
+<p>Bevy provides some built-in RCs for some common scenarios, that you can just
+apply to your systems:</p>
+<ul>
+<li><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/common_conditions/index.html">ECS common conditions</a>:
+<ul>
+<li>For checking <a href="/programming/states.html">states</a>, <a href="/programming/res.html">resource</a> values and <a href="/programming/change-detection.html">changes</a>, <a href="/programming/events.html">events</a>, if <a href="/programming/intro-data.html">entities</a> with specific <a href="/programming/ec.html#components">components</a> exist, etc...</li>
+</ul>
+</li>
+<li><a href="https://docs.rs/bevy/0.13.0/bevy/input/common_conditions/index.html">Input common conditions</a>:
+<ul>
+<li>For <a href="/input.html">input handling</a>: running on key/button press/release.</li>
+</ul>
+</li>
+<li><a href="https://docs.rs/bevy/0.13.0/bevy/time/common_conditions/index.html">Time common conditions</a>:
+<ul>
+<li>For controlling systems based on <a href="/fundamentals/time.html">time</a>: repeating on a timer, running after a delay, etc...</li>
+</ul>
+</li>
+</ul>
 <h2 id="known-pitfalls"><a class="header" href="#known-pitfalls">Known Pitfalls</a></h2>
 <p>When receiving <a href="/programming/events.html">events</a> in systems that don't run every frame
 update, you can miss some events that are sent while the receiving systems
