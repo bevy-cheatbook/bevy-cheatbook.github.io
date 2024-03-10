@@ -225,6 +225,10 @@ entities, manage resources, from your <a href="/programming/systems.html">system
         .insert(ComponentC::default())
         .remove::&lt;ComponentA&gt;()
         .remove::&lt;(ComponentB, MyBundle)&gt;();
+
+    // remove everything except the given components / bundles
+    commands.entity(my_entity_id)
+        .retain::&lt;(TransformBundle, ComponentC)&gt;();
 }
 
 fn make_all_players_hostile(
@@ -248,8 +252,7 @@ fn despawn_all_enemies(
     for entity in query.iter() {
         commands.entity(entity).despawn();
     }
-}
-</code></pre>
+}</code></pre>
 <h2 id="when-do-these-actions-get-applied"><a class="header" href="#when-do-these-actions-get-applied">When do these actions get applied?</a></h2>
 <p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a> do not take effect immediately, because it wouldn't be safe to
 modify the data layout in memory when other <a href="/programming/systems.html">systems</a> could be
@@ -273,6 +276,68 @@ the next frame update!</p>
 will see the changes. For example, Bevy's engine systems (that live in
 <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a>) will see the entities you spawn in your systems (that live in
 <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a>).</p>
+<h2 id="custom-commands"><a class="header" href="#custom-commands">Custom Commands</a></h2>
+<p>Commands can also serve as a convenient way to do any custom manipulations
+that require <a href="/programming/world.html">full access</a> to the ECS <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>World</code></a>. You can queue up
+any custom code to run in a deferred fashion, the same way as the standard
+commands work.</p>
+<p>For a one-off thing, you can just pass a closure:</p>
+<pre><code class="language-rust no_run noplayground">fn my_system(mut commands: Commands) {
+    let x = 420;
+
+    commands.add(move |world: &amp;mut World| {
+        // do whatever you want with `world` here
+
+        // note: it's a closure, you can use variables from
+        // the parent scope/function
+        eprintln!("{}", x);
+    });
+}</code></pre>
+<p>If you want something reusable, you can create a custom type and implement
+the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/trait.Command.html"><code>Command</code></a> trait:</p>
+<pre><code class="language-rust no_run noplayground">use bevy::ecs::system::Command;
+
+struct MyCustomCommand {
+    // you can have some parameters
+    data: u32,
+}
+
+impl Command for MyCustomCommand {
+    fn apply(self, world: &amp;mut World) {
+        // do whatever you want with `world` and `self.data` here
+    }
+}
+
+fn my_other_system(mut commands: Commands) {
+    commands.add(MyCustomCommand {
+        data: 920, // set your value
+    });
+}</code></pre>
+<p>And if you want to make it extra nice to use, you can create
+an extension trait to add extra methods to <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>:</p>
+<pre><code class="language-rust no_run noplayground">pub trait MyCustomCommandsExt {
+    // define a method that we will be able to call on `commands`
+    fn do_custom_thing(&amp;mut self, data: u32);
+}
+
+// implement our trait for Bevy's `Commands`
+impl&lt;'w, 's&gt; MyCustomCommandsExt for Commands&lt;'w, 's&gt; {
+    fn do_custom_thing(&amp;mut self, data: u32) {
+        self.add(MyCustomCommand {
+            data,
+        });
+    }
+}
+
+fn my_fancy_system(mut commands: Commands) {
+    // now we can call our custom method just like Bevy's `spawn`, etc.
+    commands.do_custom_thing(42);
+}</code></pre>
+<p>Now, your custom commands will "feel native", as if they were integrated
+into Bevy. :)</p>
+<p>Note: if you want to use your custom extension method from other Rust
+files, you will have to import your trait, or it will not be available:</p>
+<pre><code class="language-rust no_run noplayground">use crate::thing::MyCustomCommandsExt;</code></pre>
 
                     </main>
 

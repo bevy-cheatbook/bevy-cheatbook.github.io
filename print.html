@@ -7756,6 +7756,10 @@ entities, manage resources, from your <a href="programming//programming/systems.
         .insert(ComponentC::default())
         .remove::&lt;ComponentA&gt;()
         .remove::&lt;(ComponentB, MyBundle)&gt;();
+
+    // remove everything except the given components / bundles
+    commands.entity(my_entity_id)
+        .retain::&lt;(TransformBundle, ComponentC)&gt;();
 }
 
 fn make_all_players_hostile(
@@ -7779,8 +7783,7 @@ fn despawn_all_enemies(
     for entity in query.iter() {
         commands.entity(entity).despawn();
     }
-}
-</code></pre>
+}</code></pre>
 <h2 id="when-do-these-actions-get-applied"><a class="header" href="#when-do-these-actions-get-applied">When do these actions get applied?</a></h2>
 <p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a> do not take effect immediately, because it wouldn't be safe to
 modify the data layout in memory when other <a href="programming//programming/systems.html">systems</a> could be
@@ -7804,6 +7807,68 @@ the next frame update!</p>
 will see the changes. For example, Bevy's engine systems (that live in
 <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a>) will see the entities you spawn in your systems (that live in
 <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a>).</p>
+<h2 id="custom-commands"><a class="header" href="#custom-commands">Custom Commands</a></h2>
+<p>Commands can also serve as a convenient way to do any custom manipulations
+that require <a href="programming//programming/world.html">full access</a> to the ECS <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>World</code></a>. You can queue up
+any custom code to run in a deferred fashion, the same way as the standard
+commands work.</p>
+<p>For a one-off thing, you can just pass a closure:</p>
+<pre><code class="language-rust no_run noplayground">fn my_system(mut commands: Commands) {
+    let x = 420;
+
+    commands.add(move |world: &amp;mut World| {
+        // do whatever you want with `world` here
+
+        // note: it's a closure, you can use variables from
+        // the parent scope/function
+        eprintln!("{}", x);
+    });
+}</code></pre>
+<p>If you want something reusable, you can create a custom type and implement
+the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/trait.Command.html"><code>Command</code></a> trait:</p>
+<pre><code class="language-rust no_run noplayground">use bevy::ecs::system::Command;
+
+struct MyCustomCommand {
+    // you can have some parameters
+    data: u32,
+}
+
+impl Command for MyCustomCommand {
+    fn apply(self, world: &amp;mut World) {
+        // do whatever you want with `world` and `self.data` here
+    }
+}
+
+fn my_other_system(mut commands: Commands) {
+    commands.add(MyCustomCommand {
+        data: 920, // set your value
+    });
+}</code></pre>
+<p>And if you want to make it extra nice to use, you can create
+an extension trait to add extra methods to <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>:</p>
+<pre><code class="language-rust no_run noplayground">pub trait MyCustomCommandsExt {
+    // define a method that we will be able to call on `commands`
+    fn do_custom_thing(&amp;mut self, data: u32);
+}
+
+// implement our trait for Bevy's `Commands`
+impl&lt;'w, 's&gt; MyCustomCommandsExt for Commands&lt;'w, 's&gt; {
+    fn do_custom_thing(&amp;mut self, data: u32) {
+        self.add(MyCustomCommand {
+            data,
+        });
+    }
+}
+
+fn my_fancy_system(mut commands: Commands) {
+    // now we can call our custom method just like Bevy's `spawn`, etc.
+    commands.do_custom_thing(42);
+}</code></pre>
+<p>Now, your custom commands will "feel native", as if they were integrated
+into Bevy. :)</p>
+<p>Note: if you want to use your custom extension method from other Rust
+files, you will have to import your trait, or it will not be available:</p>
+<pre><code class="language-rust no_run noplayground">use crate::thing::MyCustomCommandsExt;</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
@@ -7906,6 +7971,16 @@ split it into "plugins".</p>
 <p>Plugins are simply collections of things to be added to the <a href="programming//programming/app-builder.html">App
 Builder</a>. Think of this as a way to add things to the app from
 multiple places, like different Rust files/modules or crates.</p>
+<p>The simplest way to create a plugin is by just writing a Rust function
+that takes <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.App.html"><code>&amp;mut App</code></a>:</p>
+<pre><code class="language-rust no_run noplayground">fn my_plugin(app: &amp;mut App) {
+    app.init_resource::&lt;MyCustomResource&gt;();
+    app.add_systems(Update, (
+        do_some_things,
+        do_other_things,
+    ));
+}</code></pre>
+<p>An alternative way is by creating a <code>struct</code> and implementing the <a href="https://docs.rs/bevy/0.13.0/bevy/app/trait.Plugin.html"><code>Plugin</code></a> trait:</p>
 <pre><code class="language-rust no_run noplayground">struct MyPlugin;
 
 impl Plugin for MyPlugin {
@@ -7915,16 +7990,24 @@ impl Plugin for MyPlugin {
         app.add_systems(Startup, plugin_init);
         app.add_systems(Update, my_system);
     }
-}
-
-fn main() {
+}</code></pre>
+<p>The benefit of using a <code>struct</code> is that you could extend it with configuration
+parameters or generics if you want to make your plugin configurable.</p>
+<p>Either way, you get <code>&amp;mut</code> access to the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.App.html"><code>App</code></a>, so you can add whatever
+you want to it, just like you can do from your <code>fn main()</code>.</p>
+<p>You can now add your plugins to your <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.App.html"><code>App</code></a> from elsewhere (most commonly
+<code>fn main()</code>). Bevy will just call your plugin implementation above. In effect,
+everything the plugin adds will be flattened into your <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.App.html"><code>App</code></a> alongside
+everything that is already there.</p>
+<pre><code class="language-rust no_run noplayground">fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
-        .add_plugins(MyPlugin)
+        .add_plugins((
+            my_plugin, // the `fn`-based plugin
+            MyPlugin,  // the `struct`-based plugin
+        ))
         .run();
 }</code></pre>
-<p>Note how you get <code>&amp;mut</code> access to the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.App.html"><code>App</code></a>, so you can
-add whatever you want to it, just like you can do from your <code>fn main</code>.</p>
 <p>For internal organization in your own project, the main value of plugins
 comes from not having to declare all your Rust types and functions as
 <code>pub</code>, just so they can be accessible from <code>fn main</code> to be added to the
@@ -8031,6 +8114,8 @@ App::new()
 <h2 id="publishing-crates"><a class="header" href="#publishing-crates">Publishing Crates</a></h2>
 <p>Plugins give you a nice way to publish Bevy-based libraries for other people
 to easily include into their projects.</p>
+<p>Bevy offers some official guidance for good practices when you develop plugins
+you want to publish for other people to use. <a href="https://bevyengine.org/learn/book/plugin-development/">You can read it here.</a></p>
 <p>Don't forget to submit an entry to <a href="https://bevyengine.org/assets">Bevy Assets</a> on the official
 website, so that people can find your plugin more easily. You can do this
 by making a PR in <a href="https://github.com/bevyengine/bevy-assets">the Github repo</a>.</p>

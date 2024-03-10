@@ -192,6 +192,16 @@ split it into "plugins".</p>
 <p>Plugins are simply collections of things to be added to the <a href="/programming/app-builder.html">App
 Builder</a>. Think of this as a way to add things to the app from
 multiple places, like different Rust files/modules or crates.</p>
+<p>The simplest way to create a plugin is by just writing a Rust function
+that takes <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.App.html"><code>&amp;mut App</code></a>:</p>
+<pre><code class="language-rust no_run noplayground">fn my_plugin(app: &amp;mut App) {
+    app.init_resource::&lt;MyCustomResource&gt;();
+    app.add_systems(Update, (
+        do_some_things,
+        do_other_things,
+    ));
+}</code></pre>
+<p>An alternative way is by creating a <code>struct</code> and implementing the <a href="https://docs.rs/bevy/0.13.0/bevy/app/trait.Plugin.html"><code>Plugin</code></a> trait:</p>
 <pre><code class="language-rust no_run noplayground">struct MyPlugin;
 
 impl Plugin for MyPlugin {
@@ -201,16 +211,24 @@ impl Plugin for MyPlugin {
         app.add_systems(Startup, plugin_init);
         app.add_systems(Update, my_system);
     }
-}
-
-fn main() {
+}</code></pre>
+<p>The benefit of using a <code>struct</code> is that you could extend it with configuration
+parameters or generics if you want to make your plugin configurable.</p>
+<p>Either way, you get <code>&amp;mut</code> access to the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.App.html"><code>App</code></a>, so you can add whatever
+you want to it, just like you can do from your <code>fn main()</code>.</p>
+<p>You can now add your plugins to your <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.App.html"><code>App</code></a> from elsewhere (most commonly
+<code>fn main()</code>). Bevy will just call your plugin implementation above. In effect,
+everything the plugin adds will be flattened into your <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.App.html"><code>App</code></a> alongside
+everything that is already there.</p>
+<pre><code class="language-rust no_run noplayground">fn main() {
     App::new()
         .add_plugins(DefaultPlugins)
-        .add_plugins(MyPlugin)
+        .add_plugins((
+            my_plugin, // the `fn`-based plugin
+            MyPlugin,  // the `struct`-based plugin
+        ))
         .run();
 }</code></pre>
-<p>Note how you get <code>&amp;mut</code> access to the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.App.html"><code>App</code></a>, so you can
-add whatever you want to it, just like you can do from your <code>fn main</code>.</p>
 <p>For internal organization in your own project, the main value of plugins
 comes from not having to declare all your Rust types and functions as
 <code>pub</code>, just so they can be accessible from <code>fn main</code> to be added to the
@@ -317,6 +335,8 @@ App::new()
 <h2 id="publishing-crates"><a class="header" href="#publishing-crates">Publishing Crates</a></h2>
 <p>Plugins give you a nice way to publish Bevy-based libraries for other people
 to easily include into their projects.</p>
+<p>Bevy offers some official guidance for good practices when you develop plugins
+you want to publish for other people to use. <a href="https://bevyengine.org/learn/book/plugin-development/">You can read it here.</a></p>
 <p>Don't forget to submit an entry to <a href="https://bevyengine.org/assets">Bevy Assets</a> on the official
 website, so that people can find your plugin more easily. You can do this
 by making a PR in <a href="https://github.com/bevyengine/bevy-assets">the Github repo</a>.</p>
