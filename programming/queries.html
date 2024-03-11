@@ -385,6 +385,9 @@ via <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.QueryLens.html">
 of the original <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Query.html"><code>Query</code></a> that it was derived from. If we were to add
 <code>debug_positions</code> to Bevy as a regular system, it would access the transforms of
 all entities.</p>
+<p>Also note: this has some performance overhead; the transmute operation is not
+free. Bevy normally caches some query metadata across multiple runs of a
+system. When you create the new query, it has to make a copy of it.</p>
 
                     </main>
 
