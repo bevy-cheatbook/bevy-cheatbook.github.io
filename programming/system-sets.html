@@ -185,10 +185,34 @@
 <h1 id="system-sets"><a class="header" href="#system-sets">System Sets</a></h1>
 <p>System Sets allow you to easily apply common properties to multiple systems,
 such as <a href="/programming/system-order.html">ordering</a> and <a href="/programming/run-criteria.html">run conditions</a>.</p>
-<p>To create a system set, you must first create a Rust type (<code>struct</code> or <code>enum</code>)
-to serve as a label/identifier. For simple use cases, create an empty <code>struct</code>.
-If you need to create multiple related sets, create an <code>enum</code>. Every variant
-of the <code>enum</code> is a separate system set.</p>
+<p>Anything you add to the set will automatically be applied to all systems
+belonging to the set.</p>
+<p>A system can belong to multiple different sets, and will inherit all the
+properties from all of them. You can also add additional properties to
+individual systems.</p>
+<p>All of this combined gives you a lot of flexibility and control over how your systems run.</p>
+<h2 id="anonymous-sets"><a class="header" href="#anonymous-sets">Anonymous Sets</a></h2>
+<p>The simplest kind of system set is when you just <a href="/programming/app-builder.html">add</a> a tuple of
+multiple <a href="/programming/systems.html">systems</a> using <code>.add_systems</code>.</p>
+<pre><code class="language-rust no_run noplayground">app.add_systems(
+    Update,
+    (
+        system_a,
+        system_b,
+        system_c
+    )
+    .run_if(common_run_condition)
+    .after(some_system)
+);</code></pre>
+<p>This syntax is useful when you just want to apply some common configuration to
+multiple systems.</p>
+<h2 id="named-sets"><a class="header" href="#named-sets">Named Sets</a></h2>
+<p>This is the more formal and powerful way to use system sets.</p>
+<p>You can create a Rust type (<code>struct</code> or <code>enum</code>) to serve as a label/identifier,
+so you can refer to the set from different places.</p>
+<p>For a single set, create an empty <code>struct</code>. If you need to create multiple
+related sets, create an <code>enum</code>. Every variant of the <code>enum</code> is a separate system
+set.</p>
 <p>You need to derive <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/schedule/trait.SystemSet.html"><code>SystemSet</code></a> + an assortment of required standard Rust traits:</p>
 <pre><code class="language-rust no_run noplayground">#[derive(SystemSet, Debug, Clone, PartialEq, Eq, Hash)]
 struct MyAudioSet;
@@ -225,7 +249,8 @@ enum MyGameplaySet {
     ).in_set(MyGameplaySet::Player),
     (
         enemy_movement,
-        enemy_ai,
+        enemy_ai
+            .after(MyGameplaySet::Player),
         enemy_footsteps
             .in_set(MyAudioSet),
     ).in_set(MyGameplaySet::Enemies),
@@ -260,23 +285,17 @@ dependencies</a> on your set using <code>.configure_sets</code>:</p>
     MyInputKindSet::Gamepad
         .run_if(gamepad_connected),
 ));</code></pre>
-<p>Anything you add to the set will automatically be applied to all systems
-belonging to the set.</p>
-<p>A system can belong to multiple different sets, and will inherit all the
-properties from all of them. You can also add additional properties to
-individual systems.</p>
-<p>All of this combined gives you a lot of flexibility and control over how your systems run.</p>
-<h2 id="usage-advice"><a class="header" href="#usage-advice">Usage Advice</a></h2>
-<p>The main use case of system sets is to group together related systems, so you can
-manage them more easily as a group.</p>
+<p>The main use case of named system sets is for logical organization, so that you
+can manage your systems and refer to the whole group.</p>
 <p>Some examples:</p>
 <ul>
 <li>A set for all your audio-related systems, so you can disable them all if sound is muted.</li>
 <li>A set for all your touchscreen input systems, so you can disable them all if there is no touchscreen.</li>
 <li>A set for all your input handling systems, so you can order them to run before gameplay systems.</li>
+<li>A set for all your gameplay systems, so that they only run during the in-game <a href="/programming/states.html">state</a>.</li>
 </ul>
 <h3 id="with-plugins"><a class="header" href="#with-plugins">With Plugins</a></h3>
-<p>System sets are also very useful together with <a href="/programming/plugins.html">plugins</a>. When you are writing
+<p>Named sets are also very useful together with <a href="/programming/plugins.html">plugins</a>. When you are writing
 a plugin, you can expose (make <code>pub</code>) some system set types, to allow users of your
 plugin to control how things in your plugin run, or how their things run in relation to
 your plugin. This way, you don't have to expose any of your individual systems.</p>

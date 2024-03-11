@@ -183,9 +183,9 @@
 </tbody></table>
 </div>
 <h1 id="system-order-of-execution"><a class="header" href="#system-order-of-execution">System Order of Execution</a></h1>
-<p>Bevy's scheduling algorithm is designed to deliver maximum performance
-by running as many systems as possible in parallel across the available
-CPU threads.</p>
+<p>Bevy's scheduling algorithm is designed to deliver maximum performance by
+running as many <a href="/programming/systems.html">systems</a> as possible in parallel across the
+available CPU threads.</p>
 <p>This is possible when the systems do not conflict over the data they need
 to access. However, when a system needs to have mutable (exclusive) access
 to a piece of data, other systems that need to access the same data cannot
@@ -212,10 +212,26 @@ app.add_systems(Update, (
     // order doesn't matter for some systems:
     particle_effects,
     npc_behaviors,
+
+    // we can apply ordering to multiple systems at once:
+    (
+        spawn_monsters,
+        spawn_zombies,
+        spawn_spiders,
+    ).before(enemy_movement),
+
+    // to run a sequence of systems in order, use `.chain()`
+    // (this is just syntax sugar to automatically add
+    // before/after dependencies between the systems in the tuple)
+    (
+        spawn_particles,
+        animate_particles,
+        debug_particle_statistics,
+    ).chain()
 ));</code></pre>
-<p><code>.before</code>/<code>.after</code> may be used as many times as you need on one system.</p>
-<p>If you need to apply the same ordering constraints to many systems,
-consider using <a href="/programming/system-sets.html">system sets</a>.</p>
+<p>When you have a lot of systems that you need to configure, it can start to
+get unwieldy. Consider using <a href="/programming/system-sets.html">system sets</a> to organize and
+manage your systems.</p>
 <h2 id="does-it-even-matter"><a class="header" href="#does-it-even-matter">Does it even matter?</a></h2>
 <p>In many cases, you don't need to worry about this.</p>
 <p>However, sometimes you need to rely on specific systems to run in a particular
