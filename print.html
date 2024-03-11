@@ -7603,26 +7603,27 @@ that your <a href="programming//programming/systems.html">system</a> needs to ac
   // ...
 }</code></pre>
 <p>(or whatever specific components you need in that system)</p>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="queries"><a class="header" href="#queries">Queries</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.13.0/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
 <hr />
 <p>Queries let you access <a href="programming//programming/ecs-intro.html">components of entities</a>.</p>
-<p>Use the <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Query.html"><code>Query</code></a> <a href="programming//programming/systems.html">system parameter</a>, where you can
-specify the data you want to access, and optionally additional
-<a href="programming//programming/queries.html#query-filters">filters</a> for selecting entities.</p>
-<p>Think of the types you put in your <code>Query</code> as a "specification" for selecting
+<p>Use the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Query.html"><code>Query</code></a> <a href="programming//programming/systems.html">system parameter</a>, where you can specify the data
+you want to access, and optionally additional <a href="programming//programming/queries.html#query-filters">filters</a>.</p>
+<p>Think of the types you put in your <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Query.html"><code>Query</code></a> as a "specification" for selecting
 what entities you want to access. Queries will match only those entities in the
 ECS World that fit your specification. You are then able to access the relevant
-data from individual such entities (using an <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> ID), or
-iterate to access all entities that qualify.</p>
+data from any such entities.</p>
 <p>The first type parameter for a query is the data you want to access. Use <code>&amp;</code> for
-shared/readonly access and <code>&amp;mut</code> for exclusive/mutable access. Use <code>Option</code> if
+shared/readonly access and <code>&amp;mut</code> for exclusive/mutable access. Use <a href="https://doc.rust-lang.org/stable/std/option/enum.Option.html"><code>Option</code></a> if
 the component is not required (you want to find entities with or without that
 component. If you want multiple components, put them in a tuple.</p>
+<h3 id="iterating"><a class="header" href="#iterating">Iterating</a></h3>
+<p>The most common operation is to simply iterate to access the component values of
+every entity that matches the query:</p>
 <pre><code class="language-rust no_run noplayground">fn check_zero_health(
     // access entities that have `Health` and `Transform` components
     // get read-only access to `Health` and mutable access to `Transform`
@@ -7644,31 +7645,91 @@ component. If you want multiple components, put them in a tuple.</p>
         }
     }
 }</code></pre>
-<p>The above example used iteration to access all entities that the query could find.</p>
-<p>To access the <a href="programming//programming/ec.html#components">components</a> from specific <a href="programming//programming/ec.html#entities">entity</a>
-only:</p>
-<pre><code class="language-rust no_run noplayground">    if let Ok((health, mut transform)) = query.get_mut(entity) {
-        // do something with the components
-    } else {
-        // the entity does not have the components from the query
-    }</code></pre>
 <p>If you want to know the entity IDs of the entities you are accessing, you can
-put the special <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> type in your query. This is useful
-together with iteration, so you can identify the entities that the query found:</p>
+put the special <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> type in your query. This is useful if you need
+to later perform specific operations on those entities.</p>
 <pre><code class="language-rust no_run noplayground">// add `Entity` to `Query` to get Entity IDs
 fn query_entities(q: Query&lt;(Entity, /* ... */)&gt;) {
     for (e, /* ... */) in q.iter() {
         // `e` is the Entity ID of the entity we are accessing
     }
 }</code></pre>
-<p>If you know that the query is expected to only ever match a single entity, you
-can use <code>single</code>/<code>single_mut</code> (panic on error) or <code>get_single</code>/<code>get_single_mut</code>
-(return <a href="https://doc.rust-lang.org/stable/std/result/enum.Result.html"><code>Result</code></a>). These methods ensure that there exists exactly one
-candidate entity that can match your query, and will produce an error otherwise.</p>
+<h3 id="accessing-specific-entities"><a class="header" href="#accessing-specific-entities">Accessing Specific Entities</a></h3>
+<p>To access the <a href="programming//programming/ec.html#components">components</a> from one specific <a href="programming//programming/ec.html#entities">entity</a>
+only, you need to know the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> ID:</p>
+<pre><code class="language-rust no_run noplayground">if let Ok((health, mut transform)) = query.get_mut(entity) {
+    // do something with the components
+} else {
+    // the entity does not have the components from the query
+}</code></pre>
+<p>If you want to access the data from several entities all at once, you can use
+<code>many</code>/<code>many_mut</code> (panic on error) or <code>get_many</code>/<code>get_many_mut</code> (return
+<a href="https://doc.rust-lang.org/stable/std/result/enum.Result.html"><code>Result</code></a>).  These methods ensure that all the requested entities exist and
+match the query, and will produce an error otherwise.</p>
+<pre><code class="language-rust no_run noplayground">#[derive(Resource)]
+struct UiHudIndicators {
+    // say we have 3 special UI elements
+    entities_ui: [Entity; 3],
+    entities_text: [Entity; 3],
+}
+
+fn update_ui_hud_indicators(
+    indicators: Res&lt;UiHudIndicators&gt;,
+    query_text: Query&lt;&amp;Text&gt;,
+    query_ui: Query&lt;(&amp;Style, &amp;BackgroundColor)&gt;,
+) {
+    // we can get everything as an array
+    if let Ok(my_texts) = query_text.get_many(indicators.entities_text) {
+        // the entities exist and match the query
+        // TODO: something with `my_texts[0]`, `my_texts[1]`, `my_texts[2]`
+    } else {
+        // query unsuccessful
+    };
+
+    // we can use "destructuring syntax"
+    // if we want to unpack everything into separate variables
+    let [(style0, color0), (style1, color1), (style2, color2)] =
+        query_ui.many(indicators.entities_ui);
+
+    // TODO: something with all these variables
+}</code></pre>
+<h3 id="unique-entities"><a class="header" href="#unique-entities">Unique Entities</a></h3>
+<p>If you know that only one matching entity is supposed to exist (the query is
+expected to only ever match a single entity), you can use <code>single</code>/<code>single_mut</code>
+(panic on error) or <code>get_single</code>/<code>get_single_mut</code> (return <a href="https://doc.rust-lang.org/stable/std/result/enum.Result.html"><code>Result</code></a>). These
+methods ensure that there exists exactly one candidate entity that can match
+your query, and will produce an error otherwise.</p>
+<p>You do not need to know the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> ID.</p>
 <pre><code class="language-rust no_run noplayground">fn query_player(mut q: Query&lt;(&amp;Player, &amp;mut Transform)&gt;) {
     let (player, mut transform) = q.single_mut();
 
     // do something with the player and its transform
+}</code></pre>
+<h3 id="combinations"><a class="header" href="#combinations">Combinations</a></h3>
+<p>If you want to iterate over all possible combinations of N entities, Bevy
+provides a method for that too. Be careful: with a lot of entities, this
+can easily become very slow!</p>
+<pre><code class="language-rust no_run noplayground">fn print_potential_friends(
+    q_player_names: Query&lt;&amp;PlayerName&gt;,
+) {
+    // this will iterate over every possible pair of two entities
+    // (that have the PlayerName component)
+
+    for [player1, player2] in q_player_names.iter_combinations() {
+        println!("Maybe {} could be friends with {}?", player1.0, player2.0);
+    }
+}
+
+fn apply_gravity_to_planets(
+    mut query: Query&lt;&amp;mut Transform, With&lt;Planet&gt;&gt;,
+) {
+    // this will iterate over every possible pair of two planets
+
+    // For mutability, we need a different syntax
+    let mut combinations = query.iter_combinations_mut();
+    while let Some([planet1, planet2]) = combinations.fetch_next() {
+        // TODO: calculate the gravity force between the planets
+    }
 }</code></pre>
 <h2 id="bundles-2"><a class="header" href="#bundles-2">Bundles</a></h2>
 <p>Queries work with individual components. If you created an entity using a
@@ -7678,12 +7739,11 @@ that bundle that you care about.</p>
 <h2 id="query-filters"><a class="header" href="#query-filters">Query Filters</a></h2>
 <p>Add query filters to narrow down the entities you get from the query.</p>
 <p>This is done using the second (optional) generic type parameter of the
-<a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Query.html"><code>Query</code></a> type.</p>
+<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Query.html"><code>Query</code></a> type.</p>
 <p>Note the syntax of the query: first you specify the data you want to access
 (using a tuple to access multiple things), and then you add any additional
 filters (can also be a tuple, to add multiple).</p>
-<p>Use <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/query/struct.With.html"><code>With</code></a>/<a href="https://docs.rs/bevy/0.9.1/bevy/ecs/query/struct.Without.html"><code>Without</code></a> to only get entities
-that have specific components.</p>
+<p>Use <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/query/struct.With.html"><code>With</code></a>/<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/query/struct.Without.html"><code>Without</code></a> to only get entities that have specific components.</p>
 <pre><code class="language-rust no_run noplayground">fn debug_player_hp(
     // access the health (and optionally the PlayerName, if present), only for friendly players
     query: Query&lt;(&amp;Health, Option&lt;&amp;PlayerName&gt;), (With&lt;Player&gt;, Without&lt;Enemy&gt;)&gt;,
@@ -7710,6 +7770,45 @@ the first part of the query (as shown previously), instead of using a filter.</p
 </ul>
 </li>
 </ul>
+<h2 id="query-transmutation"><a class="header" href="#query-transmutation">Query Transmutation</a></h2>
+<p>If you want one function with a <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Query.html"><code>Query</code></a> parameter to call another function
+with a different (but compatible) <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Query.html"><code>Query</code></a> parameter, you can create the
+needed <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Query.html"><code>Query</code></a> from the one you have using something called <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.QueryLens.html"><code>QueryLens</code></a>.</p>
+<pre><code class="language-rust no_run noplayground">fn debug_positions(
+    query: Query&lt;&amp;Transform&gt;,
+) {
+    for transform in query.iter() {
+        eprintln!("{:?}", transform.translation);
+    }
+}
+
+fn move_player(
+    mut query_player: Query&lt;&amp;mut Transform, With&lt;Player&gt;&gt;,
+) {
+    // TODO: mutate the transform to move the player
+
+    // say we want to call our debug_positions function
+
+    // first, convert into a query for `&amp;Transform`
+    let mut lens = query_player.transmute_lens::&lt;&amp;Transform&gt;();
+    debug_positions(lens.query());
+}
+
+fn move_enemies(
+    mut query_enemies: Query&lt;&amp;mut Transform, With&lt;Enemy&gt;&gt;,
+) {
+    // TODO: mutate the transform to move our enemies
+
+    let mut lens = query_enemies.transmute_lens::&lt;&amp;Transform&gt;();
+    debug_positions(lens.query());
+}</code></pre>
+<p>Note: when we call <code>debug_positions</code> from each function, it will access
+different entities! Even though the <code>Query&lt;&amp;Transform&gt;</code> parameter type does not
+have any additional <a href="programming//programming/queries.html#query-filters">filters</a>, it was created by transmuting
+via <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.QueryLens.html"><code>QueryLens</code></a>, and therefore it can only access the entities and components
+of the original <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Query.html"><code>Query</code></a> that it was derived from. If we were to add
+<code>debug_positions</code> to Bevy as a regular system, it would access the transforms of
+all entities.</p>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
@@ -8297,6 +8396,8 @@ fn spawn_particles_for_enemies(
         ResMut&lt;MyParticleTracker&gt;,
         Query&lt;&amp;mut Transform, With&lt;Player&gt;&gt;,
         EventReader&lt;MyDamageEvent&gt;,
+        // yes, even Commands ;)
+        Commands,
     )&gt;,
     // local resource, just like in a regular system
     mut has_run_once: Local&lt;bool&gt;,
@@ -8309,11 +8410,15 @@ fn spawn_particles_for_enemies(
 
     // create a scope where we can access our things like a regular system
     {
-        let (mut settings, mut tracker, mut q_player, mut evr) =
+        let (mut settings, mut tracker, mut q_player, mut evr, commands) =
             params.get_mut(world);
 
-        // TODO: do things with our resources, query, events, ...
+        // TODO: do things with our resources, query, events, commands, ...
     }
+
+    // because our SystemState includes Commands,
+    // we must apply them when we are done
+    params.apply(world);
 
     // we are now free to directly spawn entities
     // because the World is no longer used by anything
@@ -8329,6 +8434,9 @@ fn spawn_particles_for_enemies(
     // and, of course, we can use our Local
     *has_run_once = true;
 }</code></pre>
+<p>Note: if your <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.SystemState.html"><code>SystemState</code></a> includes <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>, you must call <code>.apply()</code>
+after you are done! That is when the deferred operations queued via
+<a href="programming//programming/commands.html">commands</a> will be applied to the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>World</code></a>.</p>
 <h2 id="performance-considerations"><a class="header" href="#performance-considerations">Performance Considerations</a></h2>
 <p>Exclusive systems, by definition, limit parallelism and multi-threading, as
 nothing else can access the same ECS World while they run. The whole schedule
@@ -8371,41 +8479,39 @@ you avoid making it a bottleneck for parallelism.</p>
 </ul>
 </li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="direct-world-access"><a class="header" href="#direct-world-access">Direct World Access</a></h1>
-<p>The <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/world/struct.World.html"><code>World</code></a> is where Bevy ECS stores all data and
-associated metadata. It keeps track of <a href="programming//programming/res.html">resources</a>, <a href="programming//programming/intro-data.html#entities--components">entities and
-components</a>.</p>
-<p>Typically, the <a href="https://docs.rs/bevy/0.9.1/bevy/app/struct.App.html"><code>App</code></a>'s schedule runner will run all
-<a href="programming//programming/schedules.html">stages</a> (which, in turn, run their <a href="programming//programming/systems.html">systems</a>)
-on the main world. Regular <a href="programming//programming/systems.html">systems</a> are limited in
-what data they can access from the world, by their <a href="programming//builtins.html#systemparams">system parameter
-types</a>. Operations that manipulate the world itself
-are only done indirectly using <a href="programming//programming/commands.html"><code>Commands</code></a>. This is how most
-typical Bevy user code behaves.</p>
-<p>However, there are also ways you can get full direct access to the world,
-which gives you full control and freedom to do anything with any data stored
-in the Bevy ECS:</p>
+<p>(This page is WIP)</p>
+<hr />
+<p>The <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>World</code></a> is where Bevy ECS stores all data and associated metadata. It
+keeps track of <a href="programming//programming/res.html">resources</a>, <a href="programming//programming/intro-data.html#entities--components">entities and components</a>.</p>
+<p>Typically, the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.App.html"><code>App</code></a>'s runner will run all <a href="programming//programming/schedules.html">schedules</a> (which,
+in turn, run their <a href="programming//programming/systems.html">systems</a>) on the main world. Regular
+<a href="programming//programming/systems.html">systems</a> are limited in what data they can access from the world,
+by their <a href="programming//builtins.html#systemparams">system parameter types</a>.  Operations that
+manipulate the world itself are only done indirectly using
+<a href="programming//programming/commands.html"><code>Commands</code></a>. This is how most typical Bevy user code behaves.</p>
+<p>However, there are also ways you can get full direct access to the world, which
+gives you full control and freedom to do anything with any data stored in the
+Bevy ECS:</p>
 <ul>
 <li><a href="programming//programming/exclusive.html">Exclusive systems</a></li>
-<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/world/trait.FromWorld.html"><code>FromWorld</code></a> impls</li>
-<li>Via the <a href="https://docs.rs/bevy/0.9.1/bevy/app/struct.App.html"><code>App</code></a> <a href="programming//programming/app-builder.html">builder</a></li>
-<li>Manually created <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/world/struct.World.html"><code>World</code></a>s for purposes like <a href="programming//patterns/system-tests.html">tests</a> or scenes</li>
-<li>Custom Commands</li>
-<li>Custom <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/schedule/trait.Stage.html"><code>Stage</code></a> impls (not recommended, prefer exclusive systems)</li>
+<li><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/trait.FromWorld.html"><code>FromWorld</code></a> impls</li>
+<li>Via the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.App.html"><code>App</code></a> <a href="programming//programming/app-builder.html">builder</a></li>
+<li>Manually created <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>World</code></a>s for purposes like <a href="programming//patterns/system-tests.html">tests</a> or scenes</li>
+<li><a href="programming//programming/commands.html#custom-commands">Custom Commands</a></li>
 </ul>
 <p>Direct world access lets you do things like:</p>
 <ul>
 <li>Freely spawn/despawn entities, insert/remove resources, etc., taking effect immediately
 (no delay like when using <a href="programming//programming/commands.html"><code>Commands</code></a> from a regular <a href="programming//programming/systems.html">system</a>)</li>
 <li>Access any component, entities, and resources you want</li>
-<li>Manually run arbitrary systems or stages</li>
+<li>Manually run arbitrary systems or schedules</li>
 </ul>
 <p>This is especially useful if you want to do things that do not fit within
-Bevy's typical execution model/flow of just running systems once every frame
-(organized with <a href="programming//programming/schedules.html">stages</a> and <a href="programming//programming/system-order.html#labels">labels</a>).</p>
+Bevy's typical execution model/flow of just running systems once every frame.</p>
 <p>With direct world access, you can implement custom control flow, like
 looping some systems multiple times, selecting different systems to run in
 different circumstances, exporting/importing data from files like scenes or
@@ -8413,27 +8519,33 @@ game saves, …</p>
 <h2 id="working-with-the-world"><a class="header" href="#working-with-the-world">Working with the <code>World</code></a></h2>
 <p>Here are some ways that you can make use of the direct world access APIs.</p>
 <h3 id="systemstate"><a class="header" href="#systemstate"><code>SystemState</code></a></h3>
-<p>The easiest way to do things is using a <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.SystemState.html"><code>SystemState</code></a>.</p>
+<p>The easiest way to do things is using a <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.SystemState.html"><code>SystemState</code></a>.</p>
 <p>This is a type that "imitates a system", behaving the same way as a
-<a href="programming//programming/systems.html">system</a> with various parameters would. All the same behaviors
-like <a href="programming//programming/queries.html">queries</a>, <a href="programming//programming/change-detection.html">change detection</a>, and
-even <a href="programming//programming/commands.html"><code>Commands</code></a> are available. You can use any <a href="programming//builtins.html#systemparams">system
+<a href="programming//programming/systems.html">system</a> with various parameters would. All the same behaviors like
+<a href="programming//programming/queries.html">queries</a>, <a href="programming//programming/change-detection.html">change detection</a>, and even
+<a href="programming//programming/commands.html"><code>Commands</code></a> are available. You can use any <a href="programming//builtins.html#systemparams">system
 params</a>.</p>
 <p>It also tracks any persistent state, used for things like <a href="programming//programming/change-detection.html">change
 detection</a> or caching to improve performance. Therefore,
-if you plan on reusing the same <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.SystemState.html"><code>SystemState</code></a> multiple
-times, you should store it somewhere, rather than creating a new one every
-time. Every time you call <code>.get(world)</code>, it behaves like another "run"
-of a system.</p>
-<p>If you are using <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>, you can choose when you
-want to apply them to the world. You need to manually call <code>.apply(world)</code>
-on the <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.SystemState.html"><code>SystemState</code></a>, to apply them.</p>
+if you plan on reusing the same <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.SystemState.html"><code>SystemState</code></a> multiple times, you should store
+it somewhere, rather than creating a new one every time. Every time you call
+<code>.get(world)</code>, it behaves like another "run" of a system.</p>
+<p>If you are using <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>, you can choose when you want to apply them to the
+world. You need to manually call <code>.apply(world)</code> on the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.SystemState.html"><code>SystemState</code></a>, to
+apply them.</p>
 <pre><code class="language-rust no_run noplayground">// TODO: write code example</code></pre>
-<h3 id="running-a-stage"><a class="header" href="#running-a-stage">Running a Stage</a></h3>
-<p>If you want to run some systems (a common use-case is
+<h3 id="running-a-system"><a class="header" href="#running-a-system">Running a System</a></h3>
+<pre><code class="language-rust no_run noplayground">// TODO: write code example</code></pre>
+<h3 id="running-a-schedule"><a class="header" href="#running-a-schedule">Running a Schedule</a></h3>
+<p>If you want to run many systems (a common use-case is
 <a href="programming//patterns/system-tests.html">testing</a>), the easiest way is to construct an impromptu
-<a href="https://docs.rs/bevy/0.9.1/bevy/ecs/schedule/struct.SystemStage.html"><code>SystemStage</code></a> (<a href="programming//programming/schedules.html">stages</a>). This way you reuse
-all the scheduling logic that Bevy normally does when running systems.</p>
+<a href="programming//programming/schedules.html">schedule</a>. This way you reuse all the scheduling logic that Bevy
+normally does when running systems. They will run with multithreading, etc.</p>
+<p>This is also useful if you want custom control flow. For example, Bevy's
+<a href="programming//programming/states.html">states</a> and <a href="programming//fundamentals/fixed-timestep.html">fixed timestep</a> abstractions
+are implemented just like this! There is an exclusive system that can contain
+loops, if/else branching, etc. to implement fancy algorithms and run entire
+schedules of systems as appropriate!</p>
 <pre><code class="language-rust no_run noplayground">// TODO: write code example</code></pre>
 <h3 id="navigating-by-metadata"><a class="header" href="#navigating-by-metadata">Navigating by Metadata</a></h3>
 <p>The world contains a lot of metadata that allows navigating all the data
@@ -9201,12 +9313,12 @@ the receiving systems are not running!</p>
 <p>To mitigate this, you could implement a <a href="programming//patterns/manual-event-clear.html">custom cleanup
 strategy</a>, to manually manage the lifetime of the relevant
 event types.</p>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="programming//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="change-detection"><a class="header" href="#change-detection">Change Detection</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/component_change_detection.rs"><code>component_change_detection</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.13.0/examples/ecs/component_change_detection.rs"><code>component_change_detection</code></a>.</p>
 <hr />
 <p>Bevy allows you to easily detect when data is changed. You can use this to
 perform actions in response to changes.</p>
@@ -9220,22 +9332,21 @@ the data somewhere.</p>
 <a href="programming//programming/ec.html#components">components</a> on them have been modified.</p>
 <p>Use <a href="programming//programming/queries.html#query-filters">query filters</a>:</p>
 <ul>
-<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/query/struct.Added.html"><code>Added&lt;T&gt;</code></a>: detect new component instances
+<li><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/query/struct.Added.html"><code>Added&lt;T&gt;</code></a>: detect new component instances
 <ul>
 <li>if the component was added to an existing entity</li>
 <li>if a new entity with the component was spawned</li>
 </ul>
 </li>
-<li><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/query/struct.Changed.html"><code>Changed&lt;T&gt;</code></a>: detect component instances that have been changed
+<li><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/query/struct.Changed.html"><code>Changed&lt;T&gt;</code></a>: detect component instances that have been changed
 <ul>
-<li>triggers when the component is accessed mutably</li>
-<li>also triggers if the component is newly-added (as per <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/query/struct.Added.html"><code>Added</code></a>)</li>
+<li>triggers when the component is mutated</li>
+<li>also triggers if the component is newly-added (as per <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/query/struct.Added.html"><code>Added</code></a>)</li>
 </ul>
 </li>
 </ul>
-<p>(If you want to react to removals, see the page on <a href="programming//programming/change-detection.html#removal-detection">removal
-detection</a>. It works differently and is much
-trickier to use.)</p>
+<p>(If you want to react to removals, see <a href="programming//programming/change-detection.html#removal-detection">removal
+detection</a>. It works differently.)</p>
 <pre><code class="language-rust no_run noplayground">/// Print the stats of friendly players when they change
 fn debug_stats_change(
     query: Query&lt;
@@ -9263,29 +9374,29 @@ fn debug_new_hostiles(
 }</code></pre>
 <h3 id="checking"><a class="header" href="#checking">Checking</a></h3>
 <p>If you want to access all the entities, as normal, regardless of if they have
-been modified, but you just want to check the status, you can use the special
-<a href="https://docs.rs/bevy/0.9.1/bevy/ecs/query/struct.ChangeTrackers.html"><code>ChangeTrackers&lt;T&gt;</code></a> query parameter.</p>
+been modified, but you just want to know if a component has been changed,
+you can use special [<code>Ref&lt;T&gt;</code>] query parameters instead of <code>&amp;</code> for immutable access.</p>
+<p>For mutable access, the change detection methods are always available (because
+Bevy queries actually return a special <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.Mut.html"><code>Mut&lt;T&gt;</code></a> type whenever you have <code>&amp;mut</code>
+in the query).</p>
 <pre><code class="language-rust no_run noplayground">/// Make sprites flash red on frames when the Health changes
 fn debug_damage(
-    mut query: Query&lt;(&amp;mut Sprite, ChangeTrackers&lt;Health&gt;)&gt;,
+    mut query: Query&lt;(&amp;mut Sprite, Ref&lt;Health&gt;)&gt;,
 ) {
-    for (mut sprite, tracker) in query.iter_mut() {
+    for (mut sprite, health) in query.iter_mut() {
         // detect if the Health changed this frame
-        if tracker.is_changed() {
-            sprite.color = Color::RED;
-        } else {
-            // extra check so we don't mutate on every frame without changes
-            if sprite.color != Color::WHITE {
-                sprite.color = Color::WHITE;
+        if health.is_changed() {
+            eprintln!("HP is: {}", health.hp);
+            // we can also check if the sprite has been changed
+            if !sprite.is_changed() {
+                sprite.color = Color::RED;
             }
         }
     }
 }</code></pre>
-<p>This is useful for processing all entities, but doing different things
-depending on if they have been modified.</p>
 <h2 id="resources-3"><a class="header" href="#resources-3">Resources</a></h2>
 <p>For <a href="programming//programming/res.html">resources</a>, change detection is provided via methods on the
-<a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Res.html"><code>Res</code></a>/<a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.ResMut.html"><code>ResMut</code></a> system parameters.</p>
+<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Res.html"><code>Res&lt;T&gt;</code></a>/<a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a> system parameters.</p>
 <pre><code class="language-rust no_run noplayground">fn check_res_changed(
     my_res: Res&lt;MyResource&gt;,
 ) {
@@ -9307,18 +9418,17 @@ fn check_res_added(
         }
     }
 }</code></pre>
-<p>Note that change detection cannot currently be used to detect
-<a href="programming//programming/states.html">states</a> changes (via the <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/schedule/struct.State.html"><code>State</code></a>
-<a href="programming//programming/res.html">resource</a>) (<a href="https://github.com/bevyengine/bevy/issues/2343">bug</a>).</p>
 <h2 id="what-gets-detected"><a class="header" href="#what-gets-detected">What gets detected?</a></h2>
-<p><a href="https://docs.rs/bevy/0.9.1/bevy/ecs/query/struct.Changed.html"><code>Changed</code></a> detection is triggered by
-<a href="https://doc.rust-lang.org/stable/std/ops/trait.DerefMut.html"><code>DerefMut</code></a>. Simply accessing components via a mutable query,
-without actually performing a <code>&amp;mut</code> access, will <em>not</em> trigger it.</p>
-<p>This makes change detection quite accurate. You can rely on it to optimize
-your game's performance, or to otherwise trigger things to happen.</p>
-<p>Also note that when you mutate a component, Bevy does not track if the new
-value is actually different from the old value. It will always trigger the
-change detection. If you want to avoid that, simply check it yourself:</p>
+<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/query/struct.Changed.html"><code>Changed</code></a> detection is triggered by <a href="https://doc.rust-lang.org/stable/std/ops/trait.DerefMut.html"><code>DerefMut</code></a>. Simply accessing
+<a href="programming//programming/ec.html#components">components</a> via a mutable <a href="programming//programming/queries.html">query</a>, or
+<a href="programming//programming/res.html">resources</a> via <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut</code></a>, without actually performing a <code>&amp;mut</code>
+access, will <em>not</em> trigger it. This makes change detection quite accurate.</p>
+<p>Note: if you call a Rust function that takes a <code>&amp;mut T</code> (mutable borrow),
+that counts! It will trigger change detection even if the function does
+not actually do any mutation. Be careful with helper functions!</p>
+<p>Also, when you mutate a component, Bevy does not check if the new value
+is actually different from the old value. It will always trigger the change
+detection. If you want to avoid that, simply check it yourself:</p>
 <pre><code class="language-rust no_run noplayground">fn update_player_xp(
     mut query: Query&lt;&amp;mut PlayerXp&gt;,
 ) {
@@ -9332,23 +9442,21 @@ change detection. If you want to avoid that, simply check it yourself:</p>
     }
 }</code></pre>
 <p>Change detection works on a per-<a href="programming//programming/systems.html">system</a> granularity, and is
-reliable. A system will not detect changes that it made itself, only those
-done by other systems, and only if it has not seen them before (the changes
-happened since the last time it ran). If your system only runs sometimes
-(such as with <a href="programming//programming/states.html">states</a> or <a href="programming//programming/run-criteria.html">run criteria</a>),
-you do <em>not</em> have to worry about missing changes.</p>
+reliable. A system will detect changes only if it has not seen them before
+(the changes happened since the last time it ran).</p>
+<p>Unlike <a href="programming//programming/events.html">events</a>, you do <em>not</em> have to worry about missing changes
+If your system only runs sometimes (such as when using <a href="programming//programming/states.html">states</a>
+or <a href="programming//programming/run-criteria.html">run conditions</a>).</p>
 <h2 id="possible-pitfalls-1"><a class="header" href="#possible-pitfalls-1">Possible Pitfalls</a></h2>
 <p>Beware of frame delay / 1-frame-lag. This can occur if Bevy runs the detecting
 system before the changing system. The detecting system will see the change
 the next time it runs, typically on the next frame update.</p>
 <p>If you need to ensure that changes are handled immediately / during the same
 frame, you can use <a href="programming//programming/system-order.html">explicit system ordering</a>.</p>
-<p>However, when detecting component additions with <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/query/struct.Added.html"><code>Added&lt;T&gt;</code></a>
-(which are typically done using <a href="programming//programming/commands.html"><code>Commands</code></a>), this is not
-enough; you need <a href="programming//programming/schedules.html">stages</a>.</p>
+<hr />
 <h1 id="removal-detection"><a class="header" href="#removal-detection">Removal Detection</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/ecs/removal_detection.rs"><code>removal_detection</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.13.0/examples/ecs/removal_detection.rs"><code>removal_detection</code></a>.</p>
 <hr />
 <p>Removal detection is special. This is because, unlike with <a href="programming//programming/change-detection.html">change
 detection</a>, the data does not exist in the ECS anymore
@@ -9356,54 +9464,22 @@ detection</a>, the data does not exist in the ECS anymore
 <p>Nevertheless, being able to respond to removals is important for some
 applications, so Bevy offers a limited form of it.</p>
 <h2 id="components-3"><a class="header" href="#components-3">Components</a></h2>
-<p>You can check for <a href="programming//programming/ec.html#components">components</a> that have been removed during
-the current frame. The data is cleared at the end of every frame update. Note
-that this makes this feature tricky to use, and requires you to use multiple
-<a href="programming//programming/schedules.html">stages</a>.</p>
-<p>When you remove a component (using <a href="programming//programming/commands.html">Commands</a>
-(<a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>)), the operation is applied at the end of the
-<a href="programming//programming/schedules.html">stage</a>. The <a href="programming//programming/systems.html">system</a> that checks for the removal
-must run in a later stage during the same frame update. Otherwise, it will
-not detect the removal.</p>
-<p>Use the <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/system/struct.RemovedComponents.html"><code>RemovedComponents&lt;T&gt;</code></a> special system
-parameter type, to get an iterator for the <a href="https://docs.rs/bevy/0.9.1/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> IDs of
-all the entities that had a component of type <code>T</code> that was removed earlier
-this frame.</p>
-<pre><code class="language-rust no_run noplayground">/// Some component type for the sake of this example.
-#[derive(Component)]
-struct Seen;
-
-fn main() {
-    App::new()
-        .add_plugins(DefaultPlugins)
-        // we could add our system to Bevy's `PreUpdate` stage
-        // (alternatively, you could create your own stage)
-        .add_system_to_stage(CoreStage::PreUpdate, remove_components)
-        // our detection system runs in a later stage
-        // (in this case: Bevy's default `Update` stage)
-        .add_system(detect_removals)
-        .run();
-}
-
-fn remove_components(
-    mut commands: Commands,
-    q: Query&lt;(Entity, &amp;Transform), With&lt;Seen&gt;&gt;,
-) {
-    for (e, transform) in q.iter() {
-        if transform.translation.y &lt; -10.0 {
-            // remove the `Seen` component from the entity
-            commands.entity(e)
-                .remove::&lt;Seen&gt;();
-        }
-    }
-}
-
-fn detect_removals(
-    removals: RemovedComponents&lt;Seen&gt;,
+<p>You can check for <a href="programming//programming/ec.html#components">components</a> that have been removed during the
+current frame. The data is cleared at the end of every frame update. You must
+make sure your detecting <a href="programming//programming/systems.html">system</a> <a href="programming//programming/system-order.html">is ordered after</a>
+(or is in another <a href="programming//programming/schedules.html">schedule</a> that runs after) the system that
+does the removing.</p>
+<p>Note: removal detection also includes despawned entities!</p>
+<p>Use the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/removal_detection/struct.RemovedComponents.html"><code>RemovedComponents&lt;T&gt;</code></a> special system parameter type. Internally, it
+is implemented using <a href="programming//programming/events.html">events</a> and behaves like an <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/event/struct.EventReader.html"><code>EventReader</code></a>,
+but it gives you the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> IDs of entities whose component <code>T</code> was removed.</p>
+<pre><code class="language-rust no_run noplayground">fn detect_removals(
+    mut removals: RemovedComponents&lt;EnemyIsTrackingPlayer&gt;,
     // ... (maybe Commands or a Query ?) ...
 ) {
-    for entity in removals.iter() {
+    for entity in removals.read() {
         // do something with the entity
+        eprintln!("Entity {:?} had the component removed.", entity);
     }
 }</code></pre>
 <p>(To do things with these entities, you can just use the <code>Entity</code> IDs with

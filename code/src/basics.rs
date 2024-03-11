@@ -152,46 +152,6 @@ struct PlayerBundle {
 }
 // ANCHOR_END: bundle
 
-// ANCHOR: sys-simple-query
-fn check_zero_health(
-    // access entities that have `Health` and `Transform` components
-    // get read-only access to `Health` and mutable access to `Transform`
-    // optional component: get access to `Player` if it exists
-    mut query: Query<(&Health, &mut Transform, Option<&Player>)>,
-) {
-    // get all matching entities
-    for (health, mut transform, player) in query.iter_mut() {
-        eprintln!("Entity at {} has {} HP.", transform.translation, health.hp);
-
-        // center if hp is zero
-        if health.hp <= 0.0 {
-            transform.translation = Vec3::ZERO;
-        }
-
-        if let Some(player) = player {
-            // the current entity is the player!
-            // do something special!
-        }
-    }
-}
-// ANCHOR_END: sys-simple-query
-
-// ANCHOR: sys-query-filter
-fn debug_player_hp(
-    // access the health (and optionally the PlayerName, if present), only for friendly players
-    query: Query<(&Health, Option<&PlayerName>), (With<Player>, Without<Enemy>)>,
-) {
-    // get all matching entities
-    for (health, name) in query.iter() {
-        if let Some(name) = name {
-            eprintln!("Player {} has {} HP.", name.0, health.hp);
-        } else {
-            eprintln!("Unknown player has {} HP.", health.hp);
-        }
-    }
-}
-// ANCHOR_END: sys-query-filter
-
 // ANCHOR: propagation
 fn spawn_toplevel_entity(
     mut commands: Commands,
@@ -215,120 +175,6 @@ fn spawn_toplevel_entity(
    commands.entity(parent).push_children(&[child]);
 }
 // ANCHOR_END: propagation
-
-// ANCHOR: change-detection
-/// Print the stats of friendly players when they change
-fn debug_stats_change(
-    query: Query<
-        // components
-        (&Health, &PlayerXp),
-        // filters
-        (Without<Enemy>, Or<(Changed<Health>, Changed<PlayerXp>)>), 
-    >,
-) {
-    for (health, xp) in query.iter() {
-        eprintln!(
-            "hp: {}+{}, xp: {}",
-            health.hp, health.extra, xp.0
-        );
-    }
-}
-
-/// detect new enemies and print their health
-fn debug_new_hostiles(
-    query: Query<(Entity, &Health), Added<Enemy>>,
-) {
-    for (entity, health) in query.iter() {
-        eprintln!("Entity {:?} is now an enemy! HP: {}", entity, health.hp);
-    }
-}
-// ANCHOR_END: change-detection
-
-// ANCHOR: changetrackers
-/// Make sprites flash red on frames when the Health changes
-fn debug_damage(
-    mut query: Query<(&mut Sprite, ChangeTrackers<Health>)>,
-) {
-    for (mut sprite, tracker) in query.iter_mut() {
-        // detect if the Health changed this frame
-        if tracker.is_changed() {
-            sprite.color = Color::RED;
-        } else {
-            // extra check so we don't mutate on every frame without changes
-            if sprite.color != Color::WHITE {
-                sprite.color = Color::WHITE;
-            }
-        }
-    }
-}
-// ANCHOR_END: changetrackers
-
-fn maybe_lvl_up(xp: &PlayerXp) -> PlayerXp {
-    unimplemented!()
-}
-
-// ANCHOR: change-if-wrap
-fn update_player_xp(
-    mut query: Query<&mut PlayerXp>,
-) {
-    for mut xp in query.iter_mut() {
-        let new_xp = maybe_lvl_up(&xp);
-
-        // avoid triggering change detection if the value is the same
-        if new_xp != *xp {
-            *xp = new_xp;
-        }
-    }
-}
-// ANCHOR_END: change-if-wrap
-
-// ANCHOR: changed-res
-fn check_res_changed(
-    my_res: Res<MyResource>,
-) {
-    if my_res.is_changed() {
-        // do something
-    }
-}
-
-fn check_res_added(
-    // use Option, not to panic if the resource doesn't exist yet
-    my_res: Option<Res<MyResource>>,
-) {
-    if let Some(my_res) = my_res {
-        // the resource exists
-
-        if my_res.is_added() {
-            // it was just added
-            // do something
-        }
-    }
-}
-// ANCHOR_END: changed-res
-
-// ANCHOR: res-removal-detection
-fn detect_removed_res(
-    my_res: Option<Res<MyResource>>,
-    mut my_res_existed: Local<bool>,
-) {
-    if let Some(my_res) = my_res {
-        // the resource exists!
-
-        // remember that!
-        *my_res_existed = true;
-
-        // (... you can do something with the resource here if you want ...)
-    } else if *my_res_existed {
-        // the resource does not exist, but we remember it existed!
-        // (it was removed)
-
-        // forget about it!
-        *my_res_existed = false;
-
-        // ... do something now that it is gone ...
-    }
-}
-// ANCHOR_END: res-removal-detection
 
 use bevy::render::camera::Camera;
 // ANCHOR: query-parent
@@ -641,34 +487,6 @@ commands.spawn(MyParentBundle::default())
 // ANCHOR_END: parenting
 }
 
-// ANCHOR: query-entity
-// add `Entity` to `Query` to get Entity IDs
-fn query_entities(q: Query<(Entity, /* ... */)>) {
-    for (e, /* ... */) in q.iter() {
-        // `e` is the Entity ID of the entity we are accessing
-    }
-}
-// ANCHOR_END: query-entity
-
-// ANCHOR: query-single
-fn query_player(mut q: Query<(&Player, &mut Transform)>) {
-    let (player, mut transform) = q.single_mut();
-
-    // do something with the player and its transform
-}
-// ANCHOR_END: query-single
-
-fn query_misc(mut query: Query<(&Health, &mut Transform)>) {
-    let entity = Entity::from_raw(0);
-    // ANCHOR: query-get
-    if let Ok((health, mut transform)) = query.get_mut(entity) {
-        // do something with the components
-    } else {
-        // the entity does not have the components from the query
-    }
-    // ANCHOR_END: query-get
-}
-
 #[derive(Component)]
 struct Asteroid;
 
@@ -874,14 +692,6 @@ fn remove_components(
     }
 }
 
-fn detect_removals(
-    removals: RemovedComponents<Seen>,
-    // ... (maybe Commands or a Query ?) ...
-) {
-    for entity in removals.iter() {
-        // do something with the entity
-    }
-}
 // ANCHOR_END: removal-detection
 }
 

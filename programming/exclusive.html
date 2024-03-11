@@ -247,6 +247,8 @@ fn spawn_particles_for_enemies(
         ResMut&lt;MyParticleTracker&gt;,
         Query&lt;&amp;mut Transform, With&lt;Player&gt;&gt;,
         EventReader&lt;MyDamageEvent&gt;,
+        // yes, even Commands ;)
+        Commands,
     )&gt;,
     // local resource, just like in a regular system
     mut has_run_once: Local&lt;bool&gt;,
@@ -259,11 +261,15 @@ fn spawn_particles_for_enemies(
 
     // create a scope where we can access our things like a regular system
     {
-        let (mut settings, mut tracker, mut q_player, mut evr) =
+        let (mut settings, mut tracker, mut q_player, mut evr, commands) =
             params.get_mut(world);
 
-        // TODO: do things with our resources, query, events, ...
+        // TODO: do things with our resources, query, events, commands, ...
     }
+
+    // because our SystemState includes Commands,
+    // we must apply them when we are done
+    params.apply(world);
 
     // we are now free to directly spawn entities
     // because the World is no longer used by anything
@@ -279,6 +285,9 @@ fn spawn_particles_for_enemies(
     // and, of course, we can use our Local
     *has_run_once = true;
 }</code></pre>
+<p>Note: if your <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.SystemState.html"><code>SystemState</code></a> includes <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>, you must call <code>.apply()</code>
+after you are done! That is when the deferred operations queued via
+<a href="/programming/commands.html">commands</a> will be applied to the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>World</code></a>.</p>
 <h2 id="performance-considerations"><a class="header" href="#performance-considerations">Performance Considerations</a></h2>
 <p>Exclusive systems, by definition, limit parallelism and multi-threading, as
 nothing else can access the same ECS World while they run. The whole schedule
