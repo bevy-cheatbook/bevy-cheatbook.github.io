@@ -198,6 +198,14 @@ a conditional-compilation attribute.</p>
     app.add_plugins(LogDiagnosticsPlugin::default());
 }</code></pre>
 <h2 id="in-game--on-screen-fps-counter"><a class="header" href="#in-game--on-screen-fps-counter">In-Game / On-Screen FPS counter</a></h2>
+<p>UPDATE! I have now released a Bevy plugin which provides a much better
+version of the code on this page, ready for you to use! Consider trying
+my <a href="https://github.com/IyesGames/iyes_perf_ui"><code>iyes_perf_ui</code></a> plugin!</p>
+<p>Bevy maintainers have expressed interest in upstreaming it, and we will
+try to make it official in the next Bevy release (0.14)!</p>
+<p>For now, I am also keeping the old code example below in the book, for
+completeness:</p>
+<hr />
 <p>You can use Bevy UI to create an in-game FPS counter.</p>
 <p>It is recommended that you create a new UI root (entity without
 a parent) with absolute positioning, so that you can control the
