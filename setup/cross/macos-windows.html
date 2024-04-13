@@ -194,12 +194,6 @@ about developing for Windows generally)</p>
 <p>The instructions on this page use the <code>x86_64</code> architecture, but you could also
 set up a toolchain to target <code>i686</code> (32-bit) or <code>aarch64</code> (Windows-on-Arm) the
 same way.</p>
-<p>As of Bevy 0.12, cross-compiling with MSVC no longer works, because there
-are some dependencies that assume you are running Windows and that they can
-run Windows EXEs from their build scripts. As such, it is now recommended
-that you use the GNU toolchain for cross-compiling. Instructions for setting
-up MSVC are still provided on this page for completeness (and it could be
-useful for your other Rust projects).</p>
 <h2 id="first-time-setup-gnu"><a class="header" href="#first-time-setup-gnu">First-Time Setup (GNU)</a></h2>
 <p>The GNU/MINGW toolchain is the easier option. It does not need much in terms of
 special configuration. Also, you do not need to accept any Microsoft licenses.</p>
@@ -309,6 +303,20 @@ for Windows:</p>
 </code></pre>
 <p>MSVC:</p>
 <pre><code class="language-sh">cargo build --target=x86_64-pc-windows-msvc --release
+</code></pre>
+<h2 id="bevy-caveats"><a class="header" href="#bevy-caveats">Bevy Caveats</a></h2>
+<p>As of Bevy 0.12, a workaround is needed for building with MSVC. If you
+use the MSVC toolchain, the <code>blake3</code> dependency assumes you are building
+on Windows and tries to run some EXEs during its build process, which do
+not exist in the Linux cross-compilation environment. The solution is
+to tell it to not do that and use pure Rust code instead.</p>
+<p>Set an environment variable when building:</p>
+<pre><code class="language-sh">export CARGO_FEATURE_PURE=1
+cargo build --target=x86_64-pc-windows-msvc --release
+</code></pre>
+<p>Or add <code>blake3</code> to your <code>Cargo.toml</code> if you want to persist the configuration:</p>
+<pre><code class="language-toml">[dependencies]
+blake3 = { version = "1.5", features = [ "pure" ] }
 </code></pre>
 
                     </main>
