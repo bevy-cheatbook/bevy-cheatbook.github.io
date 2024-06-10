@@ -179,14 +179,14 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(current)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.14</th><th>(upcoming / release candidate)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="commands"><a class="header" href="#commands">Commands</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.13.0/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.14.0-rc.2/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
 <hr />
-<p>Use <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a> to spawn/despawn entities, add/remove components on existing
+<p>Use <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a> to spawn/despawn entities, add/remove components on existing
 entities, manage resources, from your <a href="/programming/systems.html">systems</a>.</p>
 <pre><code class="language-rust no_run noplayground">fn spawn_things(
     mut commands: Commands,
@@ -254,9 +254,9 @@ fn despawn_all_enemies(
     }
 }</code></pre>
 <h2 id="when-do-these-actions-get-applied"><a class="header" href="#when-do-these-actions-get-applied">When do these actions get applied?</a></h2>
-<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a> do not take effect immediately, because it wouldn't be safe to
+<p><a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a> do not take effect immediately, because it wouldn't be safe to
 modify the data layout in memory when other <a href="/programming/systems.html">systems</a> could be
-running in parallel. When you do anything using <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>, it gets queued to
+running in parallel. When you do anything using <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>, it gets queued to
 be applied later when it is safe to do so.</p>
 <p>Within the same <a href="/programming/schedules.html">schedule</a>, you can add <code>.before()</code>/<code>.after()</code>
 <a href="/programming/system-order.html">ordering constraints</a> to your systems, and Bevy will
@@ -274,11 +274,11 @@ the next frame update!</p>
 <p>Otherwise, Commands are normally applied at the end of every
 <a href="/programming/schedules.html">schedule</a>. <a href="/programming/systems.html">Systems</a> that live in different schedules
 will see the changes. For example, Bevy's engine systems (that live in
-<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a>) will see the entities you spawn in your systems (that live in
-<a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.Update.html"><code>Update</code></a>).</p>
+<a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a>) will see the entities you spawn in your systems (that live in
+<a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/app/struct.Update.html"><code>Update</code></a>).</p>
 <h2 id="custom-commands"><a class="header" href="#custom-commands">Custom Commands</a></h2>
 <p>Commands can also serve as a convenient way to do any custom manipulations
-that require <a href="/programming/world.html">full access</a> to the ECS <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>World</code></a>. You can queue up
+that require <a href="/programming/world.html">full access</a> to the ECS <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/world/struct.World.html"><code>World</code></a>. You can queue up
 any custom code to run in a deferred fashion, the same way as the standard
 commands work.</p>
 <p>For a one-off thing, you can just pass a closure:</p>
@@ -293,9 +293,13 @@ commands work.</p>
         eprintln!("{}", x);
     });
 }</code></pre>
-<p>If you want something reusable, you can create a custom type and implement
-the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/trait.Command.html"><code>Command</code></a> trait:</p>
-<pre><code class="language-rust no_run noplayground">use bevy::ecs::system::Command;
+<p>If you want something reusable, consider <a href="/programming/one-shot-systems.html">one-shot systems</a>.
+They are a way to write regular Bevy systems and run them on-demand.</p>
+<h3 id="extending-the-commands-api"><a class="header" href="#extending-the-commands-api">Extending the Commands API</a></h3>
+<p>If you want something more integrated, that feels like as if it was
+part of Bevy's Commands API, here is how to do it.</p>
+<p>Create a custom type and implement the <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/world/trait.Command.html"><code>Command</code></a> trait:</p>
+<pre><code class="language-rust no_run noplayground">use bevy::ecs::world::Command;
 
 struct MyCustomCommand {
     // you can have some parameters
@@ -308,13 +312,14 @@ impl Command for MyCustomCommand {
     }
 }
 
+// use it like this
 fn my_other_system(mut commands: Commands) {
     commands.add(MyCustomCommand {
         data: 920, // set your value
     });
 }</code></pre>
 <p>And if you want to make it extra nice to use, you can create
-an extension trait to add extra methods to <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>:</p>
+an extension trait to add extra methods to <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>:</p>
 <pre><code class="language-rust no_run noplayground">pub trait MyCustomCommandsExt {
     // define a method that we will be able to call on `commands`
     fn do_custom_thing(&amp;mut self, data: u32);
@@ -333,8 +338,6 @@ fn my_fancy_system(mut commands: Commands) {
     // now we can call our custom method just like Bevy's `spawn`, etc.
     commands.do_custom_thing(42);
 }</code></pre>
-<p>Now, your custom commands will "feel native", as if they were integrated
-into Bevy. :)</p>
 <p>Note: if you want to use your custom extension method from other Rust
 files, you will have to import your trait, or it will not be available:</p>
 <pre><code class="language-rust no_run noplayground">use crate::thing::MyCustomCommandsExt;</code></pre>

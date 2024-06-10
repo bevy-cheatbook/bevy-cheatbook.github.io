@@ -179,11 +179,11 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(current)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.14</th><th>(upcoming / release candidate)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.13.0/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.14.0-rc.2/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
 <hr />
 <h1 id="entities"><a class="header" href="#entities">Entities</a></h1>
 <p><a href="/programming/intro-data.html">See here for more explanation on how storing data in the ECS works.</a></p>
@@ -193,7 +193,7 @@ store a value of that type.</p>
 <p>Technically, an entity is just a simple integer ID (imagine the "row number" in
 a table/spreadsheet) that can be used to find related data values (in different
 "columns" of that table).</p>
-<p>In Bevy, <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> is this value. It consists of two integers:
+<p>In Bevy, <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> is this value. It consists of two integers:
 the ID and the "generation" (allowing IDs to be reused, after you despawn old
 entities).</p>
 <p>You can create ("spawn") new entities and destroy ("despawn") entities using
@@ -222,7 +222,7 @@ entities).</p>
 <h1 id="components"><a class="header" href="#components">Components</a></h1>
 <p>Components are the data associated with entities.</p>
 <p>To create a new component type, simply define a Rust <code>struct</code> or <code>enum</code>, and
-derive the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/component/trait.Component.html"><code>Component</code></a> trait.</p>
+derive the <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/component/trait.Component.html"><code>Component</code></a> trait.</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Component)]
 struct Health {
     hp: f32,

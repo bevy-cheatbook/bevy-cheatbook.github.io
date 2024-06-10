@@ -179,23 +179,24 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(current)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.14</th><th>(upcoming / release candidate)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.13.0/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.14.0-rc.2/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
 <hr />
 <h1 id="bundles"><a class="header" href="#bundles">Bundles</a></h1>
-<p>You can think of Bundles like "templates" or "blueprints" for creating entities.
+<p>You can think of Bundles like "templates" for creating entities.
 They make it easy to create <a href="/programming/ec.html#entities">entities</a> with a common set of
-<a href="/programming/ec.html#components">components</a>.</p>
+<a href="/programming/ec.html#components">components</a> types.</p>
 <p>By creating a bundle type, instead of adding your components one by one, you
 can make sure that you will never accidentally forget some important component
 on your entities. The Rust compiler will give an error if you do not set all
 the fields of a struct, thus helping you make sure your code is correct.</p>
 <p>Bevy provides many <a href="/builtins.html#bundles">built-in bundle types</a> that you can use
 to spawn common kinds of entities.</p>
-<p>To create your own bundle, derive <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/bundle/trait.Bundle.html"><code>Bundle</code></a> on a <code>struct</code>:</p>
+<h2 id="creating-bundles"><a class="header" href="#creating-bundles">Creating Bundles</a></h2>
+<p>To create your own bundle, derive <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/bundle/trait.Bundle.html"><code>Bundle</code></a> on a <code>struct</code>:</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Bundle)]
 struct PlayerBundle {
     xp: PlayerXp,
@@ -205,8 +206,12 @@ struct PlayerBundle {
 
     // We can nest/include another bundle.
     // Add the components for a standard Bevy Sprite:
-    sprite: SpriteSheetBundle,
+    sprite: SpriteBundle,
 }</code></pre>
+<p>When you have nested bundles, everything gets flattened.
+You end up with an entity that has all the included component
+types. If a type appears more than once, that's an error.</p>
+<h3 id="using-bundles"><a class="header" href="#using-bundles">Using Bundles</a></h3>
 <p>You can then use your bundle when you spawn your entities:</p>
 <pre><code class="language-rust no_run noplayground">commands.spawn(PlayerBundle {
     xp: PlayerXp(0),
@@ -216,7 +221,7 @@ struct PlayerBundle {
         extra: 0.0,
     },
     marker: Player,
-    sprite: SpriteSheetBundle {
+    sprite: SpriteBundle {
         // TODO
         ..Default::default()
     },
@@ -241,6 +246,22 @@ struct PlayerBundle {
     name: PlayerName("Player 1".into()),
     ..Default::default()
 });</code></pre>
+<h3 id="bundles-for-removal"><a class="header" href="#bundles-for-removal">Bundles for Removal</a></h3>
+<p>Bundles can also be useful to represent a set of components that you
+want to be able to easily remove from an entity.</p>
+<pre><code class="language-rust no_run noplayground">/// Contains all components to remove when
+/// resetting the player between rooms/levels.
+#[derive(Bundle)]
+struct PlayerResetCleanupBundle {
+    status_effect: StatusEffect,
+    pending_action: PlayerPendingAction,
+    modifier: CurrentModifier,
+    low_hp_marker: LowHpMarker,
+}</code></pre>
+<pre><code class="language-rust no_run noplayground">commands.entity(e_player)
+    .remove::&lt;PlayerResetCleanupBundle&gt;();</code></pre>
+<p>The component types included in the bundle will be removed from the
+entity, if any of them exist on the entity.</p>
 <h2 id="loose-components-as-bundles"><a class="header" href="#loose-components-as-bundles">Loose components as bundles</a></h2>
 <p>Technically, Bevy also considers arbitrary tuples of components as bundles:</p>
 <pre><code>(ComponentA, ComponentB, ComponentC)
