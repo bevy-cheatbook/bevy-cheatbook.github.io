@@ -179,13 +179,13 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(current)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.14</th><th>(upcoming / release candidate)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="exclusive-systems"><a class="header" href="#exclusive-systems">Exclusive Systems</a></h1>
 <p>Exclusive systems are <a href="/programming/systems.html">systems</a> that Bevy will not run in parallel
 with any other system. They can have <a href="/programming/world.html">full unrestricted access</a>
-to the whole ECS <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>World</code></a>, by taking a <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>&amp;mut World</code></a> parameter.</p>
+to the whole ECS <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/world/struct.World.html"><code>World</code></a>, by taking a <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/world/struct.World.html"><code>&amp;mut World</code></a> parameter.</p>
 <p>Inside of an exclusive system, you have full control over all data stored
 in the ECS. You can do whatever you want.</p>
 <p>Some example situations where exclusive systems are useful:</p>
@@ -215,25 +215,25 @@ as with regular systems.</p>
         .before(other_things)
 );</code></pre>
 <h2 id="exclusive-system-parameters"><a class="header" href="#exclusive-system-parameters">Exclusive System Parameters</a></h2>
-<p>There are a few other things, besides <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>&amp;mut World</code></a>, that can be used as
+<p>There are a few other things, besides <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/world/struct.World.html"><code>&amp;mut World</code></a>, that can be used as
 parameters for exclusive systems:</p>
 <ul>
-<li><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>&amp;mut World</code></a>:
+<li><a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/world/struct.World.html"><code>&amp;mut World</code></a>:
 Full <a href="/programming/world.html">direct access to the ECS World</a></li>
-<li><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a>:
+<li><a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a>:
 Data <a href="/programming/local.html">local</a> to the system</li>
-<li><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.SystemState.html"><code>&amp;mut SystemState&lt;P&gt;</code></a>:
+<li><a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.SystemState.html"><code>&amp;mut SystemState&lt;P&gt;</code></a>:
 Emulates a regular system, allowing you to easily access data from the World.
 <code>P</code> are the system parameters.</li>
-<li><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/query/struct.QueryState.html"><code>&amp;mut QueryState&lt;Q, F = ()&gt;</code></a>:
-Allows you to perform queries on the World, similar to a <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Query.html"><code>Query</code></a> in regular systems.</li>
+<li><a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/query/struct.QueryState.html"><code>&amp;mut QueryState&lt;Q, F = ()&gt;</code></a>:
+Allows you to perform queries on the World, similar to a <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.Query.html"><code>Query</code></a> in regular systems.</li>
 </ul>
-<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.SystemState.html"><code>SystemState</code></a> can be used to emulate a normal system.  You can put regular
-system parameters inside. This allows you to access the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>World</code></a> as you would
+<p><a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.SystemState.html"><code>SystemState</code></a> can be used to emulate a normal system.  You can put regular
+system parameters inside. This allows you to access the <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/world/struct.World.html"><code>World</code></a> as you would
 from a normal system, but you can confine it to a specific scope inside your
 function body, making it more flexible.</p>
-<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/query/struct.QueryState.html"><code>QueryState</code></a> is the same thing, but for a single query.  It is a simpler
-alternative to <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.SystemState.html"><code>SystemState</code></a> for when you just need to be able to query for
+<p><a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/query/struct.QueryState.html"><code>QueryState</code></a> is the same thing, but for a single query.  It is a simpler
+alternative to <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.SystemState.html"><code>SystemState</code></a> for when you just need to be able to query for
 some data.</p>
 <pre><code class="language-rust no_run noplayground">use bevy::ecs::system::SystemState;
 
@@ -285,9 +285,9 @@ fn spawn_particles_for_enemies(
     // and, of course, we can use our Local
     *has_run_once = true;
 }</code></pre>
-<p>Note: if your <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.SystemState.html"><code>SystemState</code></a> includes <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>, you must call <code>.apply()</code>
+<p>Note: if your <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.SystemState.html"><code>SystemState</code></a> includes <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>, you must call <code>.apply()</code>
 after you are done! That is when the deferred operations queued via
-<a href="/programming/commands.html">commands</a> will be applied to the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>World</code></a>.</p>
+<a href="/programming/commands.html">commands</a> will be applied to the <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/world/struct.World.html"><code>World</code></a>.</p>
 <h2 id="performance-considerations"><a class="header" href="#performance-considerations">Performance Considerations</a></h2>
 <p>Exclusive systems, by definition, limit parallelism and multi-threading, as
 nothing else can access the same ECS World while they run. The whole schedule
@@ -295,11 +295,11 @@ needs to come to a stop, to accomodate the exclusive system. This can easily
 introduce a performance bottleneck.</p>
 <p>Generally speaking, you should avoid using exclusive systems, unless you need
 to do something that is only possible with them.</p>
-<p>On the other hand, they can have less overhead (by avoiding
-<a href="/programming/commands.html">Commands</a>), and so can be faster for some use cases.</p>
-<p><a href="https://docs.rs/bevy/0.13.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a> has a lot of overhead, as it needs to store your data in a queue
-and then process / copy it into the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>World</code></a> later. Directly spawning entities
-into the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html"><code>World</code></a> is much more efficient.</p>
+<p>On the other hand, if your alternative is to use <a href="/programming/commands.html">commands</a>,
+and you need to process a huge number of entities, exclusive systems are faster.</p>
+<p><a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a> is effectively just a way to ask Bevy do to exclusive <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/world/struct.World.html"><code>World</code></a>
+access for you, at a later time. Going through the commands queue is much
+slower than just doing the exclusive access yourself.</p>
 <p>Some examples for when exclusive systems can be faster:</p>
 <ul>
 <li>You want to spawn/despawn a ton of entities.
@@ -313,19 +313,12 @@ into the <a href="https://docs.rs/bevy/0.13.0/bevy/ecs/world/struct.World.html">
 </ul>
 </li>
 </ul>
-<p>You can think of it this way: in order to apply Commands, Bevy effectively
-needs to run an "exclusive system" internally to do it for you. Normally,
-that is hidden / automatic. By just writing an exclusive system yourself,
-you are saving on the additional regular system that you would normally run.</p>
-<p>On the other hand, if you have a system that runs every frame, but only
-needs to manage entities every once in a while, then Commands are likely
-to be more performant, because, by making your system a normal system,
-you avoid making it a bottleneck for parallelism.</p>
-<p>Some examples for when normal systems can be faster:</p>
+<p>Some examples for when normal systems with <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a> can be faster:</p>
 <ul>
-<li>You need to check some stuff every frame, and maybe spawn/despawn something sometimes.
+<li>You need to check some stuff every frame, but only use <a href="/programming/commands.html">commands</a> sometimes.
 <ul>
 <li>Example: Despawn enemies when they reach 0 HP.</li>
+<li>Example: Spawn/despawn entities when <a href="/fundamentals/time.html#timer">timers</a> finish.</li>
 <li>Example: Add/remove some UI elements depending on what is happening in-game.</li>
 </ul>
 </li>

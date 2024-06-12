@@ -179,13 +179,13 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(current)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.14</th><th>(upcoming / release candidate)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="plugins"><a class="header" href="#plugins">Plugins</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.13.0/examples/app/plugin.rs"><code>plugin</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/v0.13.0/examples/app/plugin_group.rs"><code>plugin_group</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.14.0-rc.2/examples/app/plugin.rs"><code>plugin</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.14.0-rc.2/examples/app/plugin_group.rs"><code>plugin_group</code></a>.</p>
 <hr />
 <p>As your project grows, it can be useful to make it more modular. You can
 split it into "plugins".</p>
@@ -193,7 +193,7 @@ split it into "plugins".</p>
 Builder</a>. Think of this as a way to add things to the app from
 multiple places, like different Rust files/modules or crates.</p>
 <p>The simplest way to create a plugin is by just writing a Rust function
-that takes <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.App.html"><code>&amp;mut App</code></a>:</p>
+that takes <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/app/struct.App.html"><code>&amp;mut App</code></a>:</p>
 <pre><code class="language-rust no_run noplayground">fn my_plugin(app: &amp;mut App) {
     app.init_resource::&lt;MyCustomResource&gt;();
     app.add_systems(Update, (
@@ -201,7 +201,7 @@ that takes <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.App.html"><code>
         do_other_things,
     ));
 }</code></pre>
-<p>An alternative way is by creating a <code>struct</code> and implementing the <a href="https://docs.rs/bevy/0.13.0/bevy/app/trait.Plugin.html"><code>Plugin</code></a> trait:</p>
+<p>An alternative way is by creating a <code>struct</code> and implementing the <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/app/trait.Plugin.html"><code>Plugin</code></a> trait:</p>
 <pre><code class="language-rust no_run noplayground">struct MyPlugin;
 
 impl Plugin for MyPlugin {
@@ -214,11 +214,11 @@ impl Plugin for MyPlugin {
 }</code></pre>
 <p>The benefit of using a <code>struct</code> is that you could extend it with configuration
 parameters or generics if you want to make your plugin configurable.</p>
-<p>Either way, you get <code>&amp;mut</code> access to the <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.App.html"><code>App</code></a>, so you can add whatever
+<p>Either way, you get <code>&amp;mut</code> access to the <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/app/struct.App.html"><code>App</code></a>, so you can add whatever
 you want to it, just like you can do from your <code>fn main()</code>.</p>
-<p>You can now add your plugins to your <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.App.html"><code>App</code></a> from elsewhere (most commonly
+<p>You can now add your plugins to your <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/app/struct.App.html"><code>App</code></a> from elsewhere (most commonly
 <code>fn main()</code>). Bevy will just call your plugin implementation above. In effect,
-everything the plugin adds will be flattened into your <a href="https://docs.rs/bevy/0.13.0/bevy/app/struct.App.html"><code>App</code></a> alongside
+everything the plugin adds will be flattened into your <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/app/struct.App.html"><code>App</code></a> alongside
 everything that is already there.</p>
 <pre><code class="language-rust no_run noplayground">fn main() {
     App::new()
@@ -240,10 +240,10 @@ different places, like separate Rust files / modules.</p>
 <li>Create plugins for different <a href="/programming/states.html">states</a>.</li>
 <li>Create plugins for various sub-systems, like physics or input handling.</li>
 </ul>
-<h2 id="plugin-groups"><a class="header" href="#plugin-groups">Plugin groups</a></h2>
-<p>Plugin groups register multiple plugins at once.  Bevy's <a href="https://docs.rs/bevy/0.13.0/bevy/struct.DefaultPlugins.html"><code>DefaultPlugins</code></a>
-and <a href="https://docs.rs/bevy/0.13.0/bevy/struct.MinimalPlugins.html"><code>MinimalPlugins</code></a> are examples of this.</p>
-<p>To create your own plugin group:</p>
+<h2 id="plugin-groups"><a class="header" href="#plugin-groups">Plugin Groups</a></h2>
+<p>Plugin groups register multiple plugins at once.  Bevy's <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/struct.DefaultPlugins.html"><code>DefaultPlugins</code></a>
+and <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/struct.MinimalPlugins.html"><code>MinimalPlugins</code></a> are examples of this.</p>
+<p>To create your own plugin group, implement the <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/app/trait.PluginGroup.html"><code>PluginGroup</code></a> trait:</p>
 <pre><code class="language-rust no_run noplayground">use bevy::app::PluginGroupBuilder;
 
 struct MyPluginGroup;
@@ -265,7 +265,7 @@ fn main() {
 <p>When adding a plugin group to the <a href="/programming/app-builder.html">app</a>, you can disable some
 plugins while keeping the rest.</p>
 <p>For example, if you want to manually set up logging (with your own <code>tracing</code>
-subscriber), you can disable Bevy's <a href="https://docs.rs/bevy/0.13.0/bevy/log/struct.LogPlugin.html"><code>LogPlugin</code></a>:</p>
+subscriber), you can disable Bevy's <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/log/struct.LogPlugin.html"><code>LogPlugin</code></a>:</p>
 <pre><code class="language-rust no_run noplayground">App::new()
     .add_plugins(
         DefaultPlugins.build()
@@ -316,7 +316,7 @@ fn main() {
         .run();
 }</code></pre>
 <p>Plugins that are added using <a href="/programming/plugins.html#plugin-groups">Plugin Groups</a> can also be
-configured. Many of Bevy's <a href="https://docs.rs/bevy/0.13.0/bevy/struct.DefaultPlugins.html"><code>DefaultPlugins</code></a> work this way.</p>
+configured. Many of Bevy's <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/struct.DefaultPlugins.html"><code>DefaultPlugins</code></a> work this way.</p>
 <pre><code class="language-rust no_run noplayground">use bevy::window::WindowResolution;
 
 App::new()
