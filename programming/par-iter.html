@@ -301,6 +301,108 @@ a minimum and maximum using <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/b
         // TODO: do some heavy work
     });
 }</code></pre>
+<h2 id="parallel-processing-of-arbitrary-data"><a class="header" href="#parallel-processing-of-arbitrary-data">Parallel Processing of Arbitrary Data</a></h2>
+<p>Internal parallelism isn't limited to just ECS constructs like
+<a href="/programming/intro-data.html">entities/components</a> or <a href="/programming/events.html">events</a>.</p>
+<p>It is also possible to process a slice (or anything that can be referenced
+as a slice, such as a <a href="https://doc.rust-lang.org/stable/std/vec/struct.Vec.html"><code>Vec</code></a>) in parallel chunks. If you just have a big
+buffer of arbitrary data, this is for you.</p>
+<p>Use <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/tasks/trait.ParallelSlice.html"><code>.par_splat_map</code></a>/<a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/tasks/trait.ParallelSliceMut.html"><code>.par_splat_map_mut</code></a>
+to spread the work across a number of parallel tasks. Specify <code>None</code> for
+the task count to automatically use the total number of CPU threads available.</p>
+<p>Use <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/tasks/trait.ParallelSlice.html"><code>.par_chunk_map</code></a>/<a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/tasks/trait.ParallelSliceMut.html"><code>.par_chunk_map_mut</code></a>
+to manually specify a specific chunk size.</p>
+<p>In both cases, you provide a closure to process each chunk (sub-slice). It will
+be given the starting index of its chunk + the reference to its chunk slice.
+You can return values from the closure, and they will be concatenated and
+returned to the call site as a <a href="https://doc.rust-lang.org/stable/std/vec/struct.Vec.html"><code>Vec</code></a>.</p>
+<pre><code class="language-rust no_run noplayground">use bevy::tasks::{ParallelSlice, ParallelSliceMut};
+
+fn parallel_slices(/* ... */) {
+    // say we have a big vec with a bunch of data
+    let mut my_data = vec![Something; 10000];
+
+    // and we want to process it across the number of
+    // available CPU threads, splitting it into equal chunks
+    my_data.par_splat_map_mut(ComputeTaskPool::get(), None, |i, data| {
+        // `i` is the starting index of the current chunk
+        // `data` is the sub-slice / chunk to process
+        for item in data.iter_mut() {
+            process_thing(item);
+        }
+    });
+
+    // Example: we have a bunch of numbers
+    let mut my_values = vec![10; 8192];
+
+    // Example: process it in chunks of 1024
+    // to compute the sums of each sequence of 1024 values.
+    let sums = my_values.par_chunk_map(ComputeTaskPool::get(), 1024, |_, data| {
+        // sum the current chunk of 1024 values
+        let sum: u64 = data.iter().sum();
+        // return it out of the closure
+        sum
+    });
+
+    // `sums` is now a `Vec&lt;u64&gt;` containing
+    // the returned value from each chunk, in order
+}</code></pre>
+<p>When you are using this API from within a Bevy <a href="/programming/systems.html">system</a>, spawn
+your tasks on the <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/tasks/struct.ComputeTaskPool.html"><code>ComputeTaskPool</code></a>.</p>
+<p>This API can also be useful when you are doing <a href="/fundamentals/async-compute.html">background
+computation</a>, to get some extra parallelism.
+In that case, use the <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/tasks/struct.AsyncComputeTaskPool.html"><code>AsyncComputeTaskPool</code></a> instead.</p>
+<h2 id="scoped-tasks"><a class="header" href="#scoped-tasks">Scoped Tasks</a></h2>
+<p>Scoped tasks are actually the underlying primitive that all of the
+above abstractions (parallel iterators and slices) are built on. If the
+previously-discussed abstractions aren't useful to you, you can implement
+whatever custom processing flow you want, by spawning scoped tasks yourself.</p>
+<p>Scoped tasks let you borrow whatever you want out of the parent function. The
+<a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/tasks/struct.Scope.html"><code>Scope</code></a> will wait until the tasks return, before returning back to the parent
+function. This ensures your parallel tasks do not outlive the parent function,
+thus accomplishing "internal parallelism".</p>
+<p>To get a performance benefit, make sure each of your tasks has a significant
+and roughly similar amount of work to do. If your tasks complete very quickly,
+it is possible that the overhead of parallelism outweighs the gains.</p>
+<pre><code class="language-rust no_run noplayground">use bevy::tasks::ComputeTaskPool;
+
+fn my_system(/* ... */) {
+    // say we have a bunch of variables
+    let mut a = Something;
+    let mut b = Something;
+    let mut more_things = [Something; 5];
+
+    // and we want to process the above things in parallel
+    ComputeTaskPool::get().scope(|scope| {
+        // spawn our tasks using the scope:
+        scope.spawn(async {
+            process_thing(&amp;mut a);
+        });
+        scope.spawn(async {
+            process_thing(&amp;mut b);
+        });
+
+        // nested spawning is also possible:
+        // you can use the scope from within a task,
+        // to spawn more tasks
+        scope.spawn(async {
+            for thing in more_things.iter_mut() {
+                scope.spawn(async {
+                    process_thing(thing);
+                })
+            }
+            debug!("`more_things` array done processing.");
+        });
+    });
+
+    // at this point, after the task pool scope returns,
+    // all our tasks are done and everything has been processed
+}</code></pre>
+<p>When you are using this API from within a Bevy <a href="/programming/systems.html">system</a>, spawn
+your tasks on the <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/tasks/struct.ComputeTaskPool.html"><code>ComputeTaskPool</code></a>.</p>
+<p>This API can also be useful when you are doing <a href="/fundamentals/async-compute.html">background
+computation</a>, to dispatch additional tasks for extra
+parallelism. In that case, use the <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/tasks/struct.AsyncComputeTaskPool.html"><code>AsyncComputeTaskPool</code></a> instead.</p>
 
                     </main>
 
