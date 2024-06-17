@@ -4592,15 +4592,152 @@ because you don't have to worry about storing and <code>await</code>ing the <a h
 <p>A common pattern is to have your main task (the one you initiate from your
 <a href="fundamentals//programming/systems.html">systems</a>, as shown earlier) act as a "dispacher", spawning a bunch
 of <a href="fundamentals//programming/par-iter.html#scoped-tasks">scoped tasks</a> to do the actual work.</p>
+<h2 id="io-heavy-workloads"><a class="header" href="#io-heavy-workloads">I/O-heavy Workloads</a></h2>
+<p>If your intention is to do background I/O (such as networking or accessing
+files) instead of heavy CPU work, you can use <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/tasks/struct.IoTaskPool.html"><code>IoTaskPool</code></a> instead of
+<a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/tasks/struct.AsyncComputeTaskPool.html"><code>AsyncComputeTaskPool</code></a>. The APIs are the same as shown above. The choice
+of task pool just helps Bevy schedule and manage your tasks appropriately.</p>
+<p>For example, you could spawn tasks to run your game's multiplayer
+netcode, save/load game save files, etc. Bevy's <a href="fundamentals//assets.html">asset loading
+infrastructure</a> also makes use of the <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/tasks/struct.IoTaskPool.html"><code>IoTaskPool</code></a>.</p>
+<h2 id="passing-data-around"><a class="header" href="#passing-data-around">Passing Data Around</a></h2>
+<p>The previous examples showcased a "spawn-join" programming pattern, where
+you start tasks to perform some work and then consume the values they return
+after they complete.</p>
+<p>If you'd like to have some long-running tasks that send values
+back to you, instead of returning, you can use channels (from the
+<a href="https://docs.rs/async-channel/latest/async_channel/"><code>async-channel</code></a> crate). Channels can also be used to
+send data to your long-running background tasks.</p>
+<p>Set up some channels and put the side you want to access from Bevy in a
+<a href="fundamentals//programming/res.html">resource</a>. To receive data from Bevy <a href="fundamentals//programming/systems.html">systems</a>,
+you should poll the channels using a non-blocking method, like <code>try_recv</code>,
+to check if data is available.</p>
+<pre><code class="language-rust no_run noplayground">use bevy::tasks::IoTaskPool;
+use async_channel::{Sender, Receiver};
+
+/// Messages we send to our netcode task
+enum MyNetControlMsg {
+    DoSomething,
+    // ...
+}
+
+/// Messages we receive from our netcode task
+enum MyNetUpdateMsg {
+    SomethingHappened,
+    // ...
+}
+
+/// Channels used for communicating with our game's netcode task.
+/// (The side used from our Bevy systems)
+#[derive(Resource)]
+struct MyNetChannels {
+    tx_control: Sender&lt;MyNetControlMsg&gt;,
+    rx_updates: Receiver&lt;MyNetUpdateMsg&gt;,
+}
+
+fn setup_net_session(
+    mut commands: Commands,
+) {
+    // create our channels:
+    let (tx_control, rx_control) = async_channel::unbounded();
+    let (tx_updates, rx_updates) = async_channel::unbounded();
+
+    // spawn our background i/o task for networking
+    // and give it its side of the channels:
+    IoTaskPool::get().spawn(async move {
+        my_netcode(rx_control, tx_updates).await
+    }).detach();
+
+    // NOTE: `.detach()` to let the task run
+    // without us storing the `Task` handle.
+    // Otherwise, the task will get canceled!
+
+    // (though in a real application, you probably want to
+    // store the `Task` handle and have a system to monitor
+    // your task and recreate it if necessary)
+
+    // put our side of the channels in a resource for later
+    commands.insert_resource(MyNetChannels {
+        tx_control, rx_updates,
+    });
+}
+
+fn handle_net_updates(
+    my_channels: Res&lt;MyNetChannels&gt;,
+) {
+    // Non-blocking check for any new messages on the channel
+    while let Ok(msg) = my_channels.rx_updates.try_recv() {
+        // TODO: do something with `msg`
+    }
+}
+
+fn tell_the_net_task_what_to_do(
+    my_channels: Res&lt;MyNetChannels&gt;,
+) {
+    if let Err(e) = my_channels.tx_control.try_send(MyNetControlMsg::DoSomething) {
+        // TODO: handle errors. Maybe our task has
+        // returned or panicked, and closed the channel?
+    }
+}
+
+/// This runs in the background I/O task
+async fn my_netcode(
+    rx_control: Receiver&lt;MyNetControlMsg&gt;,
+    tx_updates: Sender&lt;MyNetUpdateMsg&gt;,
+) {
+    // TODO: Here we can connect and talk to our multiplayer server,
+    // handle incoming `MyNetControlMsg`s, send `MyNetUpdateMsg`s, etc.
+
+    while let Ok(msg) = rx_control.recv().await {
+        // TODO: do something with `msg`
+
+        // Send data back, to be handled from Bevy systems:
+        tx_updates.send(MyNetUpdateMsg::SomethingHappened).await
+            .expect("Error sending updates over channel");
+
+        // We can also spawn additional parallel tasks
+        IoTaskPool::get().spawn(async move {
+            // ... some other I/O work ...
+        }).detach();
+        AsyncComputeTaskPool::get().spawn(async move {
+            // ... some heavy CPU work ...
+        }).detach();
+    }
+}</code></pre>
+<pre><code class="language-rust no_run noplayground">app.add_systems(Startup, setup_net_session);
+app.add_systems(FixedUpdate, (
+    tell_the_net_task_what_to_do,
+    handle_net_updates,
+));</code></pre>
+<p>Make sure to add <code>async_channel</code> to your <code>Cargo.toml</code>:</p>
+<pre><code class="language-toml">[dependencies]
+async-channel = "2.3.1"
+</code></pre>
+<h2 id="wider-async-ecosystem"><a class="header" href="#wider-async-ecosystem">Wider Async Ecosystem</a></h2>
+<p>Bevy's task pools are built on top of the <a href="https://github.com/smol-rs/smol"><code>smol</code></a> runtime.</p>
+<p>Feel free to use anything from its ecosystem of compatible crates:</p>
+<ul>
+<li><code>async-channel</code> - Multi-producer multi-consumer channels</li>
+<li><code>async-fs</code> - Async filesystem primitives</li>
+<li><code>async-net</code> - Async networking primitives (TCP/UDP/Unix)</li>
+<li><code>async-process</code> - Async interface for working with processes</li>
+<li><code>async-lock</code> - Async locks (barrier, mutex, reader-writer lock, semaphore)</li>
+<li><code>async-io</code> - Async adapter for I/O types, also timers</li>
+<li><code>futures-lite</code> - Futures helper and extension APIs</li>
+<li>Any Rust async library that supports <a href="https://github.com/smol-rs/smol"><code>smol</code></a>.</li>
+</ul>
 <h2 id="using-your-own-threads"><a class="header" href="#using-your-own-threads">Using Your Own Threads</a></h2>
 <p>While not typically recommended, sometimes you might want to manage an
 actual dedicated CPU thread of your own. For example, if you also want to run
-another framework (such as <a href="https://tokio.rs/"><code>tokio</code></a>) in parallel with Bevy.</p>
-<p>To interoperate with your non-Bevy thread, you can move data between it
-and Bevy using channels. Set up some channels and put the side you want
-to access from Bevy in a <a href="fundamentals//programming/res.html">resource</a>. To receive data from Bevy,
-you should poll the channels using a non-blocking method, like <code>try_recv</code>,
-to check if data is available.</p>
+another framework's runtime (such as <a href="https://tokio.rs/"><code>tokio</code></a>) in parallel
+with Bevy. You might have to do this if you have to use crates built for
+another async ecosystem, that are not compatible with <a href="https://github.com/smol-rs/smol"><code>smol</code></a>.</p>
+<p>To interoperate with your non-Bevy thread, you can move data between
+it and Bevy using channels. Do the equivalent of what was shown <a href="fundamentals/async-compute.html#passing-data-around">in
+the example earlier on this page</a>, but instead of
+<a href="https://docs.rs/async-channel/latest/async_channel/"><code>async-channel</code></a>, use the channel types provided
+by your alternative runtime (such as <a href="https://tokio.rs/"><code>tokio</code></a>), or
+<a href="https://doc.rust-lang.org/stable/std/sync/mpsc/index.html"><code>std</code></a>/<a href="https://docs.rs/crossbeam/latest/crossbeam/"><code>crossbeam</code></a> for raw OS threads.</p>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="fundamentals//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
