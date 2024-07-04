@@ -179,7 +179,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.14</th><th>(upcoming / release candidate)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-14">0.14</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="drag-and-drop-files"><a class="header" href="#drag-and-drop-files">Drag-and-Drop (Files)</a></h1>
@@ -189,7 +189,7 @@
 <p>Bevy supports the Drag-and-Drop gesture common on most desktop operating
 systems, but only for files, not arbitrary data / objects.</p>
 <p>If you drag a file (say, from the file manager app) into a Bevy app, Bevy
-will produce a <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/window/enum.FileDragAndDrop.html"><code>FileDragAndDrop</code></a> <a href="/programming/events.html">event</a>, containing the path
+will produce a <a href="https://docs.rs/bevy/0.14.0/bevy/window/enum.FileDragAndDrop.html"><code>FileDragAndDrop</code></a> <a href="/programming/events.html">event</a>, containing the path
 of the file that was dropped in.</p>
 <pre><code class="language-rust no_run noplayground">fn file_drop(
     mut evr_dnd: EventReader&lt;FileDragAndDrop&gt;,
@@ -205,17 +205,17 @@ of the file that was dropped in.</p>
 drop gesture ended. For example, add the file to some collection, if it was
 dropped over a specific UI element/panel.</p>
 <p>Unfortunately, this is currently somewhat tricky to implement, due to <a href="https://github.com/rust-windowing/winit/issues/1550"><code>winit</code>
-bug #1550</a>. Bevy does not get <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/window/struct.CursorMoved.html"><code>CursorMoved</code></a> <a href="/programming/events.html">events</a>
+bug #1550</a>. Bevy does not get <a href="https://docs.rs/bevy/0.14.0/bevy/window/struct.CursorMoved.html"><code>CursorMoved</code></a> <a href="/programming/events.html">events</a>
 while the drag gesture is ongoing, and therefore does not respond to the
 mouse cursor. Bevy completely loses track of the cursor position.</p>
-<p>Checking the cursor position from the <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/window/struct.Window.html"><code>Window</code></a> will also not work.</p>
+<p>Checking the cursor position from the <a href="https://docs.rs/bevy/0.14.0/bevy/window/struct.Window.html"><code>Window</code></a> will also not work.</p>
 <p>Systems that use cursor events to respond to cursor movements will not work
-during a drag gesture. This includes Bevy UI's <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ui/enum.Interaction.html"><code>Interaction</code></a> detection,
+during a drag gesture. This includes Bevy UI's <a href="https://docs.rs/bevy/0.14.0/bevy/ui/enum.Interaction.html"><code>Interaction</code></a> detection,
 which is the usual way of detecting when a UI element is hovered over.</p>
 <h3 id="workaround"><a class="header" href="#workaround">Workaround</a></h3>
 <p>The only way to workaround this issue is to store the file path somewhere
 temporarily after receiving the drop event. Then, wait until the next
-<a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/window/struct.CursorMoved.html"><code>CursorMoved</code></a> event, and then process the file.</p>
+<a href="https://docs.rs/bevy/0.14.0/bevy/window/struct.CursorMoved.html"><code>CursorMoved</code></a> event, and then process the file.</p>
 <p>Note that this might not even be on the next frame update. The next cursor
 update will happen whenever the user moves the cursor. If the user does not
 immediately move the mouse after dropping the file and leaves the cursor in the

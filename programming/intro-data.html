@@ -179,7 +179,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.14</th><th>(upcoming / release candidate)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-14">0.14</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="intro-your-data"><a class="header" href="#intro-your-data">Intro: Your Data</a></h1>
@@ -190,7 +190,7 @@ learn more about each concept.</p>
 <p>As mentioned in <a href="/programming/ecs-intro.html">the ECS Intro</a>, Bevy stores all your data for
 you and allows you easy and flexible access to whatever you need, wherever you
 need it.</p>
-<p>The ECS's data structure is called the <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/world/struct.World.html"><code>World</code></a>. That is what
+<p>The ECS's data structure is called the <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/world/struct.World.html"><code>World</code></a>. That is what
 stores and manages all of the data. For advanced scenarios, is possible to
 have <a href="/programming/sub-apps.html">multiple worlds</a>, and then each one will behave as
 its own separate ECS instance. However, normally, you just work with the
@@ -202,7 +202,7 @@ main World that Bevy sets up for your <a href="/programming/app-builder.html">Ap
 spreadsheet. Your different data types (<a href="/programming/ec.html#components">Components</a>) are like
 the "columns" of a table, and there can be arbitrarily many "rows"
 (<a href="/programming/ec.html#entities">Entities</a>) containing values / instances of various components.
-The <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> ID is like the row number. It's an integer index
+The <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> ID is like the row number. It's an integer index
 that lets you find specific component values.</p>
 <p>Component types that are empty <code>struct</code>s (contain no data) are called <a href="/programming/ec.html#marker-components">marker
 components</a>. They are useful as "tags" to identify
@@ -213,7 +213,7 @@ player, to select entities to be despawned at the end of the level, etc.</p>
 checkmarks show what component types are present on each entity. Empty cells
 mean that the component is not present. In this example, we have a player,
 a camera, and several enemies.</p>
-<div class="table-wrapper"><table><thead><tr><th><a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> (ID)</th><th><a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/transform/components/struct.Transform.html"><code>Transform</code></a></th><th><code>Player</code></th><th><code>Enemy</code></th><th><a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/render/camera/struct.Camera.html"><code>Camera</code></a></th><th><code>Health</code></th><th>...</th></tr></thead><tbody>
+<div class="table-wrapper"><table><thead><tr><th><a href="https://docs.rs/bevy/0.14.0/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> (ID)</th><th><a href="https://docs.rs/bevy/0.14.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a></th><th><code>Player</code></th><th><code>Enemy</code></th><th><a href="https://docs.rs/bevy/0.14.0/bevy/render/camera/struct.Camera.html"><code>Camera</code></a></th><th><code>Health</code></th><th>...</th></tr></thead><tbody>
 <tr><td>...</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
 <tr><td>107</td><td>✓ <code>&lt;translation&gt;</code> <code>&lt;rotation&gt;</code> <code>&lt;scale&gt;</code></td><td>✓</td><td></td><td></td><td>✓ <code>50.0</code></td><td></td></tr>
 <tr><td>108</td><td>✓ <code>&lt;translation&gt;</code> <code>&lt;rotation&gt;</code> <code>&lt;scale&gt;</code></td><td></td><td>✓</td><td></td><td>✓ <code>25.0</code></td><td></td></tr>
@@ -239,7 +239,7 @@ or configuration parameters, or other abstract things.</p>
 mechanic, write a <a href="/programming/systems.html">system</a> (just a Rust function that takes
 special parameters), specify what component types you want to access, and do
 your thing. You can either iterate through all entities that match your query,
-or access the data of a specific one (using the <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> ID).</p>
+or access the data of a specific one (using the <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> ID).</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Component)]
 struct Xp(u32);
 
@@ -334,7 +334,7 @@ make things granular, when different pieces of data may be accessed independentl
 <p>For example, represent the player in your game as an entity, composed of
 separate component types (separate <code>struct</code>s) for things like the health, XP, or
 whatever is relevant to your game. You can also attach standard Bevy components
-like <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> (<a href="/fundamentals/transforms.html">transforms explained</a>) to it.</p>
+like <a href="https://docs.rs/bevy/0.14.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a> (<a href="/fundamentals/transforms.html">transforms explained</a>) to it.</p>
 <p>Then, each piece of functionality (each <a href="/programming/systems.html">system</a>) can just
 <a href="/programming/queries.html">query</a> for the data it needs. Common functionality (like a
 health/damage system) can be applied to any entity with the matching components,
@@ -344,7 +344,7 @@ you can use a <a href="/programming/ec.html#marker-components">marker component<
 to narrow down your query (using a <a href="/programming/queries.html#query-filters">query filter</a> like
 <code>With&lt;Player&gt;</code>).</p>
 <p>However, if some data always makes sense to be accessed together, then you
-should put it in a single <code>struct</code>. For example, Bevy's <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>.
+should put it in a single <code>struct</code>. For example, Bevy's <a href="https://docs.rs/bevy/0.14.0/bevy/transform/components/struct.Transform.html"><code>Transform</code></a>.
 With these types, the fields are not likely to be useful independently.</p>
 <h3 id="additional-internal-details"><a class="header" href="#additional-internal-details">Additional Internal Details</a></h3>
 <p>The set / combination of components that a given entity has is called the
@@ -355,7 +355,7 @@ in contiguous arrays, which allows the CPU to access and cache it efficiently.</
 the Archetype, which may require Bevy to move previously-existing data to
 a different location.</p>
 <p><a href="/patterns/component-storage.html">Learn more about Bevy's component storage.</a></p>
-<p>Bevy will reuse Entity IDs. The <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> type is actually
+<p>Bevy will reuse Entity IDs. The <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> type is actually
 two integers: the ID and a "generation". After you despawn some entities,
 their IDs can be reused for newly-spawned entities, but Bevy will increase
 the generation value.</p>

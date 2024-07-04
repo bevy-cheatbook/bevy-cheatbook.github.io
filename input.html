@@ -179,7 +179,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.14</th><th>(upcoming / release candidate)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-14">0.14</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="input-handling"><a class="header" href="#input-handling">Input Handling</a></h1>
@@ -216,8 +216,8 @@ dealing with them:</p>
 <li>or via <a href="/programming/events.html">events</a> (<a href="/builtins.html#input-events">input events</a>).</li>
 </ul>
 <p>Some inputs are only provided as events.</p>
-<p>Checking state is done using <a href="/programming/res.html">resources</a> such as <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/input/struct.ButtonInput.html"><code>ButtonInput</code></a> (for
-binary inputs like keys or buttons), <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/input/struct.Axis.html"><code>Axis</code></a> (for analog inputs), <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/input/touch/struct.Touches.html"><code>Touches</code></a>
+<p>Checking state is done using <a href="/programming/res.html">resources</a> such as <a href="https://docs.rs/bevy/0.14.0/bevy/input/struct.ButtonInput.html"><code>ButtonInput</code></a> (for
+binary inputs like keys or buttons), <a href="https://docs.rs/bevy/0.14.0/bevy/input/struct.Axis.html"><code>Axis</code></a> (for analog inputs), <a href="https://docs.rs/bevy/0.14.0/bevy/input/touch/struct.Touches.html"><code>Touches</code></a>
 (for fingers on a touchscreen), etc. This way of handling input is very
 convenient for implementing game logic. In these scenarios, you typically
 only care about the specific inputs mapped to actions in your game. You can
@@ -241,7 +241,7 @@ have a system for reading inputs and converting them to your own internal
 custom events, to actually move the player. Make sure to use <a href="/programming/system-order.html">explicit
 system ordering</a> to avoid lag / frame delays.</p>
 <h2 id="run-conditions"><a class="header" href="#run-conditions">Run Conditions</a></h2>
-<p>Bevy also provides <a href="/programming/run-criteria.html">run conditions</a> (<a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/input/common_conditions/index.html">see all of them
+<p>Bevy also provides <a href="/programming/run-criteria.html">run conditions</a> (<a href="https://docs.rs/bevy/0.14.0/bevy/input/common_conditions/index.html">see all of them
 here</a>) that you can attach to your systems, if
 you want a specific system to only run when a specific key or button is pressed.</p>
 <p>This way, you can do input handling as part of the

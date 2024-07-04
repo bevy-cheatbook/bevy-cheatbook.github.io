@@ -179,7 +179,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.14</th><th>(upcoming / release candidate)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-14">0.14</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="mouse"><a class="header" href="#mouse">Mouse</a></h1>
@@ -189,12 +189,12 @@
 <hr />
 <h2 id="mouse-buttons"><a class="header" href="#mouse-buttons">Mouse Buttons</a></h2>
 <p>Similar to <a href="/input/keyboard.html">keyboard input</a>, mouse buttons are available as a
-<a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/input/struct.ButtonInput.html"><code>ButtonInput</code></a> <a href="/programming/res.html">resource</a>, <a href="/programming/events.html">events</a>, and <a href="/programming/run-criteria.html">run
-conditions</a> (<a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/input/common_conditions/index.html">see list</a>). Use whichever
+<a href="https://docs.rs/bevy/0.14.0/bevy/input/struct.ButtonInput.html"><code>ButtonInput</code></a> <a href="/programming/res.html">resource</a>, <a href="/programming/events.html">events</a>, and <a href="/programming/run-criteria.html">run
+conditions</a> (<a href="https://docs.rs/bevy/0.14.0/bevy/input/common_conditions/index.html">see list</a>). Use whichever
 pattern feels most appropriate to your use case.</p>
 <h3 id="checking-button-state"><a class="header" href="#checking-button-state">Checking Button State</a></h3>
 <p>You can check the state of specific mouse buttons using the
-<a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/input/mouse/enum.MouseButton.html"><code>ButtonInput&lt;MouseButton&gt;</code></a> <a href="/programming/res.html">resource</a>:</p>
+<a href="https://docs.rs/bevy/0.14.0/bevy/input/mouse/enum.MouseButton.html"><code>ButtonInput&lt;MouseButton&gt;</code></a> <a href="/programming/res.html">resource</a>:</p>
 <ul>
 <li>Use <code>.pressed(…)</code>/<code>.released(…)</code> to check if a button is being held down
 <ul>
@@ -253,7 +253,7 @@ app.add_systems(Update, (
         .run_if(input_pressed(MouseButton::Left)),
 ));</code></pre>
 <h3 id="mouse-button-events"><a class="header" href="#mouse-button-events">Mouse Button Events</a></h3>
-<p>Alternatively, you can use <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/input/mouse/struct.MouseButtonInput.html"><code>MouseButtonInput</code></a> <a href="/programming/events.html">events</a> to get
+<p>Alternatively, you can use <a href="https://docs.rs/bevy/0.14.0/bevy/input/mouse/struct.MouseButtonInput.html"><code>MouseButtonInput</code></a> <a href="/programming/events.html">events</a> to get
 all activity:</p>
 <pre><code class="language-rust no_run noplayground">use bevy::input::mouse::MouseButtonInput;
 
@@ -274,7 +274,7 @@ fn mouse_button_events(
     }
 }</code></pre>
 <h2 id="mouse-scrolling--wheel"><a class="header" href="#mouse-scrolling--wheel">Mouse Scrolling / Wheel</a></h2>
-<p>To detect scrolling input, use <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/input/mouse/struct.MouseWheel.html"><code>MouseWheel</code></a> <a href="/programming/events.html">events</a>:</p>
+<p>To detect scrolling input, use <a href="https://docs.rs/bevy/0.14.0/bevy/input/mouse/struct.MouseWheel.html"><code>MouseWheel</code></a> <a href="/programming/events.html">events</a>:</p>
 <pre><code class="language-rust no_run noplayground">use bevy::input::mouse::MouseWheel;
 
 fn scroll_events(
@@ -292,7 +292,7 @@ fn scroll_events(
         }
     }
 }</code></pre>
-<p>The <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/input/mouse/enum.MouseScrollUnit.html"><code>MouseScrollUnit</code></a> enum is important: it tells you the type of scroll
+<p>The <a href="https://docs.rs/bevy/0.14.0/bevy/input/mouse/enum.MouseScrollUnit.html"><code>MouseScrollUnit</code></a> enum is important: it tells you the type of scroll
 input. <code>Line</code> is for hardware with fixed steps, like the wheel on desktop
 mice. <code>Pixel</code> is for hardware with smooth (fine-grained) scrolling, like
 laptop touchpads.</p>
@@ -306,7 +306,7 @@ of lines, even when using a regular PC mouse with a fixed-stepping scroll wheel.
 <p>Use this if you don't care about the exact position of the mouse cursor,
 but rather you just want to see how much the mouse moved from frame to
 frame. This is useful for things like controlling a 3D camera.</p>
-<p>Use <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/input/mouse/struct.MouseMotion.html"><code>MouseMotion</code></a> <a href="/programming/events.html">events</a>. Whenever the mouse is moved, you
+<p>Use <a href="https://docs.rs/bevy/0.14.0/bevy/input/mouse/struct.MouseMotion.html"><code>MouseMotion</code></a> <a href="/programming/events.html">events</a>. Whenever the mouse is moved, you
 will get an event with the delta.</p>
 <pre><code class="language-rust no_run noplayground">use bevy::input::mouse::MouseMotion;
 
@@ -324,7 +324,7 @@ window</a>.</p>
 cursor. This is useful for things like clicking and hovering over objects
 in your game or UI.</p>
 <p>You can get the current coordinates of the mouse pointer, from the respective
-<a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/window/struct.Window.html"><code>Window</code></a> (if the mouse is currently inside that window):</p>
+<a href="https://docs.rs/bevy/0.14.0/bevy/window/struct.Window.html"><code>Window</code></a> (if the mouse is currently inside that window):</p>
 <pre><code class="language-rust no_run noplayground">use bevy::window::PrimaryWindow;
 
 fn cursor_position(
@@ -337,7 +337,7 @@ fn cursor_position(
         println!("Cursor is not in the game window.");
     }
 }</code></pre>
-<p>To detect when the pointer is moved, use <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/window/struct.CursorMoved.html"><code>CursorMoved</code></a> <a href="/programming/events.html">events</a>
+<p>To detect when the pointer is moved, use <a href="https://docs.rs/bevy/0.14.0/bevy/window/struct.CursorMoved.html"><code>CursorMoved</code></a> <a href="/programming/events.html">events</a>
 to get the updated coordinates:</p>
 <pre><code class="language-rust no_run noplayground">fn cursor_events(
     mut evr_cursor: EventReader&lt;CursorMoved&gt;,
@@ -358,7 +358,7 @@ pixels, and the origin is the <strong>top left</strong> corner of the window.</p
 this cookbook example</a> for converting these window
 cursor coordinates into world-space coordinates.</p>
 <p>To track when the mouse cursor enters and leaves your window(s), use
-<a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/window/struct.CursorEntered.html"><code>CursorEntered</code></a> and <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/window/struct.CursorLeft.html"><code>CursorLeft</code></a> <a href="/programming/events.html">events</a>.</p>
+<a href="https://docs.rs/bevy/0.14.0/bevy/window/struct.CursorEntered.html"><code>CursorEntered</code></a> and <a href="https://docs.rs/bevy/0.14.0/bevy/window/struct.CursorLeft.html"><code>CursorLeft</code></a> <a href="/programming/events.html">events</a>.</p>
 
                     </main>
 

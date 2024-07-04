@@ -179,7 +179,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.14</th><th>(upcoming / release candidate)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-14">0.14</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="ime-input"><a class="header" href="#ime-input">IME Input</a></h1>
@@ -200,25 +200,25 @@ their text before confirming it. The text suggestions are provided by the OS,
 but your app needs to display them for the user.</p>
 <p>For example, imagine you have a text input box in your UI. You show the text
 that the user has already inputted, with a cursor at the end.</p>
-<p>If IME is enabled, you will get <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/window/enum.Ime.html"><code>Ime::Preedit</code></a> <a href="/programming/events.html">events</a>
+<p>If IME is enabled, you will get <a href="https://docs.rs/bevy/0.14.0/bevy/window/enum.Ime.html"><code>Ime::Preedit</code></a> <a href="/programming/events.html">events</a>
 for "pending" text.  You should show that "unconfirmed" text in the text
 input box, but with different formatting to be visually distinct.</p>
 <p>When the user confirms their desired input, you will get an
-<a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/window/enum.Ime.html"><code>Ime::Commit</code></a> <a href="/programming/events.html">event</a> with the final text. You should
+<a href="https://docs.rs/bevy/0.14.0/bevy/window/enum.Ime.html"><code>Ime::Commit</code></a> <a href="/programming/events.html">event</a> with the final text. You should
 then discard any previous "uncofirmed" text and append the new text to your
 actual text input string.</p>
 <h2 id="how-to-support-imes-in-your-bevy-app"><a class="header" href="#how-to-support-imes-in-your-bevy-app">How to support IMEs in your Bevy app</a></h2>
 <p>First, you need to inform the OS when your application is expecting text input.
 You don't want the IME to accidentally activate during gameplay, etc.</p>
-<p>Whenever you want the user to input text, you enable "IME mode" on the <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/window/struct.Window.html"><code>Window</code></a>.
+<p>Whenever you want the user to input text, you enable "IME mode" on the <a href="https://docs.rs/bevy/0.14.0/bevy/window/struct.Window.html"><code>Window</code></a>.
 When you are done, disable it.</p>
 <p>If the user is not using an IME, nothing happens when you enable "IME mode". You
 will still get <a href="/input/keyboard.html">keyboard</a> <a href="/programming/events.html">events</a> as usual and you
 can <a href="/input/keyboard.html#text-input">accept text input that way</a>.</p>
-<p>If the user has an IME, you will get an <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/window/enum.Ime.html"><code>Ime::Enabled</code></a> event. At that point,
-your application will no longer receive any <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/input/keyboard/struct.KeyboardInput.html"><code>KeyboardInput</code></a> <a href="/programming/events.html">events</a>.</p>
-<p>You can then handle <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/window/enum.Ime.html"><code>Ime::Preedit</code></a> <a href="/programming/events.html">events</a> for pending/unconfirmed
-text, and <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/window/enum.Ime.html"><code>Ime::Commit</code></a> for final/confirmed text.</p>
+<p>If the user has an IME, you will get an <a href="https://docs.rs/bevy/0.14.0/bevy/window/enum.Ime.html"><code>Ime::Enabled</code></a> event. At that point,
+your application will no longer receive any <a href="https://docs.rs/bevy/0.14.0/bevy/input/keyboard/struct.KeyboardInput.html"><code>KeyboardInput</code></a> <a href="/programming/events.html">events</a>.</p>
+<p>You can then handle <a href="https://docs.rs/bevy/0.14.0/bevy/window/enum.Ime.html"><code>Ime::Preedit</code></a> <a href="/programming/events.html">events</a> for pending/unconfirmed
+text, and <a href="https://docs.rs/bevy/0.14.0/bevy/window/enum.Ime.html"><code>Ime::Commit</code></a> for final/confirmed text.</p>
 <pre><code class="language-rust no_run noplayground">// for this simple example, we will just enable/disable IME mode on mouse click
 fn ime_toggle(
     mousebtn: Res&lt;ButtonInput&lt;MouseButton&gt;&gt;,

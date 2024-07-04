@@ -179,7 +179,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.14</th><th>(upcoming / release candidate)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-14">0.14</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="local-resources"><a class="header" href="#local-resources">Local Resources</a></h1>
@@ -190,11 +190,11 @@
 is not stored in the ECS World, but rather together with your system.
 Nothing outside of your system can access it. The value will be kept across
 subsequent runs of the system.</p>
-<p><a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a> is a system parameter similar to <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a>, which gives
+<p><a href="https://docs.rs/bevy/0.14.0/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a> is a system parameter similar to <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a>, which gives
 you full mutable access to a single value of the given data type, that is
 independent from entities and components.</p>
-<p><a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.Res.html"><code>Res&lt;T&gt;</code></a>/<a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a> refer to a single global instance of the type, shared
-between all systems. On the other hand, every <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a> parameter is a
+<p><a href="https://docs.rs/bevy/0.14.0/bevy/ecs/system/struct.Res.html"><code>Res&lt;T&gt;</code></a>/<a href="https://docs.rs/bevy/0.14.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a> refer to a single global instance of the type, shared
+between all systems. On the other hand, every <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a> parameter is a
 separate instance, exclusively for that system.</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Default)]
 struct MyState {
@@ -208,18 +208,18 @@ fn my_system1(mut local: Local&lt;MyState&gt;) {
 fn my_system2(mut local: Local&lt;MyState&gt;) {
     // the local in this system is a different instance
 }</code></pre>
-<p>The type must implement <a href="https://doc.rust-lang.org/stable/std/default/trait.Default.html"><code>Default</code></a> or <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/world/trait.FromWorld.html"><code>FromWorld</code></a>. It is automatically
+<p>The type must implement <a href="https://doc.rust-lang.org/stable/std/default/trait.Default.html"><code>Default</code></a> or <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/world/trait.FromWorld.html"><code>FromWorld</code></a>. It is automatically
 initialized. It is not possible to specify a custom initial value.</p>
-<p>A system can have multiple <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.Local.html"><code>Local</code></a>s of the same type.</p>
+<p>A system can have multiple <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/system/struct.Local.html"><code>Local</code></a>s of the same type.</p>
 <h2 id="specify-an-initial-value"><a class="header" href="#specify-an-initial-value">Specify an initial value</a></h2>
-<p><a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a> is always automatically initialized using the default value for
+<p><a href="https://docs.rs/bevy/0.14.0/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a> is always automatically initialized using the default value for
 the type. If that doesn't work for you, there is an alternative way to pass
 data into a system.</p>
 <p>If you need specific data, you can use a closure instead. Rust closures that
 take system parameters are valid Bevy systems, just like standalone functions.
 Using a closure allows you to "move data into the function".</p>
 <p>This example shows how to initialize some data to configure a system, without
-using <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a>:</p>
+using <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a>:</p>
 <pre><code class="language-rust no_run noplayground">#[derive(Default)]
 struct MyConfig {
     magic: usize,

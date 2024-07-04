@@ -179,7 +179,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.14</th><th>(upcoming / release candidate)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-14">0.14</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="internal-parallelism"><a class="header" href="#internal-parallelism">Internal Parallelism</a></h1>
@@ -223,8 +223,8 @@ any data outside of the current entity's own <a href="/programming/ec.html#compo
 but beware of the added overhead. It could easily drown out any benefits
 you get from parallel iteration.</p>
 <h2 id="parallel-commands"><a class="header" href="#parallel-commands">Parallel Commands</a></h2>
-<p>If you need to use <a href="/programming/commands.html">commands</a>, there is the <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.ParallelCommands.html"><code>ParallelCommands</code></a>
-system parameter. It allows you to get access to <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a> from within
+<p>If you need to use <a href="/programming/commands.html">commands</a>, there is the <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/system/struct.ParallelCommands.html"><code>ParallelCommands</code></a>
+system parameter. It allows you to get access to <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a> from within
 the parallel iteration closure.</p>
 <pre><code class="language-rust no_run noplayground">fn my_particle_timers(
     time: Res&lt;Time&gt;,
@@ -252,7 +252,7 @@ time has elapsed. It is a good use of <a href="/programming/commands.html">comma
 timers need to be ticked for all entities, but only a few entities are likely
 to need despawning at once.</p>
 <h2 id="parallel-event-iteration"><a class="header" href="#parallel-event-iteration">Parallel Event Iteration</a></h2>
-<p><a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/event/struct.EventReader.html"><code>EventReader&lt;T&gt;</code></a> offers parallel iteration for <a href="/programming/events.html">events</a>,
+<p><a href="https://docs.rs/bevy/0.14.0/bevy/ecs/event/struct.EventReader.html"><code>EventReader&lt;T&gt;</code></a> offers parallel iteration for <a href="/programming/events.html">events</a>,
 allowing you to process a huge number of events across multiple CPU threads.</p>
 <pre><code class="language-rust no_run noplayground">fn handle_many_events(
     mut evr: EventReader&lt;MyEvent&gt;,
@@ -263,8 +263,8 @@ allowing you to process a huge number of events across multiple CPU threads.</p>
 }</code></pre>
 <p>However, one downside is that you cannot use it for events that need to be
 handled in order. With parallel iteration, the order becomes undefined.</p>
-<p>Though, if you use <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/event/struct.EventParIter.html"><code>.for_each_with_id</code></a>, your closure will
-be given an <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/event/struct.EventId.html"><code>EventId</code></a>, which is a sequential index to indicate which event
+<p>Though, if you use <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/event/struct.EventParIter.html"><code>.for_each_with_id</code></a>, your closure will
+be given an <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/event/struct.EventId.html"><code>EventId</code></a>, which is a sequential index to indicate which event
 you are currently processing. That can help you know where you are in the
 event queue, even though you are still processing events in an undefined order.</p>
 <p>Another downside is that typically you need to be able to mutate some data in
@@ -281,7 +281,7 @@ and how Bevy ECS has stored/organized the entity/component data in memory.
 However, it assumes that the amount of work/computation you do for each
 entity is roughly the same.</p>
 <p>If you find that you want to manually control the batch size, you can specify
-a minimum and maximum using <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/batching/struct.BatchingStrategy.html"><code>BatchingStrategy</code></a>.</p>
+a minimum and maximum using <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/batching/struct.BatchingStrategy.html"><code>BatchingStrategy</code></a>.</p>
 <pre><code class="language-rust no_run noplayground">fn par_iter_custom_batch_size(
     q: Query&lt;&amp;MyComponent&gt;,
 ) {
@@ -307,10 +307,10 @@ a minimum and maximum using <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/b
 <p>It is also possible to process a slice (or anything that can be referenced
 as a slice, such as a <a href="https://doc.rust-lang.org/stable/std/vec/struct.Vec.html"><code>Vec</code></a>) in parallel chunks. If you just have a big
 buffer of arbitrary data, this is for you.</p>
-<p>Use <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/tasks/trait.ParallelSlice.html"><code>.par_splat_map</code></a>/<a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/tasks/trait.ParallelSliceMut.html"><code>.par_splat_map_mut</code></a>
+<p>Use <a href="https://docs.rs/bevy/0.14.0/bevy/tasks/trait.ParallelSlice.html"><code>.par_splat_map</code></a>/<a href="https://docs.rs/bevy/0.14.0/bevy/tasks/trait.ParallelSliceMut.html"><code>.par_splat_map_mut</code></a>
 to spread the work across a number of parallel tasks. Specify <code>None</code> for
 the task count to automatically use the total number of CPU threads available.</p>
-<p>Use <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/tasks/trait.ParallelSlice.html"><code>.par_chunk_map</code></a>/<a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/tasks/trait.ParallelSliceMut.html"><code>.par_chunk_map_mut</code></a>
+<p>Use <a href="https://docs.rs/bevy/0.14.0/bevy/tasks/trait.ParallelSlice.html"><code>.par_chunk_map</code></a>/<a href="https://docs.rs/bevy/0.14.0/bevy/tasks/trait.ParallelSliceMut.html"><code>.par_chunk_map_mut</code></a>
 to manually specify a specific chunk size.</p>
 <p>In both cases, you provide a closure to process each chunk (sub-slice). It will
 be given the starting index of its chunk + the reference to its chunk slice.
@@ -348,17 +348,17 @@ fn parallel_slices(/* ... */) {
     // the returned value from each chunk, in order
 }</code></pre>
 <p>When you are using this API from within a Bevy <a href="/programming/systems.html">system</a>, spawn
-your tasks on the <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/tasks/struct.ComputeTaskPool.html"><code>ComputeTaskPool</code></a>.</p>
+your tasks on the <a href="https://docs.rs/bevy/0.14.0/bevy/tasks/struct.ComputeTaskPool.html"><code>ComputeTaskPool</code></a>.</p>
 <p>This API can also be useful when you are doing <a href="/fundamentals/async-compute.html">background
 computation</a>, to get some extra parallelism.
-In that case, use the <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/tasks/struct.AsyncComputeTaskPool.html"><code>AsyncComputeTaskPool</code></a> instead.</p>
+In that case, use the <a href="https://docs.rs/bevy/0.14.0/bevy/tasks/struct.AsyncComputeTaskPool.html"><code>AsyncComputeTaskPool</code></a> instead.</p>
 <h2 id="scoped-tasks"><a class="header" href="#scoped-tasks">Scoped Tasks</a></h2>
 <p>Scoped tasks are actually the underlying primitive that all of the
 above abstractions (parallel iterators and slices) are built on. If the
 previously-discussed abstractions aren't useful to you, you can implement
 whatever custom processing flow you want, by spawning scoped tasks yourself.</p>
 <p>Scoped tasks let you borrow whatever you want out of the parent function. The
-<a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/tasks/struct.Scope.html"><code>Scope</code></a> will wait until the tasks return, before returning back to the parent
+<a href="https://docs.rs/bevy/0.14.0/bevy/tasks/struct.Scope.html"><code>Scope</code></a> will wait until the tasks return, before returning back to the parent
 function. This ensures your parallel tasks do not outlive the parent function,
 thus accomplishing "internal parallelism".</p>
 <p>To get a performance benefit, make sure each of your tasks has a significant
@@ -399,10 +399,10 @@ fn my_system(/* ... */) {
     // all our tasks are done and everything has been processed
 }</code></pre>
 <p>When you are using this API from within a Bevy <a href="/programming/systems.html">system</a>, spawn
-your tasks on the <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/tasks/struct.ComputeTaskPool.html"><code>ComputeTaskPool</code></a>.</p>
+your tasks on the <a href="https://docs.rs/bevy/0.14.0/bevy/tasks/struct.ComputeTaskPool.html"><code>ComputeTaskPool</code></a>.</p>
 <p>This API can also be useful when you are doing <a href="/fundamentals/async-compute.html">background
 computation</a>, to dispatch additional tasks for extra
-parallelism. In that case, use the <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/tasks/struct.AsyncComputeTaskPool.html"><code>AsyncComputeTaskPool</code></a> instead.</p>
+parallelism. In that case, use the <a href="https://docs.rs/bevy/0.14.0/bevy/tasks/struct.AsyncComputeTaskPool.html"><code>AsyncComputeTaskPool</code></a> instead.</p>
 
                     </main>
 

@@ -179,7 +179,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.14</th><th>(upcoming / release candidate)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-14">0.14</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="keyboard-input"><a class="header" href="#keyboard-input">Keyboard Input</a></h1>
@@ -190,13 +190,13 @@
 <p>This page shows how to handle keyboard keys being pressed and released.</p>
 <p>Note: Command Key on Mac corresponds to the Super/Windows Key on PC.</p>
 <p>Similar to <a href="/input/mouse.html#mouse-buttons">mouse buttons</a>, keyboard input is available
-as a <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/input/struct.ButtonInput.html"><code>ButtonInput</code></a> <a href="/programming/res.html">resource</a>, <a href="/programming/events.html">events</a>, and <a href="/programming/run-criteria.html">run
-conditions</a> (<a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/input/common_conditions/index.html">see list</a>). Use
+as a <a href="https://docs.rs/bevy/0.14.0/bevy/input/struct.ButtonInput.html"><code>ButtonInput</code></a> <a href="/programming/res.html">resource</a>, <a href="/programming/events.html">events</a>, and <a href="/programming/run-criteria.html">run
+conditions</a> (<a href="https://docs.rs/bevy/0.14.0/bevy/input/common_conditions/index.html">see list</a>). Use
 whichever pattern feels most appropriate to your use case.</p>
 <h2 id="checking-key-state"><a class="header" href="#checking-key-state">Checking Key State</a></h2>
 <p>Most commonly for games, you might be interested in specific known keys and
 detecting when they are pressed or released. You can check specific keys
-using the <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/input/struct.ButtonInput.html"><code>ButtonInput&lt;KeyCode&gt;</code></a> <a href="/programming/res.html">resource</a>.</p>
+using the <a href="https://docs.rs/bevy/0.14.0/bevy/input/struct.ButtonInput.html"><code>ButtonInput&lt;KeyCode&gt;</code></a> <a href="/programming/res.html">resource</a>.</p>
 <ul>
 <li>Use <code>.pressed(…)</code>/<code>.released(…)</code> to check if a key is being held down
 <ul>
@@ -258,7 +258,7 @@ app.add_systems(Update, (
         .run_if(input_pressed(KeyCode::Enter)),
 ));</code></pre>
 <h2 id="keyboard-events"><a class="header" href="#keyboard-events">Keyboard Events</a></h2>
-<p>To get all keyboard activity, you can use <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/input/keyboard/struct.KeyboardInput.html"><code>KeyboardInput</code></a> <a href="/programming/events.html">events</a>:</p>
+<p>To get all keyboard activity, you can use <a href="https://docs.rs/bevy/0.14.0/bevy/input/keyboard/struct.KeyboardInput.html"><code>KeyboardInput</code></a> <a href="/programming/events.html">events</a>:</p>
 <pre><code class="language-rust no_run noplayground">fn keyboard_events(
     mut evr_kbd: EventReader&lt;KeyboardInput&gt;,
 ) {
@@ -273,21 +273,21 @@ app.add_systems(Update, (
         }
     }
 }</code></pre>
-<h3 id="physical-keycode-vs-logical-key"><a class="header" href="#physical-keycode-vs-logical-key">Physical <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/input/keyboard/enum.KeyCode.html"><code>KeyCode</code></a> vs. Logical <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/input/keyboard/enum.Key.html"><code>Key</code></a></a></h3>
+<h3 id="physical-keycode-vs-logical-key"><a class="header" href="#physical-keycode-vs-logical-key">Physical <a href="https://docs.rs/bevy/0.14.0/bevy/input/keyboard/enum.KeyCode.html"><code>KeyCode</code></a> vs. Logical <a href="https://docs.rs/bevy/0.14.0/bevy/input/keyboard/enum.Key.html"><code>Key</code></a></a></h3>
 <p>When a key is pressed, the <a href="/programming/events.html">event</a> contains two important pieces of information:</p>
 <ul>
-<li>The <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/input/keyboard/enum.KeyCode.html"><code>KeyCode</code></a>, which always represents a specific key on the keyboard,
+<li>The <a href="https://docs.rs/bevy/0.14.0/bevy/input/keyboard/enum.KeyCode.html"><code>KeyCode</code></a>, which always represents a specific key on the keyboard,
 regardless of the OS layout or language settings.</li>
-<li>The <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/input/keyboard/enum.Key.html"><code>Key</code></a>, which contains the logical meaning of the key as interpreted by the OS.</li>
+<li>The <a href="https://docs.rs/bevy/0.14.0/bevy/input/keyboard/enum.Key.html"><code>Key</code></a>, which contains the logical meaning of the key as interpreted by the OS.</li>
 </ul>
-<p>When you want to implement gameplay mechanics, you want to use the <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/input/keyboard/enum.KeyCode.html"><code>KeyCode</code></a>.
+<p>When you want to implement gameplay mechanics, you want to use the <a href="https://docs.rs/bevy/0.14.0/bevy/input/keyboard/enum.KeyCode.html"><code>KeyCode</code></a>.
 This will give you reliable keybindings that always work, including for multilingual
 users with multiple keyboard layouts configured in their OS.</p>
-<p>When you want to implement text/character input, you want to use the <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/input/keyboard/enum.Key.html"><code>Key</code></a>.
+<p>When you want to implement text/character input, you want to use the <a href="https://docs.rs/bevy/0.14.0/bevy/input/keyboard/enum.Key.html"><code>Key</code></a>.
 This can give you Unicode characters that you can append to your text string and
 will allow your users to type just like they do in other applications.</p>
 <p>If you'd like to handle special function keys or media keys on keyboards that
-have them, that can also be done via the logical <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/input/keyboard/enum.Key.html"><code>Key</code></a>.</p>
+have them, that can also be done via the logical <a href="https://docs.rs/bevy/0.14.0/bevy/input/keyboard/enum.Key.html"><code>Key</code></a>.</p>
 <h2 id="text-input"><a class="header" href="#text-input">Text Input</a></h2>
 <p>Here is a simple example of how to implement text input into a string (here
 stored as a <a href="/programming/local.html">local</a>).</p>
@@ -341,7 +341,7 @@ sequences or combinations of keys, you might end up in an inconsistent
 state if the Bevy OS window loses focus in the middle of keyboard input,
 such as with Alt-Tab or similar OS window switching mechanisms.</p>
 <p>If you are doing such things and you think your algorithm might be getting
-stuck, Bevy offers a <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/input/keyboard/struct.KeyboardFocusLost.html"><code>KeyboardFocusLost</code></a> <a href="/programming/events.html">event</a> to let you
+stuck, Bevy offers a <a href="https://docs.rs/bevy/0.14.0/bevy/input/keyboard/struct.KeyboardFocusLost.html"><code>KeyboardFocusLost</code></a> <a href="/programming/events.html">event</a> to let you
 know when you should reset your state.</p>
 <pre><code class="language-rust no_run noplayground">use bevy::input::keyboard::KeyboardFocusLost;
 

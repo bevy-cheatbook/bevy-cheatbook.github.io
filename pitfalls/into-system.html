@@ -179,7 +179,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.14</th><th>(upcoming / release candidate)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-14">0.14</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="obscure-rust-compiler-errors"><a class="header" href="#obscure-rust-compiler-errors">Obscure Rust compiler errors</a></h1>
@@ -191,8 +191,8 @@ to your Bevy <a href="/programming/app-builder.html">app</a>.</p>
 <li>Using <code>Query&lt;MyStuff&gt;</code> instead of <code>Query&lt;&amp;MyStuff&gt;</code> or <code>Query&lt;&amp;mut MyStuff&gt;</code>.</li>
 <li>Using <code>Query&lt;&amp;ComponentA, &amp;ComponentB&gt;</code> instead of <code>Query&lt;(&amp;ComponentA, &amp;ComponentB)&gt;</code>
 (forgetting the tuple)</li>
-<li>Using your <a href="/programming/res.html">resource</a> types directly without <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.Res.html"><code>Res</code></a> or <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.ResMut.html"><code>ResMut</code></a>.</li>
-<li>Using your <a href="/programming/ec.html#components">component</a> types directly without putting them in a <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.Query.html"><code>Query</code></a>.</li>
+<li>Using your <a href="/programming/res.html">resource</a> types directly without <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/system/struct.Res.html"><code>Res</code></a> or <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut</code></a>.</li>
+<li>Using your <a href="/programming/ec.html#components">component</a> types directly without putting them in a <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/system/struct.Query.html"><code>Query</code></a>.</li>
 <li>Using a <a href="/programming/bundle.html">bundle</a> type in a <a href="/programming/queries.html">query</a>. You want individual components.</li>
 <li>Using other arbitrary types in your function.</li>
 </ul>

@@ -179,7 +179,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.14</th><th>(upcoming / release candidate)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-14">0.14</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="one-shot-systems"><a class="header" href="#one-shot-systems">One-Shot Systems</a></h1>
@@ -202,11 +202,11 @@ fn item_handler_magic_potion(
 }</code></pre>
 <h2 id="registration"><a class="header" href="#registration">Registration</a></h2>
 <p>You should not add these systems to a <a href="/programming/schedules.html">schedule</a>.</p>
-<p>Instead, you can register them into the <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/world/struct.World.html"><code>World</code></a>, to get a <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.SystemId.html"><code>SystemId</code></a>.
-You can then store that <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.SystemId.html"><code>SystemId</code></a> somewhere and use it to run the
+<p>Instead, you can register them into the <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/world/struct.World.html"><code>World</code></a>, to get a <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/system/struct.SystemId.html"><code>SystemId</code></a>.
+You can then store that <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/system/struct.SystemId.html"><code>SystemId</code></a> somewhere and use it to run the
 system later.</p>
-<p>The most convenient way is probably to use <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/world/trait.FromWorld.html"><code>FromWorld</code></a> and put your
-<a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.SystemId.html"><code>SystemId</code></a>s in a <a href="/programming/res.html">resource</a>:</p>
+<p>The most convenient way is probably to use <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/world/trait.FromWorld.html"><code>FromWorld</code></a> and put your
+<a href="https://docs.rs/bevy/0.14.0/bevy/ecs/system/struct.SystemId.html"><code>SystemId</code></a>s in a <a href="/programming/res.html">resource</a>:</p>
 <pre><code class="language-rust no_run noplayground">/// For this simple example, we will just organize our systems
 /// using string keys in a hash map.
 #[derive(Resource)]
@@ -267,7 +267,7 @@ impl FromWorld for MyItemSystems {
 }</code></pre>
 </details>
 <h2 id="running"><a class="header" href="#running">Running</a></h2>
-<p>The easiest way is using <a href="/programming/commands.html">Commands</a> (<a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>):</p>
+<p>The easiest way is using <a href="/programming/commands.html">Commands</a> (<a href="https://docs.rs/bevy/0.14.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>):</p>
 <pre><code class="language-rust no_run noplayground">fn trigger_health_item(
     mut commands: Commands,
     systems: Res&lt;MyItemSystems&gt;,
@@ -306,7 +306,7 @@ them beforehand:</p>
 <p>It is therefore recommended to register your one-shot systems, unless
 you really only intend to run them once.</p>
 <h2 id="performance-considerations"><a class="header" href="#performance-considerations">Performance Considerations</a></h2>
-<p>To run a one-shot system, exclusive <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/world/struct.World.html"><code>World</code></a> access is required. The
+<p>To run a one-shot system, exclusive <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/world/struct.World.html"><code>World</code></a> access is required. The
 system can have arbitrary parameters, and Bevy cannot validate its data
 access against other systems, like it does when the system is part of a
 <a href="/programming/schedules.html">schedule</a>. So, no multi-threading allowed.</p>

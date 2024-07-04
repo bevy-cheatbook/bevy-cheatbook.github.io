@@ -179,7 +179,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.14</th><th>(upcoming / release candidate)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-14">0.14</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="queries"><a class="header" href="#queries">Queries</a></h1>
@@ -187,9 +187,9 @@
 <a href="https://github.com/bevyengine/bevy/blob/v0.14.0-rc.2/examples/ecs/ecs_guide.rs"><code>ecs_guide</code></a>.</p>
 <hr />
 <p>Queries let you access <a href="/programming/ecs-intro.html">components of entities</a>. Use the
-<a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.Query.html"><code>Query</code></a> <a href="/programming/systems.html">system parameter</a>, where you can specify the data
+<a href="https://docs.rs/bevy/0.14.0/bevy/ecs/system/struct.Query.html"><code>Query</code></a> <a href="/programming/systems.html">system parameter</a>, where you can specify the data
 you want to access, and optionally additional <a href="/programming/queries.html#query-filters">filters</a>.</p>
-<p>Think of the types you put in your <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.Query.html"><code>Query</code></a> as a "specification" for
+<p>Think of the types you put in your <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/system/struct.Query.html"><code>Query</code></a> as a "specification" for
 selecting what entities you want to be able to access. Queries will match
 only those entities in the ECS World that fit your specification. You are
 then able to use the query in various different ways, to access the relevant
@@ -236,7 +236,7 @@ and more cumbersome to write. Your choice.</p>
     })
 }</code></pre>
 <p>If you want to know the entity IDs of the entities you are accessing, you can
-put the special <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> type in your query. This is useful if you need
+put the special <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> type in your query. This is useful if you need
 to later perform specific operations on those entities.</p>
 <pre><code class="language-rust no_run noplayground">// add `Entity` to `Query` to get Entity IDs
 fn query_entities(q: Query&lt;(Entity, /* ... */)&gt;) {
@@ -246,7 +246,7 @@ fn query_entities(q: Query&lt;(Entity, /* ... */)&gt;) {
 }</code></pre>
 <h3 id="accessing-specific-entities"><a class="header" href="#accessing-specific-entities">Accessing Specific Entities</a></h3>
 <p>To access the <a href="/programming/ec.html#components">components</a> from one specific <a href="/programming/ec.html#entities">entity</a>
-only, you need to know the <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> ID:</p>
+only, you need to know the <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> ID:</p>
 <pre><code class="language-rust no_run noplayground">if let Ok((health, mut transform)) = query.get_mut(entity) {
     // do something with the components
 } else {
@@ -289,7 +289,7 @@ expected to only ever match a single entity), you can use <code>single</code>/<c
 (panic on error) or <code>get_single</code>/<code>get_single_mut</code> (return <a href="https://doc.rust-lang.org/stable/std/result/enum.Result.html"><code>Result</code></a>). These
 methods ensure that there exists exactly one candidate entity that can match
 your query, and will produce an error otherwise.</p>
-<p>You do not need to know the <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> ID.</p>
+<p>You do not need to know the <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/entity/struct.Entity.html"><code>Entity</code></a> ID.</p>
 <pre><code class="language-rust no_run noplayground">fn query_player(mut q: Query&lt;(&amp;Player, &amp;mut Transform)&gt;) {
     let (player, mut transform) = q.single_mut();
 
@@ -332,11 +332,11 @@ components from that bundle that you care about.</p>
 <h2 id="query-filters"><a class="header" href="#query-filters">Query Filters</a></h2>
 <p>Add query filters to narrow down the entities you get from the query.</p>
 <p>This is done using the second (optional) generic type parameter of the
-<a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.Query.html"><code>Query</code></a> type.</p>
+<a href="https://docs.rs/bevy/0.14.0/bevy/ecs/system/struct.Query.html"><code>Query</code></a> type.</p>
 <p>Note the syntax of the query: first you specify the data you want to access
 (using a tuple to access multiple things), and then you add any additional
 filters (can also be a tuple, to add multiple).</p>
-<p>Use <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/query/struct.With.html"><code>With</code></a>/<a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/query/struct.Without.html"><code>Without</code></a> to only get entities that have specific components.</p>
+<p>Use <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/query/struct.With.html"><code>With</code></a>/<a href="https://docs.rs/bevy/0.14.0/bevy/ecs/query/struct.Without.html"><code>Without</code></a> to only get entities that have specific components.</p>
 <pre><code class="language-rust no_run noplayground">fn debug_player_hp(
     // access the health (and optionally the PlayerName, if present), only for friendly players
     query: Query&lt;(&amp;Health, Option&lt;&amp;PlayerName&gt;), (With&lt;Player&gt;, Without&lt;Enemy&gt;)&gt;,
@@ -364,9 +364,9 @@ the first part of the query (as shown previously), instead of using a filter.</p
 </li>
 </ul>
 <h2 id="query-transmutation"><a class="header" href="#query-transmutation">Query Transmutation</a></h2>
-<p>If you want one function with a <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.Query.html"><code>Query</code></a> parameter to call another function
-with a different (but compatible) <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.Query.html"><code>Query</code></a> parameter, you can create the
-needed <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.Query.html"><code>Query</code></a> from the one you have using something called <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.QueryLens.html"><code>QueryLens</code></a>.</p>
+<p>If you want one function with a <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/system/struct.Query.html"><code>Query</code></a> parameter to call another function
+with a different (but compatible) <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/system/struct.Query.html"><code>Query</code></a> parameter, you can create the
+needed <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/system/struct.Query.html"><code>Query</code></a> from the one you have using something called <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/system/struct.QueryLens.html"><code>QueryLens</code></a>.</p>
 <pre><code class="language-rust no_run noplayground">fn debug_positions(
     query: Query&lt;&amp;Transform&gt;,
 ) {
@@ -398,8 +398,8 @@ fn move_enemies(
 <p>Note: when we call <code>debug_positions</code> from each function, it will access
 different entities! Even though the <code>Query&lt;&amp;Transform&gt;</code> parameter type does not
 have any additional <a href="/programming/queries.html#query-filters">filters</a>, it was created by transmuting
-via <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.QueryLens.html"><code>QueryLens</code></a>, and therefore it can only access the entities and components
-of the original <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.Query.html"><code>Query</code></a> that it was derived from. If we were to add
+via <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/system/struct.QueryLens.html"><code>QueryLens</code></a>, and therefore it can only access the entities and components
+of the original <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/system/struct.Query.html"><code>Query</code></a> that it was derived from. If we were to add
 <code>debug_positions</code> to Bevy as a regular system, it would access the transforms of
 all entities.</p>
 <p>Also note: this has some performance overhead; the transmute operation is not
@@ -408,7 +408,7 @@ system. When you create the new query, it has to make a copy of it.</p>
 <h2 id="query-joining"><a class="header" href="#query-joining">Query Joining</a></h2>
 <p>You can combine two queries to get a new query to access only those entities
 that would match both queries, yielding the combined set of components.</p>
-<p>This works via <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.QueryLens.html"><code>QueryLens</code></a>, just like <a href="#query-transmutation">transmutation</a>.</p>
+<p>This works via <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/system/struct.QueryLens.html"><code>QueryLens</code></a>, just like <a href="#query-transmutation">transmutation</a>.</p>
 <pre><code class="language-rust no_run noplayground">fn query_join(
     mut query_common: Query&lt;(&amp;Transform, &amp;Health)&gt;,
     mut query_player: Query&lt;&amp;PlayerName, With&lt;Player&gt;&gt;,
@@ -431,7 +431,7 @@ that would match both queries, yielding the combined set of components.</p>
     }
 }</code></pre>
 <p>Note: the resulting query cannot access any data that the original queries
-were not able to access. If you try to add <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/query/struct.With.html"><code>With</code></a>/<a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/query/struct.Without.html"><code>Without</code></a> filters,
+were not able to access. If you try to add <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/query/struct.With.html"><code>With</code></a>/<a href="https://docs.rs/bevy/0.14.0/bevy/ecs/query/struct.Without.html"><code>Without</code></a> filters,
 they will not have their usual effect.</p>
 
                     </main>

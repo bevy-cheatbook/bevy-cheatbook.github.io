@@ -179,7 +179,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.14</th><th>(upcoming / release candidate)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-14">0.14</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
 </div>
 <h1 id="borrow-multiple-fields-from-struct"><a class="header" href="#borrow-multiple-fields-from-struct">Borrow multiple fields from struct</a></h1>
@@ -219,7 +219,7 @@ let thing = thing.into_inner();</code></pre>
 you don't modify the data afterwards, the component gets marked as changed.</p>
 <h2 id="explanation"><a class="header" href="#explanation">Explanation</a></h2>
 <p>Bevy typically gives you access to your data via special wrapper types (like
-<a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.Res.html"><code>Res&lt;T&gt;</code></a>, <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a>, and <a href="https://docs.rs/bevy/0.14.0-rc.2/bevy/ecs/world/struct.Mut.html"><code>Mut&lt;T&gt;</code></a> (when <a href="/programming/queries.html">querying</a> for
+<a href="https://docs.rs/bevy/0.14.0/bevy/ecs/system/struct.Res.html"><code>Res&lt;T&gt;</code></a>, <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a>, and <a href="https://docs.rs/bevy/0.14.0/bevy/ecs/world/struct.Mut.html"><code>Mut&lt;T&gt;</code></a> (when <a href="/programming/queries.html">querying</a> for
 components mutably)). This lets Bevy track access to the data.</p>
 <p>These are "smart pointer" types that use the Rust <a href="https://doc.rust-lang.org/stable/std/ops/trait.Deref.html"><code>Deref</code></a> trait to dereference
 to your data. They usually work seamlessly and you don't even notice them.</p>
