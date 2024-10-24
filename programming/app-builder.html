@@ -266,6 +266,8 @@ app.world_mut().spawn(SomeBundle::default());</code></pre>
 fn exit_system(mut exit: EventWriter&lt;AppExit&gt;) {
     exit.send(AppExit::Success);
 }</code></pre>
+<p>In a real app, you could do this from various places, such as
+a handler for an "Exit" button in your main menu, etc.</p>
 <p>You can specify the exit code to return to the OS. If Bevy receives
 multiple <a href="https://docs.rs/bevy/0.14.0/bevy/app/enum.AppExit.html"><code>AppExit</code></a> events, success will only be returned if all
 of them report success. If some report an error, the last event will
