@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" class="light" dir="ltr">
+<html lang="en" class="light sidebar-visible" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
@@ -33,15 +33,17 @@
         <link rel="stylesheet" href="nagbar.css">
         <link rel="stylesheet" href="sidebar.css">
 
-    </head>
-    <body class="sidebar-visible no-js">
-    <div id="body-container">
+
         <!-- Provide site root to javascript -->
         <script>
             var path_to_root = "";
             var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
         </script>
-
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
@@ -63,19 +65,16 @@
             var theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
-            var html = document.querySelector('html');
+            const html = document.documentElement;
             html.classList.remove('light')
             html.classList.add(theme);
-            var body = document.querySelector('body');
-            body.classList.remove('no-js')
-            body.classList.add('js');
+            html.classList.add("js");
         </script>
 
         <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var body = document.querySelector('body');
             var sidebar = null;
             var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
@@ -85,45 +84,25 @@
                 sidebar = 'hidden';
             }
             sidebar_toggle.checked = sidebar === 'visible';
-            body.classList.remove('sidebar-visible');
-            body.classList.add("sidebar-" + sidebar);
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
-            <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded affix "><a href="overview.html">Chapter Overview</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><a href="builtins.html" class="active">List of Bevy Builtins</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded "><a href="tutorial.html"><strong aria-hidden="true">1.</strong> Bevy Tutorials</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="tutorial/guide.html"><strong aria-hidden="true">1.1.</strong> Guided Tour</a></li></ol></li><li class="chapter-item expanded "><a href="cookbook.html"><strong aria-hidden="true">2.</strong> Bevy Cookbook</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="cookbook/print-framerate.html"><strong aria-hidden="true">2.1.</strong> Show Framerate</a></li><li class="chapter-item expanded "><a href="cookbook/cursor2world.html"><strong aria-hidden="true">2.2.</strong> Convert cursor to world coordinates</a></li><li class="chapter-item expanded "><a href="cookbook/smooth-movement.html"><strong aria-hidden="true">2.3.</strong> Transform Interpolation/Extrapolation</a></li><li class="chapter-item expanded "><a href="cookbook/pan-orbit-camera.html"><strong aria-hidden="true">2.4.</strong> 3D Pan+Orbit Camera</a></li><li class="chapter-item expanded "><a href="cookbook/custom-projection.html"><strong aria-hidden="true">2.5.</strong> Custom Camera Projection</a></li><li class="chapter-item expanded "><a href="cookbook/print-resources.html"><strong aria-hidden="true">2.6.</strong> List All Resource Types</a></li></ol></li><li class="chapter-item expanded "><li class="spacer"></li><li class="chapter-item expanded "><a href="setup.html"><strong aria-hidden="true">3.</strong> Bevy Setup Tips</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="setup/getting-started.html"><strong aria-hidden="true">3.1.</strong> Getting Started</a></li><li class="chapter-item expanded "><a href="setup/editor.html"><strong aria-hidden="true">3.2.</strong> Text Editor / IDE</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="setup/editor/vscode.html"><strong aria-hidden="true">3.2.1.</strong> Visual Studio Code</a></li><li class="chapter-item expanded "><a href="setup/editor/jetbrains.html"><strong aria-hidden="true">3.2.2.</strong> JetBrains (RustRover, IntelliJ, CLion)</a></li><li class="chapter-item expanded "><a href="setup/editor/kak.html"><strong aria-hidden="true">3.2.3.</strong> Kakoune</a></li><li class="chapter-item expanded "><a href="setup/editor/vim.html"><strong aria-hidden="true">3.2.4.</strong> Vim</a></li><li class="chapter-item expanded "><a href="setup/editor/emacs.html"><strong aria-hidden="true">3.2.5.</strong> Emacs</a></li></ol></li><li class="chapter-item expanded "><a href="setup/bevy-config.html"><strong aria-hidden="true">3.3.</strong> Customizing Bevy (features, modularity)</a></li><li class="chapter-item expanded "><a href="setup/unofficial-plugins.html"><strong aria-hidden="true">3.4.</strong> Community Plugin Ecosystem</a></li><li class="chapter-item expanded "><a href="setup/bevy-tools.html"><strong aria-hidden="true">3.5.</strong> Dev Tools and Editors for Bevy</a></li><li class="chapter-item expanded "><a href="setup/perf.html"><strong aria-hidden="true">3.6.</strong> Performance Tunables</a></li><li class="chapter-item expanded "><a href="setup/bevy-git.html"><strong aria-hidden="true">3.7.</strong> Using bleeding-edge Bevy (main)</a></li></ol></li><li class="chapter-item expanded "><a href="pitfalls.html"><strong aria-hidden="true">4.</strong> Common Pitfalls</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="pitfalls/build-errors.html"><strong aria-hidden="true">4.1.</strong> Strange compile errors from Bevy or dependencies</a></li><li class="chapter-item expanded "><a href="pitfalls/performance.html"><strong aria-hidden="true">4.2.</strong> Slow Performance</a></li><li class="chapter-item expanded "><a href="pitfalls/into-system.html"><strong aria-hidden="true">4.3.</strong> Error adding function as system</a></li><li class="chapter-item expanded "><a href="pitfalls/3d-not-rendering.html"><strong aria-hidden="true">4.4.</strong> 3D objects not displaying</a></li><li class="chapter-item expanded "><a href="pitfalls/split-borrows.html"><strong aria-hidden="true">4.5.</strong> Borrow multiple fields from struct</a></li><li class="chapter-item expanded "><a href="pitfalls/time.html"><strong aria-hidden="true">4.6.</strong> Jittering Time (choppy movement/animation)</a></li><li class="chapter-item expanded "><a href="pitfalls/uv-coordinates.html"><strong aria-hidden="true">4.7.</strong> Textures/Images are flipped</a></li></ol></li><li class="chapter-item expanded "><a href="fundamentals.html"><strong aria-hidden="true">5.</strong> Game Engine Fundamentals</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="fundamentals/coords.html"><strong aria-hidden="true">5.1.</strong> Coordinate System</a></li><li class="chapter-item expanded "><a href="fundamentals/transforms.html"><strong aria-hidden="true">5.2.</strong> Transforms</a></li><li class="chapter-item expanded "><a href="fundamentals/visibility.html"><strong aria-hidden="true">5.3.</strong> Visibility</a></li><li class="chapter-item expanded "><a href="fundamentals/time.html"><strong aria-hidden="true">5.4.</strong> Time and Timers</a></li><li class="chapter-item expanded "><a href="fundamentals/log.html"><strong aria-hidden="true">5.5.</strong> Logging, Console Messages</a></li><li class="chapter-item expanded "><a href="fundamentals/hierarchy.html"><strong aria-hidden="true">5.6.</strong> Parent/Child Hierarchies</a></li><li class="chapter-item expanded "><a href="fundamentals/fixed-timestep.html"><strong aria-hidden="true">5.7.</strong> Fixed Timestep</a></li><li class="chapter-item expanded "><a href="fundamentals/async-compute.html"><strong aria-hidden="true">5.8.</strong> Background Computation</a></li><li class="chapter-item expanded "><a href="fundamentals/gizmos.html"><strong aria-hidden="true">5.9.</strong> Gizmos</a></li></ol></li><li class="chapter-item expanded "><a href="graphics.html"><strong aria-hidden="true">6.</strong> General Graphics Features</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="graphics/camera.html"><strong aria-hidden="true">6.1.</strong> Cameras</a></li><li class="chapter-item expanded "><a href="graphics/hdr-tonemap.html"><strong aria-hidden="true">6.2.</strong> HDR and Tonemapping</a></li><li class="chapter-item expanded "><a href="graphics/bloom.html"><strong aria-hidden="true">6.3.</strong> Bloom</a></li></ol></li><li class="chapter-item expanded "><a href="2d.html"><strong aria-hidden="true">7.</strong> Working with 2D</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="2d/camera.html"><strong aria-hidden="true">7.1.</strong> 2D Camera Setup</a></li><li class="chapter-item expanded "><a href="2d/sprites.html"><strong aria-hidden="true">7.2.</strong> Sprites and Atlases</a></li></ol></li><li class="chapter-item expanded "><a href="3d.html"><strong aria-hidden="true">8.</strong> Working with 3D</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="3d/camera.html"><strong aria-hidden="true">8.1.</strong> 3D Camera Setup</a></li><li class="chapter-item expanded "><a href="3d/gltf.html"><strong aria-hidden="true">8.2.</strong> 3D Models and Scenes (GLTF)</a></li></ol></li><li class="chapter-item expanded "><a href="input.html"><strong aria-hidden="true">9.</strong> Input Handling</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="input/keyboard.html"><strong aria-hidden="true">9.1.</strong> Keyboard</a></li><li class="chapter-item expanded "><a href="input/mouse.html"><strong aria-hidden="true">9.2.</strong> Mouse</a></li><li class="chapter-item expanded "><a href="input/gamepad.html"><strong aria-hidden="true">9.3.</strong> Gamepad (Controller, Joystick)</a></li><li class="chapter-item expanded "><a href="input/touch.html"><strong aria-hidden="true">9.4.</strong> Touchscreen</a></li><li class="chapter-item expanded "><a href="input/gesture.html"><strong aria-hidden="true">9.5.</strong> Gestures</a></li><li class="chapter-item expanded "><a href="input/dnd.html"><strong aria-hidden="true">9.6.</strong> Drag-and-Drop (Files)</a></li><li class="chapter-item expanded "><a href="input/ime.html"><strong aria-hidden="true">9.7.</strong> IME (Advanced Text)</a></li></ol></li><li class="chapter-item expanded "><a href="window.html"><strong aria-hidden="true">10.</strong> Window Management</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="window/props.html"><strong aria-hidden="true">10.1.</strong> Window Properties</a></li><li class="chapter-item expanded "><a href="window/clear-color.html"><strong aria-hidden="true">10.2.</strong> Change the Background Color</a></li><li class="chapter-item expanded "><a href="window/mouse-grab.html"><strong aria-hidden="true">10.3.</strong> Grab/Capture the Mouse Cursor</a></li><li class="chapter-item expanded "><a href="window/icon.html"><strong aria-hidden="true">10.4.</strong> Set the Window Icon</a></li></ol></li><li class="chapter-item expanded "><a href="assets.html"><strong aria-hidden="true">11.</strong> Asset Management</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="assets/handles.html"><strong aria-hidden="true">11.1.</strong> Handles</a></li><li class="chapter-item expanded "><a href="assets/assetserver.html"><strong aria-hidden="true">11.2.</strong> Load Assets from Files</a></li><li class="chapter-item expanded "><a href="assets/data.html"><strong aria-hidden="true">11.3.</strong> Access the Asset Data</a></li><li class="chapter-item expanded "><a href="assets/assetevent.html"><strong aria-hidden="true">11.4.</strong> React to Changes with Asset Events</a></li><li class="chapter-item expanded "><a href="assets/ready.html"><strong aria-hidden="true">11.5.</strong> Track Loading Progress</a></li><li class="chapter-item expanded "><a href="assets/hot-reload.html"><strong aria-hidden="true">11.6.</strong> Hot-Reloading Assets</a></li><li class="chapter-item expanded "><a href="assets/processing.html"><strong aria-hidden="true">11.7.</strong> Processing Assets</a></li></ol></li><li class="chapter-item expanded "><a href="audio.html"><strong aria-hidden="true">12.</strong> Audio</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="audio/basic.html"><strong aria-hidden="true">12.1.</strong> Playing Sounds</a></li><li class="chapter-item expanded "><a href="audio/spatial.html"><strong aria-hidden="true">12.2.</strong> Spatial Audio</a></li><li class="chapter-item expanded "><a href="audio/custom.html"><strong aria-hidden="true">12.3.</strong> Custom Audio Streams</a></li></ol></li><li class="chapter-item expanded "><a href="ui.html"><strong aria-hidden="true">13.</strong> Bevy UI Framework</a></li><li class="chapter-item expanded "><a href="programming.html"><strong aria-hidden="true">14.</strong> Bevy Core Programming Framework</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="programming/ecs-intro.html"><strong aria-hidden="true">14.1.</strong> Intro to ECS</a></li><li class="chapter-item expanded "><a href="programming/intro-data.html"><strong aria-hidden="true">14.2.</strong> Intro: Your Data</a></li><li class="chapter-item expanded "><a href="programming/intro-code.html"><strong aria-hidden="true">14.3.</strong> Intro: Your Code</a></li><li class="chapter-item expanded "><a href="programming/app-builder.html"><strong aria-hidden="true">14.4.</strong> The App</a></li><li class="chapter-item expanded "><a href="programming/systems.html"><strong aria-hidden="true">14.5.</strong> Systems</a></li><li class="chapter-item expanded "><a href="programming/res.html"><strong aria-hidden="true">14.6.</strong> Resources</a></li><li class="chapter-item expanded "><a href="programming/ec.html"><strong aria-hidden="true">14.7.</strong> Entities, Components</a></li><li class="chapter-item expanded "><a href="programming/bundle.html"><strong aria-hidden="true">14.8.</strong> Bundles</a></li><li class="chapter-item expanded "><a href="programming/queries.html"><strong aria-hidden="true">14.9.</strong> Queries</a></li><li class="chapter-item expanded "><a href="programming/commands.html"><strong aria-hidden="true">14.10.</strong> Commands</a></li><li class="chapter-item expanded "><a href="programming/events.html"><strong aria-hidden="true">14.11.</strong> Events</a></li><li class="chapter-item expanded "><a href="programming/plugins.html"><strong aria-hidden="true">14.12.</strong> Plugins</a></li><li class="chapter-item expanded "><a href="programming/local.html"><strong aria-hidden="true">14.13.</strong> Local Resources</a></li><li class="chapter-item expanded "><a href="programming/exclusive.html"><strong aria-hidden="true">14.14.</strong> Exclusive Systems</a></li><li class="chapter-item expanded "><a href="programming/world.html"><strong aria-hidden="true">14.15.</strong> Direct ECS World Access</a></li><li class="chapter-item expanded "><a href="programming/schedules.html"><strong aria-hidden="true">14.16.</strong> Schedules</a></li><li class="chapter-item expanded "><a href="programming/system-order.html"><strong aria-hidden="true">14.17.</strong> System Order of Execution</a></li><li class="chapter-item expanded "><a href="programming/run-conditions.html"><strong aria-hidden="true">14.18.</strong> Run Conditions</a></li><li class="chapter-item expanded "><a href="programming/system-sets.html"><strong aria-hidden="true">14.19.</strong> System Sets</a></li><li class="chapter-item expanded "><a href="programming/states.html"><strong aria-hidden="true">14.20.</strong> States</a></li><li class="chapter-item expanded "><a href="programming/change-detection.html"><strong aria-hidden="true">14.21.</strong> Change Detection</a></li><li class="chapter-item expanded "><a href="programming/one-shot-systems.html"><strong aria-hidden="true">14.22.</strong> One-Shot Systems</a></li><li class="chapter-item expanded "><a href="programming/par-iter.html"><strong aria-hidden="true">14.23.</strong> Internal Parallelism</a></li><li class="chapter-item expanded "><a href="programming/system-piping.html"><strong aria-hidden="true">14.24.</strong> System Piping</a></li><li class="chapter-item expanded "><a href="programming/paramset.html"><strong aria-hidden="true">14.25.</strong> ParamSet</a></li><li class="chapter-item expanded "><a href="programming/non-send.html"><strong aria-hidden="true">14.26.</strong> Non-Send</a></li></ol></li><li class="chapter-item expanded "><a href="gpu.html"><strong aria-hidden="true">15.</strong> Bevy Render (GPU) Framework</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="gpu/intro.html"><strong aria-hidden="true">15.1.</strong> Render Architecture Overview</a></li><li class="chapter-item expanded "><a href="gpu/stages.html"><strong aria-hidden="true">15.2.</strong> Render Stages</a></li></ol></li><li class="chapter-item expanded "><a href="patterns.html"><strong aria-hidden="true">16.</strong> Programming Patterns</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="patterns/generic-systems.html"><strong aria-hidden="true">16.1.</strong> Generic Systems</a></li><li class="chapter-item expanded "><a href="patterns/component-storage.html"><strong aria-hidden="true">16.2.</strong> Component Storage (Table/Sparse-Set)</a></li><li class="chapter-item expanded "><a href="patterns/manual-event-clear.html"><strong aria-hidden="true">16.3.</strong> Manual Event Clearing</a></li><li class="chapter-item expanded "><a href="patterns/system-tests.html"><strong aria-hidden="true">16.4.</strong> Writing Tests for Systems</a></li></ol></li><li class="chapter-item expanded "><a href="platforms.html"><strong aria-hidden="true">17.</strong> Bevy on Different Platforms</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="platforms/linux.html"><strong aria-hidden="true">17.1.</strong> Linux Desktop</a></li><li class="chapter-item expanded "><a href="platforms/macos.html"><strong aria-hidden="true">17.2.</strong> macOS Desktop</a></li><li class="chapter-item expanded "><a href="platforms/windows.html"><strong aria-hidden="true">17.3.</strong> Windows Desktop</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="platforms/windows/wsl2.html"><strong aria-hidden="true">17.3.1.</strong> Working in WSL2</a></li></ol></li><li class="chapter-item expanded "><a href="platforms/wasm.html"><strong aria-hidden="true">17.4.</strong> Browser (WebAssembly)</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="platforms/wasm/size-opt.html"><strong aria-hidden="true">17.4.1.</strong> Optimize for Size</a></li><li class="chapter-item expanded "><a href="platforms/wasm/webpage.html"><strong aria-hidden="true">17.4.2.</strong> Create a Custom Web Page</a></li><li class="chapter-item expanded "><a href="platforms/wasm/gh-pages.html"><strong aria-hidden="true">17.4.3.</strong> Hosting on GitHub Pages</a></li></ol></li><li class="chapter-item expanded "><a href="setup/cross.html"><strong aria-hidden="true">17.5.</strong> Cross-Compilation</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="setup/cross/linux-windows.html"><strong aria-hidden="true">17.5.1.</strong> From Linux to Windows</a></li><li class="chapter-item expanded "><a href="setup/cross/macos-windows.html"><strong aria-hidden="true">17.5.2.</strong> From macOS to Windows</a></li></ol></li></ol></li><li class="chapter-item expanded "><li class="spacer"></li><li class="chapter-item expanded affix "><a href="credits.html">Credits</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><a href="contact.html">Contact Me</a></li><li class="chapter-item expanded affix "><li class="spacer"></li><li class="chapter-item expanded affix "><a href="contributing-bevy.html">Contribute to Bevy</a></li><li class="chapter-item expanded affix "><a href="contributing.html">Contribute to this Book</a></li></ol>
-            </div>
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
             </div>
         </nav>
 
-        <!-- Track and set sidebar scroll position -->
-        <script>
-            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
-            sidebarScrollbox.addEventListener('click', function(e) {
-                if (e.target.tagName === 'A') {
-                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
-                }
-            }, { passive: true });
-            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
-            sessionStorage.removeItem('sidebar-scroll');
-            if (sidebarScrollTop) {
-                // preserve sidebar scroll position when navigating via links within sidebar
-                sidebarScrollbox.scrollTop = sidebarScrollTop;
-            } else {
-                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
-                var activeSection = document.querySelector('#sidebar .active');
-                if (activeSection) {
-                    activeSection.scrollIntoView({ block: 'center' });
-                }
-            }
-        </script>
-
         <div id="page-wrapper" class="page-wrapper">
 
             <div class="page">
-                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar-hover-placeholder"></div>
                 <div id="menu-bar" class="menu-bar sticky">
                     <div class="left-buttons">
                         <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
@@ -187,6 +166,7 @@ to cover the differences:
 <a href="https://bevyengine.org/learn/migration-guides/0-11-to-0-12/">0.11 to 0.12</a>,
 <a href="https://bevyengine.org/learn/migration-guides/0-12-to-0-13/">0.12 to 0.13</a>,
 <a href="https://bevyengine.org/learn/migration-guides/0-13-to-0-14/">0.13 to 0.14</a>.
+<a href="https://bevyengine.org/learn/migration-guides/0-14-to-0-15/">0.14 to 0.15</a>.
 </p>
 <p style="text-align: center;">
 I apologize for the inconvenience. I will update the page as soon as I find the time.
@@ -222,66 +202,66 @@ by Bevy.</p>
 </ul>
 <h2 id="systemparams"><a class="header" href="#systemparams">SystemParams</a></h2>
 <p>These are all the special types that can be used as <a href="/programming/systems.html">system</a> parameters.</p>
-<p><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/trait.SystemParam.html#implementors">(List in API Docs)</a></p>
+<p><a href="https://docs.rs/bevy/0.11/bevy/ecs/system/trait.SystemParam.html#implementors">(List in API Docs)</a></p>
 <p>In regular <a href="/programming/systems.html">systems</a>:</p>
 <ul>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/ecs/system/struct.Commands.html"><code>Commands</code></a>:
 Manipulate the ECS using <a href="/programming/commands.html">commands</a></li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.Query.html"><code>Query&lt;T, F = ()&gt;</code></a> (can contain tuples of up to 15 types):
+<li><a href="https://docs.rs/bevy/0.11/bevy/ecs/system/struct.Query.html"><code>Query&lt;T, F = ()&gt;</code></a> (can contain tuples of up to 15 types):
 Access to <a href="/programming/intro-data.html#entities--components">entities and components</a></li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.Res.html"><code>Res&lt;T&gt;</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/ecs/system/struct.Res.html"><code>Res&lt;T&gt;</code></a>:
 Shared access to a <a href="/programming/res.html">resource</a></li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/ecs/system/struct.ResMut.html"><code>ResMut&lt;T&gt;</code></a>:
 Exclusive (mutable) access to a <a href="/programming/res.html">resource</a></li>
 <li><code>Option&lt;Res&lt;T&gt;&gt;</code>:
 Shared access to a resource that may not exist</li>
 <li><code>Option&lt;ResMut&lt;T&gt;&gt;</code>:
 Exclusive (mutable) access to a resource that may not exist</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/ecs/system/struct.Local.html"><code>Local&lt;T&gt;</code></a>:
 Data <a href="/programming/local.html">local</a> to the system</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/event/struct.EventReader.html"><code>EventReader&lt;T&gt;</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/ecs/event/struct.EventReader.html"><code>EventReader&lt;T&gt;</code></a>:
 Receive <a href="/programming/events.html">events</a></li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/event/struct.EventWriter.html"><code>EventWriter&lt;T&gt;</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/ecs/event/struct.EventWriter.html"><code>EventWriter&lt;T&gt;</code></a>:
 Send <a href="/programming/events.html">events</a></li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/world/struct.World.html"><code>&amp;World</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/ecs/world/struct.World.html"><code>&amp;World</code></a>:
 Read-only <a href="/programming/world.html">direct access to the ECS World</a></li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.ParamSet.html"><code>ParamSet&lt;...&gt;</code></a> (with up to 8 params):
+<li><a href="https://docs.rs/bevy/0.11/bevy/ecs/system/struct.ParamSet.html"><code>ParamSet&lt;...&gt;</code></a> (with up to 8 params):
 Resolve <a href="/programming/paramset.html">conflicts between incompatible system parameters</a></li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.Deferred.html"><code>Deferred&lt;T&gt;</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/ecs/system/struct.Deferred.html"><code>Deferred&lt;T&gt;</code></a>:
 Custom <a href="/programming/deferred.html">"deferred mutation"</a>, similar to <code>Commands</code>, but for your own things</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/removal_detection/struct.RemovedComponents.html"><code>RemovedComponents&lt;T&gt;</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/ecs/removal_detection/struct.RemovedComponents.html"><code>RemovedComponents&lt;T&gt;</code></a>:
 <a href="/programming/change-detection.html#removal-detection">Removal detection</a></li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/gizmos/gizmos/struct.Gizmos.html"><code>Gizmos</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/gizmos/gizmos/struct.Gizmos.html"><code>Gizmos</code></a>:
 A way to <a href="/fundamentals/gizmos.html">draw lines and shapes</a> on the screen for debugging and dev purposes</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/diagnostic/struct.Diagnostics.html"><code>Diagnostics</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/diagnostic/struct.Diagnostics.html"><code>Diagnostics</code></a>:
 A way to <a href="/fundamentals/diagnostics.html">report measurements/debug data</a> to Bevy for tracking and visualization</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.SystemName.html"><code>SystemName</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/ecs/system/struct.SystemName.html"><code>SystemName</code></a>:
 The name (string) of the system, may be useful for debugging</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.ParallelCommands.html"><code>ParallelCommands</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/ecs/system/struct.ParallelCommands.html"><code>ParallelCommands</code></a>:
 Abstraction to help use <code>Commands</code> when you will do your own parallelism</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/world/struct.WorldId.html"><code>WorldId</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/ecs/world/struct.WorldId.html"><code>WorldId</code></a>:
 The World ID of the <a href="/programming/world.html">world</a> the system is running on</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/component/struct.ComponentIdFor.html"><code>ComponentIdFor&lt;T&gt;</code></a>:
-Get the <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/component/struct.ComponentId.html"><code>ComponentId</code></a> of a given <a href="/programming/ec.html#components">component</a> type</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/entity/struct.Entities.html"><code>Entities</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/ecs/component/struct.ComponentIdFor.html"><code>ComponentIdFor&lt;T&gt;</code></a>:
+Get the <a href="https://docs.rs/bevy/0.11/bevy/ecs/component/struct.ComponentId.html"><code>ComponentId</code></a> of a given <a href="/programming/ec.html#components">component</a> type</li>
+<li><a href="https://docs.rs/bevy/0.11/bevy/ecs/entity/struct.Entities.html"><code>Entities</code></a>:
 Low-level ECS metadata: All entities</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/component/struct.Components.html"><code>Components</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/ecs/component/struct.Components.html"><code>Components</code></a>:
 Low-level ECS metadata: All components</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/bundle/struct.Bundles.html"><code>Bundles</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/ecs/bundle/struct.Bundles.html"><code>Bundles</code></a>:
 Low-level ECS metadata: All bundles</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/archetype/struct.Archetypes.html"><code>Archetypes</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/ecs/archetype/struct.Archetypes.html"><code>Archetypes</code></a>:
 Low-level ECS metadata: All archetypes</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.SystemChangeTick.html"><code>SystemChangeTick</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/ecs/system/struct.SystemChangeTick.html"><code>SystemChangeTick</code></a>:
 Low-level ECS metadata: Tick used for change detection</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.NonSend.html"><code>NonSend&lt;T&gt;</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/ecs/system/struct.NonSend.html"><code>NonSend&lt;T&gt;</code></a>:
 Shared access to <a href="/programming/non-send.html">Non-<code>Send</code></a> (main thread only) data</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.NonSendMut.html"><code>NonSendMut&lt;T&gt;</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/ecs/system/struct.NonSendMut.html"><code>NonSendMut&lt;T&gt;</code></a>:
 Exclusive access to <a href="/programming/non-send.html">Non-<code>Send</code></a> (main thread only) data</li>
 <li><code>Option&lt;NonSend&lt;T&gt;&gt;</code>:
 Shared access to <a href="/programming/non-send.html">Non-<code>Send</code></a> (main thread only) data that may not exist</li>
 <li><code>Option&lt;NonSendMut&lt;T&gt;&gt;</code>:
 Exclusive access to <a href="/programming/non-send.html">Non-<code>Send</code></a> (main thread only) data that may not exist</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/system/struct.StaticSystemParam.html"><code>StaticSystemParam</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/ecs/system/struct.StaticSystemParam.html"><code>StaticSystemParam</code></a>:
 Helper for generic system abstractions, to avoid lifetime annotations</li>
 <li>tuples containing any of these types, with up to 16 members</li>
 </ul>
@@ -301,53 +281,53 @@ Allows you to perform queries on the World, similar to a [<code>Query</code>] in
 group them into tuples to work around the limit. Tuples can contain up to
 16 members, but can be nested indefinitely.</p>
 <p>Systems running during the <a href="/TODO.html">Extract schedule</a> can also use
-<a href="https://docs.rs/bevy/0.11.0/bevy/render/struct.Extract.html"><code>Extract&lt;T&gt;</code></a>, to access data from the Main World instead of the
+<a href="https://docs.rs/bevy/0.11/bevy/render/struct.Extract.html"><code>Extract&lt;T&gt;</code></a>, to access data from the Main World instead of the
 Render World. <code>T</code> can be any read-only system parameter type.</p>
 <h2 id="assets"><a class="header" href="#assets">Assets</a></h2>
 <p><a href="/assets.html">(more info about working with assets)</a></p>
 <p>These are the Asset types registered by Bevy by default.</p>
 <ul>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/render/texture/struct.Image.html"><code>Image</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/render/texture/struct.Image.html"><code>Image</code></a>:
 Pixel data, used as a texture for 2D and 3D rendering;
-also contains the <a href="https://docs.rs/bevy/0.11.0/bevy/render/render_resource/struct.SamplerDescriptor.html"><code>SamplerDescriptor</code></a> for texture filtering settings</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/sprite/struct.TextureAtlas.html"><code>TextureAtlas</code></a>:
+also contains the <a href="https://docs.rs/bevy/0.11/bevy/render/render_resource/struct.SamplerDescriptor.html"><code>SamplerDescriptor</code></a> for texture filtering settings</li>
+<li><a href="https://docs.rs/bevy/0.11/bevy/sprite/struct.TextureAtlas.html"><code>TextureAtlas</code></a>:
 2D "Sprite Sheet" defining sub-images within a single larger image</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/render/mesh/struct.Mesh.html"><code>Mesh</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/render/mesh/struct.Mesh.html"><code>Mesh</code></a>:
 3D Mesh (geometry data), contains vertex attributes (like position, UVs, normals)</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/render/render_resource/struct.Shader.html"><code>Shader</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/render/render_resource/struct.Shader.html"><code>Shader</code></a>:
 GPU shader code, in one of the supported languages (WGSL/SPIR-V/GLSL)</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/sprite/struct.ColorMaterial.html"><code>ColorMaterial</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/sprite/struct.ColorMaterial.html"><code>ColorMaterial</code></a>:
 Basic "2D material": contains color, optionally an image</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/pbr/struct.StandardMaterial.html"><code>StandardMaterial</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/pbr/struct.StandardMaterial.html"><code>StandardMaterial</code></a>:
 "3D material" with support for Physically-Based Rendering</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/animation/struct.AnimationClip.html"><code>AnimationClip</code></a>:
-Data for a single animation sequence, can be used with <a href="https://docs.rs/bevy/0.11.0/bevy/animation/struct.AnimationPlayer.html"><code>AnimationPlayer</code></a></li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/text/struct.Font.html"><code>Font</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/animation/struct.AnimationClip.html"><code>AnimationClip</code></a>:
+Data for a single animation sequence, can be used with <a href="https://docs.rs/bevy/0.11/bevy/animation/struct.AnimationPlayer.html"><code>AnimationPlayer</code></a></li>
+<li><a href="https://docs.rs/bevy/0.11/bevy/text/struct.Font.html"><code>Font</code></a>:
 Font data used for text rendering</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/scene/struct.Scene.html"><code>Scene</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/scene/struct.Scene.html"><code>Scene</code></a>:
 Scene composed of literal ECS entities to instantiate</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/scene/struct.DynamicScene.html"><code>DynamicScene</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/scene/struct.DynamicScene.html"><code>DynamicScene</code></a>:
 Scene composed with dynamic typing and reflection</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/gltf/struct.Gltf.html"><code>Gltf</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/gltf/struct.Gltf.html"><code>Gltf</code></a>:
 <a href="/3d/gltf.html#gltf-master-asset">GLTF Master Asset</a>: index of the entire contents of a GLTF file</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/gltf/struct.GltfNode.html"><code>GltfNode</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/gltf/struct.GltfNode.html"><code>GltfNode</code></a>:
 Logical GLTF object in a scene</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/gltf/struct.GltfMesh.html"><code>GltfMesh</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/gltf/struct.GltfMesh.html"><code>GltfMesh</code></a>:
 Logical GLTF 3D model, consisting of multiple <code>GltfPrimitive</code>s</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/gltf/struct.GltfPrimitive.html"><code>GltfPrimitive</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/gltf/struct.GltfPrimitive.html"><code>GltfPrimitive</code></a>:
 Single unit to be rendered, contains the Mesh and Material to use</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/audio/struct.AudioSource.html"><code>AudioSource</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/audio/struct.AudioSource.html"><code>AudioSource</code></a>:
 Audio data for <code>bevy_audio</code></li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/text/struct.FontAtlasSet.html"><code>FontAtlasSet</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/text/struct.FontAtlasSet.html"><code>FontAtlasSet</code></a>:
 (internal use for text rendering)</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/render/mesh/skinning/struct.SkinnedMeshInverseBindposes.html"><code>SkinnedMeshInverseBindposes</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/render/mesh/skinning/struct.SkinnedMeshInverseBindposes.html"><code>SkinnedMeshInverseBindposes</code></a>:
 (internal use for skeletal animation)</li>
 </ul>
 <h2 id="file-formats"><a class="header" href="#file-formats">File Formats</a></h2>
 <p>These are the asset file formats (asset loaders) supported by Bevy. Support
 for each one can be enabled/disabled using <a href="/setup/bevy-config.html">cargo features</a>. Some
 are enabled by default, many are not.</p>
-<p>Image formats (loaded as <a href="https://docs.rs/bevy/0.11.0/bevy/render/texture/struct.Image.html"><code>Image</code></a> assets):</p>
+<p>Image formats (loaded as <a href="https://docs.rs/bevy/0.11/bevy/render/texture/struct.Image.html"><code>Image</code></a> assets):</p>
 <div class="table-wrapper"><table><thead><tr><th>Format</th><th>Cargo feature</th><th>Default?</th><th>Filename extensions</th></tr></thead><tbody>
 <tr><td>PNG</td><td><code>"png"</code></td><td>Yes</td><td><code>.png</code></td></tr>
 <tr><td>HDR</td><td><code>"hdr"</code></td><td>Yes</td><td><code>.hdr</code></td></tr>
@@ -364,7 +344,7 @@ are enabled by default, many are not.</p>
 <tr><td>Basis</td><td><code>"basis-universal"</code></td><td>No</td><td><code>.basis</code></td></tr>
 </tbody></table>
 </div>
-<p>Audio formats (loaded as <a href="https://docs.rs/bevy/0.11.0/bevy/audio/struct.AudioSource.html"><code>AudioSource</code></a> assets):</p>
+<p>Audio formats (loaded as <a href="https://docs.rs/bevy/0.11/bevy/audio/struct.AudioSource.html"><code>AudioSource</code></a> assets):</p>
 <div class="table-wrapper"><table><thead><tr><th>Format</th><th>Cargo feature</th><th>Default?</th><th>Filename extensions</th></tr></thead><tbody>
 <tr><td>OGG Vorbis</td><td><code>"vorbis"</code></td><td>Yes</td><td><code>.ogg</code>, <code>.oga</code>, <code>.spx</code></td></tr>
 <tr><td>FLAC</td><td><code>"flac"</code></td><td>No</td><td><code>.flac</code></td></tr>
@@ -377,14 +357,14 @@ are enabled by default, many are not.</p>
 <tr><td>GLTF</td><td><code>"bevy_gltf"</code></td><td>Yes</td><td><code>.gltf</code>, <code>.glb</code></td></tr>
 </tbody></table>
 </div>
-<p>Shader formats (loaded as <a href="https://docs.rs/bevy/0.11.0/bevy/render/render_resource/struct.Shader.html"><code>Shader</code></a> assets):</p>
+<p>Shader formats (loaded as <a href="https://docs.rs/bevy/0.11/bevy/render/render_resource/struct.Shader.html"><code>Shader</code></a> assets):</p>
 <div class="table-wrapper"><table><thead><tr><th>Format</th><th>Cargo feature</th><th>Default?</th><th>Filename extensions</th></tr></thead><tbody>
 <tr><td>WGSL</td><td>n/a</td><td>Yes</td><td><code>.wgsl</code></td></tr>
 <tr><td>GLSL</td><td><code>"shader_format_glsl"</code></td><td>No</td><td><code>.vert</code>, <code>.frag</code>, <code>.comp</code></td></tr>
 <tr><td>SPIR-V</td><td><code>"shader_format_spirv"</code></td><td>No</td><td><code>.spv</code></td></tr>
 </tbody></table>
 </div>
-<p>Font formats (loaded as <a href="https://docs.rs/bevy/0.11.0/bevy/text/struct.Font.html"><code>Font</code></a> assets):</p>
+<p>Font formats (loaded as <a href="https://docs.rs/bevy/0.11/bevy/text/struct.Font.html"><code>Font</code></a> assets):</p>
 <div class="table-wrapper"><table><thead><tr><th>Format</th><th>Cargo feature</th><th>Default?</th><th>Filename extensions</th></tr></thead><tbody>
 <tr><td>TrueType</td><td>n/a</td><td>Yes</td><td><code>.ttf</code></td></tr>
 <tr><td>OpenType</td><td>n/a</td><td>Yes</td><td><code>.otf</code></td></tr>
@@ -400,16 +380,16 @@ are enabled by default, many are not.</p>
 <p><a href="/3d/gltf.html#assetpath-with-labels">Asset path labels to refer to GLTF sub-assets.</a></p>
 <p>The following asset labels are supported (<code>{}</code> is the numerical index):</p>
 <ul>
-<li><code>Scene{}</code>: GLTF Scene as Bevy <a href="https://docs.rs/bevy/0.11.0/bevy/scene/struct.Scene.html"><code>Scene</code></a></li>
-<li><code>Node{}</code>: GLTF Node as <a href="https://docs.rs/bevy/0.11.0/bevy/gltf/struct.GltfNode.html"><code>GltfNode</code></a></li>
-<li><code>Mesh{}</code>: GLTF Mesh as <a href="https://docs.rs/bevy/0.11.0/bevy/gltf/struct.GltfMesh.html"><code>GltfMesh</code></a></li>
-<li><code>Mesh{}/Primitive{}</code>: GLTF Primitive as Bevy <a href="https://docs.rs/bevy/0.11.0/bevy/render/mesh/struct.Mesh.html"><code>Mesh</code></a></li>
+<li><code>Scene{}</code>: GLTF Scene as Bevy <a href="https://docs.rs/bevy/0.11/bevy/scene/struct.Scene.html"><code>Scene</code></a></li>
+<li><code>Node{}</code>: GLTF Node as <a href="https://docs.rs/bevy/0.11/bevy/gltf/struct.GltfNode.html"><code>GltfNode</code></a></li>
+<li><code>Mesh{}</code>: GLTF Mesh as <a href="https://docs.rs/bevy/0.11/bevy/gltf/struct.GltfMesh.html"><code>GltfMesh</code></a></li>
+<li><code>Mesh{}/Primitive{}</code>: GLTF Primitive as Bevy <a href="https://docs.rs/bevy/0.11/bevy/render/mesh/struct.Mesh.html"><code>Mesh</code></a></li>
 <li><code>Mesh{}/Primitive{}/MorphTargets</code>: Morph target animation data for a GLTF Primitive</li>
-<li><code>Texture{}</code>: GLTF Texture as Bevy <a href="https://docs.rs/bevy/0.11.0/bevy/render/texture/struct.Image.html"><code>Image</code></a></li>
-<li><code>Material{}</code>: GLTF Material as Bevy <a href="https://docs.rs/bevy/0.11.0/bevy/pbr/struct.StandardMaterial.html"><code>StandardMaterial</code></a></li>
+<li><code>Texture{}</code>: GLTF Texture as Bevy <a href="https://docs.rs/bevy/0.11/bevy/render/texture/struct.Image.html"><code>Image</code></a></li>
+<li><code>Material{}</code>: GLTF Material as Bevy <a href="https://docs.rs/bevy/0.11/bevy/pbr/struct.StandardMaterial.html"><code>StandardMaterial</code></a></li>
 <li><code>DefaultMaterial</code>: as above, if the GLTF file contains a default material with no index</li>
-<li><code>Animation{}</code>: GLTF Animation as Bevy <a href="https://docs.rs/bevy/0.11.0/bevy/animation/struct.AnimationClip.html"><code>AnimationClip</code></a></li>
-<li><code>Skin{}</code>: GLTF mesh skin as Bevy <a href="https://docs.rs/bevy/0.11.0/bevy/render/mesh/skinning/struct.SkinnedMeshInverseBindposes.html"><code>SkinnedMeshInverseBindposes</code></a></li>
+<li><code>Animation{}</code>: GLTF Animation as Bevy <a href="https://docs.rs/bevy/0.11/bevy/animation/struct.AnimationClip.html"><code>AnimationClip</code></a></li>
+<li><code>Skin{}</code>: GLTF mesh skin as Bevy <a href="https://docs.rs/bevy/0.11/bevy/render/mesh/skinning/struct.SkinnedMeshInverseBindposes.html"><code>SkinnedMeshInverseBindposes</code></a></li>
 </ul>
 <h2 id="shader-imports"><a class="header" href="#shader-imports">Shader Imports</a></h2>
 <p>TODO</p>
@@ -429,35 +409,35 @@ are enabled by default, many are not.</p>
 <h2 id="schedules"><a class="header" href="#schedules">Schedules</a></h2>
 <p>Internally, Bevy has these built-in <a href="/programming/schedules.html">schedules</a>:</p>
 <ul>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/app/struct.Main.html"><code>Main</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/app/struct.Main.html"><code>Main</code></a>:
 runs every frame update cycle, to perform general app logic</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/render/struct.ExtractSchedule.html"><code>ExtractSchedule</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/render/struct.ExtractSchedule.html"><code>ExtractSchedule</code></a>:
 runs after <code>Main</code>, to copy data from the Main World into the Render World</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/render/struct.Render.html"><code>Render</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/render/struct.Render.html"><code>Render</code></a>:
 runs after <code>ExtractSchedule</code>, to perform all rendering/graphics, in parallel with the next <code>Main</code> run</li>
 </ul>
 <p>The <code>Main</code> schedule simply runs a sequence of other schedules:</p>
 <p>On the first run (first frame update of the app):</p>
 <ul>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/app/struct.PreStartup.html"><code>PreStartup</code></a></li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/app/struct.Startup.html"><code>Startup</code></a></li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/app/struct.PostStartup.html"><code>PostStartup</code></a></li>
+<li><a href="https://docs.rs/bevy/0.11/bevy/app/struct.PreStartup.html"><code>PreStartup</code></a></li>
+<li><a href="https://docs.rs/bevy/0.11/bevy/app/struct.Startup.html"><code>Startup</code></a></li>
+<li><a href="https://docs.rs/bevy/0.11/bevy/app/struct.PostStartup.html"><code>PostStartup</code></a></li>
 </ul>
-<p>On every run (controlled via the <a href="https://docs.rs/bevy/0.11.0/bevy/app/struct.MainScheduleOrder.html"><code>MainScheduleOrder</code></a> <a href="/programming/res.html">resource</a>):</p>
+<p>On every run (controlled via the <a href="https://docs.rs/bevy/0.11/bevy/app/struct.MainScheduleOrder.html"><code>MainScheduleOrder</code></a> <a href="/programming/res.html">resource</a>):</p>
 <ul>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/app/struct.First.html"><code>First</code></a>: any initialization that must be done at the start of every frame</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/app/struct.PreUpdate.html"><code>PreUpdate</code></a>: for engine-internal systems intended to run before user logic</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/app/struct.StateTransition.html"><code>StateTransition</code></a>: perform any pending <a href="/programming/states.html">state</a> transitions</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/app/struct.RunFixedUpdateLoop.html"><code>RunFixedUpdateLoop</code></a>: runs the <a href="https://docs.rs/bevy/0.11.0/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a> schedule as many times as needed</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/app/struct.Update.html"><code>Update</code></a>: for all user logic (your systems) that should run every frame</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a>: for engine-internal systems intended to run after user logic</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/app/struct.Last.html"><code>Last</code></a>: any final cleanup that must be done at the end of every frame</li>
+<li><a href="https://docs.rs/bevy/0.11/bevy/app/struct.First.html"><code>First</code></a>: any initialization that must be done at the start of every frame</li>
+<li><a href="https://docs.rs/bevy/0.11/bevy/app/struct.PreUpdate.html"><code>PreUpdate</code></a>: for engine-internal systems intended to run before user logic</li>
+<li><a href="https://docs.rs/bevy/0.11/bevy/app/struct.StateTransition.html"><code>StateTransition</code></a>: perform any pending <a href="/programming/states.html">state</a> transitions</li>
+<li><a href="https://docs.rs/bevy/0.11/bevy/app/struct.RunFixedUpdateLoop.html"><code>RunFixedUpdateLoop</code></a>: runs the <a href="https://docs.rs/bevy/0.11/bevy/app/struct.FixedUpdate.html"><code>FixedUpdate</code></a> schedule as many times as needed</li>
+<li><a href="https://docs.rs/bevy/0.11/bevy/app/struct.Update.html"><code>Update</code></a>: for all user logic (your systems) that should run every frame</li>
+<li><a href="https://docs.rs/bevy/0.11/bevy/app/struct.PostUpdate.html"><code>PostUpdate</code></a>: for engine-internal systems intended to run after user logic</li>
+<li><a href="https://docs.rs/bevy/0.11/bevy/app/struct.Last.html"><code>Last</code></a>: any final cleanup that must be done at the end of every frame</li>
 </ul>
 <p><code>FixedUpdate</code> is for all user logic (your systems) that should run at a <a href="/fundamentals/fixed-timestep.html">fixed timestep</a>.</p>
 <p><code>StateTransition</code> runs the
-<a href="https://docs.rs/bevy/0.11.0/bevy/ecs/schedule/struct.OnEnter.html"><code>OnEnter(...)</code></a>/<a href="https://docs.rs/bevy/0.11.0/bevy/ecs/schedule/struct.OnTransition.html"><code>OnTransition(...)</code></a>/<a href="https://docs.rs/bevy/0.11.0/bevy/ecs/schedule/struct.OnExit.html"><code>OnExit(...)</code></a>
+<a href="https://docs.rs/bevy/0.11/bevy/ecs/schedule/struct.OnEnter.html"><code>OnEnter(...)</code></a>/<a href="https://docs.rs/bevy/0.11/bevy/ecs/schedule/struct.OnTransition.html"><code>OnTransition(...)</code></a>/<a href="https://docs.rs/bevy/0.11/bevy/ecs/schedule/struct.OnExit.html"><code>OnExit(...)</code></a>
 schedules for your <a href="/programming/states.html">states</a>, when you want to change state.</p>
-<p>The <a href="https://docs.rs/bevy/0.11.0/bevy/render/struct.Render.html"><code>Render</code></a> schedule is organized using <a href="/programming/system-sets.html">sets</a> (<a href="https://docs.rs/bevy/0.11.0/bevy/render/enum.RenderSet.html"><code>RenderSet</code></a>):</p>
+<p>The <a href="https://docs.rs/bevy/0.11/bevy/render/struct.Render.html"><code>Render</code></a> schedule is organized using <a href="/programming/system-sets.html">sets</a> (<a href="https://docs.rs/bevy/0.11/bevy/render/enum.RenderSet.html"><code>RenderSet</code></a>):</p>
 <ul>
 <li><code>ExtractCommands</code>: apply <a href="/programming/deferred.html">deferred</a> buffers from systems that ran in <code>ExtractSchedule</code></li>
 <li><code>Prepare</code>/<code>PrepareFlush</code>: set up data on the GPU (buffers, textures, etc.)</li>
@@ -474,79 +454,79 @@ schedules for your <a href="/programming/states.html">states</a>, when you want 
 <h2 id="bundles"><a class="header" href="#bundles">Bundles</a></h2>
 <p>Bevy's built-in <a href="/programming/bundle.html">bundle</a> types, for spawning different common
 kinds of entities.</p>
-<p><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/bundle/trait.Bundle.html#implementors">(List in API Docs)</a></p>
-<p>Any tuples of up to 15 <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/component/trait.Component.html"><code>Component</code></a> types are valid bundles.</p>
+<p><a href="https://docs.rs/bevy/0.11/bevy/ecs/bundle/trait.Bundle.html#implementors">(List in API Docs)</a></p>
+<p>Any tuples of up to 15 <a href="https://docs.rs/bevy/0.11/bevy/ecs/component/trait.Component.html"><code>Component</code></a> types are valid bundles.</p>
 <p>General:</p>
 <ul>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/render/prelude/struct.SpatialBundle.html"><code>SpatialBundle</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/render/prelude/struct.SpatialBundle.html"><code>SpatialBundle</code></a>:
 Contains the required <a href="/fundamentals/transforms.html">transform</a> and <a href="/fundamentals/visibility.html">visibility</a>
 components that must be included on <em>all</em> entities that need rendering or <a href="/fundamentals/hierarchy.html">hierarchy</a></li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/transform/struct.TransformBundle.html"><code>TransformBundle</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/transform/struct.TransformBundle.html"><code>TransformBundle</code></a>:
 Contains only the transform types, subset of <code>SpatialBundle</code></li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/render/view/visibility/struct.VisibilityBundle.html"><code>VisibilityBundle</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/render/view/visibility/struct.VisibilityBundle.html"><code>VisibilityBundle</code></a>:
 Contains only the visibility types, subset of <code>SpatialBundle</code></li>
 </ul>
 <p>Scenes:</p>
 <ul>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/scene/struct.SceneBundle.html"><code>SceneBundle</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/scene/struct.SceneBundle.html"><code>SceneBundle</code></a>:
 Used for spawning scenes</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/scene/struct.DynamicSceneBundle.html"><code>DynamicSceneBundle</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/scene/struct.DynamicSceneBundle.html"><code>DynamicSceneBundle</code></a>:
 Used for spawning dynamic scenes</li>
 </ul>
 <p>Audio:</p>
 <ul>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/audio/type.AudioBundle.html"><code>AudioBundle</code></a>:
-Play [audio][cb::audio] from an <a href="https://docs.rs/bevy/0.11.0/bevy/audio/struct.AudioSource.html"><code>AudioSource</code></a> asset</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/audio/type.SpatialAudioBundle.html"><code>SpatialAudioBundle</code></a>:
-Play <a href="/audio/spatial.html">positional audio</a> from an <a href="https://docs.rs/bevy/0.11.0/bevy/audio/struct.AudioSource.html"><code>AudioSource</code></a> asset</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/audio/struct.AudioSourceBundle.html"><code>AudioSourceBundle</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/audio/type.AudioBundle.html"><code>AudioBundle</code></a>:
+Play [audio][cb::audio] from an <a href="https://docs.rs/bevy/0.11/bevy/audio/struct.AudioSource.html"><code>AudioSource</code></a> asset</li>
+<li><a href="https://docs.rs/bevy/0.11/bevy/audio/type.SpatialAudioBundle.html"><code>SpatialAudioBundle</code></a>:
+Play <a href="/audio/spatial.html">positional audio</a> from an <a href="https://docs.rs/bevy/0.11/bevy/audio/struct.AudioSource.html"><code>AudioSource</code></a> asset</li>
+<li><a href="https://docs.rs/bevy/0.11/bevy/audio/struct.AudioSourceBundle.html"><code>AudioSourceBundle</code></a>:
 Play audio from a <a href="/audio/custom.html">custom data source/stream</a></li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/audio/struct.SpatialAudioSourceBundle.html"><code>SpatialAudioSourceBundle</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/audio/struct.SpatialAudioSourceBundle.html"><code>SpatialAudioSourceBundle</code></a>:
 Play positional audio from a <a href="/audio/custom.html">custom data source/stream</a></li>
 </ul>
 <p>Bevy 3D:</p>
 <ul>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/core_pipeline/core_3d/struct.Camera3dBundle.html"><code>Camera3dBundle</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/core_pipeline/core_3d/struct.Camera3dBundle.html"><code>Camera3dBundle</code></a>:
 3D camera, can use perspective (default) or orthographic projection</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/core_pipeline/experimental/taa/struct.TemporalAntiAliasBundle.html"><code>TemporalAntiAliasBundle</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/core_pipeline/experimental/taa/struct.TemporalAntiAliasBundle.html"><code>TemporalAntiAliasBundle</code></a>:
 Add this to a 3D camera to enable TAA</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/pbr/struct.ScreenSpaceAmbientOcclusionBundle.html"><code>ScreenSpaceAmbientOcclusionBundle</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/pbr/struct.ScreenSpaceAmbientOcclusionBundle.html"><code>ScreenSpaceAmbientOcclusionBundle</code></a>:
 Add this to a 3D camera to enable SSAO</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/pbr/struct.MaterialMeshBundle.html"><code>MaterialMeshBundle</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/pbr/struct.MaterialMeshBundle.html"><code>MaterialMeshBundle</code></a>:
 3D Object/Primitive: a Mesh and a custom Material to draw it with</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/pbr/type.PbrBundle.html"><code>PbrBundle</code></a>:
-<code>MaterialMeshBundle</code> with the default Physically-Based Material (<a href="https://docs.rs/bevy/0.11.0/bevy/pbr/struct.StandardMaterial.html"><code>StandardMaterial</code></a>)</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/pbr/struct.DirectionalLightBundle.html"><code>DirectionalLightBundle</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/pbr/type.PbrBundle.html"><code>PbrBundle</code></a>:
+<code>MaterialMeshBundle</code> with the default Physically-Based Material (<a href="https://docs.rs/bevy/0.11/bevy/pbr/struct.StandardMaterial.html"><code>StandardMaterial</code></a>)</li>
+<li><a href="https://docs.rs/bevy/0.11/bevy/pbr/struct.DirectionalLightBundle.html"><code>DirectionalLightBundle</code></a>:
 3D directional light (like the sun)</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/pbr/struct.PointLightBundle.html"><code>PointLightBundle</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/pbr/struct.PointLightBundle.html"><code>PointLightBundle</code></a>:
 3D point light (like a lamp or candle)</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/pbr/struct.SpotLightBundle.html"><code>SpotLightBundle</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/pbr/struct.SpotLightBundle.html"><code>SpotLightBundle</code></a>:
 3D spot light (like a projector or flashlight)</li>
 </ul>
 <p>Bevy 2D:</p>
 <ul>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/core_pipeline/core_2d/struct.Camera2dBundle.html"><code>Camera2dBundle</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/core_pipeline/core_2d/struct.Camera2dBundle.html"><code>Camera2dBundle</code></a>:
 2D camera, uses orthographic projection + other special configuration for 2D</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/sprite/struct.SpriteBundle.html"><code>SpriteBundle</code></a>:
-2D sprite (<a href="https://docs.rs/bevy/0.11.0/bevy/render/texture/struct.Image.html"><code>Image</code></a> asset type)</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/sprite/struct.SpriteSheetBundle.html"><code>SpriteSheetBundle</code></a>:
-2D sprite (<a href="https://docs.rs/bevy/0.11.0/bevy/sprite/struct.TextureAtlas.html"><code>TextureAtlas</code></a> asset type)</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/sprite/struct.MaterialMesh2dBundle.html"><code>MaterialMesh2dBundle</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/sprite/struct.SpriteBundle.html"><code>SpriteBundle</code></a>:
+2D sprite (<a href="https://docs.rs/bevy/0.11/bevy/render/texture/struct.Image.html"><code>Image</code></a> asset type)</li>
+<li><a href="https://docs.rs/bevy/0.11/bevy/sprite/struct.SpriteSheetBundle.html"><code>SpriteSheetBundle</code></a>:
+2D sprite (<a href="https://docs.rs/bevy/0.11/bevy/sprite/struct.TextureAtlas.html"><code>TextureAtlas</code></a> asset type)</li>
+<li><a href="https://docs.rs/bevy/0.11/bevy/sprite/struct.MaterialMesh2dBundle.html"><code>MaterialMesh2dBundle</code></a>:
 2D shape, with custom Mesh and Material (similar to 3D objects)</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/text/struct.Text2dBundle.html"><code>Text2dBundle</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/text/struct.Text2dBundle.html"><code>Text2dBundle</code></a>:
 Text to be drawn in the 2D world (not the UI)</li>
 </ul>
 <p>Bevy UI:</p>
 <ul>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ui/node_bundles/struct.NodeBundle.html"><code>NodeBundle</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/ui/node_bundles/struct.NodeBundle.html"><code>NodeBundle</code></a>:
 Empty node element (like HTML <code>&lt;div&gt;</code>)</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ui/node_bundles/struct.ButtonBundle.html"><code>ButtonBundle</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/ui/node_bundles/struct.ButtonBundle.html"><code>ButtonBundle</code></a>:
 Button element</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ui/node_bundles/struct.ImageBundle.html"><code>ImageBundle</code></a>:
-Image element (<a href="https://docs.rs/bevy/0.11.0/bevy/render/texture/struct.Image.html"><code>Image</code></a> asset type)</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ui/node_bundles/struct.AtlasImageBundle.html"><code>AtlasImageBundle</code></a>:
-Image element (<a href="https://docs.rs/bevy/0.11.0/bevy/sprite/struct.TextureAtlas.html"><code>TextureAtlas</code></a> asset type)</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ui/node_bundles/struct.TextBundle.html"><code>TextBundle</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/ui/node_bundles/struct.ImageBundle.html"><code>ImageBundle</code></a>:
+Image element (<a href="https://docs.rs/bevy/0.11/bevy/render/texture/struct.Image.html"><code>Image</code></a> asset type)</li>
+<li><a href="https://docs.rs/bevy/0.11/bevy/ui/node_bundles/struct.AtlasImageBundle.html"><code>AtlasImageBundle</code></a>:
+Image element (<a href="https://docs.rs/bevy/0.11/bevy/sprite/struct.TextureAtlas.html"><code>TextureAtlas</code></a> asset type)</li>
+<li><a href="https://docs.rs/bevy/0.11/bevy/ui/node_bundles/struct.TextBundle.html"><code>TextBundle</code></a>:
 Text element</li>
 </ul>
 <h2 id="resources"><a class="header" href="#resources">Resources</a></h2>
@@ -556,29 +536,29 @@ Text element</li>
 <p>These may be inserted at the start, but should also be fine to change at runtime (from a
 <a href="/programming/systems.html">system</a>):</p>
 <ul>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/core_pipeline/clear_color/struct.ClearColor.html"><code>ClearColor</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/core_pipeline/clear_color/struct.ClearColor.html"><code>ClearColor</code></a>:
 Global renderer background color to clear the window at the start of each frame</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/audio/struct.GlobalVolume.html"><code>GlobalVolume</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/audio/struct.GlobalVolume.html"><code>GlobalVolume</code></a>:
 The overall volume for playing audio</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/pbr/struct.AmbientLight.html"><code>AmbientLight</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/pbr/struct.AmbientLight.html"><code>AmbientLight</code></a>:
 Global renderer "fake lighting", so that shadows don't look too dark / black</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/render/view/enum.Msaa.html"><code>Msaa</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/render/view/enum.Msaa.html"><code>Msaa</code></a>:
 Global renderer setting for Multi-Sample Anti-Aliasing (some platforms might only support the values 1 and 4)</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ui/struct.UiScale.html"><code>UiScale</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/ui/struct.UiScale.html"><code>UiScale</code></a>:
 Global scale value to make all UIs bigger/smaller</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/gizmos/struct.GizmoConfig.html"><code>GizmoConfig</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/gizmos/struct.GizmoConfig.html"><code>GizmoConfig</code></a>:
 Controls how <a href="/fundamentals/gizmos.html">gizmos</a> are rendered</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/pbr/wireframe/struct.WireframeConfig.html"><code>WireframeConfig</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/pbr/wireframe/struct.WireframeConfig.html"><code>WireframeConfig</code></a>:
 Global toggle to make everything be rendered as wireframe</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/input/gamepad/struct.GamepadSettings.html"><code>GamepadSettings</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/input/gamepad/struct.GamepadSettings.html"><code>GamepadSettings</code></a>:
 Gamepad input device settings, like joystick deadzones and button sensitivities</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/winit/struct.WinitSettings.html"><code>WinitSettings</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/winit/struct.WinitSettings.html"><code>WinitSettings</code></a>:
 Settings for the OS Windowing backend, including update loop / power-management settings</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/time/enum.TimeUpdateStrategy.html"><code>TimeUpdateStrategy</code></a>:
-Used to control how the <a href="https://docs.rs/bevy/0.11.0/bevy/time/struct.Time.html"><code>Time</code></a> is updated</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/schedule/struct.Schedules.html"><code>Schedules</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/time/enum.TimeUpdateStrategy.html"><code>TimeUpdateStrategy</code></a>:
+Used to control how the <a href="https://docs.rs/bevy/0.11/bevy/time/struct.Time.html"><code>Time</code></a> is updated</li>
+<li><a href="https://docs.rs/bevy/0.11/bevy/ecs/schedule/struct.Schedules.html"><code>Schedules</code></a>:
 Stores all <a href="/programming/schedules.html">schedules</a>, letting you register additional functionality at runtime</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/app/struct.MainScheduleOrder.html"><code>MainScheduleOrder</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/app/struct.MainScheduleOrder.html"><code>MainScheduleOrder</code></a>:
 The sequence of <a href="/programming/schedules.html">schedules</a> that will run every frame update</li>
 </ul>
 <p>Settings that are not modifiable at runtime are not represented using resources. Instead,
@@ -589,60 +569,60 @@ they are configured via the respective <a href="#plugins">plugins</a>.</p>
 parts of Bevy. These resources are in the <a href="/gpu/intro.html">Main World</a>. <a href="#render-world">See here for the
 resources in the Render World</a>.</p>
 <ul>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/time/struct.Time.html"><code>Time</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/time/struct.Time.html"><code>Time</code></a>:
 Global time-related information (current frame delta time, time since startup, etc.)</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/time/fixed_timestep/struct.FixedTime.html"><code>FixedTime</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/time/fixed_timestep/struct.FixedTime.html"><code>FixedTime</code></a>:
 Tracks remaining time until the next <a href="/fundamentals/fixed-timestep.html">fixed update</a></li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/asset/struct.AssetServer.html"><code>AssetServer</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/asset/struct.AssetServer.html"><code>AssetServer</code></a>:
 Control the asset system: Load assets, check load status, etc.</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/asset/struct.Assets.html"><code>Assets&lt;T&gt;</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/asset/struct.Assets.html"><code>Assets&lt;T&gt;</code></a>:
 Contains the actual data of the loaded assets of a given type</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/schedule/struct.State.html"><code>State&lt;T&gt;</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/ecs/schedule/struct.State.html"><code>State&lt;T&gt;</code></a>:
 The current value of a <a href="/programming/states.html">states type</a></li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/schedule/struct.NextState.html"><code>NextState&lt;T&gt;</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/ecs/schedule/struct.NextState.html"><code>NextState&lt;T&gt;</code></a>:
 Used to queue a transition to another <a href="/programming/states.html">state</a></li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/input/gamepad/struct.Gamepads.html"><code>Gamepads</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/input/gamepad/struct.Gamepads.html"><code>Gamepads</code></a>:
 Tracks the IDs for all currently-detected (connected) gamepad devices</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/scene/struct.SceneSpawner.html"><code>SceneSpawner</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/scene/struct.SceneSpawner.html"><code>SceneSpawner</code></a>:
 Direct control over spawning Scenes into the main app World</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/core/struct.FrameCount.html"><code>FrameCount</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/core/struct.FrameCount.html"><code>FrameCount</code></a>:
 The total number of frames</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/render/view/window/screenshot/struct.ScreenshotManager.html"><code>ScreenshotManager</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/render/view/window/screenshot/struct.ScreenshotManager.html"><code>ScreenshotManager</code></a>:
 Used to request a screenshot of a window to be taken/saved</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/ecs/reflect/struct.AppTypeRegistry.html"><code>AppTypeRegistry</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/ecs/reflect/struct.AppTypeRegistry.html"><code>AppTypeRegistry</code></a>:
 Access to the Reflection Type Registry</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/tasks/struct.AsyncComputeTaskPool.html"><code>AsyncComputeTaskPool</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/tasks/struct.AsyncComputeTaskPool.html"><code>AsyncComputeTaskPool</code></a>:
 Task pool for running background CPU tasks</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/tasks/struct.ComputeTaskPool.html"><code>ComputeTaskPool</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/tasks/struct.ComputeTaskPool.html"><code>ComputeTaskPool</code></a>:
 Task pool where the main app schedule (all the systems) runs</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/tasks/struct.IoTaskPool.html"><code>IoTaskPool</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/tasks/struct.IoTaskPool.html"><code>IoTaskPool</code></a>:
 Task pool where background i/o tasks run (like asset loading)</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/winit/struct.WinitWindows.html"><code>WinitWindows</code></a> (<a href="/programming/non-send.html">non-send</a>):
+<li><a href="https://docs.rs/bevy/0.11/bevy/winit/struct.WinitWindows.html"><code>WinitWindows</code></a> (<a href="/programming/non-send.html">non-send</a>):
 Raw state of the <code>winit</code> backend for each window</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/render/view/struct.NonSendMarker.html"><code>NonSendMarker</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/render/view/struct.NonSendMarker.html"><code>NonSendMarker</code></a>:
 Dummy resource to ensure a system always runs on the main thread</li>
 </ul>
 <h4 id="render-world-resources"><a class="header" href="#render-world-resources">Render World Resources</a></h4>
 <p>These resources are present in the <a href="/gpu/intro.html">Render World</a>. They can be accessed
 from rendering systems (that run during <a href="/gpu/stages.html">render stages</a>).</p>
 <ul>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/render/struct.MainWorld.html"><code>MainWorld</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/render/struct.MainWorld.html"><code>MainWorld</code></a>:
 (extract schedule only!) access data from the Main World</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/render/render_graph/struct.RenderGraph.html"><code>RenderGraph</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/render/render_graph/struct.RenderGraph.html"><code>RenderGraph</code></a>:
 <a href="/TODO.html">The Bevy Render Graph</a></li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/render/render_resource/struct.PipelineCache.html"><code>PipelineCache</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/render/render_resource/struct.PipelineCache.html"><code>PipelineCache</code></a>:
 Bevy's manager of render pipelines. Used to store render pipelines used by the app, to avoid
 recreating them more than once.</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/render/texture/struct.TextureCache.html"><code>TextureCache</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/render/texture/struct.TextureCache.html"><code>TextureCache</code></a>:
 Bevy's manager of temporary textures. Useful when you need textures to use internally
 during rendering.</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/render/render_phase/struct.DrawFunctions.html"><code>DrawFunctions&lt;P&gt;</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/render/render_phase/struct.DrawFunctions.html"><code>DrawFunctions&lt;P&gt;</code></a>:
 Stores draw functions for a given phase item type</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/render/render_asset/struct.RenderAssets.html"><code>RenderAssets&lt;T&gt;</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/render/render_asset/struct.RenderAssets.html"><code>RenderAssets&lt;T&gt;</code></a>:
 Contains handles to the GPU representations of currently loaded asset data</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/render/texture/struct.DefaultImageSampler.html"><code>DefaultImageSampler</code></a>:
-The default sampler for <a href="https://docs.rs/bevy/0.11.0/bevy/render/texture/struct.Image.html"><code>Image</code></a> asset textures</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/render/texture/struct.FallbackImage.html"><code>FallbackImage</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/render/texture/struct.DefaultImageSampler.html"><code>DefaultImageSampler</code></a>:
+The default sampler for <a href="https://docs.rs/bevy/0.11/bevy/render/texture/struct.Image.html"><code>Image</code></a> asset textures</li>
+<li><a href="https://docs.rs/bevy/0.11/bevy/render/texture/struct.FallbackImage.html"><code>FallbackImage</code></a>:
 Dummy 1x1 pixel white texture. Useful for shaders that normally need a texture, when
 you don't have one available.</li>
 </ul>
@@ -654,108 +634,108 @@ World.</p>
 <p>Using these resources, you can have direct access to the <code>wgpu</code> APIs for controlling the GPU.
 These are available in both the Main World and the Render World.</p>
 <ul>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/render/renderer/struct.RenderDevice.html"><code>RenderDevice</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/render/renderer/struct.RenderDevice.html"><code>RenderDevice</code></a>:
 The GPU device, used for creating hardware resources for rendering/compute</li>
 <li>[<code>RenderQueue</code>][bevy::RenderQueue]:
 The GPU queue for submitting work to the hardware</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/render/renderer/struct.RenderAdapter.html"><code>RenderAdapter</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/render/renderer/struct.RenderAdapter.html"><code>RenderAdapter</code></a>:
 Handle to the physical GPU hardware</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/render/renderer/struct.RenderAdapterInfo.html"><code>RenderAdapterInfo</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/render/renderer/struct.RenderAdapterInfo.html"><code>RenderAdapterInfo</code></a>:
 Information about the GPU hardware that Bevy is running on</li>
 </ul>
 <h3 id="input-handling-resources"><a class="header" href="#input-handling-resources">Input Handling Resources</a></h3>
 <p>These resources represent the current state of different input devices. Read them from your
 <a href="/programming/systems.html">systems</a> to <a href="/input.html">handle user input</a>.</p>
 <ul>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/input/keyboard/enum.KeyCode.html"><code>Input&lt;KeyCode&gt;</code></a>:
-Keyboard key state, as a binary <a href="https://docs.rs/bevy/0.11.0/bevy/input/struct.Input.html">Input</a> value</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/input/mouse/enum.MouseButton.html"><code>Input&lt;MouseButton&gt;</code></a>:
-Mouse button state, as a binary <a href="https://docs.rs/bevy/0.11.0/bevy/input/struct.Input.html">Input</a> value</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/input/gamepad/struct.GamepadButton.html"><code>Input&lt;GamepadButton&gt;</code></a>:
-Gamepad buttons, as a binary <a href="https://docs.rs/bevy/0.11.0/bevy/input/struct.Input.html">Input</a> value</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/input/gamepad/struct.GamepadAxis.html"><code>Axis&lt;GamepadAxis&gt;</code></a>:
-Analog <a href="https://docs.rs/bevy/0.11.0/bevy/input/struct.Axis.html">Axis</a> gamepad inputs (joysticks and triggers)</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/input/gamepad/struct.GamepadButton.html"><code>Axis&lt;GamepadButton&gt;</code></a>:
-Gamepad buttons, represented as an analog <a href="https://docs.rs/bevy/0.11.0/bevy/input/struct.Axis.html">Axis</a> value</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/input/touch/struct.Touches.html"><code>Touches</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/input/keyboard/enum.KeyCode.html"><code>Input&lt;KeyCode&gt;</code></a>:
+Keyboard key state, as a binary <a href="https://docs.rs/bevy/0.11/bevy/input/struct.Input.html">Input</a> value</li>
+<li><a href="https://docs.rs/bevy/0.11/bevy/input/mouse/enum.MouseButton.html"><code>Input&lt;MouseButton&gt;</code></a>:
+Mouse button state, as a binary <a href="https://docs.rs/bevy/0.11/bevy/input/struct.Input.html">Input</a> value</li>
+<li><a href="https://docs.rs/bevy/0.11/bevy/input/gamepad/struct.GamepadButton.html"><code>Input&lt;GamepadButton&gt;</code></a>:
+Gamepad buttons, as a binary <a href="https://docs.rs/bevy/0.11/bevy/input/struct.Input.html">Input</a> value</li>
+<li><a href="https://docs.rs/bevy/0.11/bevy/input/gamepad/struct.GamepadAxis.html"><code>Axis&lt;GamepadAxis&gt;</code></a>:
+Analog <a href="https://docs.rs/bevy/0.11/bevy/input/struct.Axis.html">Axis</a> gamepad inputs (joysticks and triggers)</li>
+<li><a href="https://docs.rs/bevy/0.11/bevy/input/gamepad/struct.GamepadButton.html"><code>Axis&lt;GamepadButton&gt;</code></a>:
+Gamepad buttons, represented as an analog <a href="https://docs.rs/bevy/0.11/bevy/input/struct.Axis.html">Axis</a> value</li>
+<li><a href="https://docs.rs/bevy/0.11/bevy/input/touch/struct.Touches.html"><code>Touches</code></a>:
 The state of all fingers currently touching the touchscreen</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/input/gamepad/struct.Gamepads.html"><code>Gamepads</code></a>:
-Registry of all the connected <a href="https://docs.rs/bevy/0.11.0/bevy/input/gamepad/struct.Gamepad.html"><code>Gamepad</code></a> IDs</li>
+<li><a href="https://docs.rs/bevy/0.11/bevy/input/gamepad/struct.Gamepads.html"><code>Gamepads</code></a>:
+Registry of all the connected <a href="https://docs.rs/bevy/0.11/bevy/input/gamepad/struct.Gamepad.html"><code>Gamepad</code></a> IDs</li>
 </ul>
 <h2 id="events"><a class="header" href="#events">Events</a></h2>
 <p><a href="/programming/events.html">(more info about working with events)</a></p>
 <h3 id="input-events"><a class="header" href="#input-events">Input Events</a></h3>
 <p>These <a href="/programming/events.html">events</a> fire on activity with input devices. Read them to [handle user input][cb::input].</p>
 <ul>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/input/mouse/struct.MouseButtonInput.html"><code>MouseButtonInput</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/input/mouse/struct.MouseButtonInput.html"><code>MouseButtonInput</code></a>:
 Changes in the state of mouse buttons</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/input/mouse/struct.MouseWheel.html"><code>MouseWheel</code></a>:
-Scrolling by a number of pixels or lines (<a href="https://docs.rs/bevy/0.11.0/bevy/input/mouse/enum.MouseScrollUnit.html"><code>MouseScrollUnit</code></a>)</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/input/mouse/struct.MouseMotion.html"><code>MouseMotion</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/input/mouse/struct.MouseWheel.html"><code>MouseWheel</code></a>:
+Scrolling by a number of pixels or lines (<a href="https://docs.rs/bevy/0.11/bevy/input/mouse/enum.MouseScrollUnit.html"><code>MouseScrollUnit</code></a>)</li>
+<li><a href="https://docs.rs/bevy/0.11/bevy/input/mouse/struct.MouseMotion.html"><code>MouseMotion</code></a>:
 Relative movement of the mouse (pixels from previous frame), regardless of the OS pointer/cursor</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/window/struct.CursorMoved.html"><code>CursorMoved</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/window/struct.CursorMoved.html"><code>CursorMoved</code></a>:
 New position of the OS mouse pointer/cursor</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/input/keyboard/struct.KeyboardInput.html"><code>KeyboardInput</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/input/keyboard/struct.KeyboardInput.html"><code>KeyboardInput</code></a>:
 Changes in the state of keyboard keys (keypresses, not text)</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/window/struct.ReceivedCharacter.html"><code>ReceivedCharacter</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/window/struct.ReceivedCharacter.html"><code>ReceivedCharacter</code></a>:
 Unicode text input from the OS (correct handling of the user's language and layout)</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/window/enum.Ime.html"><code>Ime</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/window/enum.Ime.html"><code>Ime</code></a>:
 Unicode text input from IME (support for advanced text input in different scripts)</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/input/touch/struct.TouchInput.html"><code>TouchInput</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/input/touch/struct.TouchInput.html"><code>TouchInput</code></a>:
 Change in the state of a finger touching the touchscreen</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/input/gamepad/enum.GamepadEvent.html"><code>GamepadEvent</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/input/gamepad/enum.GamepadEvent.html"><code>GamepadEvent</code></a>:
 Changes in the state of a gamepad or any of its buttons or axes</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/input/gamepad/enum.GamepadRumbleRequest.html"><code>GamepadRumbleRequest</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/input/gamepad/enum.GamepadRumbleRequest.html"><code>GamepadRumbleRequest</code></a>:
 Send these events to control gamepad rumble</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/input/touchpad/struct.TouchpadMagnify.html"><code>TouchpadMagnify</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/input/touchpad/struct.TouchpadMagnify.html"><code>TouchpadMagnify</code></a>:
 Pinch-to-zoom gesture on laptop touchpad (macOS)</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/input/touchpad/struct.TouchpadRotate.html"><code>TouchpadRotate</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/input/touchpad/struct.TouchpadRotate.html"><code>TouchpadRotate</code></a>:
 Two-finger rotate gesture on laptop touchpad (macOS)</li>
 </ul>
 <h3 id="engine-events"><a class="header" href="#engine-events">Engine Events</a></h3>
 <p><a href="/programming/events.html">Events</a> related to various internal things happening during the
 normal runtime of a Bevy app.</p>
 <ul>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/asset/enum.AssetEvent.html"><code>AssetEvent&lt;T&gt;</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/asset/enum.AssetEvent.html"><code>AssetEvent&lt;T&gt;</code></a>:
 Sent by Bevy when <a href="/assets.html">asset data</a> has been added/modified/removed; <a href="/assets/assetevent.html">can be used to detect changes to assets</a></li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/hierarchy/enum.HierarchyEvent.html"><code>HierarchyEvent</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/hierarchy/enum.HierarchyEvent.html"><code>HierarchyEvent</code></a>:
 Sent by Bevy when entity <a href="/fundamentals/hierarchy.html">parents/children</a> change</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/app/struct.AppExit.html"><code>AppExit</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/app/struct.AppExit.html"><code>AppExit</code></a>:
 Tell Bevy to shut down</li>
 </ul>
 <h3 id="system-and-control-events"><a class="header" href="#system-and-control-events">System and Control Events</a></h3>
 <p>Events from the OS / windowing system, or to control Bevy.</p>
 <ul>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/window/struct.RequestRedraw.html"><code>RequestRedraw</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/window/struct.RequestRedraw.html"><code>RequestRedraw</code></a>:
 In an app that does not refresh continuously, request one more update before going to sleep</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/window/enum.FileDragAndDrop.html"><code>FileDragAndDrop</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/window/enum.FileDragAndDrop.html"><code>FileDragAndDrop</code></a>:
 The user drag-and-dropped a file into our app</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/window/struct.CursorEntered.html"><code>CursorEntered</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/window/struct.CursorEntered.html"><code>CursorEntered</code></a>:
 OS mouse pointer/cursor entered one of our windows</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/window/struct.CursorLeft.html"><code>CursorLeft</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/window/struct.CursorLeft.html"><code>CursorLeft</code></a>:
 OS mouse pointer/cursor exited one of our windows</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/window/struct.WindowCloseRequested.html"><code>WindowCloseRequested</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/window/struct.WindowCloseRequested.html"><code>WindowCloseRequested</code></a>:
 OS wants to close one of our windows</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/window/struct.WindowCreated.html"><code>WindowCreated</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/window/struct.WindowCreated.html"><code>WindowCreated</code></a>:
 New application window opened</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/window/struct.WindowClosed.html"><code>WindowClosed</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/window/struct.WindowClosed.html"><code>WindowClosed</code></a>:
 Bevy window closed</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/window/struct.WindowDestroyed.html"><code>WindowDestroyed</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/window/struct.WindowDestroyed.html"><code>WindowDestroyed</code></a>:
 OS window freed/dropped after window close</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/window/struct.WindowFocused.html"><code>WindowFocused</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/window/struct.WindowFocused.html"><code>WindowFocused</code></a>:
 One of our windows is now focused</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/window/struct.WindowMoved.html"><code>WindowMoved</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/window/struct.WindowMoved.html"><code>WindowMoved</code></a>:
 OS/user moved one of our windows</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/window/struct.WindowResized.html"><code>WindowResized</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/window/struct.WindowResized.html"><code>WindowResized</code></a>:
 OS/user resized one of our windows</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/window/struct.WindowScaleFactorChanged.html"><code>WindowScaleFactorChanged</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/window/struct.WindowScaleFactorChanged.html"><code>WindowScaleFactorChanged</code></a>:
 One of our windows has changed its DPI scaling factor</li>
-<li><a href="https://docs.rs/bevy/0.11.0/bevy/window/struct.WindowBackendScaleFactorChanged.html"><code>WindowBackendScaleFactorChanged</code></a>:
+<li><a href="https://docs.rs/bevy/0.11/bevy/window/struct.WindowBackendScaleFactorChanged.html"><code>WindowBackendScaleFactorChanged</code></a>:
 OS reports change in DPI scaling factor for a window</li>
 </ul>
 <h2 id="components"><a class="header" href="#components">Components</a></h2>
 <p>The complete list of individual component types is too specific to be useful to list here.</p>
-<p>See: <a href="https://docs.rs/bevy/0.11.0/bevy/ecs/component/trait.Component.html#implementors">(List in API Docs)</a></p>
+<p>See: <a href="https://docs.rs/bevy/0.11/bevy/ecs/component/trait.Component.html#implementors">(List in API Docs)</a></p>
 
                     </main>
 
