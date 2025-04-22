@@ -26,19 +26,20 @@
         <link rel="stylesheet" href="fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="nagbar.css">
         <link rel="stylesheet" href="sidebar.css">
 
 
-        <!-- Provide site root to javascript -->
+        <!-- Provide site root and default themes to javascript -->
         <script>
-            var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc.js"></script>
@@ -48,8 +49,8 @@
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
-                var theme = localStorage.getItem('mdbook-theme');
-                var sidebar = localStorage.getItem('mdbook-sidebar');
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
 
                 if (theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
@@ -63,7 +64,8 @@
 
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script>
-            var theme;
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             const html = document.documentElement;
@@ -76,8 +78,8 @@
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var sidebar = null;
-            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
@@ -113,6 +115,7 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
@@ -191,16 +194,15 @@ an order that makes sense for learning, from beginner to advanced topics.</p>
 <p>The <a href="/builtins.html">Bevy Builtins</a> page is a concise cheatsheet of useful
 information about types and features provided by Bevy.</p>
 <h2 id="recommended-additional-resources"><a class="header" href="#recommended-additional-resources">Recommended Additional Resources</a></h2>
-<p>Bevy has a rich collection of <a href="https://github.com/bevyengine/bevy/tree/latest/examples#examples">official code
-examples</a>.</p>
+<p>Bevy has a rich collection of <a href="https://github.com/bevyengine/bevy/tree/latest/examples#examples">official code examples</a>.</p>
 <p>Check out <a href="https://bevyengine.org/assets">bevy-assets</a>, for community-made resources.</p>
 <p>Our community is very friendly and helpful. Feel welcome to join the <a href="https://discord.gg/bevy">Bevy
 Discord</a> to chat, ask questions, or get involved in the project!</p>
 <p>If you want to see some games made with Bevy, see <a href="https://itch.io/games/tag-bevy">itch.io</a>
 or <a href="https://bevyengine.org/assets/#input">Bevy Assets</a>.</p>
 <h2 id="is-this-book-up-to-date"><a class="header" href="#is-this-book-up-to-date">Is this book up to date?</a></h2>
-<p>Bevy has a very rapid pace of development, with new major releases roughly every
-three months. Every version brings a lot of changes, so keeping this book
+<p>Bevy has a very rapid pace of development, with new major releases around
+3 times a year. Every version brings a lot of changes, so keeping this book
 updated can be a major challenge.</p>
 <p>To ease the maintenance burden, the policy of the project is that the book may
 contain content for different versions of Bevy. However, mixing Bevy versions
@@ -215,8 +217,8 @@ All content on that page must be relevant for the stated Bevy version.</p>
 <p>I'd like to keep improving and maintaining this book, to provide a high-quality
 independent learning resource for the Bevy community.</p>
 <h2 id="support-bevy"><a class="header" href="#support-bevy">Support Bevy</a></h2>
-<p><a href="https://github.com/sponsors/cart"><button class="ghsponsors-button">GitHub Sponsors</button></a></p>
 <p>If you like the Bevy Game Engine, you should consider donating to the project.</p>
+<p>You can do that via the <a href="https://bevyengine.org/donate">Bevy Foundation</a>.</p>
 <h2 id="license"><a class="header" href="#license">License</a></h2>
 <p>Copyright © 2021-2024 Ida Borisova (IyesGames)</p>
 <p>All code in the book is provided under the
@@ -245,6 +247,7 @@ accepts your contribution, the MIT-0 license applies.</p>
 <p>Development of this book is hosted on <a href="https://github.com/bevy-cheatbook/bevy-cheatbook">GitHub</a>.</p>
 <p>Please file GitHub Issues for any wrong/confusing/misleading information,
 as well as suggestions for new content you'd like to be added to the book.</p>
+<p>I generally work on the book on my own and ignore pull requests.</p>
 <p>Please do not create PRs. Or if you do, be prepared for them to be ignored
 or closed if I find that they take up too much of my time or don't help me
 enough.</p>
@@ -263,7 +266,7 @@ warned!</p>
 <h1 id="chapter-overview"><a class="header" href="#chapter-overview">Chapter Overview</a></h1>
 <p>The <a href="/builtins.html">Bevy Builtins</a> page is a concise cheatsheet of useful
 information about types and features provided by Bevy.</p>
-<p>The <a href="/tutorial.html">Bevy Tutorials</a> chapter is for tutorials/guides
+<p>The <a href="/tutorial.html">Bevy Tutorials</a> chapter is for tutorials / guides
 that you can follow from start to finish.</p>
 <p>The <a href="/cookbook.html">Bevy Cookbook</a> is for more self-contained /
 narrow-scoped examples that teach you how to solve specific problems.</p>
@@ -285,7 +288,7 @@ page</a>. It recommends topics in a logical order for learning.</p>
 <ul>
 <li><a href="/programming.html">Bevy Core Programming Framework</a>: the ECS+App frameworks, the foundation of everything</li>
 <li><a href="/patterns.html">Programming Patterns</a>: opinionated advice, patterns, idioms</li>
-<li><a href="/gpu.html">Bevy Render (GPU) Framework</a>: working with the GPU and Bevy's rendering</li>
+<li><a href="/gpu.html">Bevy Render (GPU) Framework</a>: advanced (lower-level) GPU programming</li>
 </ul>
 <p>The following chapters cover various Bevy feature areas:</p>
 <ul>
@@ -2176,44 +2179,85 @@ documentation</a>.</p>
 <li><a href="/platforms.html">Platform-specific information</a></li>
 <li><a href="/pitfalls/performance.html">Configuration to fix slow performance</a></li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="setup//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(outdated!)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="setup//introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.16</th><th>(upcoming / release candidate)</th></tr></thead><tbody>
 </tbody></table>
-</div><p style="text-align: center;">
-As this page is outdated, please refer to Bevy's official migration guides while reading,
-to cover the differences:
-<a href="https://bevyengine.org/learn/migration-guides/0-13-to-0-14/">0.13 to 0.14</a>.
-<a href="https://bevyengine.org/learn/migration-guides/0-14-to-0-15/">0.14 to 0.15</a>.
-</p>
-<p style="text-align: center;">
-I apologize for the inconvenience. I will update the page as soon as I find the time.
-</p>
-<hr />
+</div>
 <h1 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h1>
 <p>This page covers the basic setup needed for Bevy development.</p>
+<p>Also see the <a href="https://bevyengine.org/learn/book/getting-started/setup/">Setup page in the official Bevy Book</a>
+and the <a href="https://github.com/bevyengine/bevy/blob/main/README.md">official Bevy Readme</a>.</p>
 <hr />
+<h2 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h2>
 <p>For the most part, Bevy is just like any other Rust library. You need to
 install Rust and setup your dev environment just like for any other Rust
 project. You can install Rust using <a href="https://rustup.rs">Rustup</a>. See
-<a href="https://www.rust-lang.org/learn/get-started">Rust's official setup page</a>.</p>
-<p>On Linux, you need the development files for some system libraries. See the
-<a href="https://github.com/bevyengine/bevy/blob/main/docs/linux_dependencies.md">official Bevy Linux dependencies page</a>.</p>
-<p>Also see the <a href="https://bevyengine.org/learn/book/getting-started/setup/">Setup page in the official Bevy Book</a>
-and the <a href="https://github.com/bevyengine/bevy/blob/main/README.md">official Bevy Readme</a>.</p>
+<a href="https://www.rust-lang.org/learn/get-started">Rust's official setup page</a>. You also need various
+other dependencies, depending on your operating system.</p>
+<details>
+  <summary>Linux / UNIX</summary>
+<ul>
+<li>Follow the official instructions for <a href="https://github.com/bevyengine/bevy/blob/main/docs/linux_dependencies.md">installing dependencies</a>.</li>
+<li>Run the <a href="https://rustup.rs">rustup</a> install script.</li>
+</ul>
+</details>
+<details>
+  <summary>Windows</summary>
+<ul>
+<li>Download and run the <a href="https://rustup.rs">rustup</a> installer. It will prompt you to install the Visual Studio build tools as part of the process.</li>
+<li>Alternatively, you can install Visual Studio yourself: <a href="https://visualstudio.microsoft.com/visual-cpp-build-tools/">installer</a>
+<ul>
+<li>Easy setup: select "Desktop development with C++"</li>
+<li>Minimal setup: under "Individual Components", select:
+<ul>
+<li>"MSVC" for your architecture and version of Windows</li>
+<li>"Windows SDK" for your version of Windows</li>
+<li>"C++ CMake tools"</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</details>
+<details>
+  <summary>Mac</summary>
+<ul>
+<li>Install the XCode command line tools with <code>xcode-select --install</code> or the <a href="https://apps.apple.com/en/app/xcode/id497799835">Xcode app</a></li>
+<li>Run the <a href="https://rustup.rs">rustup</a> install script.</li>
+</ul>
+</details>
+<p>If you are interested in mobile development, check out the pages on
+<a href="setup//platforms/android.html">Android</a> and <a href="setup//platforms/ios.html">iOS</a>.</p>
+<p>If you are interested in web development, check out the <a href="setup//platforms/wasm.html">WASM</a>
+chapter.</p>
 <h2 id="creating-a-new-project"><a class="header" href="#creating-a-new-project">Creating a New Project</a></h2>
 <p>You can simply create a new Rust project, either from your IDE/editor, or the commandline:</p>
 <pre><code class="language-sh">cargo new --bin my_game
 </code></pre>
 <p>(creates a project called <code>my_game</code>)</p>
 <p>The <code>Cargo.toml</code> file contains all the configuration of your project.
-Add the latest version of <code>bevy</code> as a dependency. Your file should now
-look something like this:</p>
+Add the latest version of <code>bevy</code> as a dependency.</p>
+<pre><code class="language-sh">cargo add bevy --features wayland
+</code></pre>
+<p>(I recommend enabling the non-default <code>wayland</code> feature, so your game can
+better support modern Linux distros)</p>
+<p>You can also add other <a href="setup//setup/bevy-config.html">optional features</a> to bevy, if you'd like.</p>
+<p>Your <code>Cargo.toml</code> should now look something like this:</p>
 <pre><code class="language-toml">[package]
 name = "my_game"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-bevy = "0.13"
+bevy = { version = "0.16", features = ["wayland"] }
+</code></pre>
+<p>If you plan to customize bevy a lot, I recommend a dedicated dependency section.
+It makes everything easier to read, compared to having everything on one line.</p>
+<pre><code class="language-toml">[dependencies.bevy]
+version = "0.16"
+features = [
+  "wayland",
+  # ...
+]
 </code></pre>
 <p>The <code>src/main.rs</code> file is your main source code file. This is where you
 start writing your Rust code. For a minimal Bevy <a href="setup//programming/app-builder.html">app</a>, you need
@@ -2230,31 +2274,26 @@ while, as it needs to build the whole Bevy engine and dependencies. Subsequent
 runs should be fast. You can do this from your IDE/editor, or the commandline:</p>
 <pre><code class="language-sh">cargo run
 </code></pre>
+<p>While this is enough to get you started, there are many tweaks you can do to
+your <a href="setup//setup/toolchain.html">compiler / build toolchain configuration</a>, for faster
+compile times and better performance. At the very least, consider <a href="setup//pitfalls/performance.html">enabling
+optimizations</a>.</p>
 <h2 id="documentation"><a class="header" href="#documentation">Documentation</a></h2>
-<p>You can generate your own docs (like what is on <a href="https://docs.rs">docs.rs</a>), for
-offline use, including everything from your own project and all dependencies, in
-one place.</p>
+<p>You can generate your own docs (like what is on <a href="https://docs.rs">docs.rs</a>),
+for offline use, including everything from your own project and all
+dependencies, all in one place.</p>
 <pre><code class="language-sh">cargo doc --open
 </code></pre>
 <p>This will build all the HTML docs and open them in your web browser.</p>
 <p>It does not require an internet connection, and gives you an easy way to search
 the API docs for all crates in your dependency tree all at once. It is more
 useful than the online version of the docs.</p>
-<h2 id="optional-extra-setup"><a class="header" href="#optional-extra-setup">Optional Extra Setup</a></h2>
-<p>You will likely quickly run into unusably slow performance with the default
-Rust unoptimized dev builds. <a href="setup//pitfalls/performance.html">See here how to fix.</a></p>
-<p>Iterative recompilation speed is important to keep you productive, so you don't
-have to wait long for the Rust compiler to rebuild your project every time you
-want to test your game. <a href="https://bevyengine.org/learn/book/getting-started/setup/">Bevy's getting started page</a>
-has advice about how to speed up compile times.</p>
-<p>Also have a look in the <a href="setup//setup/bevy-tools.html">Dev Tools and Editors</a> page for suggestions
-about additional external dev tools that may be helpful.</p>
 <h2 id="whats-next"><a class="header" href="#whats-next">What's Next?</a></h2>
-<p>Have a look at the <a href="setup//tutorial.html">guided tutorial</a> page of this book,
+<p>Have a look at the <a href="setup//tutorial.html">guided tutorial</a> page of this book
 and Bevy's <a href="https://github.com/bevyengine/bevy/tree/latest/examples#examples">official examples</a>.</p>
-<p>Check out the <a href="https://bevyengine.org/assets">Bevy Assets Website</a> to find other tutorials
-and learning resources from the community, and <a href="setup//setup/unofficial-plugins.html">plugins</a>
-to use in your project.</p>
+<p>Check out the <a href="https://bevyengine.org/assets">Bevy Assets Website</a> to find other tutorials,
+learning resources from the community, and <a href="setup//setup/unofficial-plugins.html">plugins</a> to use
+in your project.</p>
 <p>Join the community on <a href="https://discord.gg/bevy">Discord</a> to chat with us!</p>
 <h2 id="running-into-issues"><a class="header" href="#running-into-issues">Running into Issues?</a></h2>
 <p>If something is not working, be sure to check the <a href="setup//pitfalls.html">Common
@@ -2285,7 +2324,7 @@ is still limited.</p>
 <p>This sub-chapter contains tips for different text editors and IDEs.</p>
 <p>Bevy is, for the most part, like any other Rust project. If your editor/IDE
 is set up for Rust, that might be all you need. This sub-chapter contains
-additional information that may be useful for Bevy specifically.</p>
+additional information that may be useful for Bevy development.</p>
 <p>If you have any tips/advice/configurations for your editor of choice,
 that you'd like to share with the community, please create a
 <a href="https://github.com/bevy-cheatbook/bevy-cheatbook/issues">GitHub Issue</a>, so we can add it to the book.
@@ -2297,18 +2336,9 @@ If your editor is not in the list, I will add it.</p>
 <li><a href="setup//setup/editor/vim.html">Vim</a></li>
 <li><a href="setup//setup/editor/emacs.html">Emacs</a></li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="setup/editor//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(outdated!)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="setup/editor//introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.16</th><th>(upcoming / release candidate)</th></tr></thead><tbody>
 </tbody></table>
-</div><p style="text-align: center;">
-As this page is outdated, please refer to Bevy's official migration guides while reading,
-to cover the differences:
-<a href="https://bevyengine.org/learn/migration-guides/0-13-to-0-14/">0.13 to 0.14</a>.
-<a href="https://bevyengine.org/learn/migration-guides/0-14-to-0-15/">0.14 to 0.15</a>.
-</p>
-<p style="text-align: center;">
-I apologize for the inconvenience. I will update the page as soon as I find the time.
-</p>
-<hr />
+</div>
 <h1 id="visual-studio-code"><a class="header" href="#visual-studio-code">Visual Studio Code</a></h1>
 <p>If you are a VSCode user and you'd like something to be added to this page,
 please file a <a href="https://github.com/bevy-cheatbook/bevy-cheatbook/issues">GitHub Issue</a>.</p>
@@ -2316,7 +2346,7 @@ please file a <a href="https://github.com/bevy-cheatbook/bevy-cheatbook/issues">
 <p>For good Rust support, install the Rust Analyzer plugin.</p>
 <h3 id="speed-up-rust-analyzer"><a class="header" href="#speed-up-rust-analyzer">Speed Up Rust Analyzer</a></h3>
 <p>If you have used <code>.cargo/config.toml</code> to set a non-default linker for fast
-compiles, Rust Analyzer will ignore it unfortunately. You need to also
+compiles, Rust Analyzer will, unfortunately, ignore it. You need to also
 configure RA to use it, with the following setting (in VSCode <code>settings.json</code>):</p>
 <p>Windows:</p>
 <pre><code class="language-json">"rust-analyzer.cargo.extraEnv": {
@@ -2333,7 +2363,7 @@ configure RA to use it, with the following setting (in VSCode <code>settings.jso
     "RUSTFLAGS": "-Clinker=clang -Clink-arg=-fuse-ld=lld"
 }
 </code></pre>
-<h2 id="cargo_manifest_dir"><a class="header" href="#cargo_manifest_dir"><code>CARGO_MANIFEST_DIR</code></a></h2>
+<h2 id="run-configuration"><a class="header" href="#run-configuration">Run configuration</a></h2>
 <p>When running your app/game, Bevy will search for the <code>assets</code> folder in the path
 specified in the <code>BEVY_ASSET_ROOT</code> or <code>CARGO_MANIFEST_DIR</code> environment variable.
 This allows <code>cargo run</code> to work correctly from the terminal.</p>
@@ -2346,8 +2376,23 @@ in the <code>target</code> directory where <code>cargo</code> placed it, Bevy wi
 find the <code>assets</code>.</p>
 <p>Here is a snippet showing how to create a run configuration for debugging Bevy
 (with <code>lldb</code>):</p>
-<p>(this is for development on Bevy itself, and testing with the <code>breakout</code> example)</p>
-<p>(adapt to your needs if using for your project)</p>
+<pre><code class="language-json">{
+    "type": "lldb",
+    "request": "launch",
+    "name": "Debug my game",
+    "cargo": {
+        "args": [
+            "build",
+        ],
+    },
+    "args": [],
+    "cwd": "${workspaceFolder}",
+    "env": {
+        "CARGO_MANIFEST_DIR": "${workspaceFolder}",
+    }
+}
+</code></pre>
+<p>If you are working on Bevy itself, here is a config for running the <code>breakout</code> example:</p>
 <pre><code class="language-json">{
     "type": "lldb",
     "request": "launch",
@@ -2376,18 +2421,9 @@ find the <code>assets</code>.</p>
 </code></pre>
 <p>(replace <code>stable-x86_64-unknown-linux-gnu</code> if you use a different toolchain/architecture)</p>
 <p>Windows: I don't know. If you do, please <a href="https://github.com/bevy-cheatbook/bevy-cheatbook/issues">file an issue</a>!</p>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="setup/editor//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(outdated!)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="setup/editor//introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.16</th><th>(upcoming / release candidate)</th></tr></thead><tbody>
 </tbody></table>
-</div><p style="text-align: center;">
-As this page is outdated, please refer to Bevy's official migration guides while reading,
-to cover the differences:
-<a href="https://bevyengine.org/learn/migration-guides/0-13-to-0-14/">0.13 to 0.14</a>.
-<a href="https://bevyengine.org/learn/migration-guides/0-14-to-0-15/">0.14 to 0.15</a>.
-</p>
-<p style="text-align: center;">
-I apologize for the inconvenience. I will update the page as soon as I find the time.
-</p>
-<hr />
+</div>
 <h1 id="jetbrains-rustrover-intellij-clion"><a class="header" href="#jetbrains-rustrover-intellij-clion">JetBrains (RustRover, IntelliJ, CLion)</a></h1>
 <p>If you are a JetBrains user and you'd like something to be added to this page,
 please file a <a href="https://github.com/bevy-cheatbook/bevy-cheatbook/issues">GitHub Issue</a>.</p>
@@ -2399,141 +2435,114 @@ support</a> in the IDE.</p>
 <li>type <code>Experimental feature</code> in the dialog of the <code>Help | Find Action</code> action</li>
 <li>enable the features <code>org.rust.cargo.evaluate.build.scripts</code> and <code>org.rust.macros.proc</code></li>
 </ol>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="setup/editor//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(outdated!)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="setup/editor//introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.16</th><th>(upcoming / release candidate)</th></tr></thead><tbody>
 </tbody></table>
-</div><p style="text-align: center;">
-As this page is outdated, please refer to Bevy's official migration guides while reading,
-to cover the differences:
-<a href="https://bevyengine.org/learn/migration-guides/0-13-to-0-14/">0.13 to 0.14</a>.
-<a href="https://bevyengine.org/learn/migration-guides/0-14-to-0-15/">0.14 to 0.15</a>.
-</p>
-<p style="text-align: center;">
-I apologize for the inconvenience. I will update the page as soon as I find the time.
-</p>
-<hr />
+</div>
 <h1 id="kakoune"><a class="header" href="#kakoune">Kakoune</a></h1>
 <p>If you are a Kakoune user and you'd like something to be added to this page,
 please file a <a href="https://github.com/bevy-cheatbook/bevy-cheatbook/issues">GitHub Issue</a>.</p>
-<h2 id="rust-language-support-2"><a class="header" href="#rust-language-support-2">Rust Language Support</a></h2>
-<p>You can use <code>kak-lsp</code> with <code>rust-analyzer</code>.</p>
+<h2 id="rust-language-support-lsp-with-rust-analyzer"><a class="header" href="#rust-language-support-lsp-with-rust-analyzer">Rust Language Support (LSP with Rust Analyzer)</a></h2>
+<p>You can use <a href="https://github.com/kakoune-lsp/kakoune-lsp"><code>kakoune-lsp</code></a> with <code>rust-analyzer</code>.</p>
 <p>You want to install just the RA server, without the official VSCode plugin.</p>
 <p>You can manage it via <code>rustup</code>:</p>
 <pre><code class="language-sh">rustup component add rust-analyzer
 </code></pre>
-<p>Or you can build/install it yourself from git:</p>
-<pre><code class="language-sh">git clone https://github.com/rust-lang/rust-analyzer
-cd rust-analyzer
-git checkout release # use the `release` branch instead of `main`
-cargo xtask install --server
+<p>To set up <code>kak-lsp</code>, add the following to <code>~/.config/kak/kakrc</code>:</p>
+<pre><code class="language-kak">eval %sh{kak-lsp}
+lsp-enable
 </code></pre>
-<p>The easiest way to set up <code>kak-lsp</code> is using <code>plug.kak</code>.</p>
-<p>If you don't have <code>plug.kak</code>, put the following in <code>~/.config/kak/kakrc</code>:</p>
-<pre><code class="language-kak">evaluate-commands %sh{
-    plugins="$kak_config/plugins"
-    mkdir -p "$plugins"
-    [ ! -e "$plugins/plug.kak" ] &amp;&amp; \
-        git clone -q https://github.com/andreyorst/plug.kak.git "$plugins/plug.kak"
-    printf "%s\n" "source '$plugins/plug.kak/rc/plug.kak'"
-}
-plug "andreyorst/plug.kak" noload
+<p>You want to create a keybinding to open the LSP menu, from where you can
+access all the various actions/commands that Rust Analyzer can do to assist
+you as you code. For example, to bind it to the <code>R</code> key:</p>
+<pre><code class="language-kak">map global normal "R" ": enter-user-mode lsp&lt;ret&gt;" -docstring "LSP mode"
 </code></pre>
-<p>And then to set up <code>kak-lsp</code> with Rust support:</p>
-<pre><code class="language-kak">plug "kak-lsp/kak-lsp" do %{
-    cargo install --force --path .
-} config %{
-    set global lsp_cmd "kak-lsp -s %val{session}"
-
-    # create a command to let you restart LSP if anything goes wrong / gets glitched
-    define-command lsp-restart -docstring 'restart lsp server' %{ lsp-stop; lsp-start }
-
-    # helper command to enable LSP
-    define-command -hidden lsp-init %{
-        lsp-enable-window
-        # preferences:
-        set window lsp_auto_highlight_references true
-        lsp-auto-signature-help-enable
-        # keybind: use "," to get a menu of available LSP commands
-        map global normal "," ": enter-user-mode lsp&lt;ret&gt;" -docstring "LSP mode"
-    }
-
-    hook global KakEnd .* lsp-exit
-
-    # autoenable LSP when opening Rust files
-    hook global WinSetOption filetype=rust %{
-        lsp-init
-    }
-}
-# formatting settings for Rust files
-hook global BufSetOption filetype=rust %{
+<p>There are other options that you might like. For example, to automatically</p>
+<pre><code class="language-kak"># automatically highlight the symbol under the cursor to show where it is used
+set global lsp_auto_highlight_references true
+# automatically show help for function signatures
+lsp-auto-signature-help-enable
+</code></pre>
+<p>To find out what else is available, type <code>:lsp-enable</code> and see what shows
+up in the list of autocompletions / suggestions. You can run these commands
+manually to control the relevant features, or add them to your <code>kakrc</code>,
+if you want them to be enabled by default.</p>
+<h2 id="general-rust-settings"><a class="header" href="#general-rust-settings">General Rust settings</a></h2>
+<p>To set various standard Kakoune editor options for Rust:</p>
+<pre><code class="language-kak">hook global BufSetOption filetype=rust %{
     set buffer tabstop 4
     set buffer indentwidth 4
     set buffer formatcmd 'rustfmt'
-    set buffer autowrap_column 100
     expandtab
+    # etc ...
 }
 </code></pre>
-<p>Put the following in <code>~/.config/kak-lsp/kak-lsp.toml</code> to use <code>rust-analyzer</code>:</p>
-<pre><code class="language-toml">[server]
-# Shut down the `rust-analyzer` process after a period of inactivity
-timeout = 900
-
-[language.rust]
-filetypes = ["rust"]
-roots = ["Cargo.toml"]
-command = "rust-analyzer"
-settings_section = "rust-analyzer"
-
-[language.rust.settings.rust-analyzer]
-# Proc Macro support is important for Bevy projects
-procMacro.enable = true
-# disable hover actions, can be laggy on complex projects like Bevy
-hoverActions.enable = false
-# do not use the data generated by `cargo check`, again, because it can be slow and laggy
-cargo.loadOutDirsFromCheck = false
+<h2 id="autoformatting"><a class="header" href="#autoformatting">Autoformatting</a></h2>
+<p>To manually trigger code formatting, use the keybinding from the LSP menu.
+For example, if you bound the LSP menu to <code>R</code>, you can just press <code>Rf</code>.</p>
+<p>If you would like to format on save, add the following to your <code>kakrc</code>:</p>
+<pre><code class="language-kak">hook global BufSetOption filetype=rust %{
+    hook buffer BufWritePre .* lsp-formatting-sync
+}
 </code></pre>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="setup/editor//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(outdated!)</th></tr></thead><tbody>
+<p>Personally, I prefer to instead create a separate command for formatting and
+saving, so that it is opt-in and does not happen every time I save a file:</p>
+<pre><code class="language-kak">define-command W %{
+    lsp-formatting-sync
+    w
+}
+</code></pre>
+<p>Now I can just type <code>:W</code> to save with formatting and <code>:w</code> to save without formatting.</p>
+<h2 id="configuring-rust-analyzer"><a class="header" href="#configuring-rust-analyzer">Configuring Rust Analyzer</a></h2>
+<p>You might need to tweak various settings for the RA server itself, similar to
+how you can do in other editors (like VS Code).</p>
+<p>Copy the following default configuration into your <code>kakrc</code>:</p>
+<pre><code class="language-kak">hook -group lsp-filetype-rust global BufSetOption filetype=rust %{
+    set-option buffer lsp_servers %{
+        [rust-analyzer]
+        root_globs = ["Cargo.toml"]
+        single_instance = true
+        [rust-analyzer.experimental]
+        commands.commands = ["rust-analyzer.runSingle"]
+        hoverActions = true
+        [rust-analyzer.settings.rust-analyzer]
+        # See https://rust-analyzer.github.io/manual.html#configuration
+        # cargo.features = []
+        check.command = "clippy"
+        [rust-analyzer.symbol_kinds]
+        Constant = "const"
+        Enum = "enum"
+        EnumMember = ""
+        Field = ""
+        Function = "fn"
+        Interface = "trait"
+        Method = "fn"
+        Module = "mod"
+        Object = ""
+        Struct = "struct"
+        TypeParameter = "type"
+        Variable = "let"
+    }
+}
+</code></pre>
+<p>(this was obtained from the output of the <code>kak-lsp</code> command, which is
+evaluated to set up <code>kak-lsp</code>)</p>
+<p>You can now customize it to your liking. The various options for RA go under
+the <code>[rust-analyzer.settings.rust-analyzer]</code> section.</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="setup/editor//introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.16</th><th>(upcoming / release candidate)</th></tr></thead><tbody>
 </tbody></table>
-</div><p style="text-align: center;">
-As this page is outdated, please refer to Bevy's official migration guides while reading,
-to cover the differences:
-<a href="https://bevyengine.org/learn/migration-guides/0-13-to-0-14/">0.13 to 0.14</a>.
-<a href="https://bevyengine.org/learn/migration-guides/0-14-to-0-15/">0.14 to 0.15</a>.
-</p>
-<p style="text-align: center;">
-I apologize for the inconvenience. I will update the page as soon as I find the time.
-</p>
-<hr />
+</div>
 <h1 id="vim"><a class="header" href="#vim">Vim</a></h1>
 <p>If you are a Vim user and you'd like something to be added to this page,
 please file a <a href="https://github.com/bevy-cheatbook/bevy-cheatbook/issues">GitHub Issue</a>.</p>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="setup/editor//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(outdated!)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="setup/editor//introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.16</th><th>(upcoming / release candidate)</th></tr></thead><tbody>
 </tbody></table>
-</div><p style="text-align: center;">
-As this page is outdated, please refer to Bevy's official migration guides while reading,
-to cover the differences:
-<a href="https://bevyengine.org/learn/migration-guides/0-13-to-0-14/">0.13 to 0.14</a>.
-<a href="https://bevyengine.org/learn/migration-guides/0-14-to-0-15/">0.14 to 0.15</a>.
-</p>
-<p style="text-align: center;">
-I apologize for the inconvenience. I will update the page as soon as I find the time.
-</p>
-<hr />
+</div>
 <h1 id="emacs"><a class="header" href="#emacs">Emacs</a></h1>
 <p>If you are an Emacs user and you'd like something to be added to this page,
 please file a <a href="https://github.com/bevy-cheatbook/bevy-cheatbook/issues">GitHub Issue</a>.</p>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="setup//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-12">0.12</a></th><th>(outdated!)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="setup//introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.16</th><th>(upcoming / release candidate)</th></tr></thead><tbody>
 </tbody></table>
-</div><p style="text-align: center;">
-As this page is outdated, please refer to Bevy's official migration guides while reading,
-to cover the differences:
-<a href="https://bevyengine.org/learn/migration-guides/0-12-to-0-13/">0.12 to 0.13</a>,
-<a href="https://bevyengine.org/learn/migration-guides/0-13-to-0-14/">0.13 to 0.14</a>.
-<a href="https://bevyengine.org/learn/migration-guides/0-14-to-0-15/">0.14 to 0.15</a>.
-</p>
-<p style="text-align: center;">
-I apologize for the inconvenience. I will update the page as soon as I find the time.
-</p>
-<hr />
+</div>
 <h1 id="configuring-bevy"><a class="header" href="#configuring-bevy">Configuring Bevy</a></h1>
 <p>Bevy is very modular and configurable. It is implemented as many separate
 cargo crates, allowing you to remove the parts you don't need. Higher-level
@@ -2542,10 +2551,12 @@ be disabled or replaced with alternatives.</p>
 <p>The lower-level core crates (like the Bevy ECS) can also be used completely
 standalone, or integrated into otherwise non-Bevy projects.</p>
 <h2 id="bevy-cargo-features"><a class="header" href="#bevy-cargo-features">Bevy Cargo Features</a></h2>
-<p>In Bevy projects, you can enable/disable various parts of Bevy using cargo features.</p>
-<p>Many common features are enabled by default. If you want to disable some of
-them, you need to disable all of them and re-enable the ones you need.
-Unfortunately, Cargo does not let you just disable individual default features.</p>
+<p>You can enable/disable various parts of Bevy using cargo features.</p>
+<p>Many common features are enabled by default. Unfortunately, Cargo does not
+let you just disable individual default features. If you want to disable
+some of them, you need to disable all of them and re-enable the ones you need.</p>
+<p>This is highly recommended if you are developing a library crate. It is also
+a good way to reduce binary sizes, if you care about that.</p>
 <p>Here is how you might configure your Bevy:</p>
 <pre><code class="language-toml">[dependencies.bevy]
 version = "0.12"
@@ -2555,90 +2566,150 @@ features = [
   # These are the default features:
   # (re-enable whichever you like)
 
-  # Bevy functionality:
-  "multi-threaded",     # Run with multithreading
-  "bevy_asset",         # Assets management
-  "bevy_audio",         # Builtin audio
-  "bevy_gilrs",         # Gamepad input support
-  "bevy_scene",         # Scenes management
-  "bevy_winit",         # Window management (cross-platform Winit backend)
-  "bevy_render",        # Rendering framework core
-  "bevy_core_pipeline", # Common rendering abstractions
-  "bevy_gizmos",        # Support drawing debug lines and shapes
-  "bevy_sprite",        # 2D (sprites) rendering
-  "bevy_pbr",           # 3D (physically-based) rendering
-  "bevy_gltf",          # GLTF 3D assets format support
-  "bevy_text",          # Text/font rendering
-  "bevy_ui",            # UI toolkit
-  "animation",          # Animation support
-  "tonemapping_luts",   # Support different camera Tonemapping modes (enables KTX2+zstd)
-  "default_font",       # Embed a minimal default font for text/UI
+  # Parts of Bevy:
+  "animation",                   # Enable animation for everything that supports it
+  "bevy_asset",                  # Asset management
+  "bevy_audio",                  # Audio support
+  "bevy_color",                  # Color management
+  "bevy_core_pipeline",          # Bevy's GPU rendering architecture
+  "bevy_gilrs",                  # Gamepad/controller support
+  "bevy_gizmos",                 # Gizmos (drawing debug lines and shapes)
+  "bevy_image",                  # Image support
+  "bevy_input_focus",            # Input focusing system for UI
+  "bevy_log",                    # Logging to console
+  "bevy_mesh_picking_backend",   # 3D mesh picking (selection by cursor)
+  "bevy_pbr",                    # 3D rendering and Physically Based Shading
+  "bevy_picking",                # Picking (selection of objects by cursor)
+  "bevy_render",                 # GPU support (based on `wgpu`)
+  "bevy_scene",                  # ECS Scenes
+  "bevy_sprite",                 # 2D rendering (sprites, meshes, text)
+  "bevy_sprite_picking_backend", # 2D sprite picking (selection by cursor)
+  "bevy_state",                  # App state management
+  "bevy_text",                   # Text rendering
+  "bevy_ui",                     # UI toolkit
+  "bevy_ui_picking_backend",     # UI node picking (selection by cursor)
+  "bevy_window",                 # Window management
+  "bevy_winit",                  # Cross-platform window management support
 
-  # File formats:
-  "png",    # PNG image format for simple 2D images
-  "hdr",    # HDR images
-  "ktx2",   # Preferred format for GPU textures
-  "zstd",   # ZSTD compression support in KTX2 files
-  "vorbis", # Audio: OGG Vorbis
+  # Low-level tunables
+  "std",            # Use the Rust standard library (important!)
+  "async_executor", # Enable the Async Executor (Bevy task pools)
+  "multi_threaded", # Enable CPU multithreading
+  "sysinfo_plugin", # Support CPU and RAM usage diagnostics
+  "custom_cursor",  # Support custom cursors
 
-  # Platform-specific:
+  # Platform-Specific
   "x11",                   # Linux: Support X11 windowing system
   "android_shared_stdcxx", # Android: use shared C++ library
+  "android-game-activity", # Android: use GameActivity instead of NativeActivity
   "webgl2",                # Web: use WebGL2 instead of WebGPU
+
+  # Built-in Data
+  "default_font",       # Built-in default font for UI (Fira Mono)
+  "smaa_luts",          # Support SMAA antialiasing
+  "tonemapping_luts",   # Support different camera Tonemapping modes (enables KTX2+zstd)
+
+  # Asset File Format Support
+  "bevy_gltf", # GLTF 3D asset support
+  "png",       # PNG image format for simple 2D images
+  "hdr",       # HDR image format
+  "ktx2",      # KTX2 format for GPU texture data
+  "zstd",      # ZSTD compression support in KTX2 files
+  "vorbis",    # Audio: OGG Vorbis
+
 
   # These are other (non-default) features that may be of interest:
   # (add any of these that you need)
 
-  # Bevy functionality:
-  "asset_processor",      # Asset processing
-  "filesystem_watcher",   # Asset hot-reloading
-  "subpixel_glyph_atlas", # Subpixel antialiasing for text/fonts
+  # General Bevy features
+  "ghost_nodes", # UI ghost nodes
+
+  # Low level tunables
+  "async-io",             # Use `async-io` instead of `futures-lite`
   "serialize",            # Support for `serde` Serialize/Deserialize
-  "async-io",             # Make bevy use `async-io` instead of `futures-lite`
-  "pbr_transmission_textures", # Enable Transmission textures in PBR materials
-                               # (may cause issues on old/lowend GPUs)
+  "subpixel_glyph_atlas", # Subpixel antialiasing for text/fonts
+  "reflect_documentation", # Documentation reflection support
+  "reflect_functions",    # Function reflection support
 
-  # File formats:
-  "dds",  # Alternative DirectX format for GPU textures, instead of KTX2
-  "jpeg", # JPEG lossy format for 2D photos
-  "webp", # WebP image format
-  "bmp",  # Uncompressed BMP image format
-  "tga",  # Truevision Targa image format
-  "exr",  # OpenEXR advanced image format
-  "pnm",  # PNM (pam, pbm, pgm, ppm) image format
+  # Platform-Specific
+  "wayland",                  # Linux: Support Wayland windowing system
+  "accesskit_unix",           # UNIX-like: AccessKit Accessibility Framework support
+  "android-native-activity",  # Android: Use NativeActivity instead of GameActivity
+  "spirv_shader_passthrough", # Vulkan: allow direct loading of SPIR-V shader blobs without validation
+  "webgpu",                   # Web: use the faster, modern, experimental WebGPU API instead of WebGL2
+  "statically-linked-dxc",    # Windows: embed the DirectX Shader Compiler into your game binary
+  "web",                      # Web platform integration
+  "libm",                     # Use libm for math on non-std / embedded platforms
+  "critical-section",         # For supporting no-std / embedded
+  "default_no_std",
+
+  # Graphics/rendering features (may cause issues on old/weak GPUs)
+  "experimental_pbr_pcss", # PCSS shadow filtering
+  "meshlet",               # Meshlet / virtual geometry rendering (like Unreal's Nanite)
+  "pbr_anisotropy_texture", # Support Anisotropy Map texture
+  "pbr_multi_layer_material_textures", # Support multi-layer textures
+  "pbr_specular_textures",  # Support specular map textures
+  "pbr_transmission_textures", # Support textures for light transimssion (translucency)
+
+  # Development features
+  "dynamic_linking",     # Dynamic linking for faster compile-times
+  "asset_processor",     # Enable asset processing support
+  "bevy_debug_stepping", # Enable stepping through ECS systems for debugging
+  "bevy_dev_tools",      # Extra dev functionality (like FPS overlay)
+  "bevy_remote",         # Enable BRP (Bevy Remote Protocol) for integration with editors and external dev tools
+  "file_watcher",        # Asset hot-reloading
+  "meshlet_processor",   # Asset processor to convert meshes into meshlet format
+  "glam_assert",         # Math validation / debug assertions
+  "debug_glam_assert",   # Math validation / debug assertions
+  "bevy_ui_debug",       # UI debugging functionality
+  "bevy_ci_testing",     # For testing of Bevy itself in CI
+  "embedded_watcher",    # Hot-reloading for Bevy's internal/builtin assets
+  "configurable_error_handler",
+  "trace",               # Enable tracing
+  "trace_chrome",        # Enable tracing using the Chrome backend
+  "trace_tracy",         # Enable tracing using Tracy
+  "trace_tracy_memory",  # Enable memory tracking for Tracy
+  "track_location",      # Enable location tracking
+  "detailed_trace",      # Extra verbose tracing
+
+  # Asset File Format Support
   "basis-universal", # Basis Universal GPU texture compression format
-  "zlib", # zlib compression support in KTX2 files
+  "bmp",  # Uncompressed BMP image format
+  "dds",  # DDS (DirectX) format for GPU textures, alternative to KTX2
+  "exr",  # OpenEXR advanced image format
+  "ff",   # FF image support
   "flac", # Audio: FLAC lossless format
+  "gif",  # GIF legacy image format
+  "ico",  # ICO image format (Windows icons)
+  "jpeg", # JPEG lossy format for photos
   "mp3",  # Audio: MP3 format (not recommended)
-  "wav",  # Audio: Uncompressed WAV
-  "symphonia-all", # All Audio formats supported by the Symphonia library
-  "shader_format_glsl", # GLSL shader support
+  "minimp3", # Alternative MP3 decoder
+  "pnm",  # PNM (pam, pbm, pgm, ppm) image format
+  "qoi",  # QOI image format
+  "shader_format_glsl",  # GLSL shader support
   "shader_format_spirv", # SPIR-V shader support
-
-  # Platform-specific:
-  "wayland",              # (Linux) Support Wayland windowing system
-  "accesskit_unix",       # (Unix-like) AccessKit integration for UI Accessibility
-  "bevy_dynamic_plugin",  # (Desktop) support for loading of `DynamicPlugin`s
-
-  # Development/Debug features:
-  "dynamic_linking",   # Dynamic linking for faster compile-times
-  "trace",             # Enable tracing for performance measurement
-  "detailed_trace",    # Make traces more verbose
-  "trace_tracy",       # Tracing using `tracy`
-  "trace_tracy_memory", # + memory profiling
-  "trace_chrome",      # Tracing using the Chrome format
-  "wgpu_trace",        # WGPU/rendering tracing
-  "debug_glam_assert", # Assertions to validate math (glam) usage
-  "embedded_watcher",  # Hot-reloading for Bevy's internal/builtin assets
+  "shader_format_wesl",  # WESL (Extended WGSL) shader support
+  "tga",  # Truevision Targa image format
+  "tiff", # TIFF image format
+  "wav",  # Audio: Uncompressed WAV
+  "webp", # WebP image format
+  "zlib", # zlib compression support in KTX2 files
+  "symphonia-aac", # AAC audio format (via Symphonia library)
+  "symphonia-flac", # Alternative FLAC audio decoder (via Symphonia library)
+  "symphonia-isomp4", # MP4 format (via Symphonia library)
+  "symphonia-vorbis", # Alternative Ogg Vorbis audio support (via Symphonia library)
+  "symphonia-wav", # Alternative WAV audio support (via Symphonia library)
+  "symphonia-all", # All Audio formats supported by the Symphonia library
 ]
 </code></pre>
-<p>(See <a href="https://docs.rs/crate/bevy/0.12/features">here</a> for a full list of Bevy's cargo features.)</p>
+<p>(See <a href="https://docs.rs/crate/bevy/0.16.0-rc.5/features">here</a> for a full list of Bevy's cargo features.)</p>
 <h3 id="graphics--rendering"><a class="header" href="#graphics--rendering">Graphics / Rendering</a></h3>
-<p>For a graphical application or game (most Bevy projects), you can include
-<code>bevy_winit</code> and your selection of Rendering features. For
+<p>For a graphical application or game (most Bevy projects), you can
+include <code>bevy_winit</code> and your selection of Rendering features. For
 <a href="setup//platforms/linux.html">Linux</a> support, you need at least one of <code>x11</code> or <code>wayland</code>.</p>
 <p><code>bevy_render</code> and <code>bevy_core_pipeline</code> are required for any application using
-Bevy rendering.</p>
+Bevy rendering. They are automatically added if you enable higher-level stuff
+like <code>bevy_ui</code>, <code>bevy_pbr</code>, <code>bevy_sprite</code>, etc.</p>
 <p>If you only need 2D and no 3D, add <code>bevy_sprite</code>.</p>
 <p>If you only need 3D and no 2D, add <code>bevy_pbr</code>. If you are <a href="setup//3d/gltf.html">loading 3D models
 from GLTF files</a>, add <code>bevy_gltf</code>.</p>
@@ -2674,11 +2745,12 @@ full feature support, but browser support for it is limited (only known to
 work in very recent versions of Chrome and Firefox nightly).</p>
 <p>WebGL2 gives the best compatibility with all browsers, but has worse performance
 and some limitations on what kinds of graphics features you can use in Bevy.</p>
-<p>The <code>webgl2</code> cargo feature selects WebGL2 if enabled. If disabled, WebGPU is used.</p>
+<p>The <code>webgl2</code> cargo feature selects WebGL2, <code>webgpu</code> selects WebGPU. Also
+consider enabling <code>web</code> for general web support.</p>
 <h3 id="development-features"><a class="header" href="#development-features">Development Features</a></h3>
 <p>While you are developing your project, these features might be useful:</p>
 <h4 id="asset-hot-reloading-and-processing"><a class="header" href="#asset-hot-reloading-and-processing">Asset hot-reloading and processing</a></h4>
-<p>The <code>filesystem_watcher</code> feature enables support for <a href="setup//assets/hot-reload.html">hot-reloading of
+<p>The <code>file_watcher</code> feature enables support for <a href="setup//assets/hot-reload.html">hot-reloading of
 assets</a>, supported on desktop platforms.</p>
 <p>The <code>asset_processor</code> feature enables support for <a href="setup//assets/processing.html">asset
 processing</a>, allowing you to automatically convert and
@@ -2701,8 +2773,7 @@ project like this:</p>
 </code></pre>
 <p>You could also add this to your <a href="setup//setup/editor.html">IDE/editor configuration</a>.</p>
 <h4 id="tracing"><a class="header" href="#tracing">Tracing</a></h4>
-<p>The features <code>trace</code> and <code>wgpu_trace</code> may be useful for profiling and
-diagnosing performance issues.</p>
+<p>The <code>trace</code> feature is useful for profiling and diagnosing performance issues.</p>
 <p><code>trace_chrome</code> and <code>trace_tracy</code> choose the backend you want to use to
 visualize the traces.</p>
 <p>See <a href="https://github.com/bevyengine/bevy/blob/main/docs/profiling.md">Bevy's official docs on profiling</a> to learn more.</p>
@@ -2725,43 +2796,31 @@ check the license before using a plugin in your project.</p>
 <li>Some plugins may require you to <a href="setup//setup/bevy-config.html">configure Bevy in some specific way</a>.</li>
 <li>If you are <a href="setup//setup/bevy-git.html">using bleeding-edge unreleased Bevy (main)</a>, you may encounter difficulties with plugin compatibility.</li>
 </ul>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="setup//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(outdated!)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="setup//introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.16</th><th>(upcoming / release candidate)</th></tr></thead><tbody>
 </tbody></table>
-</div><p style="text-align: center;">
-As this page is outdated, please refer to Bevy's official migration guides while reading,
-to cover the differences:
-<a href="https://bevyengine.org/learn/migration-guides/0-13-to-0-14/">0.13 to 0.14</a>.
-<a href="https://bevyengine.org/learn/migration-guides/0-14-to-0-15/">0.14 to 0.15</a>.
-</p>
-<p style="text-align: center;">
-I apologize for the inconvenience. I will update the page as soon as I find the time.
-</p>
-<hr />
+</div>
 <h1 id="dev-tools-and-editors-for-bevy"><a class="header" href="#dev-tools-and-editors-for-bevy">Dev Tools and Editors for Bevy</a></h1>
 <p>Bevy does not yet have an official editor or other such tools. An official
 editor is planned as a long-term future goal. In the meantime, here are
 some community-made tools to help you.</p>
 <hr />
 <h2 id="editor"><a class="header" href="#editor">Editor</a></h2>
+<p>You can use <a href="https://www.blender.org/">Blender</a> as a level/scene
+editor, by exporting your scenes to <a href="setup//3d/gltf.html">GLTF</a>. The
+[Blenvy][project::blender_bevy_components_workflow] project provides
+a nice experience / workflow, by allowing you to setup your Bevy ECS
+<a href="setup//programming/ec.html#components">Components</a> in Blender, include them in the exported GLTF,
+and use them in Bevy.</p>
 <p><a href="https://github.com/jakobhellermann/bevy-inspector-egui"><code>bevy_inspector_egui</code></a> gives you a simple
 editor-like property inspector window in-game. It lets you modify the values of
 your components and resources in real-time as the game is running.</p>
-<p><a href="https://github.com/jakobhellermann/bevy_editor_pls"><code>bevy_editor_pls</code></a> is an editor-like interface that
-you can embed into your game. It has even more features, like switching app
-states, fly camera, performance diagnostics, and inspector panels.</p>
-<p><a href="https://github.com/rewin123/space_editor"><code>space_editor</code></a> is another such editor that can be
-embedded into your game. It seems to be designed for a Unity-inspired prefab
-workflow.</p>
-<p>You can also use <a href="https://www.blender.org/">Blender</a> as a level/scene editor,
-by exporting your scenes to <a href="setup//3d/gltf.html">GLTF</a>. The <a href="https://github.com/kaosat-dev/Blender_bevy_components_workflow">Blender Bevy Components
-Workflow</a> project improves on this
-experience, by allowing you to setup your Bevy ECS <a href="setup//programming/ec.html#components">Components</a>
-in Blender, include them in the exported GLTF, and use them in Bevy.</p>
+<p>There is a repo for WIP development of Bevy's official editor:
+<a href="https://github.com/bevyengine/bevy_editor_prototypes"><code>bevy_editor_prototypes</code></a>. Not really ready for use yet.</p>
 <h2 id="diagnostics"><a class="header" href="#diagnostics">Diagnostics</a></h2>
 <p><a href="https://github.com/jakobhellermann/bevy_mod_debugdump"><code>bevy_mod_debugdump</code></a> is a tool to help visualize
 your <a href="setup/../programming/app-builder.html">App Schedules</a> (all of the registered
 <a href="setup/../programming/systems.html">systems</a> with their <a href="setup/../programming/system-order.html">ordering
-dependencies</a>), and the Bevy Render Graph.</p>
+dependencies</a>), and the Bevy <a href="setup//TODO.html">Render Graph</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="setup//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-12">0.12</a></th><th>(outdated!)</th></tr></thead><tbody>
 </tbody></table>
 </div><p style="text-align: center;">
@@ -3037,36 +3096,39 @@ bevy = { git = "https://github.com/bevyengine/bevy" }
 <p>However, if you <em>are</em> working with external plugins, you should read the rest
 of this page. You will likely need to do more to make everything compatible.</p>
 <h2 id="should-you-use-bleeding-edge-bevy-what-version-of-bevy-should-you-use"><a class="header" href="#should-you-use-bleeding-edge-bevy-what-version-of-bevy-should-you-use">Should you use bleeding-edge Bevy? What version of Bevy should you use?</a></h2>
-<p>Bevy follows a "train release" model, with loose deadlines. Every 3 months,
-a new major release is prepared, which will contain all new developments
-(features, fixes, etc.) since the last release. The release date is not
-strict and is often delayed by a few weeks to tie up loose ends.</p>
+<p>Bevy follows a very loose "train release" model. Every 3 months, a new major
+release is prepared, which will contain all new developments (features,
+fixes, etc.) since the last release. This begins the Release Candidate (RC)
+process. RC releases are done frequently over the subsequent weeks / months,
+while the final release is prepared.</p>
 <p>Further, Bevy usually follows up every major release with a patch release
-or two, as needed, to fix any bugs discovered soon after release. It will
+or several, as needed, to fix any bugs discovered after release. It will
 not contain all fixes, just small non-breaking things that are considered
 critical enough.</p>
 <p>Most Bevy projects should use the latest release on crates.io. If you want
 to play it safe, you can wait until the first patch release (<code>0.*.1</code>),
 before upgrading to a new major version. You might also want to wait for
 any 3rd-party plugins you are using to support the new Bevy version.</p>
-<p>On the other hand, for experimentation and for Bevy development, you are
-encouraged to try the latest in-development code from git! The latest
-release is often missing the freshest bug fixes, usability improvements,
-and features. It may be compelling to join in on the action!</p>
+<p>On the other hand, before an upcoming release, you are highly encouraged to
+try the Release Candidate and provide feedback and bug reports before the
+final release.</p>
+<p>The latest in-development code from git is only really useful for
+experimentation and Bevy development during each dev cycle. If you want
+to join in on the action, feel free to give it a try!</p>
 <p>If you are new to Bevy, this might not be for you. You will be more
 comfortable using the released version. It will have the best compatibility
 with community plugins and documentation.</p>
-<p>The in-development version of Bevy has frequent breaking changes. Therefore,
-it can be very annoying to use for real projects. Also, 3rd-party plugin
-authors often don't bother to stay compatible. You will face breakage often
-and probably have to fix it yourself.</p>
-<p>It is only recommended to do this for more experimental or toy projects.</p>
+<p>The in-development version of Bevy has frequent and reckless breaking
+changes. Therefore, it can be very annoying to use for real projects. Also,
+3rd-party plugin authors often don't bother to stay compatible. You will
+face breakage often and probably have to fix it yourself.</p>
 <p>Though, there are ways you can manage the breakage and make it less of a
 problem. Thanks to cargo, you can update bevy at your convenience, whenever you
 feel ready to handle any possible breaking changes.</p>
 <p>You may want to consider forking the repositories of Bevy and any plugins you
 use. Using your own forks allows you to easily apply fixes if needed, or edit
-their <code>Cargo.toml</code> for any special configuration to make your project work.</p>
+their <code>Cargo.toml</code> for any special configuration to make your project work.
+It also makes it easy to contribute your fixes upstream.</p>
 <p>If you choose to use Bevy main, you are highly encouraged to interact with
 the Bevy community on <a href="https://discord.gg/bevy">Discord</a> and <a href="https://github.com/bevyengine/bevy">GitHub</a>, so
 you can keep track of what's going on, get help, or participate in discussions.</p>
@@ -11791,300 +11853,6 @@ you can use <a href="https://docs.rs/bevy/0.14/bevy/core/struct.NonSendMarker.ht
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>(any)</th></tr></thead><tbody>
 </tbody></table>
 </div>
-<h1 id="bevy-render-gpu-framework"><a class="header" href="#bevy-render-gpu-framework">Bevy Render (GPU) Framework</a></h1>
-<p><strong>NOTE:</strong> This chapter of the book is an early <em>Work in Progress</em>!
-Many links are still broken!</p>
-<hr />
-<p>This chapter covers Bevy's rendering framework and how to work with the GPU.</p>
-<p>Make sure you are well familiar with <a href="/programming.html">Bevy's Core Programming
-Framework</a>. Everything here builds on top of it.</p>
-<p>Here you will learn how to write custom rendering code. If you are simply
-interested in using the existing graphical features provided by Bevy, check
-out the chapters about <a href="/graphics.html">General Graphics Features</a>,
-<a href="/2d.html">2D</a>, and <a href="/3d.html">3D</a>.</p>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="gpu//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
-</tbody></table>
-</div><p style="text-align: center;">
-As this page is outdated, please refer to Bevy's official migration guides while reading,
-to cover the differences:
-<a href="https://bevyengine.org/learn/migration-guides/0-9-to-0-10/">0.9 to 0.10</a>,
-<a href="https://bevyengine.org/learn/migration-guides/0-10-to-0-11/">0.10 to 0.11</a>,
-<a href="https://bevyengine.org/learn/migration-guides/0-11-to-0-12/">0.11 to 0.12</a>,
-<a href="https://bevyengine.org/learn/migration-guides/0-12-to-0-13/">0.12 to 0.13</a>,
-<a href="https://bevyengine.org/learn/migration-guides/0-13-to-0-14/">0.13 to 0.14</a>.
-<a href="https://bevyengine.org/learn/migration-guides/0-14-to-0-15/">0.14 to 0.15</a>.
-</p>
-<p style="text-align: center;">
-I apologize for the inconvenience. I will update the page as soon as I find the time.
-</p>
-<hr />
-<h1 id="render-architecture-overview"><a class="header" href="#render-architecture-overview">Render Architecture Overview</a></h1>
-<p><strong>NOTE:</strong> This chapter of the book is an early <em>Work in Progress</em>!
-Many links are still broken!</p>
-<hr />
-<p>The current Bevy render architecture premiered in Bevy 0.6. The <a href="https://bevyengine.org/news/bevy-0-6">news blog
-post</a> is another place you can learn about it. :)</p>
-<p>It was inspired by the Destiny Render Architecture (from the Destiny game).</p>
-<h2 id="pipelined-rendering-1"><a class="header" href="#pipelined-rendering-1">Pipelined Rendering</a></h2>
-<p>Bevy's renderer is architected in a way that operates independently from all
-the normal app logic. It operates in its own separate <a href="gpu//programming/world.html">ECS World</a>
-and has its own <a href="gpu//programming/app-builder.html">schedule</a>, with <a href="gpu//gpu/stages.html">stages</a> and
-<a href="gpu//programming/systems.html">systems</a>.</p>
-<p>The plan is that, in a future Bevy version, the renderer will run in parallel
-with all the normal app logic, allowing for greater performance. This is
-called "pipelined rendering": rendering the previous frame at the same time
-as the app is processing the next frame update.</p>
-<p>Every frame, the two parts are synchronized in a special <a href="gpu//programming/schedules.html">stage</a>
-called "Extract". The Extract stage has access to both <a href="gpu//programming/world.html">ECS Worlds</a>,
-allowing it to copy data from the main World into the render World.</p>
-<p>From then on, the renderer only has access to the render World, and can only
-use data that is stored there.</p>
-<p>Every frame, all <a href="gpu//programming/intro-data.html#entities--components">entities</a> in the render World are erased, but
-<a href="gpu//programming/res.html">resources</a> are kept. If you need to persist data from frame to
-frame, store it in resources. Dynamic data that could change every frame
-should be copied into the render world in the Extract stage, and typically
-stored using entities and components.</p>
-<p><img src="gpu/../img/pipelined-rendering.png" alt="Diagram of pipelined rendering timings in app-bound and render-bound cases" /></p>
-<h2 id="core-architecture"><a class="header" href="#core-architecture">Core Architecture</a></h2>
-<p>The renderer operates in multiple <a href="gpu//gpu/stages.html">render stages</a>. This
-is how the work that needs to be performed on the CPU is managed.</p>
-<p>The ordering of the workloads to be performed on the GPU is controlled
-using the <a href="gpu//TODO.html">render graph</a>. The graph consists of
-<a href="gpu//TODO.html">nodes</a>, each representing a workload for the GPU,
-typically a <a href="gpu//TODO.html">render pass</a>. The nodes are connected using
-<a href="gpu//TODO.html">edges</a>, representing their ordering/dependencies
-with regard to one another.</p>
-<h2 id="layers-of-abstraction"><a class="header" href="#layers-of-abstraction">Layers of Abstraction</a></h2>
-<p>The Bevy rendering framework can accomodate you working at various different
-levels of abstraction, depending on how much you want to integrate with the
-Bevy ecosystem and built-in features, vs. have more direct control over the GPU.</p>
-<p>For most things, you would be best served by the "high-level" or "mid-level" APIs.</p>
-<h3 id="low-level"><a class="header" href="#low-level">Low-Level</a></h3>
-<p>Bevy works directly with <a href="https://github.com/gfx-rs/wgpu"><code>wgpu</code></a>, a Rust-based cross-platform
-graphics API. It is the abstraction layer over the GPU APIs of the underlying
-<a href="gpu//platforms.html">platform</a>. This way, the same GPU code can work on all
-supported platforms. The API design of <a href="https://github.com/gfx-rs/wgpu"><code>wgpu</code></a> is based on
-the WebGPU standard, but with extensions to support native platform features,
-going beyond the limitations of the web platform.</p>
-<p><a href="https://github.com/gfx-rs/wgpu"><code>wgpu</code></a> (and hence Bevy) supports the following backends:</p>
-<div class="table-wrapper"><table><thead><tr><th>Platform</th><th>Backends (in order of priority)</th></tr></thead><tbody>
-<tr><td>Linux</td><td>Vulkan, GLES3</td></tr>
-<tr><td>Windows</td><td>DirectX 12, Vulkan, GLES3</td></tr>
-<tr><td>macOS</td><td>Metal</td></tr>
-<tr><td>iOS</td><td>Metal</td></tr>
-<tr><td>Android</td><td>Vulkan, GLES3</td></tr>
-<tr><td>Web</td><td>WebGPU, WebGL2</td></tr>
-</tbody></table>
-</div>
-<p>On GLES3 and WebGL2, some renderer features are unsupported and performance is worse.</p>
-<p>WebGPU is experimental and few browsers support it.</p>
-<p><code>wgpu</code> forms the "lowest level" of Bevy rendering. If you really need the
-most direct control over the GPU, you can pretty much use <code>wgpu</code> directly,
-from within the Bevy render framework.</p>
-<h3 id="mid-level"><a class="header" href="#mid-level">Mid-Level</a></h3>
-<p>On top of <code>wgpu</code>, Bevy provides some abstractions that can help you, and
-integrate better with the rest of Bevy.</p>
-<p>The first is <a href="gpu//TODO.html">pipeline caching</a> and
-<a href="gpu//TODO.html">specialization</a>. If you create your
-<a href="gpu//TODO.html">render pipelines</a> via this interface, Bevy can manage
-them efficiently for you, creating them when they are first used, and then
-caching and reusing them, for optimal performance.</p>
-<p>Caching and specialization are, analogously, also available for <a href="gpu//TODO.html">GPU Compute
-pipelines</a>.</p>
-<p>Similar to the <a href="gpu//TODO.html">pipeline cache</a>, there is a <a href="gpu//TODO.html">texture
-cache</a>. This is what you use for rendering-internal
-<a href="gpu//TODO.html">textures</a> (for example: shadow maps, reflection maps,
-…), that do not originate from <a href="gpu//assets.html">assets</a>. It will manage and
-reuse the GPU memory allocation, and free it when it becomes unused.</p>
-<p>For using data from <a href="gpu//assets.html">assets</a>, Bevy provides the <a href="gpu//TODO.html">Render
-Asset</a> abstraction to help with extracting the data from
-different <a href="gpu//builtins.html#assets">asset types</a>.</p>
-<p>Bevy can manage all the "objects to draw" using <a href="gpu//TODO.html">phases</a>,
-which sort and draw <a href="gpu//TODO.html">phase items</a>. This way, Bevy
-can sort each object to render, relative to everything else in the scene,
-for optimal performance and correct transparency (if any).</p>
-<p>Phase Items are defined using <a href="gpu//TODO.html">render commands</a>
-and/or <a href="gpu//TODO.html">draw functions</a>. These are, conceputally,
-the rendering equivalents of ECS <a href="gpu//programming/systems.html">systems</a> and <a href="gpu//programming/exclusive.html">exclusive
-systems</a>, fetching data from the ECS World and generating
-<a href="gpu//TODO.html">draw calls</a> for the GPU.</p>
-<p>All of these things fit into the core architecture of the Bevy <a href="gpu//TODO.html">render
-graph</a> and <a href="gpu//gpu/stages.html">render stages</a>. During
-the Render stage, <a href="gpu//TODO.html">graph nodes</a> will execute <a href="gpu//TODO.html">render
-passes</a> with the <a href="gpu//TODO.html">render phases</a>,
-to draw everything as it was set up in the Prepare/Queue/PhaseSort stages.</p>
-<p>The <code>bevy_core_pipeline</code> crate defines a set of <a href="gpu//TODO.html">standard
-phase/item</a> and main pass types. If you can, you
-should work with them, for best compatibility with the Bevy ecosystem.</p>
-<h3 id="high-level"><a class="header" href="#high-level">High-Level</a></h3>
-<p>On top of all the mid-level APIs, Bevy provides abstractions to make many
-common kinds of workloads easier.</p>
-<p>The most notable higher-level features are <a href="gpu//TODO.html">meshes</a> and
-<a href="gpu//TODO.html">materials</a>.</p>
-<p>Meshes are the source of per-vertex data (<a href="gpu//TODO.html">vertex
-attributes</a>) to be fed into
-your <a href="gpu//TODO.html">shaders</a>. The material specifies what
-<a href="gpu//TODO.html">shaders</a> to use and any other data that needs to be
-fed into it, like <a href="gpu//TODO.html">textures</a>.</p>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="gpu//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
-</tbody></table>
-</div><p style="text-align: center;">
-As this page is outdated, please refer to Bevy's official migration guides while reading,
-to cover the differences:
-<a href="https://bevyengine.org/learn/migration-guides/0-9-to-0-10/">0.9 to 0.10</a>,
-<a href="https://bevyengine.org/learn/migration-guides/0-10-to-0-11/">0.10 to 0.11</a>,
-<a href="https://bevyengine.org/learn/migration-guides/0-11-to-0-12/">0.11 to 0.12</a>,
-<a href="https://bevyengine.org/learn/migration-guides/0-12-to-0-13/">0.12 to 0.13</a>,
-<a href="https://bevyengine.org/learn/migration-guides/0-13-to-0-14/">0.13 to 0.14</a>.
-<a href="https://bevyengine.org/learn/migration-guides/0-14-to-0-15/">0.14 to 0.15</a>.
-</p>
-<p style="text-align: center;">
-I apologize for the inconvenience. I will update the page as soon as I find the time.
-</p>
-<hr />
-<h1 id="render-stages"><a class="header" href="#render-stages">Render Stages</a></h1>
-<p>Everything on the CPU side (the whole process of driving the GPU workloads)
-is structured in a sequence of "render stages":</p>
-<h2 id="timings"><a class="header" href="#timings">Timings</a></h2>
-<p>Note: Pipelined rendering is not yet actually enabled in Bevy 0.9. This section
-explains the intended behavior, which will land in a future Bevy version. You
-have to understand it, because any custom rendering code you write will have to
-work with it in mind.</p>
-<p><img src="gpu/../img/pipelined-rendering.png" alt="Diagram of pipelined rendering timings in app-bound and render-bound cases" /></p>
-<p>Every frame, <a href="gpu/stages.html#extract">Extract</a> serves as the synchronization point.</p>
-<p>When the Render Schedule completes, it will start again, but Extract will
-wait for the App Schedule, if it has not completed yet. The App Schedule
-will start again as soon as Extract has completed.</p>
-<p>Therefore:</p>
-<ul>
-<li>in an App-bound scenario (if app takes longer than render):
-<ul>
-<li>The start of Extract is waiting for App to finish</li>
-</ul>
-</li>
-<li>in a Render-bound scenario (if render takes longer than app):
-<ul>
-<li>The start of App is waiting for Extract to finish</li>
-</ul>
-</li>
-</ul>
-<p>If <a href="gpu//window/props.html#vsync">vsync</a> is enabled, the wait for the next refresh of the
-screen will happen in the <a href="gpu/stages.html#prepare">Prepare</a> stage. This has the effect of
-prolonging the Prepare stage in the Render schedule. Therefore, in practice,
-your game will behave like the "Render-bound" scenario shown above.</p>
-<p>The final render (the framebuffer with the pixels to show in the
-<a href="gpu//window/props.html">window</a>) is <em>presented</em> to the OS/driver at the end of the
-<a href="gpu/stages.html#render">Render</a> stage.</p>
-<p>Bevy updates its <a href="gpu//fundamentals/time.html">timing information</a> (in <a href="https://docs.rs/bevy/0.9/bevy/time/struct.Time.html"><code>Res&lt;Time&gt;</code></a>)
-at the start of the First stage in the main App schedule. The value to
-use is measured at "presentation time", in the render world, and the
-<a href="https://doc.rust-lang.org/stable/std/time/struct.Instant.html"><code>Instant</code></a> is sent over a channel, to be applied on the
-next frame.</p>
-<h2 id="adding-systems-to-render-stages"><a class="header" href="#adding-systems-to-render-stages">Adding Systems to Render Stages</a></h2>
-<p>If you are implementing custom rendering functionality in Bevy, you will likely
-need to add some of your own systems to at least some of the render stages:</p>
-<ul>
-<li>
-<p>Anything that needs data from your main App World will need a system in
-<a href="gpu/stages.html#extract">Extract</a> to copy that data. In practice, this is almost everything,
-unless it is fully contained on the GPU, or only uses renderer-internal
-generated data.</p>
-</li>
-<li>
-<p>Most use cases will need to do some setup of GPU resources
-in <a href="gpu/stages.html#prepare">Prepare</a> and/or <a href="gpu/stages.html#queue">Queue</a>.</p>
-</li>
-<li>
-<p>In <a href="gpu/stages.html#cleanup">Cleanup</a>, all <a href="gpu//programming/intro-data.html#entities--components">entities</a> are cleared automatically.
-If you have some custom data stored in <a href="gpu//programming/res.html">resources</a>, you can let it
-stay for the next frame, or add a system to clear it, if you want.</p>
-</li>
-</ul>
-<p>The way Bevy is set up, you shouldn't need to do anything in <a href="gpu/stages.html#render">Render</a>
-or <a href="gpu/stages.html#phasesort">PhaseSort</a>. If your custom rendering is part of the Bevy
-<a href="gpu//TODO.html">render graph</a>, it will just be handled automatically
-when Bevy executes the render graph in the <a href="gpu/stages.html#render">Render</a> stage. If you
-are implementing custom <a href="gpu//TODO.html">phase items</a>, the Main Pass
-render graph node will render them together with everything else.</p>
-<p>You can add your rendering systems to the respective stages, using the render
-<a href="gpu//programming/app-builder.html#sub-apps">sub-app</a>:</p>
-<pre><code>// TODO: code example
-</code></pre>
-<h2 id="extract"><a class="header" href="#extract">Extract</a></h2>
-<p>Extract is a very important and special stage. It is the synchronization
-point that links the two ECS Worlds. This is where the data required for
-rendering is copied ("extracted") from the main App World into the Render
-World, allowing for pipelined rendering.</p>
-<p>During the Extract stage, nothing else can run in parallel, on either the
-main App World or the Render World. Hence, Extract should be kept minimal
-and complete its work as quickly as possible.</p>
-<p>It is recommended that you avoid doing any computations in Extract, if
-possible. Just copy data.</p>
-<p>It is recommended that you only copy the data you actually need for rendering.
-Create new <a href="gpu//programming/ec.html#components">component types</a> and <a href="gpu//programming/res.html">resources</a> just
-for use within the render World, with only the data you need.</p>
-<p>For example, Bevy's 2D sprites uses a <a href="https://docs.rs/bevy/0.9/bevy/sprite/struct.ExtractedSprite.html"><code>struct ExtractedSprite</code></a>, where it copies the relevant data
-from the "user-facing" components of sprite and spritesheet entities in the
-main World.</p>
-<p>Bevy <strong>reserves Entity IDs</strong> in the render World, matching all the Entities
-existing in the main World. In most cases, you do not need to <em>spawn</em>
-new entities in the render World. You can just <a href="gpu//programming/commands.html">insert components with
-Commands</a> on the same Entity IDs as from the main World.</p>
-<pre><code>// TODO: code example
-</code></pre>
-<h2 id="prepare"><a class="header" href="#prepare">Prepare</a></h2>
-<p>Prepare is the stage to use if you need to set up any data on the
-GPU. This is where you can create GPU <a href="gpu//TODO.html">buffers</a>,
-<a href="gpu//TODO.html">textures</a>, and <a href="gpu//TODO.html">bind groups</a>.</p>
-<p>// TODO: elaborate on different ways Bevy is using it internally</p>
-<pre><code>// TODO: code example
-</code></pre>
-<h2 id="queue"><a class="header" href="#queue">Queue</a></h2>
-<p>Queue is the stage where you can set up the "rendering jobs" you will need to
-execute.</p>
-<p>Typically, this means creating <a href="gpu//TODO.html">phase items</a>
-with the correct <a href="gpu//TODO.html">render pipeline</a> and <a href="gpu//TODO.html">draw
-function</a>, for everything that you need to draw.</p>
-<p>For other things, analogously, Queue is where you would set up the workloads
-(like compute or draw calls) that the GPU would need to perform.</p>
-<p>// TODO: elaborate on different ways Bevy is using it internally</p>
-<pre><code>// TODO: code example
-</code></pre>
-<h2 id="phasesort"><a class="header" href="#phasesort">PhaseSort</a></h2>
-<p>This stage exists for Bevy to sort all of the <a href="gpu//TODO.html">phase
-items</a> that were set up during the <a href="gpu/stages.html#queue">Queue</a>
-stage, before rendering in the <a href="gpu/stages.html#render">Render</a> stage.</p>
-<p>It is unlikely that you will need to add anything custom here. I'm not aware
-of use cases. <a href="gpu//contact.html">Let me know</a> if you know of any.</p>
-<h2 id="render"><a class="header" href="#render">Render</a></h2>
-<p>Render is the stage where Bevy executes the <a href="gpu//TODO.html">Render Graph</a>.</p>
-<p>The built-in behavior is configured using Cameras. For each active Camera,
-Bevy will execute its associated render graph, configured to output to its
-associated render target.</p>
-<p>If you are using any of the <a href="gpu//TODO.html">standard render phases</a>,
-you don't need to do anything. Your custom <a href="gpu//TODO.html">phase items</a>
-will be rendered automatically as part of the Main Pass built-in render graph
-<a href="gpu//TODO.html">nodes</a>, alongside everything else.</p>
-<p>If you are implementing a rendering feature that needs a separate step, you
-can add it as a <a href="gpu//TODO.html">render graph node</a>, and it will be
-rendered automatically.</p>
-<p>The only time you might need to do something custom here is if you really
-want to sidestep Bevy's frameworks and reach for low-level <code>wgpu</code> access.
-You could place it in the Render stage.</p>
-<h2 id="cleanup"><a class="header" href="#cleanup">Cleanup</a></h2>
-<p>Bevy has a built-in system in Cleanup that clears all <a href="gpu//programming/intro-data.html#entities--components">entities</a> in
-the render World. Therefore, all data stored in components will be lost.
-It is expected that fresh data will be obtained in the next frame's
-<a href="gpu/stages.html#extract">Extract</a> stage.</p>
-<p>To persist rendering data over multiple frames, you should store it in
-<a href="gpu//programming/res.html">resources</a>. That way you have control over it.</p>
-<p>If you need to clear some data from your resources sometimes, you could
-add a custom system to the Cleanup stage to do it.</p>
-<pre><code>// TODO: code example
-</code></pre>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>(any)</th></tr></thead><tbody>
-</tbody></table>
-</div>
 <h1 id="programming-patterns"><a class="header" href="#programming-patterns">Programming Patterns</a></h1>
 <p>This chapter is about any non-obvious tricks, programming techniques,
 patterns and idioms, that may be useful when programming with Bevy.</p>
@@ -12422,6 +12190,300 @@ a standalone <a href="patterns//programming/schedules.html">stage</a> with the <
 run, and manually run it on the <a href="https://docs.rs/bevy/0.9/bevy/ecs/world/struct.World.html"><code>World</code></a>.</p>
 <p>Bevy's official repository has a fantastic <a href="https://github.com/bevyengine/bevy/blob/main/tests/how_to_test_systems.rs">example of how to do
 this</a>.</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>(any)</th></tr></thead><tbody>
+</tbody></table>
+</div>
+<h1 id="bevy-render-gpu-framework"><a class="header" href="#bevy-render-gpu-framework">Bevy Render (GPU) Framework</a></h1>
+<p><strong>NOTE:</strong> This chapter of the book is an early <em>Work in Progress</em>!
+Many links are still broken!</p>
+<hr />
+<p>This chapter covers Bevy's rendering framework and how to work with the GPU.</p>
+<p>Make sure you are well familiar with <a href="/programming.html">Bevy's Core Programming
+Framework</a>. Everything here builds on top of it.</p>
+<p>Here you will learn how to write custom rendering code. If you are simply
+interested in using the existing graphical features provided by Bevy, check
+out the chapters about <a href="/graphics.html">General Graphics Features</a>,
+<a href="/2d.html">2D</a>, and <a href="/3d.html">3D</a>.</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="gpu//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div><p style="text-align: center;">
+As this page is outdated, please refer to Bevy's official migration guides while reading,
+to cover the differences:
+<a href="https://bevyengine.org/learn/migration-guides/0-9-to-0-10/">0.9 to 0.10</a>,
+<a href="https://bevyengine.org/learn/migration-guides/0-10-to-0-11/">0.10 to 0.11</a>,
+<a href="https://bevyengine.org/learn/migration-guides/0-11-to-0-12/">0.11 to 0.12</a>,
+<a href="https://bevyengine.org/learn/migration-guides/0-12-to-0-13/">0.12 to 0.13</a>,
+<a href="https://bevyengine.org/learn/migration-guides/0-13-to-0-14/">0.13 to 0.14</a>.
+<a href="https://bevyengine.org/learn/migration-guides/0-14-to-0-15/">0.14 to 0.15</a>.
+</p>
+<p style="text-align: center;">
+I apologize for the inconvenience. I will update the page as soon as I find the time.
+</p>
+<hr />
+<h1 id="render-architecture-overview"><a class="header" href="#render-architecture-overview">Render Architecture Overview</a></h1>
+<p><strong>NOTE:</strong> This chapter of the book is an early <em>Work in Progress</em>!
+Many links are still broken!</p>
+<hr />
+<p>The current Bevy render architecture premiered in Bevy 0.6. The <a href="https://bevyengine.org/news/bevy-0-6">news blog
+post</a> is another place you can learn about it. :)</p>
+<p>It was inspired by the Destiny Render Architecture (from the Destiny game).</p>
+<h2 id="pipelined-rendering-1"><a class="header" href="#pipelined-rendering-1">Pipelined Rendering</a></h2>
+<p>Bevy's renderer is architected in a way that operates independently from all
+the normal app logic. It operates in its own separate <a href="gpu//programming/world.html">ECS World</a>
+and has its own <a href="gpu//programming/app-builder.html">schedule</a>, with <a href="gpu//gpu/stages.html">stages</a> and
+<a href="gpu//programming/systems.html">systems</a>.</p>
+<p>The plan is that, in a future Bevy version, the renderer will run in parallel
+with all the normal app logic, allowing for greater performance. This is
+called "pipelined rendering": rendering the previous frame at the same time
+as the app is processing the next frame update.</p>
+<p>Every frame, the two parts are synchronized in a special <a href="gpu//programming/schedules.html">stage</a>
+called "Extract". The Extract stage has access to both <a href="gpu//programming/world.html">ECS Worlds</a>,
+allowing it to copy data from the main World into the render World.</p>
+<p>From then on, the renderer only has access to the render World, and can only
+use data that is stored there.</p>
+<p>Every frame, all <a href="gpu//programming/intro-data.html#entities--components">entities</a> in the render World are erased, but
+<a href="gpu//programming/res.html">resources</a> are kept. If you need to persist data from frame to
+frame, store it in resources. Dynamic data that could change every frame
+should be copied into the render world in the Extract stage, and typically
+stored using entities and components.</p>
+<p><img src="gpu/../img/pipelined-rendering.png" alt="Diagram of pipelined rendering timings in app-bound and render-bound cases" /></p>
+<h2 id="core-architecture"><a class="header" href="#core-architecture">Core Architecture</a></h2>
+<p>The renderer operates in multiple <a href="gpu//gpu/stages.html">render stages</a>. This
+is how the work that needs to be performed on the CPU is managed.</p>
+<p>The ordering of the workloads to be performed on the GPU is controlled
+using the <a href="gpu//TODO.html">render graph</a>. The graph consists of
+<a href="gpu//TODO.html">nodes</a>, each representing a workload for the GPU,
+typically a <a href="gpu//TODO.html">render pass</a>. The nodes are connected using
+<a href="gpu//TODO.html">edges</a>, representing their ordering/dependencies
+with regard to one another.</p>
+<h2 id="layers-of-abstraction"><a class="header" href="#layers-of-abstraction">Layers of Abstraction</a></h2>
+<p>The Bevy rendering framework can accomodate you working at various different
+levels of abstraction, depending on how much you want to integrate with the
+Bevy ecosystem and built-in features, vs. have more direct control over the GPU.</p>
+<p>For most things, you would be best served by the "high-level" or "mid-level" APIs.</p>
+<h3 id="low-level"><a class="header" href="#low-level">Low-Level</a></h3>
+<p>Bevy works directly with <a href="https://github.com/gfx-rs/wgpu"><code>wgpu</code></a>, a Rust-based cross-platform
+graphics API. It is the abstraction layer over the GPU APIs of the underlying
+<a href="gpu//platforms.html">platform</a>. This way, the same GPU code can work on all
+supported platforms. The API design of <a href="https://github.com/gfx-rs/wgpu"><code>wgpu</code></a> is based on
+the WebGPU standard, but with extensions to support native platform features,
+going beyond the limitations of the web platform.</p>
+<p><a href="https://github.com/gfx-rs/wgpu"><code>wgpu</code></a> (and hence Bevy) supports the following backends:</p>
+<div class="table-wrapper"><table><thead><tr><th>Platform</th><th>Backends (in order of priority)</th></tr></thead><tbody>
+<tr><td>Linux</td><td>Vulkan, GLES3</td></tr>
+<tr><td>Windows</td><td>DirectX 12, Vulkan, GLES3</td></tr>
+<tr><td>macOS</td><td>Metal</td></tr>
+<tr><td>iOS</td><td>Metal</td></tr>
+<tr><td>Android</td><td>Vulkan, GLES3</td></tr>
+<tr><td>Web</td><td>WebGPU, WebGL2</td></tr>
+</tbody></table>
+</div>
+<p>On GLES3 and WebGL2, some renderer features are unsupported and performance is worse.</p>
+<p>WebGPU is experimental and few browsers support it.</p>
+<p><code>wgpu</code> forms the "lowest level" of Bevy rendering. If you really need the
+most direct control over the GPU, you can pretty much use <code>wgpu</code> directly,
+from within the Bevy render framework.</p>
+<h3 id="mid-level"><a class="header" href="#mid-level">Mid-Level</a></h3>
+<p>On top of <code>wgpu</code>, Bevy provides some abstractions that can help you, and
+integrate better with the rest of Bevy.</p>
+<p>The first is <a href="gpu//TODO.html">pipeline caching</a> and
+<a href="gpu//TODO.html">specialization</a>. If you create your
+<a href="gpu//TODO.html">render pipelines</a> via this interface, Bevy can manage
+them efficiently for you, creating them when they are first used, and then
+caching and reusing them, for optimal performance.</p>
+<p>Caching and specialization are, analogously, also available for <a href="gpu//TODO.html">GPU Compute
+pipelines</a>.</p>
+<p>Similar to the <a href="gpu//TODO.html">pipeline cache</a>, there is a <a href="gpu//TODO.html">texture
+cache</a>. This is what you use for rendering-internal
+<a href="gpu//TODO.html">textures</a> (for example: shadow maps, reflection maps,
+…), that do not originate from <a href="gpu//assets.html">assets</a>. It will manage and
+reuse the GPU memory allocation, and free it when it becomes unused.</p>
+<p>For using data from <a href="gpu//assets.html">assets</a>, Bevy provides the <a href="gpu//TODO.html">Render
+Asset</a> abstraction to help with extracting the data from
+different <a href="gpu//builtins.html#assets">asset types</a>.</p>
+<p>Bevy can manage all the "objects to draw" using <a href="gpu//TODO.html">phases</a>,
+which sort and draw <a href="gpu//TODO.html">phase items</a>. This way, Bevy
+can sort each object to render, relative to everything else in the scene,
+for optimal performance and correct transparency (if any).</p>
+<p>Phase Items are defined using <a href="gpu//TODO.html">render commands</a>
+and/or <a href="gpu//TODO.html">draw functions</a>. These are, conceputally,
+the rendering equivalents of ECS <a href="gpu//programming/systems.html">systems</a> and <a href="gpu//programming/exclusive.html">exclusive
+systems</a>, fetching data from the ECS World and generating
+<a href="gpu//TODO.html">draw calls</a> for the GPU.</p>
+<p>All of these things fit into the core architecture of the Bevy <a href="gpu//TODO.html">render
+graph</a> and <a href="gpu//gpu/stages.html">render stages</a>. During
+the Render stage, <a href="gpu//TODO.html">graph nodes</a> will execute <a href="gpu//TODO.html">render
+passes</a> with the <a href="gpu//TODO.html">render phases</a>,
+to draw everything as it was set up in the Prepare/Queue/PhaseSort stages.</p>
+<p>The <code>bevy_core_pipeline</code> crate defines a set of <a href="gpu//TODO.html">standard
+phase/item</a> and main pass types. If you can, you
+should work with them, for best compatibility with the Bevy ecosystem.</p>
+<h3 id="high-level"><a class="header" href="#high-level">High-Level</a></h3>
+<p>On top of all the mid-level APIs, Bevy provides abstractions to make many
+common kinds of workloads easier.</p>
+<p>The most notable higher-level features are <a href="gpu//TODO.html">meshes</a> and
+<a href="gpu//TODO.html">materials</a>.</p>
+<p>Meshes are the source of per-vertex data (<a href="gpu//TODO.html">vertex
+attributes</a>) to be fed into
+your <a href="gpu//TODO.html">shaders</a>. The material specifies what
+<a href="gpu//TODO.html">shaders</a> to use and any other data that needs to be
+fed into it, like <a href="gpu//TODO.html">textures</a>.</p>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="gpu//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+</tbody></table>
+</div><p style="text-align: center;">
+As this page is outdated, please refer to Bevy's official migration guides while reading,
+to cover the differences:
+<a href="https://bevyengine.org/learn/migration-guides/0-9-to-0-10/">0.9 to 0.10</a>,
+<a href="https://bevyengine.org/learn/migration-guides/0-10-to-0-11/">0.10 to 0.11</a>,
+<a href="https://bevyengine.org/learn/migration-guides/0-11-to-0-12/">0.11 to 0.12</a>,
+<a href="https://bevyengine.org/learn/migration-guides/0-12-to-0-13/">0.12 to 0.13</a>,
+<a href="https://bevyengine.org/learn/migration-guides/0-13-to-0-14/">0.13 to 0.14</a>.
+<a href="https://bevyengine.org/learn/migration-guides/0-14-to-0-15/">0.14 to 0.15</a>.
+</p>
+<p style="text-align: center;">
+I apologize for the inconvenience. I will update the page as soon as I find the time.
+</p>
+<hr />
+<h1 id="render-stages"><a class="header" href="#render-stages">Render Stages</a></h1>
+<p>Everything on the CPU side (the whole process of driving the GPU workloads)
+is structured in a sequence of "render stages":</p>
+<h2 id="timings"><a class="header" href="#timings">Timings</a></h2>
+<p>Note: Pipelined rendering is not yet actually enabled in Bevy 0.9. This section
+explains the intended behavior, which will land in a future Bevy version. You
+have to understand it, because any custom rendering code you write will have to
+work with it in mind.</p>
+<p><img src="gpu/../img/pipelined-rendering.png" alt="Diagram of pipelined rendering timings in app-bound and render-bound cases" /></p>
+<p>Every frame, <a href="gpu/stages.html#extract">Extract</a> serves as the synchronization point.</p>
+<p>When the Render Schedule completes, it will start again, but Extract will
+wait for the App Schedule, if it has not completed yet. The App Schedule
+will start again as soon as Extract has completed.</p>
+<p>Therefore:</p>
+<ul>
+<li>in an App-bound scenario (if app takes longer than render):
+<ul>
+<li>The start of Extract is waiting for App to finish</li>
+</ul>
+</li>
+<li>in a Render-bound scenario (if render takes longer than app):
+<ul>
+<li>The start of App is waiting for Extract to finish</li>
+</ul>
+</li>
+</ul>
+<p>If <a href="gpu//window/props.html#vsync">vsync</a> is enabled, the wait for the next refresh of the
+screen will happen in the <a href="gpu/stages.html#prepare">Prepare</a> stage. This has the effect of
+prolonging the Prepare stage in the Render schedule. Therefore, in practice,
+your game will behave like the "Render-bound" scenario shown above.</p>
+<p>The final render (the framebuffer with the pixels to show in the
+<a href="gpu//window/props.html">window</a>) is <em>presented</em> to the OS/driver at the end of the
+<a href="gpu/stages.html#render">Render</a> stage.</p>
+<p>Bevy updates its <a href="gpu//fundamentals/time.html">timing information</a> (in <a href="https://docs.rs/bevy/0.9/bevy/time/struct.Time.html"><code>Res&lt;Time&gt;</code></a>)
+at the start of the First stage in the main App schedule. The value to
+use is measured at "presentation time", in the render world, and the
+<a href="https://doc.rust-lang.org/stable/std/time/struct.Instant.html"><code>Instant</code></a> is sent over a channel, to be applied on the
+next frame.</p>
+<h2 id="adding-systems-to-render-stages"><a class="header" href="#adding-systems-to-render-stages">Adding Systems to Render Stages</a></h2>
+<p>If you are implementing custom rendering functionality in Bevy, you will likely
+need to add some of your own systems to at least some of the render stages:</p>
+<ul>
+<li>
+<p>Anything that needs data from your main App World will need a system in
+<a href="gpu/stages.html#extract">Extract</a> to copy that data. In practice, this is almost everything,
+unless it is fully contained on the GPU, or only uses renderer-internal
+generated data.</p>
+</li>
+<li>
+<p>Most use cases will need to do some setup of GPU resources
+in <a href="gpu/stages.html#prepare">Prepare</a> and/or <a href="gpu/stages.html#queue">Queue</a>.</p>
+</li>
+<li>
+<p>In <a href="gpu/stages.html#cleanup">Cleanup</a>, all <a href="gpu//programming/intro-data.html#entities--components">entities</a> are cleared automatically.
+If you have some custom data stored in <a href="gpu//programming/res.html">resources</a>, you can let it
+stay for the next frame, or add a system to clear it, if you want.</p>
+</li>
+</ul>
+<p>The way Bevy is set up, you shouldn't need to do anything in <a href="gpu/stages.html#render">Render</a>
+or <a href="gpu/stages.html#phasesort">PhaseSort</a>. If your custom rendering is part of the Bevy
+<a href="gpu//TODO.html">render graph</a>, it will just be handled automatically
+when Bevy executes the render graph in the <a href="gpu/stages.html#render">Render</a> stage. If you
+are implementing custom <a href="gpu//TODO.html">phase items</a>, the Main Pass
+render graph node will render them together with everything else.</p>
+<p>You can add your rendering systems to the respective stages, using the render
+<a href="gpu//programming/app-builder.html#sub-apps">sub-app</a>:</p>
+<pre><code>// TODO: code example
+</code></pre>
+<h2 id="extract"><a class="header" href="#extract">Extract</a></h2>
+<p>Extract is a very important and special stage. It is the synchronization
+point that links the two ECS Worlds. This is where the data required for
+rendering is copied ("extracted") from the main App World into the Render
+World, allowing for pipelined rendering.</p>
+<p>During the Extract stage, nothing else can run in parallel, on either the
+main App World or the Render World. Hence, Extract should be kept minimal
+and complete its work as quickly as possible.</p>
+<p>It is recommended that you avoid doing any computations in Extract, if
+possible. Just copy data.</p>
+<p>It is recommended that you only copy the data you actually need for rendering.
+Create new <a href="gpu//programming/ec.html#components">component types</a> and <a href="gpu//programming/res.html">resources</a> just
+for use within the render World, with only the data you need.</p>
+<p>For example, Bevy's 2D sprites uses a <a href="https://docs.rs/bevy/0.9/bevy/sprite/struct.ExtractedSprite.html"><code>struct ExtractedSprite</code></a>, where it copies the relevant data
+from the "user-facing" components of sprite and spritesheet entities in the
+main World.</p>
+<p>Bevy <strong>reserves Entity IDs</strong> in the render World, matching all the Entities
+existing in the main World. In most cases, you do not need to <em>spawn</em>
+new entities in the render World. You can just <a href="gpu//programming/commands.html">insert components with
+Commands</a> on the same Entity IDs as from the main World.</p>
+<pre><code>// TODO: code example
+</code></pre>
+<h2 id="prepare"><a class="header" href="#prepare">Prepare</a></h2>
+<p>Prepare is the stage to use if you need to set up any data on the
+GPU. This is where you can create GPU <a href="gpu//TODO.html">buffers</a>,
+<a href="gpu//TODO.html">textures</a>, and <a href="gpu//TODO.html">bind groups</a>.</p>
+<p>// TODO: elaborate on different ways Bevy is using it internally</p>
+<pre><code>// TODO: code example
+</code></pre>
+<h2 id="queue"><a class="header" href="#queue">Queue</a></h2>
+<p>Queue is the stage where you can set up the "rendering jobs" you will need to
+execute.</p>
+<p>Typically, this means creating <a href="gpu//TODO.html">phase items</a>
+with the correct <a href="gpu//TODO.html">render pipeline</a> and <a href="gpu//TODO.html">draw
+function</a>, for everything that you need to draw.</p>
+<p>For other things, analogously, Queue is where you would set up the workloads
+(like compute or draw calls) that the GPU would need to perform.</p>
+<p>// TODO: elaborate on different ways Bevy is using it internally</p>
+<pre><code>// TODO: code example
+</code></pre>
+<h2 id="phasesort"><a class="header" href="#phasesort">PhaseSort</a></h2>
+<p>This stage exists for Bevy to sort all of the <a href="gpu//TODO.html">phase
+items</a> that were set up during the <a href="gpu/stages.html#queue">Queue</a>
+stage, before rendering in the <a href="gpu/stages.html#render">Render</a> stage.</p>
+<p>It is unlikely that you will need to add anything custom here. I'm not aware
+of use cases. <a href="gpu//contact.html">Let me know</a> if you know of any.</p>
+<h2 id="render"><a class="header" href="#render">Render</a></h2>
+<p>Render is the stage where Bevy executes the <a href="gpu//TODO.html">Render Graph</a>.</p>
+<p>The built-in behavior is configured using Cameras. For each active Camera,
+Bevy will execute its associated render graph, configured to output to its
+associated render target.</p>
+<p>If you are using any of the <a href="gpu//TODO.html">standard render phases</a>,
+you don't need to do anything. Your custom <a href="gpu//TODO.html">phase items</a>
+will be rendered automatically as part of the Main Pass built-in render graph
+<a href="gpu//TODO.html">nodes</a>, alongside everything else.</p>
+<p>If you are implementing a rendering feature that needs a separate step, you
+can add it as a <a href="gpu//TODO.html">render graph node</a>, and it will be
+rendered automatically.</p>
+<p>The only time you might need to do something custom here is if you really
+want to sidestep Bevy's frameworks and reach for low-level <code>wgpu</code> access.
+You could place it in the Render stage.</p>
+<h2 id="cleanup"><a class="header" href="#cleanup">Cleanup</a></h2>
+<p>Bevy has a built-in system in Cleanup that clears all <a href="gpu//programming/intro-data.html#entities--components">entities</a> in
+the render World. Therefore, all data stored in components will be lost.
+It is expected that fresh data will be obtained in the next frame's
+<a href="gpu/stages.html#extract">Extract</a> stage.</p>
+<p>To persist rendering data over multiple frames, you should store it in
+<a href="gpu//programming/res.html">resources</a>. That way you have control over it.</p>
+<p>If you need to clear some data from your resources sometimes, you could
+add a custom system to the Cleanup stage to do it.</p>
+<pre><code>// TODO: code example
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-12">0.12</a></th><th>(outdated!)</th></tr></thead><tbody>
 </tbody></table>
 </div><p style="text-align: center;">
@@ -13583,7 +13645,7 @@ could best help you. :)</p>
 </div>
 <h1 id="contributing-to-bevy"><a class="header" href="#contributing-to-bevy">Contributing to Bevy</a></h1>
 <p>If you want to help out the Bevy Game Engine project, check out Bevy's
-<a href="https://github.com/bevyengine/bevy/blob/main/CONTRIBUTING.md">official contributing guide</a>.</p>
+<a href="https://bevyengine.org/learn/contribute/introduction/">official contributing guide</a>.</p>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>(any)</th></tr></thead><tbody>
 </tbody></table>
 </div>

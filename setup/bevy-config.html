@@ -25,19 +25,20 @@
         <link rel="stylesheet" href="../fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="../highlight.css">
-        <link rel="stylesheet" href="../tomorrow-night.css">
-        <link rel="stylesheet" href="../ayu-highlight.css">
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="../nagbar.css">
         <link rel="stylesheet" href="../sidebar.css">
 
 
-        <!-- Provide site root to javascript -->
+        <!-- Provide site root and default themes to javascript -->
         <script>
-            var path_to_root = "../";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc.js"></script>
@@ -47,8 +48,8 @@
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
-                var theme = localStorage.getItem('mdbook-theme');
-                var sidebar = localStorage.getItem('mdbook-sidebar');
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
 
                 if (theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
@@ -62,7 +63,8 @@
 
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script>
-            var theme;
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             const html = document.documentElement;
@@ -75,8 +77,8 @@
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var sidebar = null;
-            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
@@ -112,6 +114,7 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
@@ -158,19 +161,9 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-12">0.12</a></th><th>(outdated!)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.16</th><th>(upcoming / release candidate)</th></tr></thead><tbody>
 </tbody></table>
-</div><p style="text-align: center;">
-As this page is outdated, please refer to Bevy's official migration guides while reading,
-to cover the differences:
-<a href="https://bevyengine.org/learn/migration-guides/0-12-to-0-13/">0.12 to 0.13</a>,
-<a href="https://bevyengine.org/learn/migration-guides/0-13-to-0-14/">0.13 to 0.14</a>.
-<a href="https://bevyengine.org/learn/migration-guides/0-14-to-0-15/">0.14 to 0.15</a>.
-</p>
-<p style="text-align: center;">
-I apologize for the inconvenience. I will update the page as soon as I find the time.
-</p>
-<hr />
+</div>
 <h1 id="configuring-bevy"><a class="header" href="#configuring-bevy">Configuring Bevy</a></h1>
 <p>Bevy is very modular and configurable. It is implemented as many separate
 cargo crates, allowing you to remove the parts you don't need. Higher-level
@@ -179,10 +172,12 @@ be disabled or replaced with alternatives.</p>
 <p>The lower-level core crates (like the Bevy ECS) can also be used completely
 standalone, or integrated into otherwise non-Bevy projects.</p>
 <h2 id="bevy-cargo-features"><a class="header" href="#bevy-cargo-features">Bevy Cargo Features</a></h2>
-<p>In Bevy projects, you can enable/disable various parts of Bevy using cargo features.</p>
-<p>Many common features are enabled by default. If you want to disable some of
-them, you need to disable all of them and re-enable the ones you need.
-Unfortunately, Cargo does not let you just disable individual default features.</p>
+<p>You can enable/disable various parts of Bevy using cargo features.</p>
+<p>Many common features are enabled by default. Unfortunately, Cargo does not
+let you just disable individual default features. If you want to disable
+some of them, you need to disable all of them and re-enable the ones you need.</p>
+<p>This is highly recommended if you are developing a library crate. It is also
+a good way to reduce binary sizes, if you care about that.</p>
 <p>Here is how you might configure your Bevy:</p>
 <pre><code class="language-toml">[dependencies.bevy]
 version = "0.12"
@@ -192,90 +187,150 @@ features = [
   # These are the default features:
   # (re-enable whichever you like)
 
-  # Bevy functionality:
-  "multi-threaded",     # Run with multithreading
-  "bevy_asset",         # Assets management
-  "bevy_audio",         # Builtin audio
-  "bevy_gilrs",         # Gamepad input support
-  "bevy_scene",         # Scenes management
-  "bevy_winit",         # Window management (cross-platform Winit backend)
-  "bevy_render",        # Rendering framework core
-  "bevy_core_pipeline", # Common rendering abstractions
-  "bevy_gizmos",        # Support drawing debug lines and shapes
-  "bevy_sprite",        # 2D (sprites) rendering
-  "bevy_pbr",           # 3D (physically-based) rendering
-  "bevy_gltf",          # GLTF 3D assets format support
-  "bevy_text",          # Text/font rendering
-  "bevy_ui",            # UI toolkit
-  "animation",          # Animation support
-  "tonemapping_luts",   # Support different camera Tonemapping modes (enables KTX2+zstd)
-  "default_font",       # Embed a minimal default font for text/UI
+  # Parts of Bevy:
+  "animation",                   # Enable animation for everything that supports it
+  "bevy_asset",                  # Asset management
+  "bevy_audio",                  # Audio support
+  "bevy_color",                  # Color management
+  "bevy_core_pipeline",          # Bevy's GPU rendering architecture
+  "bevy_gilrs",                  # Gamepad/controller support
+  "bevy_gizmos",                 # Gizmos (drawing debug lines and shapes)
+  "bevy_image",                  # Image support
+  "bevy_input_focus",            # Input focusing system for UI
+  "bevy_log",                    # Logging to console
+  "bevy_mesh_picking_backend",   # 3D mesh picking (selection by cursor)
+  "bevy_pbr",                    # 3D rendering and Physically Based Shading
+  "bevy_picking",                # Picking (selection of objects by cursor)
+  "bevy_render",                 # GPU support (based on `wgpu`)
+  "bevy_scene",                  # ECS Scenes
+  "bevy_sprite",                 # 2D rendering (sprites, meshes, text)
+  "bevy_sprite_picking_backend", # 2D sprite picking (selection by cursor)
+  "bevy_state",                  # App state management
+  "bevy_text",                   # Text rendering
+  "bevy_ui",                     # UI toolkit
+  "bevy_ui_picking_backend",     # UI node picking (selection by cursor)
+  "bevy_window",                 # Window management
+  "bevy_winit",                  # Cross-platform window management support
 
-  # File formats:
-  "png",    # PNG image format for simple 2D images
-  "hdr",    # HDR images
-  "ktx2",   # Preferred format for GPU textures
-  "zstd",   # ZSTD compression support in KTX2 files
-  "vorbis", # Audio: OGG Vorbis
+  # Low-level tunables
+  "std",            # Use the Rust standard library (important!)
+  "async_executor", # Enable the Async Executor (Bevy task pools)
+  "multi_threaded", # Enable CPU multithreading
+  "sysinfo_plugin", # Support CPU and RAM usage diagnostics
+  "custom_cursor",  # Support custom cursors
 
-  # Platform-specific:
+  # Platform-Specific
   "x11",                   # Linux: Support X11 windowing system
   "android_shared_stdcxx", # Android: use shared C++ library
+  "android-game-activity", # Android: use GameActivity instead of NativeActivity
   "webgl2",                # Web: use WebGL2 instead of WebGPU
+
+  # Built-in Data
+  "default_font",       # Built-in default font for UI (Fira Mono)
+  "smaa_luts",          # Support SMAA antialiasing
+  "tonemapping_luts",   # Support different camera Tonemapping modes (enables KTX2+zstd)
+
+  # Asset File Format Support
+  "bevy_gltf", # GLTF 3D asset support
+  "png",       # PNG image format for simple 2D images
+  "hdr",       # HDR image format
+  "ktx2",      # KTX2 format for GPU texture data
+  "zstd",      # ZSTD compression support in KTX2 files
+  "vorbis",    # Audio: OGG Vorbis
+
 
   # These are other (non-default) features that may be of interest:
   # (add any of these that you need)
 
-  # Bevy functionality:
-  "asset_processor",      # Asset processing
-  "filesystem_watcher",   # Asset hot-reloading
-  "subpixel_glyph_atlas", # Subpixel antialiasing for text/fonts
+  # General Bevy features
+  "ghost_nodes", # UI ghost nodes
+
+  # Low level tunables
+  "async-io",             # Use `async-io` instead of `futures-lite`
   "serialize",            # Support for `serde` Serialize/Deserialize
-  "async-io",             # Make bevy use `async-io` instead of `futures-lite`
-  "pbr_transmission_textures", # Enable Transmission textures in PBR materials
-                               # (may cause issues on old/lowend GPUs)
+  "subpixel_glyph_atlas", # Subpixel antialiasing for text/fonts
+  "reflect_documentation", # Documentation reflection support
+  "reflect_functions",    # Function reflection support
 
-  # File formats:
-  "dds",  # Alternative DirectX format for GPU textures, instead of KTX2
-  "jpeg", # JPEG lossy format for 2D photos
-  "webp", # WebP image format
-  "bmp",  # Uncompressed BMP image format
-  "tga",  # Truevision Targa image format
-  "exr",  # OpenEXR advanced image format
-  "pnm",  # PNM (pam, pbm, pgm, ppm) image format
+  # Platform-Specific
+  "wayland",                  # Linux: Support Wayland windowing system
+  "accesskit_unix",           # UNIX-like: AccessKit Accessibility Framework support
+  "android-native-activity",  # Android: Use NativeActivity instead of GameActivity
+  "spirv_shader_passthrough", # Vulkan: allow direct loading of SPIR-V shader blobs without validation
+  "webgpu",                   # Web: use the faster, modern, experimental WebGPU API instead of WebGL2
+  "statically-linked-dxc",    # Windows: embed the DirectX Shader Compiler into your game binary
+  "web",                      # Web platform integration
+  "libm",                     # Use libm for math on non-std / embedded platforms
+  "critical-section",         # For supporting no-std / embedded
+  "default_no_std",
+
+  # Graphics/rendering features (may cause issues on old/weak GPUs)
+  "experimental_pbr_pcss", # PCSS shadow filtering
+  "meshlet",               # Meshlet / virtual geometry rendering (like Unreal's Nanite)
+  "pbr_anisotropy_texture", # Support Anisotropy Map texture
+  "pbr_multi_layer_material_textures", # Support multi-layer textures
+  "pbr_specular_textures",  # Support specular map textures
+  "pbr_transmission_textures", # Support textures for light transimssion (translucency)
+
+  # Development features
+  "dynamic_linking",     # Dynamic linking for faster compile-times
+  "asset_processor",     # Enable asset processing support
+  "bevy_debug_stepping", # Enable stepping through ECS systems for debugging
+  "bevy_dev_tools",      # Extra dev functionality (like FPS overlay)
+  "bevy_remote",         # Enable BRP (Bevy Remote Protocol) for integration with editors and external dev tools
+  "file_watcher",        # Asset hot-reloading
+  "meshlet_processor",   # Asset processor to convert meshes into meshlet format
+  "glam_assert",         # Math validation / debug assertions
+  "debug_glam_assert",   # Math validation / debug assertions
+  "bevy_ui_debug",       # UI debugging functionality
+  "bevy_ci_testing",     # For testing of Bevy itself in CI
+  "embedded_watcher",    # Hot-reloading for Bevy's internal/builtin assets
+  "configurable_error_handler",
+  "trace",               # Enable tracing
+  "trace_chrome",        # Enable tracing using the Chrome backend
+  "trace_tracy",         # Enable tracing using Tracy
+  "trace_tracy_memory",  # Enable memory tracking for Tracy
+  "track_location",      # Enable location tracking
+  "detailed_trace",      # Extra verbose tracing
+
+  # Asset File Format Support
   "basis-universal", # Basis Universal GPU texture compression format
-  "zlib", # zlib compression support in KTX2 files
+  "bmp",  # Uncompressed BMP image format
+  "dds",  # DDS (DirectX) format for GPU textures, alternative to KTX2
+  "exr",  # OpenEXR advanced image format
+  "ff",   # FF image support
   "flac", # Audio: FLAC lossless format
+  "gif",  # GIF legacy image format
+  "ico",  # ICO image format (Windows icons)
+  "jpeg", # JPEG lossy format for photos
   "mp3",  # Audio: MP3 format (not recommended)
-  "wav",  # Audio: Uncompressed WAV
-  "symphonia-all", # All Audio formats supported by the Symphonia library
-  "shader_format_glsl", # GLSL shader support
+  "minimp3", # Alternative MP3 decoder
+  "pnm",  # PNM (pam, pbm, pgm, ppm) image format
+  "qoi",  # QOI image format
+  "shader_format_glsl",  # GLSL shader support
   "shader_format_spirv", # SPIR-V shader support
-
-  # Platform-specific:
-  "wayland",              # (Linux) Support Wayland windowing system
-  "accesskit_unix",       # (Unix-like) AccessKit integration for UI Accessibility
-  "bevy_dynamic_plugin",  # (Desktop) support for loading of `DynamicPlugin`s
-
-  # Development/Debug features:
-  "dynamic_linking",   # Dynamic linking for faster compile-times
-  "trace",             # Enable tracing for performance measurement
-  "detailed_trace",    # Make traces more verbose
-  "trace_tracy",       # Tracing using `tracy`
-  "trace_tracy_memory", # + memory profiling
-  "trace_chrome",      # Tracing using the Chrome format
-  "wgpu_trace",        # WGPU/rendering tracing
-  "debug_glam_assert", # Assertions to validate math (glam) usage
-  "embedded_watcher",  # Hot-reloading for Bevy's internal/builtin assets
+  "shader_format_wesl",  # WESL (Extended WGSL) shader support
+  "tga",  # Truevision Targa image format
+  "tiff", # TIFF image format
+  "wav",  # Audio: Uncompressed WAV
+  "webp", # WebP image format
+  "zlib", # zlib compression support in KTX2 files
+  "symphonia-aac", # AAC audio format (via Symphonia library)
+  "symphonia-flac", # Alternative FLAC audio decoder (via Symphonia library)
+  "symphonia-isomp4", # MP4 format (via Symphonia library)
+  "symphonia-vorbis", # Alternative Ogg Vorbis audio support (via Symphonia library)
+  "symphonia-wav", # Alternative WAV audio support (via Symphonia library)
+  "symphonia-all", # All Audio formats supported by the Symphonia library
 ]
 </code></pre>
-<p>(See <a href="https://docs.rs/crate/bevy/0.12/features">here</a> for a full list of Bevy's cargo features.)</p>
+<p>(See <a href="https://docs.rs/crate/bevy/0.16.0-rc.5/features">here</a> for a full list of Bevy's cargo features.)</p>
 <h3 id="graphics--rendering"><a class="header" href="#graphics--rendering">Graphics / Rendering</a></h3>
-<p>For a graphical application or game (most Bevy projects), you can include
-<code>bevy_winit</code> and your selection of Rendering features. For
+<p>For a graphical application or game (most Bevy projects), you can
+include <code>bevy_winit</code> and your selection of Rendering features. For
 <a href="/platforms/linux.html">Linux</a> support, you need at least one of <code>x11</code> or <code>wayland</code>.</p>
 <p><code>bevy_render</code> and <code>bevy_core_pipeline</code> are required for any application using
-Bevy rendering.</p>
+Bevy rendering. They are automatically added if you enable higher-level stuff
+like <code>bevy_ui</code>, <code>bevy_pbr</code>, <code>bevy_sprite</code>, etc.</p>
 <p>If you only need 2D and no 3D, add <code>bevy_sprite</code>.</p>
 <p>If you only need 3D and no 2D, add <code>bevy_pbr</code>. If you are <a href="/3d/gltf.html">loading 3D models
 from GLTF files</a>, add <code>bevy_gltf</code>.</p>
@@ -311,11 +366,12 @@ full feature support, but browser support for it is limited (only known to
 work in very recent versions of Chrome and Firefox nightly).</p>
 <p>WebGL2 gives the best compatibility with all browsers, but has worse performance
 and some limitations on what kinds of graphics features you can use in Bevy.</p>
-<p>The <code>webgl2</code> cargo feature selects WebGL2 if enabled. If disabled, WebGPU is used.</p>
+<p>The <code>webgl2</code> cargo feature selects WebGL2, <code>webgpu</code> selects WebGPU. Also
+consider enabling <code>web</code> for general web support.</p>
 <h3 id="development-features"><a class="header" href="#development-features">Development Features</a></h3>
 <p>While you are developing your project, these features might be useful:</p>
 <h4 id="asset-hot-reloading-and-processing"><a class="header" href="#asset-hot-reloading-and-processing">Asset hot-reloading and processing</a></h4>
-<p>The <code>filesystem_watcher</code> feature enables support for <a href="/assets/hot-reload.html">hot-reloading of
+<p>The <code>file_watcher</code> feature enables support for <a href="/assets/hot-reload.html">hot-reloading of
 assets</a>, supported on desktop platforms.</p>
 <p>The <code>asset_processor</code> feature enables support for <a href="/assets/processing.html">asset
 processing</a>, allowing you to automatically convert and
@@ -338,8 +394,7 @@ project like this:</p>
 </code></pre>
 <p>You could also add this to your <a href="/setup/editor.html">IDE/editor configuration</a>.</p>
 <h4 id="tracing"><a class="header" href="#tracing">Tracing</a></h4>
-<p>The features <code>trace</code> and <code>wgpu_trace</code> may be useful for profiling and
-diagnosing performance issues.</p>
+<p>The <code>trace</code> feature is useful for profiling and diagnosing performance issues.</p>
 <p><code>trace_chrome</code> and <code>trace_tracy</code> choose the backend you want to use to
 visualize the traces.</p>
 <p>See <a href="https://github.com/bevyengine/bevy/blob/main/docs/profiling.md">Bevy's official docs on profiling</a> to learn more.</p>

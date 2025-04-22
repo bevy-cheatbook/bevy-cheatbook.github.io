@@ -25,19 +25,20 @@
         <link rel="stylesheet" href="../fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="../highlight.css">
-        <link rel="stylesheet" href="../tomorrow-night.css">
-        <link rel="stylesheet" href="../ayu-highlight.css">
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="../nagbar.css">
         <link rel="stylesheet" href="../sidebar.css">
 
 
-        <!-- Provide site root to javascript -->
+        <!-- Provide site root and default themes to javascript -->
         <script>
-            var path_to_root = "../";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc.js"></script>
@@ -47,8 +48,8 @@
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
-                var theme = localStorage.getItem('mdbook-theme');
-                var sidebar = localStorage.getItem('mdbook-sidebar');
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
 
                 if (theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
@@ -62,7 +63,8 @@
 
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script>
-            var theme;
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             const html = document.documentElement;
@@ -75,8 +77,8 @@
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var sidebar = null;
-            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
@@ -112,6 +114,7 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
@@ -158,44 +161,85 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(outdated!)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.16</th><th>(upcoming / release candidate)</th></tr></thead><tbody>
 </tbody></table>
-</div><p style="text-align: center;">
-As this page is outdated, please refer to Bevy's official migration guides while reading,
-to cover the differences:
-<a href="https://bevyengine.org/learn/migration-guides/0-13-to-0-14/">0.13 to 0.14</a>.
-<a href="https://bevyengine.org/learn/migration-guides/0-14-to-0-15/">0.14 to 0.15</a>.
-</p>
-<p style="text-align: center;">
-I apologize for the inconvenience. I will update the page as soon as I find the time.
-</p>
-<hr />
+</div>
 <h1 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h1>
 <p>This page covers the basic setup needed for Bevy development.</p>
+<p>Also see the <a href="https://bevyengine.org/learn/book/getting-started/setup/">Setup page in the official Bevy Book</a>
+and the <a href="https://github.com/bevyengine/bevy/blob/main/README.md">official Bevy Readme</a>.</p>
 <hr />
+<h2 id="prerequisites"><a class="header" href="#prerequisites">Prerequisites</a></h2>
 <p>For the most part, Bevy is just like any other Rust library. You need to
 install Rust and setup your dev environment just like for any other Rust
 project. You can install Rust using <a href="https://rustup.rs">Rustup</a>. See
-<a href="https://www.rust-lang.org/learn/get-started">Rust's official setup page</a>.</p>
-<p>On Linux, you need the development files for some system libraries. See the
-<a href="https://github.com/bevyengine/bevy/blob/main/docs/linux_dependencies.md">official Bevy Linux dependencies page</a>.</p>
-<p>Also see the <a href="https://bevyengine.org/learn/book/getting-started/setup/">Setup page in the official Bevy Book</a>
-and the <a href="https://github.com/bevyengine/bevy/blob/main/README.md">official Bevy Readme</a>.</p>
+<a href="https://www.rust-lang.org/learn/get-started">Rust's official setup page</a>. You also need various
+other dependencies, depending on your operating system.</p>
+<details>
+  <summary>Linux / UNIX</summary>
+<ul>
+<li>Follow the official instructions for <a href="https://github.com/bevyengine/bevy/blob/main/docs/linux_dependencies.md">installing dependencies</a>.</li>
+<li>Run the <a href="https://rustup.rs">rustup</a> install script.</li>
+</ul>
+</details>
+<details>
+  <summary>Windows</summary>
+<ul>
+<li>Download and run the <a href="https://rustup.rs">rustup</a> installer. It will prompt you to install the Visual Studio build tools as part of the process.</li>
+<li>Alternatively, you can install Visual Studio yourself: <a href="https://visualstudio.microsoft.com/visual-cpp-build-tools/">installer</a>
+<ul>
+<li>Easy setup: select "Desktop development with C++"</li>
+<li>Minimal setup: under "Individual Components", select:
+<ul>
+<li>"MSVC" for your architecture and version of Windows</li>
+<li>"Windows SDK" for your version of Windows</li>
+<li>"C++ CMake tools"</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</details>
+<details>
+  <summary>Mac</summary>
+<ul>
+<li>Install the XCode command line tools with <code>xcode-select --install</code> or the <a href="https://apps.apple.com/en/app/xcode/id497799835">Xcode app</a></li>
+<li>Run the <a href="https://rustup.rs">rustup</a> install script.</li>
+</ul>
+</details>
+<p>If you are interested in mobile development, check out the pages on
+<a href="/platforms/android.html">Android</a> and <a href="/platforms/ios.html">iOS</a>.</p>
+<p>If you are interested in web development, check out the <a href="/platforms/wasm.html">WASM</a>
+chapter.</p>
 <h2 id="creating-a-new-project"><a class="header" href="#creating-a-new-project">Creating a New Project</a></h2>
 <p>You can simply create a new Rust project, either from your IDE/editor, or the commandline:</p>
 <pre><code class="language-sh">cargo new --bin my_game
 </code></pre>
 <p>(creates a project called <code>my_game</code>)</p>
 <p>The <code>Cargo.toml</code> file contains all the configuration of your project.
-Add the latest version of <code>bevy</code> as a dependency. Your file should now
-look something like this:</p>
+Add the latest version of <code>bevy</code> as a dependency.</p>
+<pre><code class="language-sh">cargo add bevy --features wayland
+</code></pre>
+<p>(I recommend enabling the non-default <code>wayland</code> feature, so your game can
+better support modern Linux distros)</p>
+<p>You can also add other <a href="/setup/bevy-config.html">optional features</a> to bevy, if you'd like.</p>
+<p>Your <code>Cargo.toml</code> should now look something like this:</p>
 <pre><code class="language-toml">[package]
 name = "my_game"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-bevy = "0.13"
+bevy = { version = "0.16", features = ["wayland"] }
+</code></pre>
+<p>If you plan to customize bevy a lot, I recommend a dedicated dependency section.
+It makes everything easier to read, compared to having everything on one line.</p>
+<pre><code class="language-toml">[dependencies.bevy]
+version = "0.16"
+features = [
+  "wayland",
+  # ...
+]
 </code></pre>
 <p>The <code>src/main.rs</code> file is your main source code file. This is where you
 start writing your Rust code. For a minimal Bevy <a href="/programming/app-builder.html">app</a>, you need
@@ -212,31 +256,26 @@ while, as it needs to build the whole Bevy engine and dependencies. Subsequent
 runs should be fast. You can do this from your IDE/editor, or the commandline:</p>
 <pre><code class="language-sh">cargo run
 </code></pre>
+<p>While this is enough to get you started, there are many tweaks you can do to
+your <a href="/setup/toolchain.html">compiler / build toolchain configuration</a>, for faster
+compile times and better performance. At the very least, consider <a href="/pitfalls/performance.html">enabling
+optimizations</a>.</p>
 <h2 id="documentation"><a class="header" href="#documentation">Documentation</a></h2>
-<p>You can generate your own docs (like what is on <a href="https://docs.rs">docs.rs</a>), for
-offline use, including everything from your own project and all dependencies, in
-one place.</p>
+<p>You can generate your own docs (like what is on <a href="https://docs.rs">docs.rs</a>),
+for offline use, including everything from your own project and all
+dependencies, all in one place.</p>
 <pre><code class="language-sh">cargo doc --open
 </code></pre>
 <p>This will build all the HTML docs and open them in your web browser.</p>
 <p>It does not require an internet connection, and gives you an easy way to search
 the API docs for all crates in your dependency tree all at once. It is more
 useful than the online version of the docs.</p>
-<h2 id="optional-extra-setup"><a class="header" href="#optional-extra-setup">Optional Extra Setup</a></h2>
-<p>You will likely quickly run into unusably slow performance with the default
-Rust unoptimized dev builds. <a href="/pitfalls/performance.html">See here how to fix.</a></p>
-<p>Iterative recompilation speed is important to keep you productive, so you don't
-have to wait long for the Rust compiler to rebuild your project every time you
-want to test your game. <a href="https://bevyengine.org/learn/book/getting-started/setup/">Bevy's getting started page</a>
-has advice about how to speed up compile times.</p>
-<p>Also have a look in the <a href="/setup/bevy-tools.html">Dev Tools and Editors</a> page for suggestions
-about additional external dev tools that may be helpful.</p>
 <h2 id="whats-next"><a class="header" href="#whats-next">What's Next?</a></h2>
-<p>Have a look at the <a href="/tutorial.html">guided tutorial</a> page of this book,
+<p>Have a look at the <a href="/tutorial.html">guided tutorial</a> page of this book
 and Bevy's <a href="https://github.com/bevyengine/bevy/tree/latest/examples#examples">official examples</a>.</p>
-<p>Check out the <a href="https://bevyengine.org/assets">Bevy Assets Website</a> to find other tutorials
-and learning resources from the community, and <a href="/setup/unofficial-plugins.html">plugins</a>
-to use in your project.</p>
+<p>Check out the <a href="https://bevyengine.org/assets">Bevy Assets Website</a> to find other tutorials,
+learning resources from the community, and <a href="/setup/unofficial-plugins.html">plugins</a> to use
+in your project.</p>
 <p>Join the community on <a href="https://discord.gg/bevy">Discord</a> to chat with us!</p>
 <h2 id="running-into-issues"><a class="header" href="#running-into-issues">Running into Issues?</a></h2>
 <p>If something is not working, be sure to check the <a href="/pitfalls.html">Common

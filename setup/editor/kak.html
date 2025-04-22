@@ -25,19 +25,20 @@
         <link rel="stylesheet" href="../../fonts/fonts.css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="../../highlight.css">
-        <link rel="stylesheet" href="../../tomorrow-night.css">
-        <link rel="stylesheet" href="../../ayu-highlight.css">
+        <link rel="stylesheet" id="highlight-css" href="../../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
         <link rel="stylesheet" href="../../nagbar.css">
         <link rel="stylesheet" href="../../sidebar.css">
 
 
-        <!-- Provide site root to javascript -->
+        <!-- Provide site root and default themes to javascript -->
         <script>
-            var path_to_root = "../../";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+            const path_to_root = "../../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../../toc.js"></script>
@@ -47,8 +48,8 @@
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
             try {
-                var theme = localStorage.getItem('mdbook-theme');
-                var sidebar = localStorage.getItem('mdbook-sidebar');
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
 
                 if (theme.startsWith('"') && theme.endsWith('"')) {
                     localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
@@ -62,7 +63,8 @@
 
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script>
-            var theme;
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
             try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
             if (theme === null || theme === undefined) { theme = default_theme; }
             const html = document.documentElement;
@@ -75,8 +77,8 @@
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script>
-            var sidebar = null;
-            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
@@ -112,6 +114,7 @@
                             <i class="fa fa-paint-brush"></i>
                         </button>
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="default_theme">Auto</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
@@ -158,98 +161,99 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-13">0.13</a></th><th>(outdated!)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th>0.16</th><th>(upcoming / release candidate)</th></tr></thead><tbody>
 </tbody></table>
-</div><p style="text-align: center;">
-As this page is outdated, please refer to Bevy's official migration guides while reading,
-to cover the differences:
-<a href="https://bevyengine.org/learn/migration-guides/0-13-to-0-14/">0.13 to 0.14</a>.
-<a href="https://bevyengine.org/learn/migration-guides/0-14-to-0-15/">0.14 to 0.15</a>.
-</p>
-<p style="text-align: center;">
-I apologize for the inconvenience. I will update the page as soon as I find the time.
-</p>
-<hr />
+</div>
 <h1 id="kakoune"><a class="header" href="#kakoune">Kakoune</a></h1>
 <p>If you are a Kakoune user and you'd like something to be added to this page,
 please file a <a href="https://github.com/bevy-cheatbook/bevy-cheatbook/issues">GitHub Issue</a>.</p>
-<h2 id="rust-language-support"><a class="header" href="#rust-language-support">Rust Language Support</a></h2>
-<p>You can use <code>kak-lsp</code> with <code>rust-analyzer</code>.</p>
+<h2 id="rust-language-support-lsp-with-rust-analyzer"><a class="header" href="#rust-language-support-lsp-with-rust-analyzer">Rust Language Support (LSP with Rust Analyzer)</a></h2>
+<p>You can use <a href="https://github.com/kakoune-lsp/kakoune-lsp"><code>kakoune-lsp</code></a> with <code>rust-analyzer</code>.</p>
 <p>You want to install just the RA server, without the official VSCode plugin.</p>
 <p>You can manage it via <code>rustup</code>:</p>
 <pre><code class="language-sh">rustup component add rust-analyzer
 </code></pre>
-<p>Or you can build/install it yourself from git:</p>
-<pre><code class="language-sh">git clone https://github.com/rust-lang/rust-analyzer
-cd rust-analyzer
-git checkout release # use the `release` branch instead of `main`
-cargo xtask install --server
+<p>To set up <code>kak-lsp</code>, add the following to <code>~/.config/kak/kakrc</code>:</p>
+<pre><code class="language-kak">eval %sh{kak-lsp}
+lsp-enable
 </code></pre>
-<p>The easiest way to set up <code>kak-lsp</code> is using <code>plug.kak</code>.</p>
-<p>If you don't have <code>plug.kak</code>, put the following in <code>~/.config/kak/kakrc</code>:</p>
-<pre><code class="language-kak">evaluate-commands %sh{
-    plugins="$kak_config/plugins"
-    mkdir -p "$plugins"
-    [ ! -e "$plugins/plug.kak" ] &amp;&amp; \
-        git clone -q https://github.com/andreyorst/plug.kak.git "$plugins/plug.kak"
-    printf "%s\n" "source '$plugins/plug.kak/rc/plug.kak'"
-}
-plug "andreyorst/plug.kak" noload
+<p>You want to create a keybinding to open the LSP menu, from where you can
+access all the various actions/commands that Rust Analyzer can do to assist
+you as you code. For example, to bind it to the <code>R</code> key:</p>
+<pre><code class="language-kak">map global normal "R" ": enter-user-mode lsp&lt;ret&gt;" -docstring "LSP mode"
 </code></pre>
-<p>And then to set up <code>kak-lsp</code> with Rust support:</p>
-<pre><code class="language-kak">plug "kak-lsp/kak-lsp" do %{
-    cargo install --force --path .
-} config %{
-    set global lsp_cmd "kak-lsp -s %val{session}"
-
-    # create a command to let you restart LSP if anything goes wrong / gets glitched
-    define-command lsp-restart -docstring 'restart lsp server' %{ lsp-stop; lsp-start }
-
-    # helper command to enable LSP
-    define-command -hidden lsp-init %{
-        lsp-enable-window
-        # preferences:
-        set window lsp_auto_highlight_references true
-        lsp-auto-signature-help-enable
-        # keybind: use "," to get a menu of available LSP commands
-        map global normal "," ": enter-user-mode lsp&lt;ret&gt;" -docstring "LSP mode"
-    }
-
-    hook global KakEnd .* lsp-exit
-
-    # autoenable LSP when opening Rust files
-    hook global WinSetOption filetype=rust %{
-        lsp-init
-    }
-}
-# formatting settings for Rust files
-hook global BufSetOption filetype=rust %{
+<p>There are other options that you might like. For example, to automatically</p>
+<pre><code class="language-kak"># automatically highlight the symbol under the cursor to show where it is used
+set global lsp_auto_highlight_references true
+# automatically show help for function signatures
+lsp-auto-signature-help-enable
+</code></pre>
+<p>To find out what else is available, type <code>:lsp-enable</code> and see what shows
+up in the list of autocompletions / suggestions. You can run these commands
+manually to control the relevant features, or add them to your <code>kakrc</code>,
+if you want them to be enabled by default.</p>
+<h2 id="general-rust-settings"><a class="header" href="#general-rust-settings">General Rust settings</a></h2>
+<p>To set various standard Kakoune editor options for Rust:</p>
+<pre><code class="language-kak">hook global BufSetOption filetype=rust %{
     set buffer tabstop 4
     set buffer indentwidth 4
     set buffer formatcmd 'rustfmt'
-    set buffer autowrap_column 100
     expandtab
+    # etc ...
 }
 </code></pre>
-<p>Put the following in <code>~/.config/kak-lsp/kak-lsp.toml</code> to use <code>rust-analyzer</code>:</p>
-<pre><code class="language-toml">[server]
-# Shut down the `rust-analyzer` process after a period of inactivity
-timeout = 900
-
-[language.rust]
-filetypes = ["rust"]
-roots = ["Cargo.toml"]
-command = "rust-analyzer"
-settings_section = "rust-analyzer"
-
-[language.rust.settings.rust-analyzer]
-# Proc Macro support is important for Bevy projects
-procMacro.enable = true
-# disable hover actions, can be laggy on complex projects like Bevy
-hoverActions.enable = false
-# do not use the data generated by `cargo check`, again, because it can be slow and laggy
-cargo.loadOutDirsFromCheck = false
+<h2 id="autoformatting"><a class="header" href="#autoformatting">Autoformatting</a></h2>
+<p>To manually trigger code formatting, use the keybinding from the LSP menu.
+For example, if you bound the LSP menu to <code>R</code>, you can just press <code>Rf</code>.</p>
+<p>If you would like to format on save, add the following to your <code>kakrc</code>:</p>
+<pre><code class="language-kak">hook global BufSetOption filetype=rust %{
+    hook buffer BufWritePre .* lsp-formatting-sync
+}
 </code></pre>
+<p>Personally, I prefer to instead create a separate command for formatting and
+saving, so that it is opt-in and does not happen every time I save a file:</p>
+<pre><code class="language-kak">define-command W %{
+    lsp-formatting-sync
+    w
+}
+</code></pre>
+<p>Now I can just type <code>:W</code> to save with formatting and <code>:w</code> to save without formatting.</p>
+<h2 id="configuring-rust-analyzer"><a class="header" href="#configuring-rust-analyzer">Configuring Rust Analyzer</a></h2>
+<p>You might need to tweak various settings for the RA server itself, similar to
+how you can do in other editors (like VS Code).</p>
+<p>Copy the following default configuration into your <code>kakrc</code>:</p>
+<pre><code class="language-kak">hook -group lsp-filetype-rust global BufSetOption filetype=rust %{
+    set-option buffer lsp_servers %{
+        [rust-analyzer]
+        root_globs = ["Cargo.toml"]
+        single_instance = true
+        [rust-analyzer.experimental]
+        commands.commands = ["rust-analyzer.runSingle"]
+        hoverActions = true
+        [rust-analyzer.settings.rust-analyzer]
+        # See https://rust-analyzer.github.io/manual.html#configuration
+        # cargo.features = []
+        check.command = "clippy"
+        [rust-analyzer.symbol_kinds]
+        Constant = "const"
+        Enum = "enum"
+        EnumMember = ""
+        Field = ""
+        Function = "fn"
+        Interface = "trait"
+        Method = "fn"
+        Module = "mod"
+        Object = ""
+        Struct = "struct"
+        TypeParameter = "type"
+        Variable = "let"
+    }
+}
+</code></pre>
+<p>(this was obtained from the output of the <code>kak-lsp</code> command, which is
+evaluated to set up <code>kak-lsp</code>)</p>
+<p>You can now customize it to your liking. The various options for RA go under
+the <code>[rust-analyzer.settings.rust-analyzer]</code> section.</p>
 
                     </main>
 
