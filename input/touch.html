@@ -44,6 +44,17 @@
         <script src="../toc.js"></script>
     </head>
     <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
     <div id="body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
@@ -121,7 +132,7 @@
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
@@ -161,32 +172,18 @@
 
                 <div id="content" class="content">
                     <main>
-                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+                        <div class="table-wrapper"><table><thead><tr><th><a href="/introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-16">0.16</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
-</div><p style="text-align: center;">
-As this page is outdated, please refer to Bevy's official migration guides while reading,
-to cover the differences:
-<a href="https://bevyengine.org/learn/migration-guides/0-9-to-0-10/">0.9 to 0.10</a>,
-<a href="https://bevyengine.org/learn/migration-guides/0-10-to-0-11/">0.10 to 0.11</a>,
-<a href="https://bevyengine.org/learn/migration-guides/0-11-to-0-12/">0.11 to 0.12</a>,
-<a href="https://bevyengine.org/learn/migration-guides/0-12-to-0-13/">0.12 to 0.13</a>,
-<a href="https://bevyengine.org/learn/migration-guides/0-13-to-0-14/">0.13 to 0.14</a>,
-<a href="https://bevyengine.org/learn/migration-guides/0-14-to-0-15/">0.14 to 0.15</a>,
-<a href="https://bevyengine.org/learn/migration-guides/0-15-to-0-16/">0.15 to 0.16</a>.
-</p>
-<p style="text-align: center;">
-I apologize for the inconvenience. I will update the page as soon as I find the time.
-</p>
-<hr />
+</div>
 <h1 id="touchscreen"><a class="header" href="#touchscreen">Touchscreen</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/input/touch_input.rs"><code>touch_input</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/input/touch_input_events.rs"><code>touch_input_events</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.16.0/examples/input/touch_input.rs"><code>touch_input</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.16.0/examples/input/touch_input_events.rs"><code>touch_input_events</code></a>.</p>
 <hr />
 <p>Multi-touch touchscreens are supported. You can track multiple fingers on
 the screen, with position and pressure/force information. Bevy does not
 offer gesture recognition.</p>
-<p>The <a href="https://docs.rs/bevy/0.9/bevy/input/touch/struct.Touches.html"><code>Touches</code></a> <a href="/programming/res.html">resource</a> allows you to track any
+<p>The <a href="https://docs.rs/bevy/0.16.0/bevy/input/touch/struct.Touches.html"><code>Touches</code></a> <a href="/programming/res.html">resource</a> allows you to track any
 fingers currently on the screen:</p>
 <pre><code class="language-rust no_run noplayground">fn touches(
     touches: Res&lt;Touches&gt;,
@@ -207,13 +204,20 @@ fingers currently on the screen:</p>
             finger.start_position().y,
         );
     }
+
+    for finger in touches.iter_just_released() {
+        println!("Touch with ID {} just ended.", finger.id());
+    }
+    for finger in touches.iter_just_canceled() {
+        println!("Touch with ID {} was canceled.", finger.id());
+    }
 }</code></pre>
-<p>Alternatively, you can use <a href="https://docs.rs/bevy/0.9/bevy/input/touch/struct.TouchInput.html"><code>TouchInput</code></a> <a href="/programming/events.html">events</a>:</p>
+<p>Alternatively, you can use <a href="https://docs.rs/bevy/0.16.0/bevy/input/touch/struct.TouchInput.html"><code>TouchInput</code></a> <a href="/programming/events.html">events</a>:</p>
 <pre><code class="language-rust no_run noplayground">fn touch_events(
-    mut touch_evr: EventReader&lt;TouchInput&gt;,
+    mut evr_touch: EventReader&lt;TouchInput&gt;,
 ) {
     use bevy::input::touch::TouchPhase;
-    for ev in touch_evr.iter() {
+    for ev in evr_touch.read() {
         // in real apps you probably want to store and track touch ids somewhere
         match ev.phase {
             TouchPhase::Started =&gt; {
@@ -225,8 +229,8 @@ fingers currently on the screen:</p>
             TouchPhase::Ended =&gt; {
                 println!("Touch {} ended at: {:?}", ev.id, ev.position);
             }
-            TouchPhase::Cancelled =&gt; {
-                println!("Touch {} cancelled at: {:?}", ev.id, ev.position);
+            TouchPhase::Canceled =&gt; {
+                println!("Touch {} canceled at: {:?}", ev.id, ev.position);
             }
         }
     }

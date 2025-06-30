@@ -45,6 +45,17 @@
         <script src="toc.js"></script>
     </head>
     <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
     <div id="body-container">
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script>
@@ -122,7 +133,7 @@
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
-                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                        <button id="search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
@@ -6368,33 +6379,24 @@ keys, which makes it impossible to make user-configurable keybindings.</p>
 that check your keybindings from your user preferences.</p>
 <p>If you are using the <a href="https://github.com/leafwing-studios/leafwing-input-manager">LWIM plugin</a>, it also provides support for
 <a href="https://docs.rs/leafwing-input-manager/latest/leafwing_input_manager/common_conditions/index.html">a similar run-condition-based workflow</a>.</p>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="input//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-14">0.14</a></th><th>(outdated!)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="input//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-16">0.16</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
-</div><p style="text-align: center;">
-As this page is outdated, please refer to Bevy's official migration guides while reading,
-to cover the differences:
-<a href="https://bevyengine.org/learn/migration-guides/0-14-to-0-15/">0.14 to 0.15</a>,
-<a href="https://bevyengine.org/learn/migration-guides/0-15-to-0-16/">0.15 to 0.16</a>.
-</p>
-<p style="text-align: center;">
-I apologize for the inconvenience. I will update the page as soon as I find the time.
-</p>
-<hr />
+</div>
 <h1 id="keyboard-input"><a class="header" href="#keyboard-input">Keyboard Input</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.14.0/examples/input/keyboard_input.rs"><code>keyboard_input</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/v0.14.0/examples/input/keyboard_input_events.rs"><code>keyboard_input_events</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.16.0/examples/input/keyboard_input.rs"><code>keyboard_input</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.16.0/examples/input/keyboard_input_events.rs"><code>keyboard_input_events</code></a>.</p>
 <hr />
 <p>This page shows how to handle keyboard keys being pressed and released.</p>
 <p>Note: Command Key on Mac corresponds to the Super/Windows Key on PC.</p>
 <p>Similar to <a href="input//input/mouse.html#mouse-buttons">mouse buttons</a>, keyboard input is available
-as a <a href="https://docs.rs/bevy/0.14/bevy/input/struct.ButtonInput.html"><code>ButtonInput</code></a> <a href="input//programming/res.html">resource</a>, <a href="input//programming/events.html">events</a>, and <a href="input//programming/run-criteria.html">run
-conditions</a> (<a href="https://docs.rs/bevy/0.14/bevy/input/common_conditions/index.html">see list</a>). Use
+as a <a href="https://docs.rs/bevy/0.16.0/bevy/input/struct.ButtonInput.html"><code>ButtonInput</code></a> <a href="input//programming/res.html">resource</a>, <a href="input//programming/events.html">events</a>, and <a href="input//programming/run-criteria.html">run
+conditions</a> (<a href="https://docs.rs/bevy/0.16.0/bevy/input/common_conditions/index.html">see list</a>). Use
 whichever pattern feels most appropriate to your use case.</p>
 <h2 id="checking-key-state"><a class="header" href="#checking-key-state">Checking Key State</a></h2>
 <p>Most commonly for games, you might be interested in specific known keys and
 detecting when they are pressed or released. You can check specific keys
-using the <a href="https://docs.rs/bevy/0.14/bevy/input/struct.ButtonInput.html"><code>ButtonInput&lt;KeyCode&gt;</code></a> <a href="input//programming/res.html">resource</a>.</p>
+using the <a href="https://docs.rs/bevy/0.16.0/bevy/input/struct.ButtonInput.html"><code>ButtonInput&lt;KeyCode&gt;</code></a> <a href="input//programming/res.html">resource</a>.</p>
 <ul>
 <li>Use <code>.pressed(…)</code>/<code>.released(…)</code> to check if a key is being held down
 <ul>
@@ -6456,7 +6458,7 @@ app.add_systems(Update, (
         .run_if(input_pressed(KeyCode::Enter)),
 ));</code></pre>
 <h2 id="keyboard-events"><a class="header" href="#keyboard-events">Keyboard Events</a></h2>
-<p>To get all keyboard activity, you can use <a href="https://docs.rs/bevy/0.14/bevy/input/keyboard/struct.KeyboardInput.html"><code>KeyboardInput</code></a> <a href="input//programming/events.html">events</a>:</p>
+<p>To get all keyboard activity, you can use <a href="https://docs.rs/bevy/0.16.0/bevy/input/keyboard/struct.KeyboardInput.html"><code>KeyboardInput</code></a> <a href="input//programming/events.html">events</a>:</p>
 <pre><code class="language-rust no_run noplayground">fn keyboard_events(
     mut evr_kbd: EventReader&lt;KeyboardInput&gt;,
 ) {
@@ -6471,21 +6473,21 @@ app.add_systems(Update, (
         }
     }
 }</code></pre>
-<h3 id="physical-keycode-vs-logical-key"><a class="header" href="#physical-keycode-vs-logical-key">Physical <a href="https://docs.rs/bevy/0.14/bevy/input/keyboard/enum.KeyCode.html"><code>KeyCode</code></a> vs. Logical <a href="https://docs.rs/bevy/0.14/bevy/input/keyboard/enum.Key.html"><code>Key</code></a></a></h3>
+<h3 id="physical-keycode-vs-logical-key"><a class="header" href="#physical-keycode-vs-logical-key">Physical <a href="https://docs.rs/bevy/0.16.0/bevy/input/keyboard/enum.KeyCode.html"><code>KeyCode</code></a> vs. Logical <a href="https://docs.rs/bevy/0.16.0/bevy/input/keyboard/enum.Key.html"><code>Key</code></a></a></h3>
 <p>When a key is pressed, the <a href="input//programming/events.html">event</a> contains two important pieces of information:</p>
 <ul>
-<li>The <a href="https://docs.rs/bevy/0.14/bevy/input/keyboard/enum.KeyCode.html"><code>KeyCode</code></a>, which always represents a specific key on the keyboard,
+<li>The <a href="https://docs.rs/bevy/0.16.0/bevy/input/keyboard/enum.KeyCode.html"><code>KeyCode</code></a>, which always represents a specific key on the keyboard,
 regardless of the OS layout or language settings.</li>
-<li>The <a href="https://docs.rs/bevy/0.14/bevy/input/keyboard/enum.Key.html"><code>Key</code></a>, which contains the logical meaning of the key as interpreted by the OS.</li>
+<li>The <a href="https://docs.rs/bevy/0.16.0/bevy/input/keyboard/enum.Key.html"><code>Key</code></a>, which contains the logical meaning of the key as interpreted by the OS.</li>
 </ul>
-<p>When you want to implement gameplay mechanics, you want to use the <a href="https://docs.rs/bevy/0.14/bevy/input/keyboard/enum.KeyCode.html"><code>KeyCode</code></a>.
+<p>When you want to implement gameplay mechanics, you want to use the <a href="https://docs.rs/bevy/0.16.0/bevy/input/keyboard/enum.KeyCode.html"><code>KeyCode</code></a>.
 This will give you reliable keybindings that always work, including for multilingual
 users with multiple keyboard layouts configured in their OS.</p>
-<p>When you want to implement text/character input, you want to use the <a href="https://docs.rs/bevy/0.14/bevy/input/keyboard/enum.Key.html"><code>Key</code></a>.
+<p>When you want to implement text/character input, you want to use the <a href="https://docs.rs/bevy/0.16.0/bevy/input/keyboard/enum.Key.html"><code>Key</code></a>.
 This can give you Unicode characters that you can append to your text string and
 will allow your users to type just like they do in other applications.</p>
 <p>If you'd like to handle special function keys or media keys on keyboards that
-have them, that can also be done via the logical <a href="https://docs.rs/bevy/0.14/bevy/input/keyboard/enum.Key.html"><code>Key</code></a>.</p>
+have them, that can also be done via the logical <a href="https://docs.rs/bevy/0.16.0/bevy/input/keyboard/enum.Key.html"><code>Key</code></a>.</p>
 <h2 id="text-input"><a class="header" href="#text-input">Text Input</a></h2>
 <p>Here is a simple example of how to implement text input into a string (here
 stored as a <a href="input//programming/local.html">local</a>).</p>
@@ -6539,7 +6541,7 @@ sequences or combinations of keys, you might end up in an inconsistent
 state if the Bevy OS window loses focus in the middle of keyboard input,
 such as with Alt-Tab or similar OS window switching mechanisms.</p>
 <p>If you are doing such things and you think your algorithm might be getting
-stuck, Bevy offers a <a href="https://docs.rs/bevy/0.14/bevy/input/keyboard/struct.KeyboardFocusLost.html"><code>KeyboardFocusLost</code></a> <a href="input//programming/events.html">event</a> to let you
+stuck, Bevy offers a <a href="https://docs.rs/bevy/0.16.0/bevy/input/keyboard/struct.KeyboardFocusLost.html"><code>KeyboardFocusLost</code></a> <a href="input//programming/events.html">event</a> to let you
 know when you should reset your state.</p>
 <pre><code class="language-rust no_run noplayground">use bevy::input::keyboard::KeyboardFocusLost;
 
@@ -6557,31 +6559,22 @@ fn detect_special_sequence(
         evr_focus_lost.clear();
     }
 }</code></pre>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="input//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-14">0.14</a></th><th>(outdated!)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="input//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-16">0.16</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
-</div><p style="text-align: center;">
-As this page is outdated, please refer to Bevy's official migration guides while reading,
-to cover the differences:
-<a href="https://bevyengine.org/learn/migration-guides/0-14-to-0-15/">0.14 to 0.15</a>,
-<a href="https://bevyengine.org/learn/migration-guides/0-15-to-0-16/">0.15 to 0.16</a>.
-</p>
-<p style="text-align: center;">
-I apologize for the inconvenience. I will update the page as soon as I find the time.
-</p>
-<hr />
+</div>
 <h1 id="mouse"><a class="header" href="#mouse">Mouse</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.14.0/examples/input/mouse_input.rs"><code>mouse_input</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/v0.14.0/examples/input/mouse_input_events.rs"><code>mouse_input_events</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.16.0/examples/input/mouse_input.rs"><code>mouse_input</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.16.0/examples/input/mouse_input_events.rs"><code>mouse_input_events</code></a>.</p>
 <hr />
 <h2 id="mouse-buttons"><a class="header" href="#mouse-buttons">Mouse Buttons</a></h2>
 <p>Similar to <a href="input//input/keyboard.html">keyboard input</a>, mouse buttons are available as a
-<a href="https://docs.rs/bevy/0.14/bevy/input/struct.ButtonInput.html"><code>ButtonInput</code></a> <a href="input//programming/res.html">resource</a>, <a href="input//programming/events.html">events</a>, and <a href="input//programming/run-criteria.html">run
-conditions</a> (<a href="https://docs.rs/bevy/0.14/bevy/input/common_conditions/index.html">see list</a>). Use whichever
+<a href="https://docs.rs/bevy/0.16.0/bevy/input/struct.ButtonInput.html"><code>ButtonInput</code></a> <a href="input//programming/res.html">resource</a>, <a href="input//programming/events.html">events</a>, and <a href="input//programming/run-criteria.html">run
+conditions</a> (<a href="https://docs.rs/bevy/0.16.0/bevy/input/common_conditions/index.html">see list</a>). Use whichever
 pattern feels most appropriate to your use case.</p>
 <h3 id="checking-button-state"><a class="header" href="#checking-button-state">Checking Button State</a></h3>
 <p>You can check the state of specific mouse buttons using the
-<a href="https://docs.rs/bevy/0.14/bevy/input/mouse/enum.MouseButton.html"><code>ButtonInput&lt;MouseButton&gt;</code></a> <a href="input//programming/res.html">resource</a>:</p>
+<a href="https://docs.rs/bevy/0.16.0/bevy/input/mouse/enum.MouseButton.html"><code>ButtonInput&lt;MouseButton&gt;</code></a> <a href="input//programming/res.html">resource</a>:</p>
 <ul>
 <li>Use <code>.pressed(…)</code>/<code>.released(…)</code> to check if a button is being held down
 <ul>
@@ -6640,7 +6633,7 @@ app.add_systems(Update, (
         .run_if(input_pressed(MouseButton::Left)),
 ));</code></pre>
 <h3 id="mouse-button-events"><a class="header" href="#mouse-button-events">Mouse Button Events</a></h3>
-<p>Alternatively, you can use <a href="https://docs.rs/bevy/0.14/bevy/input/mouse/struct.MouseButtonInput.html"><code>MouseButtonInput</code></a> <a href="input//programming/events.html">events</a> to get
+<p>Alternatively, you can use <a href="https://docs.rs/bevy/0.16.0/bevy/input/mouse/struct.MouseButtonInput.html"><code>MouseButtonInput</code></a> <a href="input//programming/events.html">events</a> to get
 all activity:</p>
 <pre><code class="language-rust no_run noplayground">use bevy::input::mouse::MouseButtonInput;
 
@@ -6661,7 +6654,7 @@ fn mouse_button_events(
     }
 }</code></pre>
 <h2 id="mouse-scrolling--wheel"><a class="header" href="#mouse-scrolling--wheel">Mouse Scrolling / Wheel</a></h2>
-<p>To detect scrolling input, use <a href="https://docs.rs/bevy/0.14/bevy/input/mouse/struct.MouseWheel.html"><code>MouseWheel</code></a> <a href="input//programming/events.html">events</a>:</p>
+<p>To detect scrolling input, use <a href="https://docs.rs/bevy/0.16.0/bevy/input/mouse/struct.MouseWheel.html"><code>MouseWheel</code></a> <a href="input//programming/events.html">events</a>:</p>
 <pre><code class="language-rust no_run noplayground">use bevy::input::mouse::MouseWheel;
 
 fn scroll_events(
@@ -6679,7 +6672,7 @@ fn scroll_events(
         }
     }
 }</code></pre>
-<p>The <a href="https://docs.rs/bevy/0.14/bevy/input/mouse/enum.MouseScrollUnit.html"><code>MouseScrollUnit</code></a> enum is important: it tells you the type of scroll
+<p>The <a href="https://docs.rs/bevy/0.16.0/bevy/input/mouse/enum.MouseScrollUnit.html"><code>MouseScrollUnit</code></a> enum is important: it tells you the type of scroll
 input. <code>Line</code> is for hardware with fixed steps, like the wheel on desktop
 mice. <code>Pixel</code> is for hardware with smooth (fine-grained) scrolling, like
 laptop touchpads.</p>
@@ -6693,7 +6686,7 @@ of lines, even when using a regular PC mouse with a fixed-stepping scroll wheel.
 <p>Use this if you don't care about the exact position of the mouse cursor,
 but rather you just want to see how much the mouse moved from frame to
 frame. This is useful for things like controlling a 3D camera.</p>
-<p>Use <a href="https://docs.rs/bevy/0.14/bevy/input/mouse/struct.MouseMotion.html"><code>MouseMotion</code></a> <a href="input//programming/events.html">events</a>. Whenever the mouse is moved, you
+<p>Use <a href="https://docs.rs/bevy/0.16.0/bevy/input/mouse/struct.MouseMotion.html"><code>MouseMotion</code></a> <a href="input//programming/events.html">events</a>. Whenever the mouse is moved, you
 will get an event with the delta.</p>
 <pre><code class="language-rust no_run noplayground">use bevy::input::mouse::MouseMotion;
 
@@ -6711,20 +6704,20 @@ window</a>.</p>
 cursor. This is useful for things like clicking and hovering over objects
 in your game or UI.</p>
 <p>You can get the current coordinates of the mouse pointer, from the respective
-<a href="https://docs.rs/bevy/0.14/bevy/window/struct.Window.html"><code>Window</code></a> (if the mouse is currently inside that window):</p>
+<a href="https://docs.rs/bevy/0.16.0/bevy/window/struct.Window.html"><code>Window</code></a> (if the mouse is currently inside that window):</p>
 <pre><code class="language-rust no_run noplayground">use bevy::window::PrimaryWindow;
 
 fn cursor_position(
-    q_windows: Query&lt;&amp;Window, With&lt;PrimaryWindow&gt;&gt;,
-) {
     // Games typically only have one window (the primary window)
-    if let Some(position) = q_windows.single().cursor_position() {
+    window: Single&lt;&amp;Window, With&lt;PrimaryWindow&gt;&gt;,
+) {
+    if let Some(position) = window.cursor_position() {
         println!("Cursor is inside the primary window, at {:?}", position);
     } else {
         println!("Cursor is not in the game window.");
     }
 }</code></pre>
-<p>To detect when the pointer is moved, use <a href="https://docs.rs/bevy/0.14/bevy/window/struct.CursorMoved.html"><code>CursorMoved</code></a> <a href="input//programming/events.html">events</a>
+<p>To detect when the pointer is moved, use <a href="https://docs.rs/bevy/0.16.0/bevy/window/struct.CursorMoved.html"><code>CursorMoved</code></a> <a href="input//programming/events.html">events</a>
 to get the updated coordinates:</p>
 <pre><code class="language-rust no_run noplayground">fn cursor_events(
     mut evr_cursor: EventReader&lt;CursorMoved&gt;,
@@ -6745,7 +6738,42 @@ pixels, and the origin is the <strong>top left</strong> corner of the window.</p
 this cookbook example</a> for converting these window
 cursor coordinates into world-space coordinates.</p>
 <p>To track when the mouse cursor enters and leaves your window(s), use
-<a href="https://docs.rs/bevy/0.14/bevy/window/struct.CursorEntered.html"><code>CursorEntered</code></a> and <a href="https://docs.rs/bevy/0.14/bevy/window/struct.CursorLeft.html"><code>CursorLeft</code></a> <a href="input//programming/events.html">events</a>.</p>
+<a href="https://docs.rs/bevy/0.16.0/bevy/window/struct.CursorEntered.html"><code>CursorEntered</code></a> and <a href="https://docs.rs/bevy/0.16.0/bevy/window/struct.CursorLeft.html"><code>CursorLeft</code></a> <a href="input//programming/events.html">events</a>.</p>
+<pre><code class="language-rust no_run noplayground">// Check if cursor enters / leaves primary window
+fn enter_leave_primary(
+    mut evr_leave: EventReader&lt;CursorLeft&gt;,
+    mut evr_enter: EventReader&lt;CursorEntered&gt;,
+    // To obtain the Entity id of the primary window:
+    e_window: Single&lt;Entity, With&lt;PrimaryWindow&gt;&gt;,
+) {
+    if evr_leave.read().any(|ev| ev.window == *e_window) {
+        // cursor left primary window
+    }
+    if evr_enter.read().any(|ev| ev.window == *e_window) {
+        // cursor entered primary window
+    }
+}
+
+// Track which window (in a multi-window app) the cursor is in
+fn current_cursor_window(
+    mut evr_leave: EventReader&lt;CursorLeft&gt;,
+    mut evr_enter: EventReader&lt;CursorEntered&gt;,
+    // Here we can keep track which window the cursor is currently in.
+    mut current_window: Local&lt;Option&lt;Entity&gt;&gt;,
+) {
+    if !evr_leave.is_empty() {
+        evr_leave.clear();
+        *current_window = None;
+    }
+    if let Some(ev) = evr_enter.read().last() {
+        *current_window = Some(ev.window);
+    }
+}</code></pre>
+<p>Note: to detect whether the cursor is inside a specific window, it is often more
+convenient to just check the cursor position by querying the window (see earlier
+code snippet), instead of using these events. You probably want to know the
+cursor coordinates anyway. If you get <code>None</code>, you know the cursor is not inside
+that window.</p>
 <div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="input//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-14">0.14</a></th><th>(outdated!)</th></tr></thead><tbody>
 </tbody></table>
 </div><p style="text-align: center;">
@@ -7032,32 +7060,18 @@ fn gamepad_rumble(
         },
     });
 }</code></pre>
-<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="input//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-9">0.9</a></th><th>(outdated!)</th></tr></thead><tbody>
+<div style="break-before: page; page-break-before: always;"></div><div class="table-wrapper"><table><thead><tr><th><a href="input//introduction.html#maintenance-policy">Bevy Version:</a></th><th><a href="https://bevyengine.org/news/bevy-0-16">0.16</a></th><th>(current)</th></tr></thead><tbody>
 </tbody></table>
-</div><p style="text-align: center;">
-As this page is outdated, please refer to Bevy's official migration guides while reading,
-to cover the differences:
-<a href="https://bevyengine.org/learn/migration-guides/0-9-to-0-10/">0.9 to 0.10</a>,
-<a href="https://bevyengine.org/learn/migration-guides/0-10-to-0-11/">0.10 to 0.11</a>,
-<a href="https://bevyengine.org/learn/migration-guides/0-11-to-0-12/">0.11 to 0.12</a>,
-<a href="https://bevyengine.org/learn/migration-guides/0-12-to-0-13/">0.12 to 0.13</a>,
-<a href="https://bevyengine.org/learn/migration-guides/0-13-to-0-14/">0.13 to 0.14</a>,
-<a href="https://bevyengine.org/learn/migration-guides/0-14-to-0-15/">0.14 to 0.15</a>,
-<a href="https://bevyengine.org/learn/migration-guides/0-15-to-0-16/">0.15 to 0.16</a>.
-</p>
-<p style="text-align: center;">
-I apologize for the inconvenience. I will update the page as soon as I find the time.
-</p>
-<hr />
+</div>
 <h1 id="touchscreen"><a class="header" href="#touchscreen">Touchscreen</a></h1>
 <p>Relevant official examples:
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/input/touch_input.rs"><code>touch_input</code></a>,
-<a href="https://github.com/bevyengine/bevy/blob/v0.9.1/examples/input/touch_input_events.rs"><code>touch_input_events</code></a>.</p>
+<a href="https://github.com/bevyengine/bevy/blob/v0.16.0/examples/input/touch_input.rs"><code>touch_input</code></a>,
+<a href="https://github.com/bevyengine/bevy/blob/v0.16.0/examples/input/touch_input_events.rs"><code>touch_input_events</code></a>.</p>
 <hr />
 <p>Multi-touch touchscreens are supported. You can track multiple fingers on
 the screen, with position and pressure/force information. Bevy does not
 offer gesture recognition.</p>
-<p>The <a href="https://docs.rs/bevy/0.9/bevy/input/touch/struct.Touches.html"><code>Touches</code></a> <a href="input//programming/res.html">resource</a> allows you to track any
+<p>The <a href="https://docs.rs/bevy/0.16.0/bevy/input/touch/struct.Touches.html"><code>Touches</code></a> <a href="input//programming/res.html">resource</a> allows you to track any
 fingers currently on the screen:</p>
 <pre><code class="language-rust no_run noplayground">fn touches(
     touches: Res&lt;Touches&gt;,
@@ -7078,13 +7092,20 @@ fingers currently on the screen:</p>
             finger.start_position().y,
         );
     }
+
+    for finger in touches.iter_just_released() {
+        println!("Touch with ID {} just ended.", finger.id());
+    }
+    for finger in touches.iter_just_canceled() {
+        println!("Touch with ID {} was canceled.", finger.id());
+    }
 }</code></pre>
-<p>Alternatively, you can use <a href="https://docs.rs/bevy/0.9/bevy/input/touch/struct.TouchInput.html"><code>TouchInput</code></a> <a href="input//programming/events.html">events</a>:</p>
+<p>Alternatively, you can use <a href="https://docs.rs/bevy/0.16.0/bevy/input/touch/struct.TouchInput.html"><code>TouchInput</code></a> <a href="input//programming/events.html">events</a>:</p>
 <pre><code class="language-rust no_run noplayground">fn touch_events(
-    mut touch_evr: EventReader&lt;TouchInput&gt;,
+    mut evr_touch: EventReader&lt;TouchInput&gt;,
 ) {
     use bevy::input::touch::TouchPhase;
-    for ev in touch_evr.iter() {
+    for ev in evr_touch.read() {
         // in real apps you probably want to store and track touch ids somewhere
         match ev.phase {
             TouchPhase::Started =&gt; {
@@ -7096,8 +7117,8 @@ fingers currently on the screen:</p>
             TouchPhase::Ended =&gt; {
                 println!("Touch {} ended at: {:?}", ev.id, ev.position);
             }
-            TouchPhase::Cancelled =&gt; {
-                println!("Touch {} cancelled at: {:?}", ev.id, ev.position);
+            TouchPhase::Canceled =&gt; {
+                println!("Touch {} canceled at: {:?}", ev.id, ev.position);
             }
         }
     }
